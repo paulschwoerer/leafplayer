@@ -1,3 +1,5 @@
+<p align="center"><img width="140"src="logo.png"></p>
+
 # LeafPlayer
 
 LeafPlayer is a privately hosted music streaming server.
