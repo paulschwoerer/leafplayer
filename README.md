@@ -11,7 +11,7 @@ LeafPlayer is a privately hosted music streaming server. It enables you to acces
 To use LeafPlayer, you need to own a server, capable of running the [Lumen PHP framework](https://lumen.laravel.com/) and a supported database, for example MySQL.
 
 ### Installation
-Apart from that it's just a matter of copying the contents of the [deploy](deploy) folder to the root of your webspace and running the following commands from within that directory. 
+First download the latest release and copy it's contents to the root of your webspace. Following that, run the following commands from within that directory. 
 
 ```sh
 # Install dependencies
