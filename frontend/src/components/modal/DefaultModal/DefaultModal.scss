@@ -1,6 +1,7 @@
 @import '../../../assets/sass/variables/all';
 
 .component-default-modal {
+    position: relative;
     background: $colorWhite;
     border: 1px solid $colorLightGrey;
     padding: 60px;
