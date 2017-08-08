@@ -1,0 +1,22 @@
+@import '../../assets/sass/variables/colors';
+
+.route-home {
+    .suggested-albums,
+    .popular-songs {
+        margin-bottom: 30px;
+    }
+
+    .suggested-albums {
+        .component-button {
+            vertical-align: middle;
+        }
+    }
+
+    .welcome {
+        text-align: center;
+
+        .component-button {
+            margin: 40px 0;
+        }
+    }
+}

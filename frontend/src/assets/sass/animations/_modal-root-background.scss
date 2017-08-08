@@ -1,0 +1,8 @@
+.modal-root-background-enter-active, .modal-root-background-leave-active {
+    opacity: 1;
+    transition: opacity .2s;
+}
+
+.modal-root-background-enter, .modal-root-background-leave-to {
+    opacity: 0;
+}

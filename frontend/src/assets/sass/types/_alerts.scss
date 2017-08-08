@@ -1,0 +1,11 @@
+@import '../variables/colors';
+
+.alertify-logs {
+    .success {
+        background-color: rgba($colorGreen, .8);
+    }
+
+    .fail {
+        background-color: rgba($colorRed, .8);
+    }
+}

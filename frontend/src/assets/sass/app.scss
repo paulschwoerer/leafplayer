@@ -1,0 +1,82 @@
+@import './variables/all';
+@import './animations/modal';
+@import './animations/modal';
+@import './animations/modal-root-background';
+@import './animations.scss';
+@import './types/fixes';
+@import './types/layout';
+@import './types/list';
+@import './types/dnd';
+@import './types/alerts';
+
+body {
+    font-family: $defaultFont;
+    color: $defaultFontColor;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+    font-size: $defaultFontSize;
+    background-color: $colorBlue;
+
+    &.no-scroll {
+        overflow: hidden;
+    }
+
+    &.side-bar-shown {
+        @media (max-width: $mobileWidth) {
+            overflow: hidden;
+        }
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    h1, h2, h3, p, a, small {
+        margin: 0;
+    }
+
+    h1, h2, h3 {
+        font-weight: 300;
+    }
+
+    h1 {
+        font-size: 33px;
+        line-height: 40px;
+    }
+
+    h2 {
+        font-size: 26px;
+        line-height: 33px;
+    }
+
+    h3 {
+        font-size: 19px;
+        line-height: 26px;
+    }
+
+    p, a {
+        font-size: 14px;
+        line-height: 19px;
+    }
+
+    small {
+        font-size: 11px;
+        line-height: 14px;
+    }
+
+    a {
+        color: #34495e;
+        outline: 0;
+    }
+}
+
+// TODO: create component for that
+.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+// TODO: remove alertify??
+.alertify { z-index: 99; }
+
+/* TODO: create component */
+.seperator { border-top: 1px solid #72727d; width: 80%; margin: 5px auto; opacity: .5; }
+.seperator.seperator-light { border-color: #ecf0f1; }

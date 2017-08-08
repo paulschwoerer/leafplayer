@@ -1,0 +1,76 @@
+@import '../../../assets/sass/variables/_colors.scss';
+
+.component-album-art {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: $colorLightGrey center center;
+        background-size: cover;
+
+        &.default {
+            background-image: url('../../../assets/img/album-default.jpg');
+        }
+    }
+
+    &:hover {
+        .overlay {
+            opacity: 1;
+        }
+    }
+
+    &.playing {
+        .overlay {
+            opacity: 1;
+        }
+    }
+
+    &.playing-album {
+        .overlay {
+            &:hover {
+                .component-playing-indicator {
+                    display: none;
+                }
+
+                .icons {
+                    display: block;
+                }
+            }
+
+            .icons {
+                display: none;
+            }
+
+            .component-playing-indicator {
+                display: block;
+            }
+        }
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba($colorBlack, .5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity .5s;
+
+        .play-button {
+            cursor: pointer;
+
+            .component-icon {
+                color: $colorWhite;
+                font-size: 48px;
+            }
+        }
+    }
+}

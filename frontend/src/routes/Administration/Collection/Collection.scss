@@ -1,0 +1,29 @@
+@import '../../../assets/sass/variables/all';
+
+.route-administration-collection {
+    .grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas: "folders actions";
+        grid-gap: 20px;
+
+        @media (max-width: $intermediateWidth) {
+            grid-template-columns: 1fr;
+            grid-template-areas:
+                    "actions"
+                    "folders";
+        }
+
+        .component-folder-list {
+            grid-area: folders;
+        }
+
+        .component-scanner-actions {
+            grid-area: actions;
+        }
+
+        .component-scanner-progress {
+            grid-area: folders;
+        }
+    }
+}

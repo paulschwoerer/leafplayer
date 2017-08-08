@@ -1,0 +1,8 @@
+.modal-enter-active, .modal-leave-active {
+    transition: transform .2s;
+    transform: scale(1);
+}
+
+.modal-enter, .modal-leave-to {
+    transform: scale(0);
+}

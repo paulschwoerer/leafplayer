@@ -1,0 +1,22 @@
+@import '../../../assets/sass/variables/colors';
+
+.component-validation-form {
+    padding: 20px 10px;
+    min-width: 300px;
+
+    .input-group {
+        .component-input {
+
+        }
+
+        .field-error {
+            color: $colorRed;
+        }
+    }
+
+    .form-submit {
+        padding-top: 20px;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+}

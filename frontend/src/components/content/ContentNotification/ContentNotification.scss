@@ -1,0 +1,14 @@
+@import '../../../assets/sass/variables/colors';
+
+.component-content-notification {
+    text-align: center;
+    color: $colorGrey;
+    font-size: 1.8em;
+    width: 100%;
+
+    .component-icon {
+        color: $colorLightGrey;
+        font-size: 6em;
+        margin: 4vh auto;
+    }
+}

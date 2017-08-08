@@ -1,0 +1,32 @@
+@import '../../../assets/sass/variables/colors';
+
+.component-check-box {
+    margin: 14px 0;
+    padding: 10px 10px 10px 36px;
+    position: relative;
+    display: inline-block;
+
+    &.light {
+        .component-icon, label {
+            color: $colorWhite;
+        }
+    }
+
+    label {
+        color: $colorDarkGrey;
+        cursor: pointer;
+    }
+
+    .component-icon {
+        position: absolute;
+        color: $colorBlue;
+        top: 6px;
+        left: 5px;
+    }
+
+    input {
+        visibility: hidden;
+        display: none;
+    }
+
+}

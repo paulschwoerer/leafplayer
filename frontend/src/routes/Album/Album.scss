@@ -1,0 +1,27 @@
+.route-album {
+    .album-details {
+        position: relative;
+        height: 200px;
+        margin-bottom: 30px;
+
+        .info {
+            width: calc(100% - 200px);
+            padding: 10px 20px 20px 0;
+        }
+
+        .art {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            box-shadow: 2px 2px 4px;
+        }
+
+        .actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    }
+}

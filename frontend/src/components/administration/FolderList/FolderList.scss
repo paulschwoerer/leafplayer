@@ -1,0 +1,35 @@
+@import '../../../assets/sass/variables/_colors.scss';
+
+.component-folder-list {
+    .folder {
+        padding: 10px;
+        background-color: $colorBlue;
+        color: white;
+        border-radius: 2px;
+        margin-bottom: 3px;
+
+        .folder-remove-icon {
+            cursor: pointer;
+            float: right;
+            transition: color, .3s;
+            margin-top: 2px;
+
+            &:hover {
+                color: $colorRed;
+            }
+        }
+
+        .folder-checkbox {
+            margin: -5px 0 !important;
+        }
+
+        p {
+            margin-left: 40px;
+            padding: 5px;
+        }
+    }
+
+    .no-folders {
+        margin-top: 14px;
+    }
+}

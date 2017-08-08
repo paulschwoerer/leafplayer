@@ -1,0 +1,8 @@
+@import '../../../assets/sass/variables/colors';
+
+.component-confirm-delete-playlist-modal {
+    .playlist-name {
+        font-weight: 600;
+        color: $colorRed;
+    }
+}

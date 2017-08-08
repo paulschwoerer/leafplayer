@@ -1,0 +1,11 @@
+@import '../../assets/sass/variables/colors';
+
+.route-artist {
+    .artist-albums, .artist-featured-albums {
+        .component-album-card {
+            width: 160px;
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+    }
+}

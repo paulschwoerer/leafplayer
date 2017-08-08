@@ -1,0 +1,10 @@
+@import '../../assets/sass/variables/colors';
+
+.component-footer {
+    color: $colorWhite;
+    margin: 120px auto 0;
+
+    footer {
+        text-align: center;
+    }
+}

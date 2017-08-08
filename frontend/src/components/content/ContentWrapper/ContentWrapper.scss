@@ -1,0 +1,15 @@
+@import '../../../assets/sass/variables/colors';
+
+.component-content-wrapper {
+    padding: 20px;
+
+    h2 {
+        padding: 20px 0;
+        color: $colorGrey;
+
+        span {
+            color: $colorLightGrey;
+            font-weight: 500;
+        }
+    }
+}

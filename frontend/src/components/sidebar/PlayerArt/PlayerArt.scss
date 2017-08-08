@@ -1,0 +1,82 @@
+@import '../../../assets/sass/variables/_colors.scss';
+
+.component-player-art {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    bottom: 92px;
+    overflow: hidden;
+
+    .art {
+        width: 100%;
+        height: 100%;
+
+        .background {
+            position: absolute;
+            background: $colorLightGrey center center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+
+            &.default {
+                background-image: url('../../../assets/img/album-default.jpg');
+            }
+        }
+    }
+
+    .details {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        opacity: 0;
+        transition: opacity .5s;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 100%;
+
+            li, a {
+                max-width: 100%;
+            }
+
+            li {
+                margin-bottom: 7px;
+                display: block;
+
+                a {
+                    display: inline-block;
+                    padding: 7px 14px;
+                    color: $colorWhite;
+                    background: rgba($colorGrey, .75);
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    .drop-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: $colorWhite;
+        font-size: 1.4em;
+        text-align: center;
+        background-color: rgba($colorBlack, .4);
+
+        .component-icon {
+            font-size: 3em;
+            margin-bottom: 40px;
+        }
+    }
+}

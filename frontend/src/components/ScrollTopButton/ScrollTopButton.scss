@@ -1,0 +1,20 @@
+@import '../../assets/sass/variables/colors';
+
+.component-scroll-top-button {
+    background: $colorBlue;
+    width: 48px;
+    height: 48px;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    border-radius: 100%;
+    color: $colorWhite;
+    transform: rotate(90deg);
+    cursor: pointer;
+    box-shadow: 0 0 3px $colorDarkGrey;
+    z-index: 999;
+
+    .component-icon {
+        font-size: 48px;
+    }
+}

@@ -1,0 +1,12 @@
+@import '../../../assets/sass/variables/all';
+
+.component-side-bar-playlist-container {
+    color: $colorWhite;
+    max-height: 180px;
+    overflow-y: auto;
+    transition: max-height .4s;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

@@ -1,0 +1,25 @@
+@import '../../../assets/sass/variables/colors';
+
+.component-scan-progress {
+    position: relative;
+
+    .component-circle-progress {
+        margin: 0 auto;
+    }
+
+    .details {
+        margin: 20px auto;
+        text-align: center;
+        color: $colorGrey;
+
+        .state {
+
+            font-size: 1.2em;
+            margin: 7px 0;
+        }
+
+        .bold {
+
+        }
+    }
+}

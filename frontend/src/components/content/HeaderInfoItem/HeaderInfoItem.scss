@@ -1,0 +1,16 @@
+@import '../../../assets/sass/variables/_colors.scss';
+
+.component-header-info-item {
+    float: right;
+    text-align: center;
+    color: $colorWhite;
+    margin: 0 7px;
+
+    &.active .component-icon {
+        color: $colorRed;
+    }
+
+    &.clickable .component-icon {
+        cursor: pointer;
+    }
+}

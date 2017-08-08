@@ -1,0 +1,91 @@
+@import '../../assets/sass/variables/_colors.scss';
+
+@keyframes bar1 {
+    0% { height: 92%; }
+    20% { height: 15%; }
+    40% { height: 72%; }
+    60% { height: 30%; }
+    80% { height: 84%; }
+    100% { height: 57%; }
+}
+
+@keyframes bar2 {
+    0% { height: 38%; }
+    20% { height: 10%; }
+    40% { height: 62%; }
+    60% { height: 48%; }
+    80% { height: 51%; }
+    100% { height: 96%; }
+}
+
+@keyframes bar3 {
+    0% { height: 70%; }
+    20% { height: 59%; }
+    40% { height: 66%; }
+    60% { height: 27%; }
+    80% { height: 39%; }
+    100% { height: 87%; }
+}
+
+.component-playing-indicator {
+    &.sm {
+        width: 16px;
+        height: 16px;
+
+        .bar {
+            width: 4px;
+        }
+    }
+
+    &.md {
+        width: 24px;
+        height: 24px;
+
+        .bar {
+            width: 6px;
+        }
+    }
+
+    &.lg {
+        width: 36px;
+        height: 36px;
+
+        .bar {
+            width: 8px;
+        }
+    }
+
+    &.light .bar {
+        background-color: $colorWhite;
+    }
+
+    &.dark .bar {
+        background-color: $colorGrey;
+    }
+
+    .bars {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .bar {
+            min-height: 25%;
+            height: 100%;
+            /*transition: height .25s ease;*/
+
+            &.bar1 {
+                animation: bar1 ease .7s infinite alternate;
+            }
+
+            &.bar2 {
+                animation: bar2 ease 1s infinite alternate;
+            }
+
+            &.bar3 {
+                animation: bar3 ease .85s infinite alternate;
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+@import '../variables/colors';
+
+#drag-element-representation {
+    display: inline-block;
+    position: absolute;
+    padding: 10px;
+    border-radius: 3px;
+    background: $colorGreen;
+    transform: translateX(-1000px); // hide off screen
+
+    p {
+        color: $colorWhite;
+    }
+}
