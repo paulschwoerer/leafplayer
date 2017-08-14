@@ -2,7 +2,7 @@
 
 # LeafPlayer
 
-LeafPlayer is a privately hosted music streaming server. It enables you to access your private music collection from anywhere where there's internet access.
+LeafPlayer is a simple and fast, privately hosted music streaming server. It enables you to access your private music collection from anywhere where there's internet access.
 
 ## Demo
 There is a demo available at [https://leafplayerdemo.paulschwoerer.de](https://leafplayerdemo.paulschwoerer.de).
