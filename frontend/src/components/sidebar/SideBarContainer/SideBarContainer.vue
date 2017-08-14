@@ -31,6 +31,10 @@
 
         <div class="seperator seperator-light" />
 
+        <div class="credits">
+            Credit for all demo music goes to <a href="http://www.purple-planet.com">purple-planet.com</a>
+        </div>
+
         <div class="user-container">
             <p>Welcome back, <b>{{user.name}}</b></p>
 

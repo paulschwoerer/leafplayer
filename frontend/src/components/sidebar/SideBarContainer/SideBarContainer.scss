@@ -28,6 +28,16 @@
         }
     }
 
+    .credits {
+        padding: 10px;
+        text-align: center;
+        color: $colorWhite;
+
+        a {
+            color: inherit;
+        }
+    }
+
     .logo-container {
         position: relative;
         text-align: center;
