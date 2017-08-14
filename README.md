@@ -12,7 +12,7 @@ There is a demo available at [https://leafplayerdemo.paulschwoerer.de](https://l
 
 Try dragging albums, artists and songs onto the player and the playlists in the sidebar.
 
-I removed the ability to change password and download songs from the demo.
+The ability to change password and download songs are removed from the demo.
 
 <p align="center"><img width="80%" src="demo.png"></p>
 
@@ -35,6 +35,30 @@ php artisan key:generate
 
 # Generate JWT secret
 php artisan jwt:secret
+```
+
+Next up is to fill in the newly created .env file with your database credentials. 
+
+```
+# Hostname of your database server
+DB_HOST=127.0.0.1
+
+# Port of your database server
+DB_PORT=3306
+
+# Database name
+DB_DATABASE=leafplayer
+
+# Database username
+DB_USERNAME=username
+
+# Database password
+DB_PASSWORD=secret
+```
+
+After doing that, only two commands are left to finalize the installation.
+
+```
 
 # Create tables in database
 php artisan migrate
