@@ -1,5 +1,9 @@
 <?php
 
+namespace App\LeafPlayer\Utils;
+
+use App\LeafPlayer\Exceptions\Utility\KeyNotFoundException;
+
 class DotEnvEditor {
     private $env;
 
@@ -36,13 +40,13 @@ class DotEnvEditor {
         if ($this->keyExists($key)){
             return env($key);
         } else {
-            throw new Exception;
+            throw new KeyNotFoundException($key);
         }
     }
 
     public function envToArray() {
         $fileContents = file_get_contents($this->env);
-        $fileContents = preg_split('/\n+/', $fileContents);
+        $fileContents = preg_split('/\\' . PHP_EOL . '+/', $fileContents);
 
         $envValues = [];
 
@@ -69,11 +73,11 @@ class DotEnvEditor {
                 $value = '"' . $value . '"';
             }
 
-            $contents[$i] = $key . "=" . $value;
+            $contents[$i] = $key . '=' . $value;
             $i++;
         }
 
-        $contents = implode("\n", $contents);
+        $contents = implode(PHP_EOL, $contents);
         file_put_contents($this->env, $contents);
     }
 }
