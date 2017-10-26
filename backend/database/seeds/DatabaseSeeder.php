@@ -36,19 +36,6 @@ class DatabaseSeeder extends Seeder {
                 ['user_id' => 'dev', 'role_id' => 1],
                 ['user_id' => 'dev2', 'role_id' => 1],
             ]);
-        } else {
-            DB::table('users')->insert([
-                'id' => 'admin',
-                'name' => 'Administrator',
-                'password' => Hash::make('supersecret_22!?'),
-                'created_at' => $time,
-                'updated_at' => $time
-            ]);
-
-            DB::table('users_roles')->insert([
-                ['user_id' => 'admin', 'role_id' => 2],
-                ['user_id' => 'admin', 'role_id' => 1],
-            ]);
         }
     }
 }

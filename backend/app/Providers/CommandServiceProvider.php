@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\Setup;
 use App\Console\Commands\ScannerAddFolder;
 use App\Console\Commands\ScannerClean;
 use App\Console\Commands\ScannerListFolders;
@@ -47,6 +48,10 @@ class CommandServiceProvider extends ServiceProvider {
             return new KeyGenerate;
         });
 
+        $this->app->singleton('command.lp.setup', function() {
+            return new Setup;
+        });
+
         $this->commands(
             'command.scanner.clear',
             'command.scanner.scan',
@@ -54,7 +59,8 @@ class CommandServiceProvider extends ServiceProvider {
             'command.scanner.folder.add',
             'command.scanner.folder.remove',
             'command.scanner.folder.list',
-            'command.key.generate'
+            'command.key.generate',
+            'command.lp.setup'
         );
     }
 }
