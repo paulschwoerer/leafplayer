@@ -29,11 +29,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
 	  '/api': {
-        target: 'http://localhost:9090',
+        target: 'http://localhost:9000',
         changeOrigin: true
       },
       '/artwork': {
-          target: 'http://localhost:9090',
+          target: 'http://localhost:9000',
           changeOrigin: true
       }
 	},
