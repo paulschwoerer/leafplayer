@@ -18,68 +18,33 @@ The ability to change password and download songs are removed from the demo.
 
 ## Quick start
 
-To use LeafPlayer, you need to own a server, capable of running the [Lumen PHP framework](https://lumen.laravel.com/) and a supported database, for example MySQL.
+To use LeafPlayer, you need to own a server, capable of running the [Lumen PHP framework](https://lumen.laravel.com/) and a supported database, for example MySQL. You can use your home computer as well in case you only want to listen to music in your home network. To access the frontend you need a modern browser (for example Firefox, Chrome, Safari).
 
 ### Installation
-First download the latest release and copy it's contents to the root of your webspace. Following that, run the following commands from within that directory. 
+To install LeafPlayer on your server or computer, simply grab the latest [release](https://github.com/paulschwoerer/leafplayer/releases) and copy the contents to yur web root.
+Make sure your server meets the following requirements:
+
+- PHP >= 5.6.4
+- OpenSSL PHP Extension
+- PDO PHP Extension
+- Mbstring PHP Extension
+
+You also need a working database server, preferably with a user and a database dedicated to your LeafPlayer installation.
+
+If your server meets those requirements, you're ready to start the setup process and follow the instructions provided by the installer.
 
 ```sh
-# Install dependencies
-composer install
-
-# Rename .env.example to .env
-mv .env.example .env
-
-# Generate app secret
-php artisan key:generate
-
-# Generate JWT secret
-php artisan jwt:secret
+php artisan lp:setup
 ```
+ 
+After the installer has finished successfully, you should be able to log in with the admin account you just created.
 
-Next up is to fill in the newly created .env file with your database credentials. 
-
-```
-# Hostname of your database server
-DB_HOST=127.0.0.1
-
-# Port of your database server
-DB_PORT=3306
-
-# Database name
-DB_DATABASE=leafplayer
-
-# Database username
-DB_USERNAME=username
-
-# Database password
-DB_PASSWORD=secret
-```
-
-After doing that, only two commands are left to finalize the installation.
-
-```
-
-# Create tables in database
-php artisan migrate
-
-# Seed database with the administration user
-php artisan db:seed
-```
-After you've finished entering those commands, you should be able to login with the admin credentials when accessing your domain in the browser.  
-
-Username: `admin`  
-Password: `supersecret_22!?`
-
-**_!! Make sure to change the admin password as soon as you logged in for the first time !!_**
-
-Note, that LeafPlayer can currently only live at the root of a domain, so `example.com` or `leafplayer.example.com` but not in a subdirectory like `example.com/leafplayer`.
-
-I'm planning to add a simple GUI installer in the future to streamline the installation process.
+- Note, that LeafPlayer can currently only live at the root of a domain, so `example.com` or `leafplayer.example.com` but not in a subdirectory like `example.com/leafplayer`.
+- The installer is currently being tested, so please let me know if any problems arise from using it.
 
 ### Adding Media
 
-For LeafPlayer to be usefull, it obviously needs some music. In the administration panel you can add folders, which will then be scanned for mp3 files when starting a scan. In the future other file formats will be supported as well.  
+For LeafPlayer to be useful, it obviously needs some music. In the administration panel you can add folders, which will then be scanned for mp3 files when starting a scan. In the future other file formats will be supported as well.  
 It's also possible to manage your collection from the console by using the scanner commands.
 
 (All commands must be prefixed with `php artisan `)
@@ -95,24 +60,19 @@ It's also possible to manage your collection from the console by using the scann
 
 Users can be added in the "Users" tab of the administration panel. Currently it's only possible to add users with default permissions.
 
+### Upgrading
+
+There is currently no command to upgrade to a newer release. Currently it's a matter of replacing all files except of the `.env` file.
+
 ## A Short History
 
 In late 2016 I was searching for a music streaming server to fit my needs, but none of the available alternatives could really satisfy me, which is why I decided to create my own.
 
 > How hard can it be?
 
-As it turned out, it was - and still is - a lot of work for one person, which is why I'm searching for active contributors for the project to create something amazing.
+As it turned out, it was - and still is - a lot of work for a single person, which is why I'm searching for active contributors for the project to create something amazing.
 
 
 ## Contributing
 
-I'm sure that's nothing new for you, but first you need to clone the project locally.
-```sh
-# Move into the desired directory
-cd /path/to/your/directory
-
-# Clone LeafPlayer to your local machine
-git clone git@github.com:paulschwoerer/leafplayer.git
-```
-
-If this is done, decide, please see the contribution guide for either the [frontend](frontend/README.md) or the [backend](backend/README.md) depending on which component you want to contribute to.
+Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for more info.
