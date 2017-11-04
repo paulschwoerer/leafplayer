@@ -24,16 +24,20 @@ To use LeafPlayer, you need to own a server, capable of running the [Lumen PHP f
 To install LeafPlayer on your server or computer, simply grab the latest [release](https://github.com/paulschwoerer/leafplayer/releases) and copy the contents to yur web root.
 Make sure your server meets the following requirements:
 
+- Webserver
 - PHP >= 5.6.4
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
+- [Composer](https://getcomposer.org/)
 
 You also need a working database server, preferably with a user and a database dedicated to your LeafPlayer installation.
 
 If your server meets those requirements, you're ready to start the setup process and follow the instructions provided by the installer.
 
 ```sh
+composer install
+
 php artisan lp:setup
 ```
  
