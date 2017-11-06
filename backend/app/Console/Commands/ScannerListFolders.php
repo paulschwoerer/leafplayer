@@ -13,7 +13,7 @@ class ScannerListFolders extends Command {
      *
      * @var string
      */
-    protected $signature = 'scanner:folder:list';
+    protected $signature = 'lp:scanner:folder:list';
 
     /**
      * The console command description.

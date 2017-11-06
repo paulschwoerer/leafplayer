@@ -12,7 +12,7 @@ class ScannerClear extends Command {
      *
      * @var string
      */
-    protected $signature = 'scanner:clear {--confirm} {--remove-playlists} {--no-progress}';
+    protected $signature = 'lp:scanner:clear {--confirm} {--remove-playlists} {--no-progress}';
 
     /**
      * The console command description.

@@ -12,7 +12,7 @@ class ScannerClean extends Command {
      *
      * @var string
      */
-    protected $signature = 'scanner:clean {--no-progress}';
+    protected $signature = 'lp:scanner:clean {--no-progress}';
 
     /**
      * The console command description.

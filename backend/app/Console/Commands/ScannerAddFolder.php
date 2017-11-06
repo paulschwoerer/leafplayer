@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use App\LeafPlayer\Controllers\ScannerController;
-use App\LeafPlayer\Models\Folder;
-use App\LeafPlayer\Scanner\Scanner;
 use Illuminate\Console\Command;
 
 class ScannerAddFolder extends Command
@@ -15,7 +13,7 @@ class ScannerAddFolder extends Command
      *
      * @var string
      */
-    protected $signature = 'scanner:folder:add {path}';
+    protected $signature = 'lp:scanner:folder:add {path}';
 
     /**
      * The console command description.

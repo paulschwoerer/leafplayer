@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use App\LeafPlayer\Controllers\ScannerController;
-use App\LeafPlayer\Models\Folder;
-use App\LeafPlayer\Scanner\Scanner;
 use Illuminate\Console\Command;
 
 class ScannerRemoveFolder extends Command {
@@ -14,7 +12,7 @@ class ScannerRemoveFolder extends Command {
      *
      * @var string
      */
-    protected $signature = 'scanner:folder:remove {id}';
+    protected $signature = 'lp:scanner:folder:remove {id}';
 
     /**
      * The console command description.
