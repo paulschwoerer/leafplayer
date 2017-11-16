@@ -11,8 +11,8 @@ use DirectoryIterator;
 class DirectoryScanner {
     private $maxScanDepth;
 
-    private $imageFiles = null;
-    private $audioFiles = null;
+    private $imageFiles = [];
+    private $audioFiles = [];
 
     private $audioFileTypes;
     private $imageFileTypes;
@@ -35,8 +35,6 @@ class DirectoryScanner {
      */
     public function __construct($directories, $imageFileTypes, $audioFileTypes, $scanDepth = 4) {
         $this->scannedDirectories = new Map();
-        $this->imageFiles = new Map();
-        $this->audioFiles = new Map();
         $this->maxScanDepth = $scanDepth;
 
         $this->audioFileTypes = $audioFileTypes;
@@ -100,8 +98,8 @@ class DirectoryScanner {
     }
 
     public function discardResults() {
-        $this->audioFiles->clear();
-        $this->imageFiles->clear();
+        $this->audioFiles = [];
+        $this->imageFiles = [];
     }
 
     public function setMaxScanDepth($depth) {
@@ -137,22 +135,14 @@ class DirectoryScanner {
                     if (in_array($extension, $this->imageFileTypes)) {
                         $pathname = realpath($item->getPathname());
 
-                        if ($this->imageFiles->exists($pathname)) {
-                            continue;
-                        }
-
                         if ($item->isReadable()) {
-                            $this->imageFiles->put($pathname, true);
+                            array_push($this->imageFiles, $pathname);
                         }
                     } else if (in_array($extension, $this->audioFileTypes)) {
                         $pathname = realpath($item->getPathname());
 
-                        if ($this->audioFiles->exists($pathname)) {
-                            continue;
-                        }
-
                         if ($item->isReadable() && $item->isWritable()) {
-                            $this->audioFiles->put($pathname, true);
+                            array_push($this->audioFiles, $pathname);
                         }
                     }
                 }
