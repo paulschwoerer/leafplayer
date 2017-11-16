@@ -24,6 +24,9 @@ return [
         'folder_not_added' => 'Folder could not be added.',
         'folder_not_found' => 'Folder with id `:id` was not found.',
         'invalid_folder' => 'Folder name is too long (> 700 characters).',
+        'invalid_action' => 'The given action `:action` is not valid',
+        'non_existing_directory' => 'The given folder does not exist on the server: `:path`',
+        'non_readable_directory' => 'The given folder is not readable: `:path`',
     ],
     'auth' => [
         'no_permission' => 'Permission `:permission` is required to perform this action.',
