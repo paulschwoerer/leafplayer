@@ -9,6 +9,8 @@ use App\LeafPlayer\Utils\Map;
 use DirectoryIterator;
 
 class DirectoryScanner {
+    const FILE_READ_BUFFER = 4096;
+
     private $maxScanDepth;
 
     private $imageFiles = [];
@@ -16,6 +18,8 @@ class DirectoryScanner {
 
     private $audioFileTypes;
     private $imageFileTypes;
+
+    private $fileSizeCache;
 
     /**
      * Map to store directories, that were scanned already
@@ -35,6 +39,7 @@ class DirectoryScanner {
      */
     public function __construct($directories, $imageFileTypes, $audioFileTypes, $scanDepth = 4) {
         $this->scannedDirectories = new Map();
+        $this->fileSizeCache = new Map();
         $this->maxScanDepth = $scanDepth;
 
         $this->audioFileTypes = $audioFileTypes;
@@ -51,6 +56,8 @@ class DirectoryScanner {
         foreach ($this->directories as $directory) {
             $this->scanDirectory($directory);
         }
+
+        $this->clearCache();
     }
 
     /**
@@ -141,13 +148,61 @@ class DirectoryScanner {
                     } else if (in_array($extension, $this->audioFileTypes)) {
                         $pathname = realpath($item->getPathname());
 
-                        if ($item->isReadable() && $item->isWritable()) {
+                        if ($item->isReadable() && $item->isWritable() && !$this->isDuplicate($this->audioFiles, $pathname)) {
                             array_push($this->audioFiles, $pathname);
                         }
                     }
                 }
             }
         }
+    }
+
+    private function isDuplicate(&$files, $pathname) {
+        $fileSize = filesize($pathname);
+        $nextIndex = count($files);
+
+        if($this->fileSizeCache->exists($fileSize)) {
+            $indexes = $this->fileSizeCache->get($fileSize);
+
+            foreach ($indexes as $index) {
+                if ($this->filesIdentical($pathname, $files[$index])) {
+                    return true;
+                }
+            }
+
+            $this->fileSizeCache->put($fileSize, array_merge($this->fileSizeCache->get($fileSize), [$nextIndex]));
+        } else {
+            $this->fileSizeCache->put($fileSize, [$nextIndex]);
+        }
+
+        return false;
+    }
+
+    private function filesIdentical($file1, $file2) {
+        if(!$filePointer1 = fopen($file1, 'rb')) {
+            return false;
+        }
+
+        if(!$filePointer2 = fopen($file2, 'rb')) {
+            fclose($filePointer1);
+            return false;
+        }
+
+        $same = true;
+        while (!feof($filePointer1) && !feof($filePointer2))
+            if(fread($filePointer1, self::FILE_READ_BUFFER) !== fread($filePointer2, self::FILE_READ_BUFFER)) {
+                $same = false;
+                break;
+            }
+
+        if(feof($filePointer1) !== feof($filePointer2)) {
+            $same = false;
+        }
+
+        fclose($filePointer1);
+        fclose($filePointer2);
+
+        return $same;
     }
 
     private function validateDirectories($directories) {
@@ -160,5 +215,10 @@ class DirectoryScanner {
                 throw new NonReadableDirectoryException($directory);
             }
         }
+    }
+
+    private function clearCache() {
+        $this->fileSizeCache->clear();
+        $this->scannedDirectories->clear();
     }
 }
