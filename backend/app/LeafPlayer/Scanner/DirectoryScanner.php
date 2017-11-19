@@ -58,6 +58,8 @@ class DirectoryScanner {
         }
 
         $this->clearCache();
+
+        return $this;
     }
 
     /**
@@ -67,6 +69,7 @@ class DirectoryScanner {
      * if one of the directories can not be validated
      *
      * @param $directories
+     * @return $this
      */
     public function setScanDirectories($directories) {
         $this->validateDirectories($directories);
@@ -74,6 +77,8 @@ class DirectoryScanner {
         $this->directories = array_map(function ($directory) {
             return realpath($directory);
         }, $directories);
+
+        return $this;
     }
 
     public function getScanDirectories() {
@@ -90,10 +95,14 @@ class DirectoryScanner {
 
     public function setImageFileTypes($fileTypes) {
         $this->imageFileTypes = $fileTypes;
+
+        return $this;
     }
 
     public function setAudioFileTypes($fileTypes) {
         $this->audioFileTypes = $fileTypes;
+
+        return $this;
     }
 
     public function getImageFileTypes() {
@@ -107,10 +116,14 @@ class DirectoryScanner {
     public function discardResults() {
         $this->audioFiles = [];
         $this->imageFiles = [];
+
+        return $this;
     }
 
     public function setMaxScanDepth($depth) {
         $this->maxScanDepth = $depth;
+
+        return $this;
     }
 
     public function getMaxScanDepth() {
