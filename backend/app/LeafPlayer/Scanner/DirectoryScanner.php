@@ -14,12 +14,14 @@ class DirectoryScanner {
     private $maxScanDepth;
 
     private $imageFiles = [];
-    private $audioFiles = [];
+    private $audioFiles;
 
     private $audioFileTypes;
     private $imageFileTypes;
 
     private $fileSizeCache;
+
+    private $folderFileNumbers;
 
     /**
      * Map to store directories, that were scanned already
@@ -40,6 +42,8 @@ class DirectoryScanner {
     public function __construct($directories, $imageFileTypes, $audioFileTypes, $scanDepth = 4) {
         $this->scannedDirectories = new Map();
         $this->fileSizeCache = new Map();
+        $this->audioFiles = new Map();
+        $this->folderFileNumbers = new Map();
         $this->maxScanDepth = $scanDepth;
 
         $this->audioFileTypes = $audioFileTypes;
@@ -114,7 +118,7 @@ class DirectoryScanner {
     }
 
     public function discardResults() {
-        $this->audioFiles = [];
+        $this->audioFiles->clear();
         $this->imageFiles = [];
 
         return $this;
@@ -155,14 +159,23 @@ class DirectoryScanner {
                     if (in_array($extension, $this->imageFileTypes)) {
                         $pathname = realpath($item->getPathname());
 
-                        if ($item->isReadable()) {
-                            array_push($this->imageFiles, $pathname);
-                        }
+                        array_push($this->imageFiles, $pathname);
                     } else if (in_array($extension, $this->audioFileTypes)) {
                         $pathname = realpath($item->getPathname());
 
-                        if ($item->isReadable() && $item->isWritable() && !$this->isDuplicate($this->audioFiles, $pathname)) {
-                            array_push($this->audioFiles, $pathname);
+                        if (!$this->isDuplicate($pathname)) {
+                            $folderFileNumber = 1;
+
+                            if ($this->folderFileNumbers->exists($directoryPath)) {
+                                $folderFileNumber = $this->folderFileNumbers->get($directoryPath) + 1;
+                                $this->folderFileNumbers->put($directoryPath, $folderFileNumber);
+                            } else {
+                                $this->folderFileNumbers->put($directoryPath, 1);
+                            }
+
+                            $this->audioFiles->put($pathname, [
+                                FileParams::FOLDER_FILE_NUMBER => $folderFileNumber
+                            ]);
                         }
                     }
                 }
@@ -170,22 +183,21 @@ class DirectoryScanner {
         }
     }
 
-    private function isDuplicate(&$files, $pathname) {
+    private function isDuplicate($pathname) {
         $fileSize = filesize($pathname);
-        $nextIndex = count($files);
 
         if($this->fileSizeCache->exists($fileSize)) {
-            $indexes = $this->fileSizeCache->get($fileSize);
+            $paths = $this->fileSizeCache->get($fileSize);
 
-            foreach ($indexes as $index) {
-                if ($this->filesIdentical($pathname, $files[$index])) {
+            foreach ($paths as $path) {
+                if ($this->filesIdentical($pathname, $path)) {
                     return true;
                 }
             }
 
-            $this->fileSizeCache->put($fileSize, array_merge($this->fileSizeCache->get($fileSize), [$nextIndex]));
+            $this->fileSizeCache->put($fileSize, array_merge($this->fileSizeCache->get($fileSize), [$pathname]));
         } else {
-            $this->fileSizeCache->put($fileSize, [$nextIndex]);
+            $this->fileSizeCache->put($fileSize, [$pathname]);
         }
 
         return false;
