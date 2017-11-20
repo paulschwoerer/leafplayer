@@ -3,11 +3,10 @@
 namespace App\LeafPlayer\Scanner;
 
 abstract class ScannerState {
-    const IDLE = 0;
-    const FINISHED = 1;
+    const FINISHED = 0;
 
-    const SEARCHING = 2;
-    const SCANNING = 3;
-    const CLEANING = 4;
-    const CLEARING = 5;
+    const SEARCHING = 1;
+    const SCANNING = 2;
+    const CLEANING = 3;
+    const PURGING = 4;
 }

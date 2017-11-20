@@ -11,7 +11,8 @@
         "vlucas/phpdotenv": "~2.2",
         "graham-campbell/throttle": "^5.3",
         "james-heinrich/getid3": "^1.9",
-        "irazasyed/jwt-auth-guard": "dev-master"
+        "irazasyed/jwt-auth-guard": "dev-master",
+        "ninsuo/php-shared-memory": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

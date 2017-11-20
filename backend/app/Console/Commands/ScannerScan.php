@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\LeafPlayer\Scanner\Scanner;
+use App\LeafPlayer\Scanner\ScannerAction;
 use Illuminate\Console\Command;
 
 class ScannerScan extends Command {
@@ -27,23 +28,23 @@ class ScannerScan extends Command {
      * @return void
      */
     public function fire() {
-        $clean = $this->option('clean');
-        $updateExisting = $this->option('update-existing');
+//        $clean = $this->option('clean');
+//        $updateExisting = $this->option('update-existing');
 
-        $scanner = new Scanner($this->output);
-        $scanner->setShowProgress(!$this->option('no-progress'));
-        $scanner->startScanning($clean, $updateExisting, true, true);
+        $scanner = new Scanner(ScannerAction::SCAN);
+//        $scanner->setShowProgress(!$this->option('no-progress'));
+//        $scanner->startScanning($clean, $updateExisting, true, true);
 
-        $this->info('##########################################');
-        $this->info('                Summary                   ');
-        $this->info('##########################################');
-        $this->info('Files found: ' . $scanner->getTotalFileCount());
-        $this->info('Audio files processed: ' . $scanner->getAnalyzedAudioFilesCount());
-        $this->info('Other files processed: ' . $scanner->getAnalyzedOtherFilesCount());
-        $this->info('Errors and warnings: ' . $scanner->getErrorCount());
-        $this->info('Time needed: ' . $scanner->getElapsedTime()->format('%H:%I:%S'));
-        $this->info('Songs per second: ' . $scanner->getTotalFileCount() / ($scanner->getElapsedTimeInSeconds() == 0 ? 1 : $scanner->getElapsedTimeInSeconds()));
-        $this->info('');
+//        $this->info('##########################################');
+//        $this->info('                Summary                   ');
+//        $this->info('##########################################');
+//        $this->info('Files found: ' . $scanner->getTotalFileCount());
+//        $this->info('Audio files processed: ' . $scanner->getAnalyzedAudioFilesCount());
+//        $this->info('Other files processed: ' . $scanner->getAnalyzedOtherFilesCount());
+//        $this->info('Errors and warnings: ' . $scanner->getErrorCount());
+//        $this->info('Time needed: ' . $scanner->getElapsedTime()->format('%H:%I:%S'));
+//        $this->info('Songs per second: ' . $scanner->getTotalFileCount() / ($scanner->getElapsedTimeInSeconds() == 0 ? 1 : $scanner->getElapsedTimeInSeconds()));
+//        $this->info('');
         $this->info('Scan finished.');
     }
 

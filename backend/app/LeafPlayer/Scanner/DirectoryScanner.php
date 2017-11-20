@@ -174,7 +174,8 @@ class DirectoryScanner {
                             }
 
                             $this->audioFiles->put($pathname, [
-                                FileParams::FOLDER_FILE_NUMBER => $folderFileNumber
+                                FileParams::FOLDER_FILE_NUMBER => $folderFileNumber,
+                                FileParams::SAVED_MODIFICATION_DATE => 0
                             ]);
                         }
                     }
