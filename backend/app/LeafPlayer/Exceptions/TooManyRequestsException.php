@@ -12,7 +12,7 @@ class TooManyRequestsException extends LeafPlayerException {
      * @param string $type
      * @param $arguments
      */
-    public function __construct($type, $arguments = []) {
+    public function __construct($type = 'errors.default.too_many_requests', $arguments = []) {
         $message = $this->build($type, $arguments);
 
         parent::__construct($message);
