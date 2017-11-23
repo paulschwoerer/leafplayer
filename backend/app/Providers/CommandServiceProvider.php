@@ -9,7 +9,7 @@ use App\Console\Commands\ScannerListFolders;
 use App\Console\Commands\ScannerRemoveFolder;
 use App\Console\Commands\ScannerScan;
 use Illuminate\Support\ServiceProvider;
-use App\Console\Commands\ScannerClear;
+use App\Console\Commands\ScannerPurge;
 use App\Console\Commands\KeyGenerate;
 
 class CommandServiceProvider extends ServiceProvider {
@@ -21,7 +21,7 @@ class CommandServiceProvider extends ServiceProvider {
      */
     public function register() {
         $this->app->singleton('command.scanner.clear', function() {
-            return new ScannerClear;
+            return new ScannerPurge;
         });
 
         $this->app->singleton('command.scanner.scan', function() {

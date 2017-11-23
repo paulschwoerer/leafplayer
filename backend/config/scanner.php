@@ -9,8 +9,8 @@ return [
     'time_limit' => env('SCANNER_TIME_LIMIT', 300),
 
     /*
-     * Set refresh interval for scanner progress updates to database in seconds.
-     * Default is one second.
+     * Set refresh interval for scanner progress updates to database in ms.
+     * Default is half a second.
      */
-    'refresh_interval' => env('REFRESH_INTERVAL', 1)
+    'refresh_interval' => env('REFRESH_INTERVAL', 500)
 ];

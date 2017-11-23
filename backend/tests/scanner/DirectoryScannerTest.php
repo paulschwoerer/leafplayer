@@ -48,7 +48,7 @@ class DirectoryScannerTest extends TestCase {
 
         $directoryScanner->startScan();
 
-        self::assertArrayOnlyHasValues($directoryScanner->getImageFiles(), [
+        self::assertMapOnlyContainsKeys($directoryScanner->getImageFiles(), [
             realpath($this->testFilePath . '/test/test2.jpg'),
             realpath($this->testFilePath . '/test1.jpg')
         ]);
@@ -66,7 +66,7 @@ class DirectoryScannerTest extends TestCase {
             realpath($this->testFilePath . '/test/test2.mp3')
         ]);
 
-        self::assertArrayDoesNotContainValues($directoryScanner->getImageFiles(), [
+        self::assertMapDoesNotContainKeys($directoryScanner->getImageFiles(), [
             realpath($this->testFilePath . '/test/test2.jpg')
         ]);
 
@@ -76,7 +76,7 @@ class DirectoryScannerTest extends TestCase {
             realpath($this->testFilePath . '/copy of test2.mp3')
         ]);
 
-        self::assertArrayOnlyHasValues($directoryScanner->getImageFiles(), [
+        self::assertMapOnlyContainsKeys($directoryScanner->getImageFiles(), [
             realpath($this->testFilePath . '/test1.jpg')
         ]);
     }
@@ -86,12 +86,12 @@ class DirectoryScannerTest extends TestCase {
         $directoryScanner->startScan();
 
         self::assertMapIsCount($directoryScanner->getAudioFiles(), 3);
-        self::assertArrayCount($directoryScanner->getImageFiles(), 2);
+        self::assertMapIsCount($directoryScanner->getImageFiles(), 2);
 
         $directoryScanner->discardResults();
 
         self::assertMapIsCount($directoryScanner->getAudioFiles(), 0);
-        self::assertArrayCount($directoryScanner->getImageFiles(), 0);
+        self::assertMapIsCount($directoryScanner->getImageFiles(), 0);
     }
 
     public function testValidateFolders() {
@@ -113,15 +113,15 @@ class DirectoryScannerTest extends TestCase {
         }
     }
 
-    static function assertArrayOnlyHasValues($array, $values) {
-        self::assertEquals(count($array), count($values),
-            'Array should only contain values:' . getArrayList($values) . PHP_EOL . 'Contains instead:' . getArrayList($array));
-
-        foreach ($values as $value) {
-            self::assertTrue(in_array($value, $array),
-                'Array should only contain values:' . getArrayList($values) . PHP_EOL . 'Contains instead:' . getArrayList($array));
-        }
-    }
+//    static function assertArrayOnlyHasValues($array, $values) {
+//        self::assertEquals(count($array), count($values),
+//            'Array should only contain values:' . getArrayList($values) . PHP_EOL . 'Contains instead:' . getArrayList($array));
+//
+//        foreach ($values as $value) {
+//            self::assertTrue(in_array($value, $array),
+//                'Array should only contain values:' . getArrayList($values) . PHP_EOL . 'Contains instead:' . getArrayList($array));
+//        }
+//    }
 
     static function assertMapDoesNotContainKeys(Map $map, $keys) {
         foreach ($keys as $key) {
@@ -129,11 +129,11 @@ class DirectoryScannerTest extends TestCase {
         }
     }
 
-    static function assertArrayDoesNotContainValues($array, $values) {
-        foreach ($values as $value) {
-            self::assertFalse(in_array($value, $array), 'Map should not contain keys:' . getArrayList($values));
-        }
-    }
+//    static function assertArrayDoesNotContainValues($array, $values) {
+//        foreach ($values as $value) {
+//            self::assertFalse(in_array($value, $array), 'Map should not contain keys:' . getArrayList($values));
+//        }
+//    }
 
     static function assertMapIsCount(Map $map, $count) {
         self::assertTrue(
@@ -142,10 +142,10 @@ class DirectoryScannerTest extends TestCase {
         );
     }
 
-    static function assertArrayCount($array, $count) {
-        self::assertTrue(
-            count($array) === $count,
-            'Count of map should be ' . $count . ', but is ' . count($array)
-        );
-    }
+//    static function assertArrayCount($array, $count) {
+//        self::assertTrue(
+//            count($array) === $count,
+//            'Count of map should be ' . $count . ', but is ' . count($array)
+//        );
+//    }
 }

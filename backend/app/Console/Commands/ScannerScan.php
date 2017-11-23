@@ -4,16 +4,24 @@ namespace App\Console\Commands;
 
 use App\LeafPlayer\Scanner\Scanner;
 use App\LeafPlayer\Scanner\ScannerAction;
+use App\LeafPlayer\Scanner\ScannerCallbackInterface;
+use App\LeafPlayer\Scanner\ScannerCallbackVoid;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\Console\Helper\ProgressBar;
 
-class ScannerScan extends Command {
+class ScannerScan extends Command implements ScannerCallbackInterface {
+    /**
+     * @var ProgressBar
+     */
+    private $progressBar;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'lp:scanner:scan {--clean} {--no-progress} {--update-existing}';
+    protected $signature = 'lp:scanner:scan {--clean} {--no-output} {--update-existing}';
 
     /**
      * The console command description.
@@ -31,21 +39,44 @@ class ScannerScan extends Command {
 //        $clean = $this->option('clean');
 //        $updateExisting = $this->option('update-existing');
 
-        $scanner = new Scanner(ScannerAction::SCAN);
-//        $scanner->setShowProgress(!$this->option('no-progress'));
-//        $scanner->startScanning($clean, $updateExisting, true, true);
+        $scannerCallback = $this->option('no-output') ? new ScannerCallbackVoid : $this;
 
-//        $this->info('##########################################');
-//        $this->info('                Summary                   ');
-//        $this->info('##########################################');
-//        $this->info('Files found: ' . $scanner->getTotalFileCount());
-//        $this->info('Audio files processed: ' . $scanner->getAnalyzedAudioFilesCount());
-//        $this->info('Other files processed: ' . $scanner->getAnalyzedOtherFilesCount());
-//        $this->info('Errors and warnings: ' . $scanner->getErrorCount());
-//        $this->info('Time needed: ' . $scanner->getElapsedTime()->format('%H:%I:%S'));
-//        $this->info('Songs per second: ' . $scanner->getTotalFileCount() / ($scanner->getElapsedTimeInSeconds() == 0 ? 1 : $scanner->getElapsedTimeInSeconds()));
-//        $this->info('');
-        $this->info('Scan finished.');
+        try {
+            new Scanner(ScannerAction::SCAN, $scannerCallback);
+        } catch (\PDOException $exception) {
+            Log::error('[Scanner] A database error was encountered');
+            $this->error('A database error was encountered');
+        }
     }
 
+    public function onProgress($scanner) {
+        if ($this->progressBar === null) {
+            $this->progressBar = $this->output->createProgressBar($scanner->getAudioFileCount());
+        }
+
+        $this->progressBar->setProgress($scanner->getScannedFileCount());
+    }
+
+    public function onFinished($scanner) {
+        if ($this->progressBar === null) {
+            $this->progressBar = $this->output->createProgressBar($scanner->getAudioFileCount());
+        }
+
+        $this->progressBar->finish();
+
+        $this->info('');
+        $this->info('');
+        $this->info('##########################################');
+        $this->info('         Scan finished: Summary           ');
+        $this->info('##########################################');
+        $this->table([], [
+            ['Audio files found', $scanner->getAudioFileCount()],
+            ['Audio files processed', $scanner->getScannedFileCount()],
+            ['Time needed', $scanner->getElapsedTime()->format('%Hh %Im %Ss')],
+            ['Songs/second', $scanner->getAudioFileCount() / ($scanner->getElapsedTimeSeconds() == 0 ? 1 : $scanner->getElapsedTimeSeconds())],
+            // ['Errors' => 'Errors and warnings: ' . $scanner->getErrorCount()]
+        ]);
+        $this->info('');
+        $this->info('Scan finished');
+    }
 }
