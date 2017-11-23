@@ -6,6 +6,8 @@ use App\LeafPlayer\Utils\Constants;
 use App\LeafPlayer\Utils\Random;
 
 class Art extends BaseModel {
+    const ARTWORK_FOLDER = '/artwork/';
+
     protected $table = 'arts';
 
     protected $appends = ['src'];
@@ -38,12 +40,14 @@ class Art extends BaseModel {
      * @return string
      */
     public static function generateFileName() {
-        $name = '';
-
         do {
             $name = Random::getRandomString(28) . '.jpg';
-        } while(file_exists(public_path() . Constants::ARTWORK_FOLDER . $name));
+        } while(file_exists(public_path() . self::ARTWORK_FOLDER . $name));
 
         return $name;
+    }
+
+    public static function getArtworkFolder() {
+        return public_path() . self::ARTWORK_FOLDER;
     }
 }

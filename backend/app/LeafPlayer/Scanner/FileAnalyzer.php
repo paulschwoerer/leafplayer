@@ -21,6 +21,7 @@ class FileAnalyzer {
         $this->getID3->option_md5_data = false;
         $this->getID3->option_md5_data_source = false;
         $this->getID3->option_sha1_data = false;
+        $this->getID3->option_max_2gb_check = false;
     }
 
     public function analyze($path) {

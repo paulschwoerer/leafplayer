@@ -51,7 +51,7 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
 
     public function onProgress($scanner) {
         if ($this->progressBar === null) {
-            $this->progressBar = $this->output->createProgressBar($scanner->getAudioFileCount());
+            $this->createProgressBar($scanner->getAudioFileCount());
         }
 
         $this->progressBar->setProgress($scanner->getScannedFileCount());
@@ -59,7 +59,7 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
 
     public function onFinished($scanner) {
         if ($this->progressBar === null) {
-            $this->progressBar = $this->output->createProgressBar($scanner->getAudioFileCount());
+            $this->createProgressBar($scanner->getAudioFileCount());
         }
 
         $this->progressBar->finish();
@@ -67,16 +67,21 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
         $this->info('');
         $this->info('');
         $this->info('##########################################');
-        $this->info('         Scan finished: Summary           ');
+        $this->info('#        Scan finished: Summary          #');
         $this->info('##########################################');
         $this->table([], [
             ['Audio files found', $scanner->getAudioFileCount()],
             ['Audio files processed', $scanner->getScannedFileCount()],
             ['Time needed', $scanner->getElapsedTime()->format('%Hh %Im %Ss')],
-            ['Songs/second', $scanner->getAudioFileCount() / ($scanner->getElapsedTimeSeconds() == 0 ? 1 : $scanner->getElapsedTimeSeconds())],
+            ['Songs/second', round($scanner->getAudioFileCount() / ($scanner->getElapsedTimeSeconds() == 0 ? 1 : $scanner->getElapsedTimeSeconds()), 2)],
             // ['Errors' => 'Errors and warnings: ' . $scanner->getErrorCount()]
         ]);
         $this->info('');
         $this->info('Scan finished');
+    }
+
+    private function createProgressBar($max) {
+        $this->progressBar = $this->output->createProgressBar($max);
+        $this->progressBar->setRedrawFrequency(Scanner::getConfiguredRefreshInterval() / 1000);
     }
 }

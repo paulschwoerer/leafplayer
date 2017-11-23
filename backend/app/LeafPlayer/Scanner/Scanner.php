@@ -5,7 +5,9 @@ namespace App\LeafPlayer\Scanner;
 
 use App\LeafPlayer\Exceptions\Scanner\InvalidScannerActionException;
 use App\LeafPlayer\Exceptions\Scanner\ScanInProgressException;
+use App\LeafPlayer\Models\Art;
 use App\LeafPlayer\Models\Folder;
+use App\LeafPlayer\Utils\Constants;
 use App\LeafPlayer\Utils\Map;
 use App\LeafPlayer\Utils\Random;
 use Carbon\Carbon;
@@ -15,6 +17,7 @@ use App\LeafPlayer\Models\Album;
 use App\LeafPlayer\Models\Artist;
 use App\LeafPlayer\Models\File;
 use App\LeafPlayer\Models\Song;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use PDOException;
@@ -48,7 +51,7 @@ class Scanner extends Stateful {
     /**
      * @var int
      */
-    private $progressRefreshInterval = 500; // ms
+    private $progressRefreshInterval;
 
     /**
      * @var int
@@ -76,6 +79,11 @@ class Scanner extends Stateful {
     private $albumCache;
 
     /**
+     * @var Map
+     */
+    private $preparedFolderAlbumArts;
+
+    /**
      * @var FileAnalyzer
      */
     private $fileAnalyzer;
@@ -95,14 +103,24 @@ class Scanner extends Stateful {
         $this->scannerCallback = $scannerCallback;
         $this->startTime = Carbon::now();
 
-        $configRefresh = config('scanner.refresh_interval');
-        $this->progressRefreshInterval = $configRefresh ? $configRefresh : $this->progressRefreshInterval;
+        $this->progressRefreshInterval = self::getConfiguredRefreshInterval();
 
         try {
             $this->performAction($action);
         } catch (\Exception $e) {
             $this->handleException($e);
         }
+    }
+
+    /**
+     * Returns the scan progress refresh interval configured in the scanner config
+     *
+     * @return int
+     */
+    public static function getConfiguredRefreshInterval() {
+        $configRefresh = config('scanner.refresh_interval');
+
+        return $configRefresh && is_integer($configRefresh) ? $configRefresh : 500;
     }
 
     /**
@@ -211,6 +229,7 @@ class Scanner extends Stateful {
         $this->loadSavedFiles();
 
         // TODO: prepare image files
+        $this->prepareFolderAlbumArts();
 
         // Create new file scanner instance to analyze files
         $this->fileAnalyzer = new FileAnalyzer();
@@ -316,6 +335,13 @@ class Scanner extends Stateful {
         $albumYear = array_key_exists('year', $tags) ? intval($tags['year'][0]) : 0;
 
         $album = $this->createAlbum($albumArtist->id, $albumName, $albumYear);
+
+        if (isset($analyzedFile['comments']['picture'])) {
+            foreach($analyzedFile['comments']['picture'] as $picture) {
+                $this->addAlbumArtFromTags($album, $picture['data']);
+            }
+        }
+
 
         $file->save();
         $song->album_id = $album->id;
@@ -425,6 +451,41 @@ class Scanner extends Stateful {
                 }
             }
         });
+    }
+
+    private function addAlbumArtFromTags(Album $album, $imageData) {
+        $md5 = md5($imageData);
+
+        $artQuery = Art::where('md5', $md5)->get();
+
+        if ($artQuery->isEmpty()) {
+            $fileName = Art::generateFileName();
+            file_put_contents(Art::getArtworkFolder() . $fileName, $imageData);
+
+            $album->arts()->save(Art::create([
+                'file' => $fileName,
+                'md5' => $md5
+            ]));
+        } else if ($album->arts()->where('md5', $md5)->get()->isEmpty()) {
+            $album->arts()->save($artQuery->first());
+        }
+    }
+
+    /**
+     * Group album arts from image files by the directory they're located in
+     */
+    private function prepareFolderAlbumArts() {
+        $this->preparedFolderAlbumArts = new Map();
+
+        foreach ($this->imageFiles->keysToArray() as $artPath) {
+            $directory = pathinfo($artPath, PATHINFO_DIRNAME);
+
+            if (!$this->preparedFolderAlbumArts->exists($directory)) {
+                $this->preparedFolderAlbumArts->put($directory, [$artPath]);
+            } else {
+                $this->preparedFolderAlbumArts->put($directory, [$artPath] + $this->preparedFolderAlbumArts->get($directory));
+            }
+        }
     }
 
     /**
