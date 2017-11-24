@@ -12,7 +12,8 @@
         "graham-campbell/throttle": "^5.3",
         "james-heinrich/getid3": "^1.9",
         "irazasyed/jwt-auth-guard": "dev-master",
-        "ninsuo/php-shared-memory": "dev-master"
+        "ninsuo/php-shared-memory": "dev-master",
+        "doctrine/dbal": "^2.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -7,7 +7,6 @@ use App\LeafPlayer\Exceptions\Scanner\InvalidScannerActionException;
 use App\LeafPlayer\Exceptions\Scanner\ScanInProgressException;
 use App\LeafPlayer\Models\Art;
 use App\LeafPlayer\Models\Folder;
-use App\LeafPlayer\Utils\Constants;
 use App\LeafPlayer\Utils\Map;
 use App\LeafPlayer\Utils\Random;
 use Carbon\Carbon;
@@ -17,7 +16,6 @@ use App\LeafPlayer\Models\Album;
 use App\LeafPlayer\Models\Artist;
 use App\LeafPlayer\Models\File;
 use App\LeafPlayer\Models\Song;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use PDOException;
@@ -92,6 +90,11 @@ class Scanner extends Stateful {
      * @var ScannerCallbackInterface
      */
     private $scannerCallback;
+
+    /**
+     * @var array
+     */
+    private $errors = [];
 
     public function __construct($action, ScannerCallbackInterface $scannerCallback) {
         $this->sharedScanInfo = new SharedMemory(new StorageFile(self::getSyncFilePath()));
@@ -226,10 +229,9 @@ class Scanner extends Stateful {
         $this->audioFiles = $folderScanner->getAudioFiles();
         $this->totalAudioFiles = $this->audioFiles->count();
 
-        $this->loadSavedFiles();
-
-        // TODO: prepare image files
         $this->prepareFolderAlbumArts();
+
+        $this->loadSavedFiles();
 
         // Create new file scanner instance to analyze files
         $this->fileAnalyzer = new FileAnalyzer();
@@ -454,21 +456,28 @@ class Scanner extends Stateful {
     }
 
     private function addAlbumArtFromTags(Album $album, $imageData) {
-        $md5 = md5($imageData);
+//        try {
+            $md5 = md5($imageData);
+            $fileName = $md5 . '.' . FileExtension::JPG;
+            $filePath = Art::getArtworkFolder() . $fileName;
 
-        $artQuery = Art::where('md5', $md5)->get();
+            $artExists = file_exists($filePath);
 
-        if ($artQuery->isEmpty()) {
-            $fileName = Art::generateFileName();
-            file_put_contents(Art::getArtworkFolder() . $fileName, $imageData);
+            if (!$artExists) {
+                file_put_contents($filePath, $imageData);
 
-            $album->arts()->save(Art::create([
-                'file' => $fileName,
-                'md5' => $md5
-            ]));
-        } else if ($album->arts()->where('md5', $md5)->get()->isEmpty()) {
-            $album->arts()->save($artQuery->first());
-        }
+                $album->arts()->save(Art::create([
+                    'file' => $fileName
+                ]));
+            } else {
+                $album->arts()->syncWithoutDetaching([
+                    Art::where('file', $fileName)->first()->id
+                ]);
+            }
+//        } catch (\Exception $e) {
+//            // TODO
+//            echo 'AAAAh error' . PHP_EOL;
+//        }
     }
 
     /**
@@ -507,11 +516,19 @@ class Scanner extends Stateful {
 
         DB::table(Artist::getTableName())->delete();
         DB::table(Album::getTableName())->delete();
-//        DB::table(Art::getTableName())->delete();
+        DB::table(Art::getTableName())->delete();
         DB::table(Song::getTableName())->delete();
         DB::table(File::getTableName())->delete();
 
         DB::commit();
+
+        $albumArts = glob(Art::getArtworkFolder() . '*.' . FileExtension::JPG);
+
+        foreach ($albumArts as $albumArt) {
+            if (is_writable($albumArt)) {
+                unlink($albumArt);
+            }
+        }
 
         // TODO
     }

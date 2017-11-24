@@ -41,12 +41,16 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
 
         $scannerCallback = $this->option('no-output') ? new ScannerCallbackVoid : $this;
 
-        try {
+//        try {
             new Scanner(ScannerAction::SCAN, $scannerCallback);
-        } catch (\PDOException $exception) {
-            Log::error('[Scanner] A database error was encountered');
-            $this->error('A database error was encountered');
-        }
+//        } catch (\PDOException $exception) {
+//            if (config('app.debug')) {
+//                throw $exception;
+//            }
+//
+//            Log::error('[Scanner] A database error was encountered');
+//            $this->error('A database error was encountered');
+//        }
     }
 
     public function onProgress($scanner) {
