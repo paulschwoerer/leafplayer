@@ -25,7 +25,6 @@ class ChangeArtFileColumn extends Migration {
     public function down() {
         Schema::table('arts', function (Blueprint $table) {
             $table->string('file', 32)->change();
-            $table->dropUnique('file');
         });
     }
 }

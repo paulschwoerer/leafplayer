@@ -7,6 +7,8 @@ use App\LeafPlayer\Exceptions\Scanner\InvalidScannerActionException;
 use App\LeafPlayer\Exceptions\Scanner\ScanInProgressException;
 use App\LeafPlayer\Models\Art;
 use App\LeafPlayer\Models\Folder;
+use App\LeafPlayer\Models\Scan;
+use App\LeafPlayer\Models\ScanError;
 use App\LeafPlayer\Utils\Map;
 use App\LeafPlayer\Utils\Random;
 use Carbon\Carbon;
@@ -145,6 +147,24 @@ class Scanner extends Stateful {
     }
 
     /**
+     * Get the error count
+     *
+     * @return int
+     */
+    public function getErrorCount() {
+        return count($this->errors);
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors() {
+        return $this->errors;
+    }
+
+    /**
      * Get the time that elapsed since the start of the scan in seconds
      *
      * @return int
@@ -189,7 +209,7 @@ class Scanner extends Stateful {
      * @throws InvalidScannerActionException
      */
     private function performAction($action) {
-        $this->setExecutionTimeLimit(); // TODO: dynamic?
+        $this->setExecutionTimeLimit();
 
         $this->updateScanInfo();
 
@@ -206,6 +226,8 @@ class Scanner extends Stateful {
             default:
                 throw new InvalidScannerActionException($action);
         }
+
+        $this->saveScanInformation(false);
 
         $this->setState(ScannerState::FINISHED);
 
@@ -275,13 +297,15 @@ class Scanner extends Stateful {
         $analyzedFile = $this->fileAnalyzer->analyze($filePath);
 
         if (array_key_exists('error', $analyzedFile)) {
-            // TODO
+            $this->addError(ErrorCode::CANNOT_PARSE_TAGS, $analyzedFile['error'][0] . ' (' . $filePath . ')', ErrorSeverity::WARN);
             return;
         }
 
         if (is_array($analyzedFile['tags'])) {
             if (array_key_exists('id3v2', $analyzedFile['tags'])) {
                 $tags = $analyzedFile['tags']['id3v2'];
+            } else {
+                $this->addError(ErrorCode::UNSUPPORTED_TAGS, $filePath, ErrorSeverity::WARN);
             }
         }
 
@@ -456,28 +480,23 @@ class Scanner extends Stateful {
     }
 
     private function addAlbumArtFromTags(Album $album, $imageData) {
-//        try {
-            $md5 = md5($imageData);
-            $fileName = $md5 . '.' . FileExtension::JPG;
-            $filePath = Art::getArtworkFolder() . $fileName;
+        $md5 = md5($imageData);
+        $fileName = $md5 . '.' . FileExtension::JPG;
+        $filePath = Art::getArtworkFolder() . $fileName;
 
-            $artExists = file_exists($filePath);
+        $artExists = file_exists($filePath);
 
-            if (!$artExists) {
-                file_put_contents($filePath, $imageData);
+        if (!$artExists) {
+            file_put_contents($filePath, $imageData);
 
-                $album->arts()->save(Art::create([
-                    'file' => $fileName
-                ]));
-            } else {
-                $album->arts()->syncWithoutDetaching([
-                    Art::where('file', $fileName)->first()->id
-                ]);
-            }
-//        } catch (\Exception $e) {
-//            // TODO
-//            echo 'AAAAh error' . PHP_EOL;
-//        }
+            $album->arts()->save(Art::create([
+                'file' => $fileName
+            ]));
+        } else {
+            $album->arts()->syncWithoutDetaching([
+                Art::where('file', $fileName)->first()->id
+            ]);
+        }
     }
 
     /**
@@ -584,6 +603,35 @@ class Scanner extends Stateful {
     }
 
     /**
+     * Add an error
+     *
+     * @param $code
+     * @param $details
+     * @param string $severity
+     */
+    private function addError($code, $details, $severity = ErrorSeverity::WARN) {
+        array_push($this->errors, [
+            'severity' => $severity,
+            'code' => $code,
+            'details' => $details
+        ]);
+    }
+
+    /**
+     * @param boolean $aborted
+     */
+    private function saveScanInformation($aborted) {
+        $scan = Scan::create([
+            'aborted' => $aborted,
+            'scanned_files' => $this->getScannedFileCount(),
+            'total_files' => $this->getAudioFileCount(),
+            'duration' => $this->getElapsedTimeSeconds()
+        ]);
+
+        $scan->errors()->createMany($this->errors);
+    }
+
+    /**
      * Handle a possible exception, that is thrown while scanning
      *
      * @param \ErrorException|\Exception $exception
@@ -599,6 +647,8 @@ class Scanner extends Stateful {
         }
 
         Log::error('Aborting scan');
+
+        $this->saveScanInformation(true);
 
         throw $exception;
     }

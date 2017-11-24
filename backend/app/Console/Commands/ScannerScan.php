@@ -78,10 +78,16 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
             ['Audio files processed', $scanner->getScannedFileCount()],
             ['Time needed', $scanner->getElapsedTime()->format('%Hh %Im %Ss')],
             ['Songs/second', round($scanner->getAudioFileCount() / ($scanner->getElapsedTimeSeconds() == 0 ? 1 : $scanner->getElapsedTimeSeconds()), 2)],
-            // ['Errors' => 'Errors and warnings: ' . $scanner->getErrorCount()]
+            ['Errors and warnings', $scanner->getErrorCount()]
         ]);
         $this->info('');
-        $this->info('Scan finished');
+
+        if ($scanner->getErrorCount() > 0 && $this->ask('Show errors now?')) {
+            $this->table(['Severity', 'Code', 'Details'], $scanner->getErrors());
+        }
+
+
+        $this->info('Scan finished with ' . $scanner->getErrorCount() . ' errors and warnings');
     }
 
     private function createProgressBar($max) {
