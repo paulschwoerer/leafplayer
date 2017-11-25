@@ -3,8 +3,6 @@
 namespace App\LeafPlayer\Utils;
 
 
-use Illuminate\Support\Facades\Validator;
-
 class Security {
     /**
      * This method checks if a password is conform to the application's security standards.

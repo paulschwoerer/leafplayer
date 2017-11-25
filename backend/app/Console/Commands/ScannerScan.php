@@ -80,13 +80,12 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
             ['Songs/second', round($scanner->getAudioFileCount() / ($scanner->getElapsedTimeSeconds() == 0 ? 1 : $scanner->getElapsedTimeSeconds()), 2)],
             ['Errors and warnings', $scanner->getErrorCount()]
         ]);
-        $this->info('');
 
         if ($scanner->getErrorCount() > 0 && $this->ask('Show errors now?')) {
             $this->table(['Severity', 'Code', 'Details'], $scanner->getErrors());
         }
 
-
+        $this->info('');
         $this->info('Scan finished with ' . $scanner->getErrorCount() . ' errors and warnings');
     }
 

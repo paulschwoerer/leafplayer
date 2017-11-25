@@ -178,7 +178,7 @@ class ScannerApiController extends BaseApiController {
             'refreshInterval' => 'numeric'
         ]);
 
-        $refreshInterval = Math::clamp(
+        $refreshInterval = clamp(
             $request->input('refreshInterval', DEFAULT_REFRESH_INTERVAL),
             MIN_REFRESH_INTERVAL,
             MAX_REFRESH_INTERVAL

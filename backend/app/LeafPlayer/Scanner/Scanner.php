@@ -282,7 +282,7 @@ class Scanner extends Stateful {
             $file->path = $filePath;
 
             $song = new Song;
-            $song->id = Random::getRandomString(8);
+            $song->id = str_random(8);
         } else {
             $file = $fileInfo[FileInfoParams::SAVED_FILE];
 
@@ -400,7 +400,7 @@ class Scanner extends Stateful {
 
             if ($artists->isEmpty()) {
                 $artist = new Artist;
-                $artist->id = Random::getRandomString(8);
+                $artist->id = str_random(8);
                 $artist->name = $name;
 
                 try {
@@ -439,7 +439,7 @@ class Scanner extends Stateful {
 
             if ($albumQuery->isEmpty()) {
                 $album = new Album;
-                $album->id = Random::getRandomString(8);
+                $album->id = str_random(8);
                 $album->name = $name;
                 $album->artist_id = $albumArtistId;
                 $album->year = $year;
