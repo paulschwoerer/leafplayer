@@ -360,7 +360,7 @@ class Scanner extends Stateful {
         $albumName = array_key_exists('album', $tags) ? $tags['album'][0] : '[Unknown Album]';
         $albumYear = array_key_exists('year', $tags) ? intval($tags['year'][0]) : 0;
 
-        $album = $this->createAlbum($albumArtist->id, $albumName, $albumYear);
+        $album = $this->createAlbum($albumArtist->id, $albumName, $albumYear, pathinfo($filePath, PATHINFO_DIRNAME));
 
         if (isset($analyzedFile['comments']['picture'])) {
             foreach($analyzedFile['comments']['picture'] as $picture) {
@@ -388,7 +388,7 @@ class Scanner extends Stateful {
      * Create an artist
      *
      * @param string $name
-     * @return Artist|mixed|null
+     * @return Artist
      */
     private function createArtist($name) {
         $artist = null;
@@ -425,9 +425,10 @@ class Scanner extends Stateful {
      * @param string $albumArtistId
      * @param string $name
      * @param int $year
-     * @return Album|mixed|null
+     * @param $folder
+     * @return Album
      */
-    private function createAlbum($albumArtistId, $name, $year) {
+    private function createAlbum($albumArtistId, $name, $year, $folder) {
         $album = null;
 
         $cacheKey = $albumArtistId . $name;
@@ -457,28 +458,37 @@ class Scanner extends Stateful {
             $this->albumCache->put($cacheKey, $album);
         }
 
+        if ($this->preparedFolderAlbumArts->exists($folder)) {
+            foreach ($this->preparedFolderAlbumArts->get($folder) as $artFile) {
+                $md5 = md5_file($artFile);
+                $fileName = $md5 . '.' . FileExtension::JPG;
+                $filePath = Art::getArtworkFolder() . $fileName;
+
+                $artExists = file_exists($filePath);
+
+                if (!$artExists) {
+                    copy($artFile, $filePath);
+
+                    $album->arts()->save(Art::create([
+                        'file' => $fileName
+                    ]));
+                } else {
+                    $album->arts()->syncWithoutDetaching([
+                        Art::where('file', $fileName)->first()->id
+                    ]);
+                }
+            }
+        }
+
         return $album;
     }
 
     /**
-     * Load saved files from database and store into file maps to compare modification dates later
+     * Add album art from tags to an album
+     *
+     * @param Album $album
+     * @param $imageData
      */
-    private function loadSavedFiles() {
-        File::chunk(1000, function ($files) {
-            foreach($files as $file) {
-                if ($this->audioFiles->exists($file->path)) {
-                    $this->audioFiles->put($file->path,
-                        [FileInfoParams::SAVED_FILE => $file] + $this->audioFiles->get($file->path)
-                    );
-                } else if ($this->imageFiles->exists($file->path)) {
-                    $this->imageFiles->put($file->path,
-                        [FileInfoParams::SAVED_FILE => $file] + $this->imageFiles->get($file->path)
-                    );
-                }
-            }
-        });
-    }
-
     private function addAlbumArtFromTags(Album $album, $imageData) {
         $md5 = md5($imageData);
         $fileName = $md5 . '.' . FileExtension::JPG;
@@ -514,6 +524,25 @@ class Scanner extends Stateful {
                 $this->preparedFolderAlbumArts->put($directory, [$artPath] + $this->preparedFolderAlbumArts->get($directory));
             }
         }
+    }
+
+    /**
+     * Load saved files from database and store into file maps to compare modification dates later
+     */
+    private function loadSavedFiles() {
+        File::chunk(1000, function ($files) {
+            foreach($files as $file) {
+                if ($this->audioFiles->exists($file->path)) {
+                    $this->audioFiles->put($file->path,
+                        [FileInfoParams::SAVED_FILE => $file] + $this->audioFiles->get($file->path)
+                    );
+                } else if ($this->imageFiles->exists($file->path)) {
+                    $this->imageFiles->put($file->path,
+                        [FileInfoParams::SAVED_FILE => $file] + $this->imageFiles->get($file->path)
+                    );
+                }
+            }
+        });
     }
 
     /**
@@ -618,6 +647,8 @@ class Scanner extends Stateful {
     }
 
     /**
+     * Save information about the current scan in the database for later reviewing by administrators
+     *
      * @param boolean $aborted
      */
     private function saveScanInformation($aborted) {

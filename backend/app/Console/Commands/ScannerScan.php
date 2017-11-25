@@ -81,7 +81,7 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
             ['Errors and warnings', $scanner->getErrorCount()]
         ]);
 
-        if ($scanner->getErrorCount() > 0 && $this->ask('Show errors now?')) {
+        if ($scanner->getErrorCount() > 0 && $this->confirm('Show errors now?', true)) {
             $this->table(['Severity', 'Code', 'Details'], $scanner->getErrors());
         }
 
