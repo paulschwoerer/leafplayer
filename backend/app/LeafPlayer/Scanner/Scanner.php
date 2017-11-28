@@ -8,9 +8,7 @@ use App\LeafPlayer\Exceptions\Scanner\ScanInProgressException;
 use App\LeafPlayer\Models\Art;
 use App\LeafPlayer\Models\Folder;
 use App\LeafPlayer\Models\Scan;
-use App\LeafPlayer\Models\ScanError;
 use App\LeafPlayer\Utils\Map;
-use App\LeafPlayer\Utils\Random;
 use Carbon\Carbon;
 use Fuz\Component\SharedMemory\SharedMemory;
 use Fuz\Component\SharedMemory\Storage\StorageFile;
@@ -653,6 +651,7 @@ class Scanner extends Stateful {
      */
     private function saveScanInformation($aborted) {
         $scan = Scan::create([
+            // TODO: add type
             'aborted' => $aborted,
             'scanned_files' => $this->getScannedFileCount(),
             'total_files' => $this->getAudioFileCount(),
