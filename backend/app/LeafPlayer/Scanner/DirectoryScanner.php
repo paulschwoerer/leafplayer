@@ -5,6 +5,7 @@ namespace App\LeafPlayer\Scanner;
 
 use App\LeafPlayer\Exceptions\Scanner\NonExistingDirectoryException;
 use App\LeafPlayer\Exceptions\Scanner\NonReadableDirectoryException;
+use App\LeafPlayer\Scanner\Enum\FileInfoParams;
 use App\LeafPlayer\Utils\Map;
 use DirectoryIterator;
 
@@ -218,9 +219,11 @@ class DirectoryScanner {
             $iterator = new DirectoryIterator($directoryPath);
 
             foreach($iterator as $item) {
-                if ($item->isDot()) continue; // continue for . and ..
+                if ($item->isDot()) {
+                    continue;
+                }
 
-                if ($item->isDir() && $depth <= $this->maxScanDepth) {
+                if ($item->isDir()) {
                     $this->scanDirectory($item->getPathname(), $depth + 1);
                 } else if($item->isFile()) {
                     $extension = $item->getExtension();
@@ -234,21 +237,20 @@ class DirectoryScanner {
                     } else if (in_array($extension, $this->audioFileTypes)) {
                         $pathname = realpath($item->getPathname());
 
-                        if (!$this->isDuplicate($pathname)) {
-                            $folderFileNumber = 1;
+                        $folderFileNumber = 1;
 
-                            if ($this->folderFileNumbers->exists($directoryPath)) {
-                                $folderFileNumber = $this->folderFileNumbers->get($directoryPath) + 1;
-                                $this->folderFileNumbers->put($directoryPath, $folderFileNumber);
-                            } else {
-                                $this->folderFileNumbers->put($directoryPath, 1);
-                            }
-
-                            $this->audioFiles->put($pathname, [
-                                FileInfoParams::FOLDER_FILE_NUMBER => $folderFileNumber,
-                                FileInfoParams::SAVED_FILE => null
-                            ]);
+                        if ($this->folderFileNumbers->exists($directoryPath)) {
+                            $folderFileNumber = $this->folderFileNumbers->get($directoryPath) + 1;
+                            $this->folderFileNumbers->put($directoryPath, $folderFileNumber);
+                        } else {
+                            $this->folderFileNumbers->put($directoryPath, 1);
                         }
+
+                        $this->audioFiles->put($pathname, [
+                            FileInfoParams::FOLDER_FILE_NUMBER => $folderFileNumber,
+                            FileInfoParams::SAVED_FILE => null,
+                            FileInfoParams::DUPLICATE => $this->getDuplicate($pathname)
+                        ]);
                     }
                 }
             }
@@ -256,12 +258,13 @@ class DirectoryScanner {
     }
 
     /**
-     * Test if a file is a duplicate of a file, that was already found
+     * Get duplicates of a file
      *
      * @param string $pathname
-     * @return bool
+     * @return string|null
      */
-    private function isDuplicate($pathname) {
+    private function getDuplicate($pathname) {
+        // TODO TODO TODO
         $fileSize = filesize($pathname);
 
         if($this->fileSizeCache->exists($fileSize)) {
@@ -269,7 +272,7 @@ class DirectoryScanner {
 
             foreach ($paths as $path) {
                 if ($this->filesIdentical($pathname, $path)) {
-                    return true;
+                    return $path;
                 }
             }
 
@@ -278,7 +281,7 @@ class DirectoryScanner {
             $this->fileSizeCache->put($fileSize, [$pathname]);
         }
 
-        return false;
+        return null;
     }
 
     /**

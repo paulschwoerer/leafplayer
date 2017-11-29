@@ -2,12 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\LeafPlayer\Scanner\Enum\ScannerAction;
 use App\LeafPlayer\Scanner\Scanner;
-use App\LeafPlayer\Scanner\ScannerAction;
 use App\LeafPlayer\Scanner\ScannerCallbackInterface;
 use App\LeafPlayer\Scanner\ScannerCallbackVoid;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 class ScannerScan extends Command implements ScannerCallbackInterface {
@@ -21,7 +20,7 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
      *
      * @var string
      */
-    protected $signature = 'lp:scanner:scan {--clean} {--no-output} {--update-existing}';
+    protected $signature = 'lp:scanner:scan {--no-output}';
 
     /**
      * The console command description.
@@ -36,21 +35,9 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
      * @return void
      */
     public function fire() {
-//        $clean = $this->option('clean');
-//        $updateExisting = $this->option('update-existing');
-
         $scannerCallback = $this->option('no-output') ? new ScannerCallbackVoid : $this;
 
-//        try {
-            new Scanner(ScannerAction::SCAN, $scannerCallback);
-//        } catch (\PDOException $exception) {
-//            if (config('app.debug')) {
-//                throw $exception;
-//            }
-//
-//            Log::error('[Scanner] A database error was encountered');
-//            $this->error('A database error was encountered');
-//        }
+        new Scanner(ScannerAction::SCAN, $scannerCallback);
     }
 
     public function onProgress($scanner) {
@@ -78,7 +65,9 @@ class ScannerScan extends Command implements ScannerCallbackInterface {
             ['Audio files processed', $scanner->getScannedFileCount()],
             ['Time needed', $scanner->getElapsedTime()->format('%Hh %Im %Ss')],
             ['Songs/second', round($scanner->getAudioFileCount() / ($scanner->getElapsedTimeSeconds() == 0 ? 1 : $scanner->getElapsedTimeSeconds()), 2)],
-            ['Errors and warnings', $scanner->getErrorCount()]
+            ['ms/Song', round(($scanner->getElapsedTimeSeconds() * 1000) / $scanner->getAudioFileCount() == 0 ? 1 : $scanner->getAudioFileCount(), 2)],
+            ['Errors and warnings', $scanner->getErrorCount()],
+            ['Memory usage', round(memory_get_peak_usage() / (1024 * 1024)) . 'MB']
         ]);
 
         if ($scanner->getErrorCount() > 0 && $this->confirm('Show errors now?', true)) {

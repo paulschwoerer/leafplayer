@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LeafPlayer\Scanner;
+namespace App\LeafPlayer\Scanner\Enum;
 
 
 abstract class ErrorSeverity {

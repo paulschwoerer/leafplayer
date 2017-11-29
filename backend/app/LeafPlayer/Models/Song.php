@@ -32,10 +32,10 @@ class Song extends Media {
     /**
      * Relationship to the associated file to this Song.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function file() {
-        return $this->belongsTo(File::class);
+    public function files() {
+        return $this->hasMany(File::class);
     }
 
     /**
@@ -54,6 +54,19 @@ class Song extends Media {
      */
     public function getTypeAttribute() {
         return 'song';
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getFirstAvailableFile() {
+        foreach($this->files as $file) {
+            if (file_exists($file->path) && is_readable($file->path)) {
+                return $file;
+            }
+        }
+
+        return null;
     }
 }
 

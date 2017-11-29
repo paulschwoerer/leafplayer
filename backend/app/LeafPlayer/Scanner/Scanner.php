@@ -8,6 +8,12 @@ use App\LeafPlayer\Exceptions\Scanner\ScanInProgressException;
 use App\LeafPlayer\Models\Art;
 use App\LeafPlayer\Models\Folder;
 use App\LeafPlayer\Models\Scan;
+use App\LeafPlayer\Scanner\Enum\ErrorCode;
+use App\LeafPlayer\Scanner\Enum\ErrorSeverity;
+use App\LeafPlayer\Scanner\Enum\FileExtension;
+use App\LeafPlayer\Scanner\Enum\FileInfoParams;
+use App\LeafPlayer\Scanner\Enum\ScannerAction;
+use App\LeafPlayer\Scanner\Enum\ScannerState;
 use App\LeafPlayer\Utils\Map;
 use Carbon\Carbon;
 use Fuz\Component\SharedMemory\SharedMemory;
@@ -75,6 +81,11 @@ class Scanner extends Stateful {
      * @var Map
      */
     private $albumCache;
+
+    /**
+     * @var Map
+     */
+    private $fileSongRelationCache;
 
     /**
      * @var Map
@@ -257,6 +268,7 @@ class Scanner extends Stateful {
         $this->fileAnalyzer = new FileAnalyzer();
         $this->artistCache = new Map();
         $this->albumCache = new Map();
+        $this->fileSongRelationCache = new Map();
 
         foreach ($this->audioFiles->keysToArray() as $audioFile) {
             $this->processAudioFile($audioFile);
@@ -272,23 +284,40 @@ class Scanner extends Stateful {
      * @param string $filePath
      */
     private function processAudioFile($filePath) {
+        $song = null;
         $file = null;
+
         $fileInfo = $this->audioFiles->get($filePath);
 
-        if ($fileInfo[FileInfoParams::SAVED_FILE] == null) {
+        $duplicate = $fileInfo[FileInfoParams::DUPLICATE];
+        $savedFile = $fileInfo[FileInfoParams::SAVED_FILE];
+
+        if ($savedFile === null) {
             $file = new File;
             $file->path = $filePath;
+            $file->format = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+            $file->last_modified = filemtime($filePath);
 
-            $song = new Song;
-            $song->id = str_random(8);
+            if ($duplicate === null) {
+                $song = new Song;
+                $song->id = str_random(8);
+                $file->song_id = $song->id;
+
+                $this->fileSongRelationCache->put($filePath, $song->id);
+            } else {
+                $file->song_id = $this->fileSongRelationCache->get($duplicate);
+                $file->save();
+
+                return;
+            }
         } else {
-            $file = $fileInfo[FileInfoParams::SAVED_FILE];
-
-            if ($file->last_modified === filemtime($filePath)) {
+            if ($savedFile->last_modified === filemtime($filePath)) {
                 return;
             }
 
-            $song = Song::where('file_id', $file->id)->get()->first();
+            $song = $savedFile->song;
+
+            $this->fileSongRelationCache->put($filePath, $song->id);
         }
 
         $tags = [];
@@ -325,12 +354,6 @@ class Scanner extends Stateful {
         // extract duration from file info
         $song->duration = $analyzedFile['playing_time'];
 
-        // extract format from file info
-        $file->format = strtolower($analyzedFile['format_name']);
-
-        // store last modified date
-        $file->last_modified = filemtime($filePath);
-
         // start database interaction
         DB::beginTransaction();
 
@@ -366,18 +389,18 @@ class Scanner extends Stateful {
             }
         }
 
-
-        $file->save();
         $song->album_id = $album->id;
         $song->artist_id = $artist->id;
-        $song->file_id = $file->id;
 
         try {
             $song->save();
         } catch (PDOException $exception) {
             $song->id = Song::generateID();
+            $file->song_id = $song->id;
             $song->save();
         }
+
+        $file->save();
 
         DB::commit();
     }
@@ -528,7 +551,7 @@ class Scanner extends Stateful {
      * Load saved files from database and store into file maps to compare modification dates later
      */
     private function loadSavedFiles() {
-        File::chunk(1000, function ($files) {
+        File::with('song')->chunk(1000, function ($files) {
             foreach($files as $file) {
                 if ($this->audioFiles->exists($file->path)) {
                     $this->audioFiles->put($file->path,
