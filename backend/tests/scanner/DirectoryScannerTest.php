@@ -1,9 +1,10 @@
 <?php
 
 
-use App\LeafPlayer\Exceptions\Scanner\NonExistingDirectoryException;
-use App\LeafPlayer\Scanner\FileExtension;
-use App\LeafPlayer\Scanner\DirectoryScanner;
+use App\LeafPlayer\Exceptions\Library\NonExistingDirectoryException;
+use App\LeafPlayer\Library\Enum\FileExtension;
+use App\LeafPlayer\Library\DirectoryScanner;
+use App\LeafPlayer\Library\Enum\FileInfoParams;
 use App\LeafPlayer\Utils\Map;
 
 function getArrayList($array) {
@@ -11,17 +12,17 @@ function getArrayList($array) {
 
     $keyString .= implode($array, PHP_EOL);
 
-    return $keyString;
+    return $keyString . PHP_EOL;
 }
 
-function getKeyString($keys) {
+function getKeyString(Map $map) {
     $keyString = PHP_EOL;
 
-    foreach ($keys as $key) {
+    foreach ($map->keysToArray() as $key) {
         $keyString .= $key . PHP_EOL;
     }
 
-    return $keyString;
+    return $keyString . PHP_EOL;
 }
 
 class DirectoryScannerTest extends TestCase {
@@ -37,10 +38,15 @@ class DirectoryScannerTest extends TestCase {
         $directoryScanner->startScan();
 
         self::assertMapOnlyContainsKeys($directoryScanner->getAudioFiles(), [
+            realpath($this->testFilePath . '/test/test2.mp3'),
             realpath($this->testFilePath . '/test1.mp3'),
             realpath($this->testFilePath . '/same file size as test2.mp3'),
             realpath($this->testFilePath . '/copy of test2.mp3')
         ]);
+
+        self::assertTrue($directoryScanner->getAudioFiles()
+            ->get(realpath($this->testFilePath . '/test/test2.mp3'))[FileInfoParams::DUPLICATE] === realpath($this->testFilePath . '/copy of test2.mp3')
+        );
     }
 
     public function testScanDepth() {
@@ -54,6 +60,7 @@ class DirectoryScannerTest extends TestCase {
         ]);
 
         self::assertMapOnlyContainsKeys($directoryScanner->getAudioFiles(), [
+            realpath($this->testFilePath . '/test/test2.mp3'),
             realpath($this->testFilePath . '/test1.mp3'),
             realpath($this->testFilePath . '/same file size as test2.mp3'),
             realpath($this->testFilePath . '/copy of test2.mp3')
@@ -85,7 +92,7 @@ class DirectoryScannerTest extends TestCase {
         $directoryScanner = new DirectoryScanner([$this->testFilePath], [FileExtension::JPG], [FileExtension::MP3], 2);
         $directoryScanner->startScan();
 
-        self::assertMapIsCount($directoryScanner->getAudioFiles(), 3);
+        self::assertMapIsCount($directoryScanner->getAudioFiles(), 4);
         self::assertMapIsCount($directoryScanner->getImageFiles(), 2);
 
         $directoryScanner->discardResults();
@@ -105,35 +112,19 @@ class DirectoryScannerTest extends TestCase {
 
     static function assertMapOnlyContainsKeys(Map $map, $keys) {
         self::assertEquals($map->count(), count($keys),
-            'Array should only contain values:' . getArrayList($keys) . 'Contains instead: ' . getKeyString($map));
+            'Map should only contain values:' . getArrayList($keys) . 'Size ' . $map->count() . ' does not match expected ' . count($keys) . '.');
 
         foreach ($keys as $key) {
             self::assertTrue($map->exists($key),
-                'Array should only contain values:' . getArrayList($keys) . 'Contains instead: ' . getKeyString($map));
+                'Map should only contain values:' . getArrayList($keys) . 'Contains instead: ' . getKeyString($map));
         }
     }
-
-//    static function assertArrayOnlyHasValues($array, $values) {
-//        self::assertEquals(count($array), count($values),
-//            'Array should only contain values:' . getArrayList($values) . PHP_EOL . 'Contains instead:' . getArrayList($array));
-//
-//        foreach ($values as $value) {
-//            self::assertTrue(in_array($value, $array),
-//                'Array should only contain values:' . getArrayList($values) . PHP_EOL . 'Contains instead:' . getArrayList($array));
-//        }
-//    }
 
     static function assertMapDoesNotContainKeys(Map $map, $keys) {
         foreach ($keys as $key) {
-            self::assertFalse($map->exists($key), 'Map should not contain keys:' . getKeyString($keys));
+            self::assertFalse($map->exists($key), 'Map should not contain keys:' . getArrayList($keys));
         }
     }
-
-//    static function assertArrayDoesNotContainValues($array, $values) {
-//        foreach ($values as $value) {
-//            self::assertFalse(in_array($value, $array), 'Map should not contain keys:' . getArrayList($values));
-//        }
-//    }
 
     static function assertMapIsCount(Map $map, $count) {
         self::assertTrue(
@@ -141,11 +132,4 @@ class DirectoryScannerTest extends TestCase {
             'Count of map should be ' . $count . ', but is ' . $map->count()
         );
     }
-
-//    static function assertArrayCount($array, $count) {
-//        self::assertTrue(
-//            count($array) === $count,
-//            'Count of map should be ' . $count . ', but is ' . count($array)
-//        );
-//    }
 }

@@ -7,8 +7,8 @@ use \Illuminate\Http\JsonResponse;
 use App\LeafPlayer\Utils\CommonValidations;
 use App\LeafPlayer\Controllers\SongController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use App\LeafPlayer\Exceptions\Scanner\FileNotFoundException;
-use App\LeafPlayer\Exceptions\Scanner\FileNotReadableException;
+use App\LeafPlayer\Exceptions\Library\FileNotFoundException;
+use App\LeafPlayer\Exceptions\Library\FileNotReadableException;
 
 /**
  * This controller is the layer between the API and the SongController.

@@ -19,7 +19,7 @@ return [
     'request' => [
         'validation' => 'Validation of input was not successful.',
     ],
-    'scanner' => [
+    'library' => [
         'scan_in_progress' => 'A scan is already in progress. Wait till that is finished.',
         'folder_not_added' => 'Folder could not be added.',
         'folder_not_found' => 'Folder with id `:id` was not found.',

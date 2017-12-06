@@ -114,7 +114,7 @@ export default {
             }).then(response => commit(UPDATE_FOLDER_SELECTED_STATE, response)),
 
         /**
-         * Remove a folder from the scanner.
+         * Remove a folder from the library.
          *
          * @param commit
          * @param id
