@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,7 +15,7 @@ class DatabaseSeeder extends Seeder {
     public function run() {
         $time = Carbon::now()->toDayDateTimeString();
 
-        if (config('app.debug')) {
+        if (App::environment('development')) {
             DB::table('users')->insert([
                 'id' => 'dev',
                 'name' => 'Developer',
