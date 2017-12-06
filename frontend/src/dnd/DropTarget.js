@@ -121,6 +121,7 @@ export default (droppableTypes, target = {}) => {
                  */
                 handleDrop(e) {
                     e.stopPropagation();
+                    e.preventDefault();
 
                     if (this.isDragInProgress) {
                         handleDrop(getBaseComponent(this), this.dragMonitor);

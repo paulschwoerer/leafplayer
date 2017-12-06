@@ -52,7 +52,7 @@ class Setup extends Command {
             $this->wizard->createAdminAccount(
                 $this->ask('Choose a username (min 3 characters, no whitespace)'),
                 $this->ask('Choose a display name'),
-                $this->ask('Choose a password (min 8 characters, a mix of numbers and letters is required)')
+                $this->secret('Choose a password (min 8 characters, a mix of numbers and letters is required)')
             );
         } catch (LeafPlayerException $e) {
             $this->warn($e->getMessage());

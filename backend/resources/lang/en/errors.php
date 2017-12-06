@@ -69,12 +69,12 @@ return [
         'unknown_type' => 'The supplied type `:type` is invalid.',
     ],
     'utility' => [
-        'key_not_found' => 'The supplied key `:key` was not found in the .env file.',
+        'key_not_found' => 'The supplied key `:key` was not found in the .env file.'
     ],
-    'database' => [
-        'no_connection' => 'No connection to the database could be made.',
+    'setup' => [
+        'no_database_connection' => 'No connection to the database could be made.',
         'invalid_credentials' => 'Access for user `:user` was denied.',
         'unknown_database' => 'Database with name `:name` was not found.',
-        'unknown_error' => 'An unknown database error was encountered, check the server logs for details.',
+        'unknown_error' => 'An unknown error was encountered, check the server logs for details.'
     ]
 ];
