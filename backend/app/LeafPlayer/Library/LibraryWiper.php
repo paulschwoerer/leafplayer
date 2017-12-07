@@ -14,6 +14,12 @@ use App\LeafPlayer\Models\Song;
 use Illuminate\Support\Facades\DB;
 
 class LibraryWiper extends LibraryActor {
+    public function __construct(ProgressCallbackInterface $progressCallback) {
+        parent::__construct($progressCallback);
+
+        $this->readyToPerform();
+    }
+
     /**
      * Execute the scan
      *
@@ -32,15 +38,7 @@ class LibraryWiper extends LibraryActor {
 
         DB::commit();
 
-        $albumArts = glob(Art::getArtworkFolder() . '*.' . FileExtension::JPG);
-
-        foreach ($albumArts as $albumArt) {
-            if (is_writable($albumArt)) {
-                unlink($albumArt);
-            }
-        }
-
-        // TODO: Implement perform() method.
+        array_map('unlink', glob(Art::getArtworkFolder() . '*.' . FileExtension::JPG));
     }
 
     /**

@@ -81,7 +81,7 @@ class LibraryScanner extends LibraryActor {
 
         $this->imageFiles = $folderScanner->getImageFiles();
         $this->audioFiles = $folderScanner->getAudioFiles();
-        $this->fileCount = $this->audioFiles->count();
+        $this->totalItemCount = $this->audioFiles->count();
 
         $this->prepareFolderAlbumArts();
 
@@ -91,7 +91,7 @@ class LibraryScanner extends LibraryActor {
 
         foreach ($this->audioFiles->keysToArray() as $audioFile) {
             $this->processAudioFile($audioFile);
-            $this->processedFileCount++;
+            $this->processedItemCount++;
 
             $this->updateProgress();
         }

@@ -3,11 +3,11 @@
 namespace App\LeafPlayer\Controllers;
 
 use App\LeafPlayer\Exceptions\Library\FolderNotFoundException;
+use App\LeafPlayer\Library\Enum\LibraryActorState;
 use App\LeafPlayer\Library\LibraryActor;
-use App\LeafPlayer\Library\LibraryScanner;
-use App\LeafPlayer\Library\ScannerState;
+use Fuz\Component\SharedMemory\SharedMemory;
+use Fuz\Component\SharedMemory\Storage\StorageFile;
 use Illuminate\Database\Eloquent\Collection;
-use \App\LeafPlayer\Models\Scan;
 use \App\LeafPlayer\Models\Folder;
 use App\LeafPlayer\Exceptions\Library\InvalidFolderException;
 use App\LeafPlayer\Exceptions\Library\ScanInProgressException;
@@ -120,17 +120,7 @@ class LibraryController extends BaseController {
             throw new ScanInProgressException;
         }
 
-        $additionalOptions = '';
-
-        if ($clean) {
-            $additionalOptions .= ' --clean ';
-        }
-
-        if ($updateExisting) {
-            $additionalOptions .= ' --update-existing ';
-        }
-
-        return self::executeCommand('library:scan --no-progress' . $additionalOptions);
+        return self::executeCommand('library:scan --no-output');
     }
 
     /**
@@ -139,7 +129,7 @@ class LibraryController extends BaseController {
      * @return bool
      */
     public function cleanLibrary() {
-        return self::executeCommand('library:clean --no-progress');
+        return self::executeCommand('library:clean --no-output');
     }
 
     /**
@@ -148,7 +138,7 @@ class LibraryController extends BaseController {
      * @return bool
      */
     public function wipeLibrary() {
-        return self::executeCommand('library:wipe --no-progress --confirm');
+        return self::executeCommand('library:wipe --no-output --confirm');
     }
 
     /**
@@ -158,8 +148,6 @@ class LibraryController extends BaseController {
      * @return bool
      */
     private static function executeCommand($command) {
-        echo 'executing command' . $command;
-
         if (self::isWindows()) {
             pclose(popen('start /B cmd /C "php ' . base_path() . '/artisan ' . $command . ' >NUL 2>NUL"', 'r'));
         } else {
@@ -175,7 +163,10 @@ class LibraryController extends BaseController {
      * @return bool
      */
     private static function isScanRunning() {
-        return LibraryActor::scanInProgress();
+        $sharedScanInfo = new SharedMemory(new StorageFile(LibraryActor::getSyncFilePath()));
+
+        return isset($sharedScanInfo->state) &&
+            $sharedScanInfo->state !== LibraryActorState::FINISHED;
     }
 
     /**

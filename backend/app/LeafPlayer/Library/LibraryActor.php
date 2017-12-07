@@ -27,17 +27,17 @@ abstract class LibraryActor extends Stateful {
     /**
      * @var string
      */
-    protected $currentFile = '';
+    protected $currentItem = '';
 
     /**
      * @var int
      */
-    protected $fileCount = 0;
+    protected $totalItemCount = 0;
 
     /**
      * @var int
      */
-    protected $processedFileCount = 0;
+    protected $processedItemCount = 0;
 
     /**
      * @var int
@@ -109,8 +109,8 @@ abstract class LibraryActor extends Stateful {
      *
      * @return int
      */
-    public function getFileCount() {
-        return $this->fileCount;
+    public function getTotalItemCount() {
+        return $this->totalItemCount;
     }
 
     /**
@@ -118,8 +118,8 @@ abstract class LibraryActor extends Stateful {
      *
      * @return int
      */
-    public function getProcessedFileCount() {
-        return $this->processedFileCount;
+    public function getProcessedItemCount() {
+        return $this->processedItemCount;
     }
 
     /**
@@ -262,9 +262,9 @@ abstract class LibraryActor extends Stateful {
             $this->sharedScanInfo->type = $this->getType();
         }
 
-        $this->sharedScanInfo->currentFile = $this->currentFile;
-        $this->sharedScanInfo->totalFileCount = $this->fileCount;
-        $this->sharedScanInfo->processedFileCount = $this->processedFileCount;
+        $this->sharedScanInfo->currentItem = $this->currentItem;
+        $this->sharedScanInfo->totalItemCount = $this->totalItemCount;
+        $this->sharedScanInfo->processedItemCount = $this->processedItemCount;
     }
 
     /**
@@ -277,8 +277,8 @@ abstract class LibraryActor extends Stateful {
         $scan = Scan::create([
             'type' => $this->getType(),
             'aborted' => $aborted,
-            'processed_file_count' => $this->getProcessedFileCount(),
-            'file_count' => $this->getFileCount(),
+            'processed_item_count' => $this->getProcessedItemCount(),
+            'total_item_count' => $this->getTotalItemCount(),
             'duration' => $this->getElapsedTimeSeconds()
         ]);
 
@@ -295,9 +295,9 @@ abstract class LibraryActor extends Stateful {
         $this->setState(LibraryActorState::FINISHED);
 
         if ($exception instanceof PDOException) {
-            Log::error('[Scanner] A database error occurred');
+            Log::error('[' . self::class . '] A database error occurred');
         } else {
-            Log::error('[Scanner] An unknown error occurred');
+            Log::error('[' . self::class . '] An unknown error occurred');
         }
 
         Log::error('Aborting scan');

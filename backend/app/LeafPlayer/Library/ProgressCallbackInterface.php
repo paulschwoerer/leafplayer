@@ -8,11 +8,11 @@ interface ProgressCallbackInterface {
      * @param LibraryActor $libraryActor
      * @return void
      */
-    public function onProgress(LibraryActor $libraryActor);
+    public function onProgress($libraryActor);
 
     /**
      * @param LibraryActor $libraryActor
      * @return void
      */
-    public function onFinished(LibraryActor $libraryActor);
+    public function onFinished($libraryActor);
 }

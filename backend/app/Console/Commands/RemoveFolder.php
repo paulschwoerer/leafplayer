@@ -30,6 +30,7 @@ class RemoveFolder extends Command {
     public function fire() {
         if (Folder::find($this->argument('id')) === null) {
             $this->info('This folder does not exist');
+            return;
         }
 
         (new LibraryController)->removeFolder($this->argument('id'));

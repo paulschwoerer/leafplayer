@@ -40,20 +40,29 @@ class LibraryScan extends Command implements ProgressCallbackInterface {
         new LibraryScanner($scannerCallback);
     }
 
-    public function onProgress(LibraryActor $libraryActor) {
+    /**
+     * @param LibraryScanner $libraryActor
+     */
+    public function onProgress($libraryActor) {
         if ($this->progressBar === null) {
-            $this->createProgressBar($libraryActor->getFileCount());
+            $this->createProgressBar($libraryActor->getTotalItemCount());
         }
 
-        $this->progressBar->setProgress($libraryActor->getProcessedFileCount());
+        $this->progressBar->setProgress($libraryActor->getProcessedItemCount());
     }
 
-    public function onFinished(LibraryActor $libraryActor) {
+    /**
+     * @param LibraryScanner $libraryActor
+     */
+    public function onFinished($libraryActor) {
         if ($this->progressBar === null) {
-            $this->createProgressBar($libraryActor->getFileCount());
+            $this->createProgressBar($libraryActor->getTotalItemCount());
         }
 
         $this->progressBar->finish();
+
+        $fileCount = $libraryActor->getTotalItemCount();
+        $secondsNeeded = $libraryActor->getElapsedTimeSeconds();
 
         $this->info('');
         $this->info('');
@@ -61,11 +70,11 @@ class LibraryScan extends Command implements ProgressCallbackInterface {
         $this->info('#        Scan finished: Summary          #');
         $this->info('##########################################');
         $this->table([], [
-            ['Files found', $libraryActor->getFileCount()],
-            ['Files processed', $libraryActor->getProcessedFileCount()],
+            ['Files found', $libraryActor->getTotalItemCount()],
+            ['Files processed', $libraryActor->getProcessedItemCount()],
             ['Time needed', $libraryActor->getElapsedTime()->format('%Hh %Im %Ss')],
-            ['Songs/second', round($libraryActor->getFileCount() / ($libraryActor->getElapsedTimeSeconds() == 0 ? 1 : $libraryActor->getElapsedTimeSeconds()), 2)],
-            ['ms/Song', round(($libraryActor->getElapsedTimeSeconds() * 1000) / $libraryActor->getFileCount() == 0 ? 1 : $libraryActor->getFileCount(), 2)],
+            ['Songs/second', round($fileCount / ($secondsNeeded === 0 ? 1 : $secondsNeeded), 2)],
+            ['ms/Song', round(($secondsNeeded * 1000) / ($fileCount === 0 ? 1 : $fileCount), 2)],
             ['Errors and warnings', $libraryActor->getErrorCount()],
             ['Memory usage', round(memory_get_peak_usage() / (1024 * 1024)) . 'MB']
         ]);
