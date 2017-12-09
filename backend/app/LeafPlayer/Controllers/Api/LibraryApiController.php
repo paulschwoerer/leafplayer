@@ -3,6 +3,7 @@
 namespace App\LeafPlayer\Controllers\Api;
 
 use App\LeafPlayer\Controllers\LibraryController;
+use App\LeafPlayer\Library\Enum\LibraryActorState;
 use App\LeafPlayer\Models\Scan;
 use App\LeafPlayer\Library\ScannerState;
 use \Illuminate\Http\Request;
@@ -124,11 +125,6 @@ class LibraryApiController extends BaseApiController {
     public function startScan(Request $request) {
         $this->requirePermission('library.scan');
 
-        $this->validate($request, [
-            'options.updateExisting' => 'boolean',
-            'options.clean' => 'boolean',
-        ]);
-
         $success = $this->controller->startScan(
             $request->input('updateExisting', true),
             $request->input('clean', false)
@@ -172,47 +168,49 @@ class LibraryApiController extends BaseApiController {
      * @return StreamedResponse The streamed response containing JSON encoded information about the scan.
      */
     public function getScanProgress(Request $request) {
-        $this->requirePermission('library.library.scan.progress');
-
-        $this->validate($request, [
-            'refreshInterval' => 'numeric'
-        ]);
-
-        $refreshInterval = clamp(
-            $request->input('refreshInterval', DEFAULT_REFRESH_INTERVAL),
-            MIN_REFRESH_INTERVAL,
-            MAX_REFRESH_INTERVAL
-        );
-
-        $response = new StreamedResponse(function() use ($refreshInterval) {
-            while(1) {
-                $scan = Scan::where('state', '<>', ScannerState::FINISHED)->first();
-
-                if ($scan == null) {
-                    echo 'data: ' . json_encode([
-                            'running' => false,
-                            'details' => []
-                        ]) . "\n\n";
-                } else {
-                    echo 'data: ' . json_encode([
-                            'running' => true,
-                            'details' => [
-                                'state' => $scan->state,
-                                'currentFile' => $scan->current_file,
-                                'scannedFiles' => $scan->scanned_files,
-                                'totalFiles' => $scan->total_files
-                            ]
-                        ]) . "\n\n";
-                }
-
-                ob_flush();
-                flush();
-
-                usleep($refreshInterval * 1000000);
-            }
-        });
-
-        $response->headers->set('Content-Type', 'text/event-stream');
-        return $response;
+        // FIXME: rework
+//        $this->requirePermission('library.library.scan-progress');
+//
+//        $this->validate($request, [
+//            'refreshInterval' => 'numeric'
+//        ]);
+//
+//        $refreshInterval = clamp(
+//            $request->input('refreshInterval', DEFAULT_REFRESH_INTERVAL),
+//            MIN_REFRESH_INTERVAL,
+//            MAX_REFRESH_INTERVAL
+//        );
+//
+//        $response = new StreamedResponse(function() use ($refreshInterval) {
+//            while(1) {
+//                $scan = Scan::where('state', '<>', LibraryActorState::FINISHED)->first();
+//
+//                if ($scan == null) {
+//                    echo 'data: ' . json_encode([
+//                            'running' => false,
+//                            'details' => []
+//                        ]) . "\n\n";
+//                } else {
+//                    echo 'data: ' . json_encode([
+//                            'running' => true,
+//                            'details' => [
+//                                'state' => $scan->state,
+//                                'currentFile' => $scan->current_file,
+//                                'scannedFiles' => $scan->scanned_files,
+//                                'totalFiles' => $scan->total_files
+//                            ]
+//                        ]) . "\n\n";
+//                }
+//
+//                ob_flush();
+//                flush();
+//
+//                usleep($refreshInterval * 1000000);
+//            }
+//        });
+//
+//        $response->headers->set('Content-Type', 'text/event-stream');
+//        return $response;
+        return response()->json([]);
     }
 }

@@ -97,6 +97,7 @@ class CreateAuthTables extends Migration {
         DB::table('role_permissions')->insert([
             // Give admin role all permissions
             ['role_id' => 2, 'permission' => '*'],
+
             // Give some permissions to default role
             ['role_id' => 1, 'permission' => 'user.get'],
             ['role_id' => 1, 'permission' => 'user.query'],

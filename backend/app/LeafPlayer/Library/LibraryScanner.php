@@ -323,7 +323,7 @@ class LibraryScanner extends LibraryActor {
                     ]));
                 } else {
                     $album->arts()->syncWithoutDetaching([
-                        Art::where('file', $fileName)->first()->id
+                        Art::where('file', $fileName)->first()->id // FIXME error????
                     ]);
                 }
             }

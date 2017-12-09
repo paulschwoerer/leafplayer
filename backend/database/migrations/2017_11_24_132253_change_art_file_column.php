@@ -13,7 +13,6 @@ class ChangeArtFileColumn extends Migration {
     public function up() {
         Schema::table('arts', function (Blueprint $table) {
             $table->string('file', 36)->change();
-            $table->unique('file');
         });
     }
 

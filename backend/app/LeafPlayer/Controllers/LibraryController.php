@@ -110,12 +110,10 @@ class LibraryController extends BaseController {
     /**
      * Start scan with given options.
      *
-     * @param $clean
-     * @param $updateExisting
      * @return bool
      * @throws ScanInProgressException
      */
-    public function startScan($clean, $updateExisting) {
+    public function startScan() {
         if (self::isScanRunning()) {
             throw new ScanInProgressException;
         }

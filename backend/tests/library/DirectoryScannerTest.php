@@ -29,7 +29,9 @@ class DirectoryScannerTest extends TestCase {
     private $testFilePath;
 
     public function setUp() {
-        $this->testFilePath = base_path('tests/scanner/testfiles');
+        parent::setUp();
+
+        $this->testFilePath = base_path('tests/library/testfiles');
     }
 
     public function testFileDuplicates() {

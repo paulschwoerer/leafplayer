@@ -3,7 +3,7 @@
 namespace App\LeafPlayer\Library;
 
 class ProgressCallbackVoid implements ProgressCallbackInterface {
-    public function onProgress(LibraryActor $libraryActor) {}
+    public function onProgress($libraryActor) {}
 
-    public function onFinished(LibraryActor $libraryActor) {}
+    public function onFinished($libraryActor) {}
 }
