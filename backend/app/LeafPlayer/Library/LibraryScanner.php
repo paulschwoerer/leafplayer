@@ -15,6 +15,7 @@ use App\LeafPlayer\Models\File;
 use App\LeafPlayer\Models\Song;
 use App\LeafPlayer\Utils\Map;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use PDOException;
 
 class LibraryScanner extends LibraryActor {
@@ -178,6 +179,9 @@ class LibraryScanner extends LibraryActor {
         }
 
         // TODO: handle genre
+        if (array_key_exists('genre', $tags)) {
+            print_r($tags['genre']);
+        }
 
         // extract duration from file info
         $song->duration = $analyzedFile['playing_time'];
@@ -322,9 +326,15 @@ class LibraryScanner extends LibraryActor {
                         'file' => $fileName
                     ]));
                 } else {
-                    $album->arts()->syncWithoutDetaching([
-                        Art::where('file', $fileName)->first()->id // FIXME error????
-                    ]);
+                    $art = Art::where('file', $fileName)->first();
+
+                    if ($art === null) {
+                        Log::warn('Unused album art file found: ' . $fileName);
+                    } else {
+                        $album->arts()->syncWithoutDetaching([
+                            $art->id
+                        ]);
+                    }
                 }
             }
         }
@@ -352,9 +362,15 @@ class LibraryScanner extends LibraryActor {
                 'file' => $fileName
             ]));
         } else {
-            $album->arts()->syncWithoutDetaching([
-                Art::where('file', $fileName)->first()->id
-            ]);
+            $art = Art::where('file', $fileName)->first();
+
+            if ($art === null) {
+                Log::warn('Unused album art file found: ' . $fileName);
+            } else {
+                $album->arts()->syncWithoutDetaching([
+                    $art->id
+                ]);
+            }
         }
     }
 

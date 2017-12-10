@@ -273,12 +273,11 @@ abstract class LibraryActor extends Stateful {
      * @param $aborted
      */
     private function saveScanInformation($aborted) {
-        // FIXME: reflect changes in database
         $scan = Scan::create([
             'type' => $this->getType(),
             'aborted' => $aborted,
-            'processed_item_count' => $this->getProcessedItemCount(),
-            'total_item_count' => $this->getTotalItemCount(),
+            'processed_items' => $this->getProcessedItemCount(),
+            'total_items' => $this->getTotalItemCount(),
             'duration' => $this->getElapsedTimeSeconds()
         ]);
 
