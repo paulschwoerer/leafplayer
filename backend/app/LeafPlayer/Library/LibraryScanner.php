@@ -12,6 +12,7 @@ use App\LeafPlayer\Models\Album;
 use App\LeafPlayer\Models\Art;
 use App\LeafPlayer\Models\Artist;
 use App\LeafPlayer\Models\File;
+use App\LeafPlayer\Models\Genre;
 use App\LeafPlayer\Models\Song;
 use App\LeafPlayer\Utils\Map;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +43,11 @@ class LibraryScanner extends LibraryActor {
     /**
      * @var Map
      */
+    private $genreIdCache;
+
+    /**
+     * @var Map
+     */
     private $fileSongRelationCache;
 
     /**
@@ -60,6 +66,7 @@ class LibraryScanner extends LibraryActor {
         $this->fileAnalyzer = new FileAnalyzer();
         $this->artistCache = new Map();
         $this->albumCache = new Map();
+        $this->genreIdCache = new Map();
         $this->fileSongRelationCache = new Map();
 
         $this->readyToPerform();
@@ -178,9 +185,24 @@ class LibraryScanner extends LibraryActor {
             $song->track = $folderFileNumber;
         }
 
-        // TODO: handle genre
+        // genre handling
+        $genreIds = [];
+
         if (array_key_exists('genre', $tags)) {
-            print_r($tags['genre']);
+            foreach ($tags['genre'] as $genreName) {
+                if ($this->genreIdCache->exists($genreName)) {
+                    array_push($genreIds, $this->genreIdCache->get($genreName));
+                } else {
+                    $genre = Genre::where('name', $genreName)->first();
+
+                    if ($genre === null) {
+                        $genre = Genre::create(['name' => $genreName]);
+                    }
+
+                    array_push($genreIds, $genre->id);
+                    $this->genreIdCache->put($genreName, $genre->id);
+                }
+            }
         }
 
         // extract duration from file info
@@ -231,6 +253,8 @@ class LibraryScanner extends LibraryActor {
             $file->song_id = $song->id;
             $song->save();
         }
+
+        $song->genres()->syncWithoutDetaching($genreIds);
 
         $file->save();
 

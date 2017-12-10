@@ -39,6 +39,15 @@ class Song extends Media {
     }
 
     /**
+     * Relationship to this song's genres
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function genres() {
+        return $this->belongsToMany(Genre::class, 'songs_genres');
+    }
+
+    /**
      * Relationship to all users, that have this song in their favorites.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
