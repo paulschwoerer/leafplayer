@@ -1,5 +1,5 @@
 ip: 192.168.10.42
-memory: 2048
+memory: 1024
 cpus: 2
 provider: virtualbox
 authorize: ~/.ssh/id_rsa.pub
@@ -9,6 +9,9 @@ folders:
     -
         map: './'
         to: /home/vagrant/leafplayer-backend
+    -
+        map: '../testmusic'
+        to: /home/vagrant/leafplayer-testmusic
 sites:
     -
         map: leafplayer.dev

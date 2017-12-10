@@ -37,8 +37,12 @@ class Wizard {
         return $this->fileSystem->exists(base_path(ENV_FILE));
     }
 
-    public function copyEnv($development = false) {
-        $this->fileSystem->copy(base_path($development ? '.env.dev.example' : '.env.prod.example'), base_path(ENV_FILE));
+    public function copyProdEnv() {
+        $this->fileSystem->copy(base_path('.env.prod.example'), base_path(ENV_FILE));
+    }
+
+    public function copyDevEnv() {
+        $this->fileSystem->copy(base_path('.env.prod.example'), base_path(ENV_FILE));
     }
 
     public function dropDatabaseTables() {
@@ -116,9 +120,11 @@ class Wizard {
         }
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
-        Artisan::call('migrate', ['--force' => true]);
+        $this->migrateDatabase();
+    }
 
-        Artisan::call('db:seed', ['--force' => true]);
+    public function migrateDatabase() {
+        Artisan::call('migrate', ['--force' => true]);
     }
 
     private function saveDatabaseConfig($config) {
