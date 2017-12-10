@@ -9,11 +9,11 @@ class Scan extends BaseModel {
     public $timestamps = true;
 
     protected $fillable = [
-        // TODO: add type
+        'type',
         'aborted',
         'duration',
-        'scanned_files',
-        'total_files'
+        'processed_items',
+        'total_items'
     ];
 
     /**
