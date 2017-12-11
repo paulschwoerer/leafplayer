@@ -93,29 +93,31 @@
                         // N -> next song // TODO: move to different key?
                         case 110:
                             this.next();
+                            e.preventDefault();
                             break;
                         // P -> previous song // TODO: move to different key?
                         case 112:
                             this.previous();
+                            e.preventDefault();
                             break;
                         // Space -> toggle play/pause
                         case 32:
                             this.togglePlayPause();
+                            e.preventDefault();
                             break;
                         // M -> mute/unmute
                         case 109:
                             this.setMuted(!this.muted);
+                            e.preventDefault();
                             break;
                         // R -> toggle shuffle
                         case 114:
                             this.setShuffle(!this.shuffle);
+                            e.preventDefault();
                             break;
                         default:
                             break;
                     }
-
-                    e.preventDefault();
-                    e.stopPropagation();
                 }
             };
         },
