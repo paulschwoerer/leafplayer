@@ -30,10 +30,11 @@
         </form>
     </div>
 </template>
-
+s
 <script>
     import VueTypes from 'vue-types';
-    import { getValue } from 'utils/injector';import { ADAPTER } from 'data/Injectables';
+    import { getValue } from 'utils/injector';
+    import { ADAPTER } from 'data/Injectables';
     import Input from 'components/form/Input';
     import Icon from 'components/content/Icon';
     import CheckBox from 'components/form/CheckBox';
@@ -50,7 +51,7 @@
             addFolder: VueTypes.func.isRequired,
         },
 
-        mounted() {
+        created() {
             this.loadAllFolders();
         },
 
@@ -66,7 +67,7 @@
                 if (this.newFolder.length) {
                     this.error = '';
 
-                    getValue(ADAPTER).get(`scanner/folder/check${serializeUrlParams({ path: this.newFolder })}`).then(({ data }) => {
+                    getValue(ADAPTER).get(`library/folder/check${serializeUrlParams({ path: this.newFolder })}`).then(({ data }) => {
                         if (data.exists === false) {
                             this.error = 'This folder does not exist on the server or is not readable.';
                         } else if (data.writeable === false) {

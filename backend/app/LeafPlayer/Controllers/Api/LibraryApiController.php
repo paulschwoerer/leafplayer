@@ -4,8 +4,11 @@ namespace App\LeafPlayer\Controllers\Api;
 
 use App\LeafPlayer\Controllers\LibraryController;
 use App\LeafPlayer\Library\Enum\LibraryActorState;
+use App\LeafPlayer\Library\LibraryActor;
 use App\LeafPlayer\Models\Scan;
 use App\LeafPlayer\Library\ScannerState;
+use Fuz\Component\SharedMemory\SharedMemory;
+use Fuz\Component\SharedMemory\Storage\StorageFile;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use App\LeafPlayer\Utils\Math;
@@ -29,7 +32,7 @@ class LibraryApiController extends BaseApiController {
     }
 
     /**
-     * Check a folder for readability and existence.
+     * Check a folder for readability and existence
      *              This method should always be called before adding a folder as it
      *              returns detailed information and a clean path.
      *
@@ -49,7 +52,7 @@ class LibraryApiController extends BaseApiController {
     }
 
     /**
-     * Add a folder for the scanner to search for media.
+     * Add a folder for the scanner to search for media
      *
      * @param Request $request
      * @return JsonResponse A JSON response containing the added folder.
@@ -71,7 +74,7 @@ class LibraryApiController extends BaseApiController {
     }
 
     /**
-     * Set if a folder should be included in scans or not.
+     * Set if a folder should be included in scans or not
      *
      * @param Request $request
      * @param $id
@@ -96,7 +99,7 @@ class LibraryApiController extends BaseApiController {
      * Remove a folder.
      *
      * @param $id
-     * @return JsonResponse A JSON response to determine if the operation was successful.
+     * @return JsonResponse A JSON response to determine if the operation was successful
      */
     public function removeFolder($id) {
         $this->requirePermission('library.folder.remove');
@@ -107,8 +110,8 @@ class LibraryApiController extends BaseApiController {
     }
 
     /**
-     * Get a list of all folders currently added.
-     * @return JsonResponse A JSON response containing a list of all folders.
+     * Get a list of all folders currently added
+     * @return JsonResponse A JSON response containing a list of all folders
      */
     public function getAllFolders() {
         $this->requirePermission('library.folder.get-all');
@@ -117,10 +120,10 @@ class LibraryApiController extends BaseApiController {
     }
 
     /**
-     * Start scan with given options.
+     * Start scan with given options
      *
      * @param Request $request
-     * @return JsonResponse A JSON response to determine if the operation was successful.
+     * @return JsonResponse A JSON response to determine if the operation was successful
      */
     public function startScan(Request $request) {
         $this->requirePermission('library.scan');
@@ -134,7 +137,7 @@ class LibraryApiController extends BaseApiController {
     }
 
     /**
-     * Clean the library from non-existing songs.
+     * Clean the library from non-existing songs
      *
      * @param Request $request
      * @return JsonResponse
@@ -148,7 +151,7 @@ class LibraryApiController extends BaseApiController {
     }
 
     /**
-     * Clear the library.
+     * Clear the library
      *
      * @param Request $request
      * @return JsonResponse
@@ -162,55 +165,56 @@ class LibraryApiController extends BaseApiController {
     }
 
     /**
-     * Stream the progress of the current scan using server sent events (SSE).
+     * Stream the progress of the current scan using server sent events (SSE)
      *
      * @param Request $request
-     * @return StreamedResponse The streamed response containing JSON encoded information about the scan.
+     * @return StreamedResponse The streamed response containing JSON encoded information about the scan
      */
     public function getScanProgress(Request $request) {
         // FIXME: rework
-//        $this->requirePermission('library.library.scan-progress');
-//
-//        $this->validate($request, [
-//            'refreshInterval' => 'numeric'
-//        ]);
-//
-//        $refreshInterval = clamp(
-//            $request->input('refreshInterval', DEFAULT_REFRESH_INTERVAL),
-//            MIN_REFRESH_INTERVAL,
-//            MAX_REFRESH_INTERVAL
-//        );
-//
-//        $response = new StreamedResponse(function() use ($refreshInterval) {
-//            while(1) {
-//                $scan = Scan::where('state', '<>', LibraryActorState::FINISHED)->first();
-//
-//                if ($scan == null) {
-//                    echo 'data: ' . json_encode([
-//                            'running' => false,
-//                            'details' => []
-//                        ]) . "\n\n";
-//                } else {
-//                    echo 'data: ' . json_encode([
-//                            'running' => true,
-//                            'details' => [
-//                                'state' => $scan->state,
-//                                'currentFile' => $scan->current_file,
-//                                'scannedFiles' => $scan->scanned_files,
-//                                'totalFiles' => $scan->total_files
-//                            ]
-//                        ]) . "\n\n";
-//                }
-//
-//                ob_flush();
-//                flush();
-//
-//                usleep($refreshInterval * 1000000);
-//            }
-//        });
-//
-//        $response->headers->set('Content-Type', 'text/event-stream');
-//        return $response;
-        return response()->json([]);
+        $this->requirePermission('library.scan-progress');
+
+        $this->validate($request, [
+            'refreshInterval' => 'numeric'
+        ]);
+
+        $refreshInterval = clamp(
+            $request->input('refreshInterval', DEFAULT_REFRESH_INTERVAL),
+            MIN_REFRESH_INTERVAL,
+            MAX_REFRESH_INTERVAL
+        );
+
+        $sharedScanInfo = new SharedMemory(new StorageFile(LibraryActor::getSyncFilePath()));
+
+        $response = new StreamedResponse(function() use ($refreshInterval, &$sharedScanInfo) {
+            while(1) {
+                if (!isset($sharedScanInfo->state) || $sharedScanInfo->state === LibraryActorState::FINISHED) {
+                    echo 'data: ' . json_encode([
+                            'running' => false,
+                            'details' => []
+                        ]) . "\n\n";
+                } else {
+                    echo 'data: ' . json_encode([
+                            'running' => true,
+                            'details' => [
+                                'type' => $sharedScanInfo->type,
+                                'currentState' => $sharedScanInfo->state,
+                                'currentItem' => $sharedScanInfo->currentItem,
+                                'totalItemCount' => $sharedScanInfo->totalItemCount,
+                                'processedItemCount' => $sharedScanInfo->processedItemCount
+                            ]
+                        ]) . "\n\n";
+                }
+
+                ob_flush();
+                flush();
+
+                usleep($refreshInterval * 1000000);
+            }
+        });
+
+        $response->headers->set('Content-Type', 'text/event-stream');
+
+        return $response;
     }
 }

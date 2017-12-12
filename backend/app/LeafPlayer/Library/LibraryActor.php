@@ -258,10 +258,8 @@ abstract class LibraryActor extends Stateful {
      * Updates the scan info in the sync file
      */
     private function updateScanInfo() {
-        if (!isset($this->sharedScanInfo->type)) {
-            $this->sharedScanInfo->type = $this->getType();
-        }
-
+        $this->sharedScanInfo->type = $this->getType();
+        $this->sharedScanInfo->currentState = $this->getState();
         $this->sharedScanInfo->currentItem = $this->currentItem;
         $this->sharedScanInfo->totalItemCount = $this->totalItemCount;
         $this->sharedScanInfo->processedItemCount = $this->processedItemCount;

@@ -11,6 +11,8 @@ use App\LeafPlayer\Models\Artist;
 use App\LeafPlayer\Models\File;
 use App\LeafPlayer\Models\Song;
 
+// TODO: Add currentItem handling
+
 class LibraryCleaner extends LibraryActor {
     /**
      * @var int

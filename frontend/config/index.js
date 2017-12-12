@@ -29,11 +29,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
 	  '/api': {
-        target: 'http://leafplayer.dev',
+        target: 'http://localhost:9000',
         changeOrigin: true
       },
       '/artwork': {
-          target: 'http://leafplayer.dev',
+          target: 'http://localhost:9000',
           changeOrigin: true
       }
 	},

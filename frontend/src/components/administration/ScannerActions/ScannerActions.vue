@@ -16,7 +16,7 @@
     import { mapActions } from 'vuex';
     import VueTypes from 'vue-types';
     import Button from 'components/form/Button';
-    import ConfirmClearDatabaseModal from 'components/modal/ConfirmClearDatabaseModal';
+    import ConfirmWipeLibraryModal from 'components/modal/ConfirmWipeLibraryModal';
 
     export default {
         name: 'ComponentScannerActions',
@@ -25,13 +25,7 @@
             scanRunning: VueTypes.bool.isRequired,
             scanCollection: VueTypes.func.isRequired,
             cleanCollection: VueTypes.func.isRequired,
-            clearCollection: VueTypes.func.isRequired,
-        },
-
-        data() {
-            return {
-
-            };
+            wipeCollection: VueTypes.func.isRequired,
         },
 
         methods: {
@@ -49,7 +43,10 @@
 
             clear() {
                 return this.openModal({
-                    component: ConfirmClearDatabaseModal,
+                    component: ConfirmWipeLibraryModal,
+                    props: {
+                        onConfirm: this.wipeCollection,
+                    },
                 });
             },
         },

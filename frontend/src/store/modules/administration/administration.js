@@ -85,7 +85,7 @@ export default {
          * @param commit
          */
         loadAllFolders: ({ commit }) =>
-            getValue(ADAPTER).get('scanner/folder')
+            getValue(ADAPTER).get('library/folder')
                 .then(response => commit(LOAD_ALL_FOLDERS, response)),
 
         /**
@@ -96,7 +96,7 @@ export default {
          * @param selected
          */
         addFolder: ({ commit }, { path, selected = true }) =>
-            getValue(ADAPTER).put('scanner/folder', {
+            getValue(ADAPTER).put('library/folder', {
                 path,
                 selected,
             }).then(({ data }) => commit(ADD_FOLDER, data)),
@@ -109,7 +109,7 @@ export default {
          * @param selected
          */
         updateFolderSelectedState: ({ commit }, { id, selected }) =>
-            getValue(ADAPTER).post(`scanner/folder/${id}`, {
+            getValue(ADAPTER).post(`library/folder/${id}`, {
                 selected,
             }).then(response => commit(UPDATE_FOLDER_SELECTED_STATE, response)),
 
@@ -120,7 +120,7 @@ export default {
          * @param id
          */
         removeFolder: ({ commit }, { id }) =>
-            getValue(ADAPTER).delete(`scanner/folder/${id}`, {
+            getValue(ADAPTER).delete(`library/folder/${id}`, {
                 id,
             }).then(() => commit(REMOVE_FOLDER, id)),
 
@@ -128,34 +128,31 @@ export default {
          * Start scanning the collection.
          *
          * @param dispatch
-         * @returns {*|AxiosPromise}
+         * @returns Promise
          */
-        scanCollection: ({ dispatch }) => {
-            dispatch('updateProgress');
-            return getValue(ADAPTER).post('scanner/scan');
-        },
+        scanCollection: ({ dispatch }) =>
+            getValue(ADAPTER).post('library/scan')
+                .then(() => dispatch('updateProgress')),
 
         /**
          * Start cleaning the collection.
          *
          * @param dispatch
-         * @returns {*|AxiosPromise}
+         * @returns Promise
          */
-        cleanCollection: ({ dispatch }) => {
-            dispatch('updateProgress');
-            return getValue(ADAPTER).post('scanner/clean');
-        },
+        cleanCollection: ({ dispatch }) =>
+            getValue(ADAPTER).post('library/clean')
+                .then(() => dispatch('updateProgress')),
 
         /**
-         * Clear complete collection.
+         * Wipe complete collection.
          *
          * @param dispatch
-         * @returns {*|AxiosPromise}
+         * @returns Promise
          */
-        clearCollection: ({ dispatch }) => {
-            dispatch('updateProgress');
-            return getValue(ADAPTER).post('scanner/clear');
-        },
+        wipeCollection: ({ dispatch }) =>
+            getValue(ADAPTER).post('library/wipe')
+                .then(() => dispatch('updateProgress')),
 
         /**
          * Update the progress of the currently active scan.
@@ -168,7 +165,7 @@ export default {
             let scanProgressLoopFix = 0;
 
             const eventSource =
-                new EventSource(`${rootState.config.api.base}scanner/progress${serializeUrlParams({
+                new EventSource(`${rootState.config.api.base}library/scan-progress${serializeUrlParams({
                     token: rootState.auth.token,
                     refresh_interval: 0.2,
                 })}`);
@@ -182,7 +179,6 @@ export default {
 
                 // close connection if scan is finished
                 if ((state.scan.running === true && data.running === false) || scanProgressLoopFix > 2) {
-                    scanProgressLoopFix = 0;
                     eventSource.close();
                 }
 

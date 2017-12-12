@@ -1,16 +1,22 @@
 <template>
     <div class="component-scan-progress">
-        <div v-if="scan.running">
-            <CircleProgress :size="200" :progress="progress"></CircleProgress>
-            <div class="details">
+        <div class="progress-bar">
+            <div class="progress" :style="{ width: `${progress}%`}">
+
+            </div>
+        </div>
+
+        <!--<div v-if="scan.running">
+            &lt;!&ndash;<CircleProgress :size="200" :progress="progress"></CircleProgress>&ndash;&gt;
+            &lt;!&ndash;<div class="details">
                 <p class="state">{{currentState}}</p>
                 <p>{{scan.details.currentFile}}</p>
                 <p v-if="isScanning || isSearching">
                     Found <span class="bold">{{scan.details.totalFiles}}</span> songs,
                     scanned <span class="bold">{{scan.details.scannedFiles}}</span> of those.
                 </p>
-            </div>
-        </div>
+            </div>&ndash;&gt;
+        </div>-->
     </div>
 </template>
 
@@ -23,13 +29,23 @@
         name: 'ComponentScanProgress',
 
         props: {
-            scan: VueTypes.object.isRequired,
+            scan: VueTypes.shape({
+                running: VueTypes.bool,
+                details: VueTypes.shape({
+                    type: VueTypes.string,
+                    currentState: VueTypes.number,
+                    currentItem: VueTypes.string,
+                    totalItemCount: VueTypes.number,
+                    processedItemCount: VueTypes.number,
+                }),
+            }).isRequired,
         },
 
         computed: {
             progress() {
                 const { details } = this.scan;
-                return details.totalFiles !== 0 ? Math.floor((details.scannedFiles / details.totalFiles) * 100) : 0;
+
+                return details.totalItemCount ? Math.floor((details.processedItemCount / details.totalItemCount) * 100) : 0;
             },
 
             currentState() {

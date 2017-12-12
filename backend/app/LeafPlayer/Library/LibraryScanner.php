@@ -98,6 +98,7 @@ class LibraryScanner extends LibraryActor {
         $this->setState(LibraryActorState::PROCESSING);
 
         foreach ($this->audioFiles->keysToArray() as $audioFile) {
+            $this->currentItem = pathinfo($audioFile, PATHINFO_FILENAME);
             $this->processAudioFile($audioFile);
             $this->processedItemCount++;
 

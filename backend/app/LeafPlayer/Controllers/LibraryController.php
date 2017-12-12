@@ -12,16 +12,17 @@ use \App\LeafPlayer\Models\Folder;
 use App\LeafPlayer\Exceptions\Library\InvalidFolderException;
 use App\LeafPlayer\Exceptions\Library\ScanInProgressException;
 use App\LeafPlayer\Exceptions\Library\FolderNotAddedException;
+use Illuminate\Support\Facades\Artisan;
 
 /**
- * This controller houses all the (API-)methods to interact with the library.
+ * This controller houses all the (API-)methods to interact with the library
  *
  * Class LibraryController
  * @package App\LeafPlayer\Controllers
  */
 class LibraryController extends BaseController {
     /**
-     * Check folder and get information about it.
+     * Check folder and get information about it
      *
      * @param $path string
      * @return array
@@ -47,7 +48,7 @@ class LibraryController extends BaseController {
     }
 
     /**
-     * Add a folder for the scanner to search for media.
+     * Add a folder for the scanner to search for media
      *
      * @param $path string
      * @param $selected boolean
@@ -65,7 +66,7 @@ class LibraryController extends BaseController {
 
 
     /**
-     * Set if a folder should be included in scans or not.
+     * Set if a folder should be included in scans or not
      *
      * @param $id integer
      * @param $selected boolean
@@ -87,7 +88,7 @@ class LibraryController extends BaseController {
 
 
     /**
-     * Remove a folder.
+     * Remove a folder
      *
      * @param $id integer
      * @return bool
@@ -99,7 +100,7 @@ class LibraryController extends BaseController {
     }
 
     /**
-     * Get a list of all folders currently added.
+     * Get a list of all folders currently added
      *
      * @return Collection
      */
@@ -108,7 +109,7 @@ class LibraryController extends BaseController {
     }
 
     /**
-     * Start scan with given options.
+     * Start scan
      *
      * @return bool
      * @throws ScanInProgressException
@@ -118,34 +119,34 @@ class LibraryController extends BaseController {
             throw new ScanInProgressException;
         }
 
-        return self::executeCommand('library:scan --no-output');
+        return self::executeArtisanCommand('lp:library:scan --no-output');
     }
 
     /**
-     * Clean the library from non-existing songs.
+     * Clean the library
      *
      * @return bool
      */
     public function cleanLibrary() {
-        return self::executeCommand('library:clean --no-output');
+        return self::executeArtisanCommand('lp:library:clean --no-output');
     }
 
     /**
-     * Clear the library.
+     * Wipe the library
      *
      * @return bool
      */
     public function wipeLibrary() {
-        return self::executeCommand('library:wipe --no-output --confirm');
+        return self::executeArtisanCommand('lp:library:wipe --no-output --confirm');
     }
 
     /**
-     * Execute artisan command.
+     * Execute artisan command asynchronously
      *
      * @param $command
      * @return bool
      */
-    private static function executeCommand($command) {
+    private static function executeArtisanCommand($command) {
         if (self::isWindows()) {
             pclose(popen('start /B cmd /C "php ' . base_path() . '/artisan ' . $command . ' >NUL 2>NUL"', 'r'));
         } else {

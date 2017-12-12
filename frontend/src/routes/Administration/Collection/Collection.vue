@@ -16,7 +16,7 @@
                 :scanRunning="scan.running"
                 :scanCollection="scanCollection"
                 :cleanCollection="cleanCollection"
-                :clearCollection="clearCollection"
+                :wipeCollection="wipeCollection"
             />
         </div>
     </div>
@@ -45,7 +45,7 @@
                 addFolder: 'addFolder',
                 scanCollection: 'scanCollection',
                 cleanCollection: 'cleanCollection',
-                clearCollection: 'clearCollection',
+                wipeCollection: 'wipeCollection',
                 removeFolder: 'removeFolder',
                 loadAllFolders: 'loadAllFolders',
                 updateProgress: 'updateProgress',
@@ -57,7 +57,6 @@
             FolderList,
             ScannerActions,
             ScanProgress,
-
         },
     };
 </script>
