@@ -7,7 +7,7 @@ use App\LeafPlayer\Setup\Wizard;
 use Illuminate\Console\Command;
 
 class Setup extends Command {
-    protected $signature = 'lp:setup {--dev}';
+    protected $signature = 'lp:setup';
 
     protected $description = 'This command will setup your LeafPlayer, asking you some important questions and getting things ready.';
 
@@ -27,7 +27,7 @@ class Setup extends Command {
         }
 
         $this->info('Copying configuration ...');
-        $this->wizard->copyEnv($this->option('dev'));
+        $this->wizard->copyProdEnv();
         $this->info('Done.');
         $this->info('-------------------------------------------');
 

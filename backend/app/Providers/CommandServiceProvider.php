@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\DevSetup;
 use App\Console\Commands\Setup;
 use App\Console\Commands\AddFolder;
 use App\Console\Commands\LibraryClean;
@@ -52,6 +53,10 @@ class CommandServiceProvider extends ServiceProvider {
             return new Setup;
         });
 
+        $this->app->singleton('command.lp.dev-setup', function() {
+            return new DevSetup;
+        });
+
         $this->commands(
             'command.library.wipe',
             'command.library.scan',
@@ -60,7 +65,8 @@ class CommandServiceProvider extends ServiceProvider {
             'command.folder.remove',
             'command.folder.list',
             'command.key.generate',
-            'command.lp.setup'
+            'command.lp.setup',
+            'command.lp.dev-setup'
         );
     }
 }
