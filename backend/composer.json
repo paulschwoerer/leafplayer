@@ -16,7 +16,8 @@
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "phpunit/phpunit": "~5.0",
-        "mockery/mockery": "~0.9"
+        "mockery/mockery": "~0.9",
+        "laravel/homestead": "^7.0"
     },
     "autoload": {        
         "psr-4": {
