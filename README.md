@@ -43,7 +43,7 @@ php artisan lp:setup
  
 After the installer has finished successfully, you should be able to log in with the admin account you just created.
 
-- Note, that LeafPlayer can currently only live at the root of a domain, so `example.com` or `leafplayer.example.com` but not in a subdirectory like `example.com/leafplayer`.
+- Note, that LeafPlayer is currently best suited to live at the root of a domain, so `example.com` or `leafplayer.example.com` but not in a subdirectory like `example.com/leafplayer`. If you need to deploy it to a subdirectory however, scroll down to the `Advanced` section.
 - The installer is currently being tested, so please let me know if any problems arise from using it.
 
 ### Adding Media
@@ -76,6 +76,18 @@ In late 2016 I was searching for a music streaming server to fit my needs, but n
 
 As it turned out, it was - and still is - a lot of work for a single person, which is why I'm searching for active contributors for the project to create something amazing.
 
+## Advanced
+### Deploying into subdirectory
+There's two things that you need to do.
+- Rebuild the frontend with the following command (See [CONTRIBUTING.md](CONTRIBUTING.md) for more details on how to build the project)
+
+  ```sh
+  $ node build/build.js --base=/YOUR_BASE_URL/
+  ```
+- Edit the `.htaccess` file in the `public` directory and add your subdirectory to the `RewriteBase` argument.
+  ```htaccess
+  RewriteBase /YOUR_BASE_URL/
+  ```
 
 ## Contributing
 

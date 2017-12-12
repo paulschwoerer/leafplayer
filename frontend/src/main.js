@@ -8,8 +8,9 @@ import store from 'store';
 import { setValue } from 'utils/injector';
 import { ADAPTER } from 'data/Injectables';
 import Adapter from 'store/adapter';
-
 import 'normalize.css';
+
+import config from '../config';
 
 import App from './App';
 
@@ -25,6 +26,7 @@ const router = new VueRouter({
     hashbang: false,
     mode: 'history',
     linkActiveClass: 'active',
+    base: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : '/',
     routes,
     scrollBehavior: (to, from, savedPosition) =>
         (!savedPosition ? { x: 0, y: 0 } : savedPosition),
