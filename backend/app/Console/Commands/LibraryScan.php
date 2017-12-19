@@ -70,8 +70,8 @@ class LibraryScan extends Command implements ProgressCallbackInterface {
         $this->info('#        Scan finished: Summary          #');
         $this->info('##########################################');
         $this->table([], [
-            ['Files found', $libraryActor->getTotalItemCount()],
-            ['Files processed', $libraryActor->getProcessedItemCount()],
+            ['Audiofiles found', $libraryActor->getTotalItemCount()],
+            ['Audiofiles processed', $libraryActor->getProcessedItemCount()],
             ['Time needed', $libraryActor->getElapsedTime()->format('%Hh %Im %Ss')],
             ['Songs/second', round($fileCount / ($secondsNeeded === 0 ? 1 : $secondsNeeded), 2)],
             ['ms/Song', round(($secondsNeeded * 1000) / ($fileCount === 0 ? 1 : $fileCount), 2)],
