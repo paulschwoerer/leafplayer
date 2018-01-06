@@ -66,6 +66,8 @@ class DirectoryScanner {
      * @param array $imageFileTypes
      * @param array $audioFileTypes
      * @param int $scanDepth The maximum scan depth, 0 means unlimited.
+     * @throws NonExistingDirectoryException
+     * @throws NonReadableDirectoryException
      */
     public function __construct($directories, $imageFileTypes, $audioFileTypes, $scanDepth = 4) {
         $this->scannedDirectories = new Map();
@@ -109,6 +111,8 @@ class DirectoryScanner {
      *
      * @param $directories
      * @return $this
+     * @throws NonExistingDirectoryException
+     * @throws NonReadableDirectoryException
      */
     public function setScanDirectories($directories) {
         $this->validateDirectories($directories);
@@ -264,7 +268,6 @@ class DirectoryScanner {
      * @return string|null
      */
     private function getDuplicate($pathname) {
-        // TODO TODO TODO
         $fileSize = filesize($pathname);
 
         if($this->fileSizeCache->exists($fileSize)) {
@@ -276,7 +279,7 @@ class DirectoryScanner {
                 }
             }
 
-            $this->fileSizeCache->put($fileSize, array_merge($this->fileSizeCache->get($fileSize), [$pathname]));
+            $this->fileSizeCache->put($fileSize, array_merge($paths, [$pathname]));
         } else {
             $this->fileSizeCache->put($fileSize, [$pathname]);
         }

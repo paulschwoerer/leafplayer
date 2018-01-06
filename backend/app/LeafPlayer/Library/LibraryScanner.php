@@ -73,6 +73,15 @@ class LibraryScanner extends LibraryActor {
     }
 
     /**
+     * Get amount of audio files
+     *
+     * @return int
+     */
+    public function getAudioFileCount() {
+        return $this->audioFiles->count();
+    }
+
+    /**
      * Execute the scan
      *
      * @return void

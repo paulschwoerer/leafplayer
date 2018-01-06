@@ -1,6 +1,6 @@
 /.idea
 
-.vagrant
+/.vagrant
 
 composer.lock
 

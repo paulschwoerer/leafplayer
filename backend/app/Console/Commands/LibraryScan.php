@@ -61,7 +61,7 @@ class LibraryScan extends Command implements ProgressCallbackInterface {
 
         $this->progressBar->finish();
 
-        $fileCount = $libraryActor->getTotalItemCount();
+        $songCount = $libraryActor->getAudioFileCount();
         $secondsNeeded = $libraryActor->getElapsedTimeSeconds();
 
         $this->info('');
@@ -70,11 +70,10 @@ class LibraryScan extends Command implements ProgressCallbackInterface {
         $this->info('#        Scan finished: Summary          #');
         $this->info('##########################################');
         $this->table([], [
-            ['Audiofiles found', $libraryActor->getTotalItemCount()],
-            ['Audiofiles processed', $libraryActor->getProcessedItemCount()],
+            ['Audio files found', $libraryActor->getAudioFileCount()],
             ['Time needed', $libraryActor->getElapsedTime()->format('%Hh %Im %Ss')],
-            ['Songs/second', round($fileCount / ($secondsNeeded === 0 ? 1 : $secondsNeeded), 2)],
-            ['ms/Song', round(($secondsNeeded * 1000) / ($fileCount === 0 ? 1 : $fileCount), 2)],
+            ['Songs/second', round($songCount / ($secondsNeeded === 0 ? 1 : $secondsNeeded), 2)],
+            ['ms/Song', round(($secondsNeeded * 1000) / ($songCount === 0 ? 1 : $songCount), 2)],
             ['Errors and warnings', $libraryActor->getErrorCount()],
             ['Memory usage', round(memory_get_peak_usage() / (1024 * 1024)) . 'MB']
         ]);
