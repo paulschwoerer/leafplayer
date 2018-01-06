@@ -1,11 +1,11 @@
-import config from '../../../../config';
+/* global APP_BASE_URL */
 
 export default {
     namespaced: true,
 
     state: {
         api: {
-            base: `${process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : '/'}api/`,
+            base: `${APP_BASE_URL}api/`,
         },
     },
 

@@ -1,3 +1,5 @@
+/* global APP_BASE_URL */
+
 import Vue from 'vue';
 import Auth from 'auth';
 import VueRouter from 'vue-router';
@@ -9,8 +11,6 @@ import { setValue } from 'utils/injector';
 import { ADAPTER } from 'data/Injectables';
 import Adapter from 'store/adapter';
 import 'normalize.css';
-
-import config from '../config';
 
 import App from './App';
 
@@ -26,7 +26,7 @@ const router = new VueRouter({
     hashbang: false,
     mode: 'history',
     linkActiveClass: 'active',
-    base: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : '/',
+    base: APP_BASE_URL,
     routes,
     scrollBehavior: (to, from, savedPosition) =>
         (!savedPosition ? { x: 0, y: 0 } : savedPosition),

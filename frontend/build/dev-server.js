@@ -5,6 +5,8 @@ if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 
+process.env.APP_BASE_URL = '/';
+
 var opn = require('opn')
 var path = require('path')
 var express = require('express')
