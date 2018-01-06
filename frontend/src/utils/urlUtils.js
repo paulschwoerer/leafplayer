@@ -4,7 +4,7 @@
  * @param params
  * @returns {string}
  */
-export function serializeUrlParams(params) {
+export const serializeUrlParams = (params) => {
     const keys = Object.keys(params)
         .filter(key => typeof params[key] !== 'undefined');
 
@@ -14,4 +14,4 @@ export function serializeUrlParams(params) {
     }
 
     return '';
-}
+};
