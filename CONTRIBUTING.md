@@ -10,7 +10,7 @@ Make sure you have the following software installed on said computer:
 - [NodeJS](https://nodejs.org/en/)
 - [NPM](https://www.npmjs.com/) (usually ships with NodeJS)
 
-Obviously you need Git to clone the Leafplayer repository into a directory of your choice.
+Obviously you need Git to clone the LeafPlayer repository into a directory of your choice.
 
 ### Setting up the backend
 The backend is best run on [Laravel Homestead](https://laravel.com/docs/master/homestead). Of course you can use any other local webserver and/or database server, to get going fast however I urge you to use Homestead. It's pretty easy to set up and only has a few prerequisites mentioned in the section above.  
@@ -49,4 +49,4 @@ You can also ssh into vagrant to execute commands with `vagrant ssh`
 
 ### Issues
 
-If you're having any issues with the setup process, give me a message
+If you're having any issues with the setup process, give me a message.
