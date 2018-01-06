@@ -1,10 +1,10 @@
 <template>
     <div class="route-administration">
-        <CHeader>
+        <Header>
             <h1>Administration</h1>
             <p>Administrate your Leafplayer server from here.</p>
-        </CHeader>
-        <HeaderMenu :items="menuItems"></HeaderMenu>
+        </Header>
+        <HeaderMenu :items="menuItems" />
 
         <ContentWrapper>
             <router-view />
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import CHeader from 'components/content/Header';
+    import Header from 'components/content/Header';
     import HeaderMenu from 'components/content/HeaderMenu';
     import ContentWrapper from 'components/content/ContentWrapper';
 
@@ -30,7 +30,7 @@
         },
 
         components: {
-            CHeader,
+            Header,
             HeaderMenu,
             ContentWrapper,
         },
