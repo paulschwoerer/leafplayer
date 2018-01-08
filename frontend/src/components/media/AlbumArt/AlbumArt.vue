@@ -45,8 +45,10 @@
         },
 
         beforeDestroy() {
-            this.preloader.onload = null;
-            this.preloader = null;
+            if (this.preloader) {
+                this.preloader.onload = null;
+                this.preloader = null;
+            }
         },
 
         data() {
