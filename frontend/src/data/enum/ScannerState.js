@@ -1,12 +1,8 @@
 /**
- * This enum describes the current scanner state. (See counterpart on backend)
+ * This enum describes the current scanner state. (See counterpart in backend)
  */
 export default {
-    IDLE: 0,
-    FINISHED: 1,
-
-    SEARCHING: 2,
-    SCANNING: 3,
-    CLEANING: 4,
-    CLEARING: 5,
+    FINISHED: 0,
+    SEARCHING: 1,
+    PROCESSING: 2,
 };
