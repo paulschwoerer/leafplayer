@@ -12,7 +12,6 @@ use \App\LeafPlayer\Models\Folder;
 use App\LeafPlayer\Exceptions\Library\InvalidFolderException;
 use App\LeafPlayer\Exceptions\Library\ScanInProgressException;
 use App\LeafPlayer\Exceptions\Library\FolderNotAddedException;
-use Illuminate\Support\Facades\Artisan;
 
 /**
  * This controller houses all the (API-)methods to interact with the library
@@ -164,8 +163,8 @@ class LibraryController extends BaseController {
     private static function isScanRunning() {
         $sharedScanInfo = new SharedMemory(new StorageFile(LibraryActor::getSyncFilePath()));
 
-        return isset($sharedScanInfo->state) &&
-            $sharedScanInfo->state !== LibraryActorState::FINISHED;
+        return isset($sharedScanInfo->currentState) &&
+            $sharedScanInfo->currentState !== LibraryActorState::FINISHED;
     }
 
     /**

@@ -16,10 +16,8 @@ const CREATE_PLAYLIST = 'CREATE_PLAYLIST';
 const DELETE_PLAYLIST = 'DELETE_PLAYLIST';
 const LOAD_STATISTICS = 'LOAD_STATISTICS';
 const LOAD_POPULAR_SONGS = 'LOAD_POPULAR_SONGS';
-const SET_PLAYLIST_ORDER = 'SET_PLAYLIST_ORDER';
 const LOAD_USER_PLAYLISTS = 'LOAD_USER_PLAYLISTS';
 const LOAD_SUGGESTED_ALBUMS = 'LOAD_SUGGESTED_ALBUMS';
-const REMOVE_PLAYLIST_INDEXES = 'REMOVE_PLAYLIST_INDEXES';
 
 // Initial state of the module
 const initialState = () => ({
@@ -57,14 +55,14 @@ export default {
                 .then(response => commit(LOAD_STATISTICS, response)),
 
         loadSuggestedAlbums: ({ commit }) =>
-            getValue(ADAPTER).get('suggested/albums').then(response => {
+            getValue(ADAPTER).get('suggested/albums').then((response) => {
                 commit(ModelMutationTypes.ADD_MULTIPLE_MODELS, response, { root: true });
 
                 commit(LOAD_SUGGESTED_ALBUMS, response);
             }),
 
         loadPopularSongs: ({ commit }) =>
-            getValue(ADAPTER).get('popular/songs').then(response => {
+            getValue(ADAPTER).get('popular/songs').then((response) => {
                 commit(ModelMutationTypes.ADD_MULTIPLE_MODELS, response, { root: true });
 
                 commit(LOAD_POPULAR_SONGS, response);
@@ -213,7 +211,9 @@ export default {
          * @param isPrivate
          * @param songIds
          */
-        createPlaylist: ({ commit, rootState }, { name, description = '', isPrivate = true, songIds = [] }) =>
+        createPlaylist: ({ commit }, {
+            name, description = '', isPrivate = true, songIds = [],
+        }) =>
             getValue(ADAPTER).put('playlist', {
                 name,
                 description,
@@ -262,7 +262,9 @@ export default {
          * @param description
          * @param isPrivate
          */
-        savePlaylist: ({ commit }, { id, name = '', description = '', isPrivate = true }) =>
+        savePlaylist: ({ commit }, {
+            id, name = '', description = '', isPrivate = true,
+        }) =>
             getValue(ADAPTER).post(`playlist/${id}`, {
                 name,
                 description,
@@ -328,7 +330,7 @@ export default {
 
             // Construct new song id array
             const newSongs = savedSongs.slice();
-            for (let i = sortedIndexes.length - 1; i >= 0; i--) {
+            for (let i = sortedIndexes.length - 1; i >= 0; i -= 1) {
                 newSongs.splice(sortedIndexes[i], 1);
             }
 
@@ -369,11 +371,11 @@ export default {
             }
 
             if (state.totalPlaylists) {
-                state.totalPlaylists = state.totalPlaylists - 1;
+                state.totalPlaylists -= 1;
             }
 
             if (state.totalUserPlaylists) {
-                state.totalUserPlaylists = state.totalUserPlaylists - 1;
+                state.totalUserPlaylists -= 1;
             }
         },
 

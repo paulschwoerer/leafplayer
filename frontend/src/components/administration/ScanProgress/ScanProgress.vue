@@ -1,29 +1,20 @@
 <template>
     <div class="component-scan-progress">
         <div class="progress-bar">
-            <div class="progress" :style="{ width: `${progress}%`}">
-
+            <div class="progress-bar-advance" :style="{ width: `${progress}%`}" />
+            <div class="text-wrapper">
+                <p class="status ellipsis">{{currentStatus}}</p>
+                <p class="percentage">{{progress}}%</p>
             </div>
         </div>
-
-        <!--<div v-if="scan.running">
-            &lt;!&ndash;<CircleProgress :size="200" :progress="progress"></CircleProgress>&ndash;&gt;
-            &lt;!&ndash;<div class="details">
-                <p class="state">{{currentState}}</p>
-                <p>{{scan.details.currentFile}}</p>
-                <p v-if="isScanning || isSearching">
-                    Found <span class="bold">{{scan.details.totalFiles}}</span> songs,
-                    scanned <span class="bold">{{scan.details.scannedFiles}}</span> of those.
-                </p>
-            </div>&ndash;&gt;
-        </div>-->
     </div>
 </template>
 
 <script>
     import VueTypes from 'vue-types';
-    import CircleProgress from 'components/CircleProgress';
+    import Spinner from 'components/Spinner';
     import ScannerState from 'data/enum/ScannerState';
+    import ScanType from 'data/enum/ScanType';
 
     export default {
         name: 'ComponentScanProgress',
@@ -48,42 +39,34 @@
                 return details.totalItemCount ? Math.floor((details.processedItemCount / details.totalItemCount) * 100) : 0;
             },
 
-            currentState() {
-                const { details: { state } } = this.scan;
+            currentStatus() {
+                const { details } = this.scan;
 
-                switch (state) {
-                    case ScannerState.IDLE:
-                        return 'Not scanning';
+                switch (details.currentState) {
                     case ScannerState.FINISHED:
-                        return 'Scan finished';
-                    case ScannerState.CLEANING:
-                        return 'Cleaning database';
-                    case ScannerState.CLEARING:
-                        return 'Clearing database';
+                        return 'Finished';
                     case ScannerState.SEARCHING:
-                        return 'Searching for files';
-                    case ScannerState.SCANNING:
-                        return 'Scanning files';
+                        return 'Looking for files ...';
+                    case ScannerState.PROCESSING: {
+                        switch (details.type) {
+                            case ScanType.CLEAN:
+                                return 'Cleaning library';
+                            case ScanType.WIPE:
+                                return 'Wiping library';
+                            case ScanType.SCAN:
+                                return `Scanning "${details.currentItem}"`;
+                            default:
+                                return '';
+                        }
+                    }
                     default:
-                        return 'Undefined state';
+                        return '';
                 }
-            },
-
-            isScanning() {
-                const { details: { state } } = this.scan;
-
-                return state === ScannerState.SCANNING;
-            },
-
-            isSearching() {
-                const { details: { state } } = this.scan;
-
-                return state === ScannerState.SEARCHING;
             },
         },
 
         components: {
-            CircleProgress,
+            Spinner,
         },
     };
 </script>

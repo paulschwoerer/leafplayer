@@ -28,7 +28,7 @@ class Art extends BaseModel {
      * @return string
      */
     public function getSrcAttribute() {
-        return url(self::ARTWORK_FOLDER) . $this->file;
+        return url(self::ARTWORK_FOLDER) . '/' . $this->file;
     }
 
     /**

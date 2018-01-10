@@ -146,8 +146,8 @@ abstract class LibraryActor extends Stateful {
      * @return bool
      */
     public function scanInProgress() {
-        return isset($this->sharedScanInfo->state) &&
-            $this->sharedScanInfo->state !== LibraryActorState::FINISHED;
+        return isset($this->sharedScanInfo->currentState) &&
+            $this->sharedScanInfo->currentState !== LibraryActorState::FINISHED;
     }
 
     /**
@@ -156,7 +156,8 @@ abstract class LibraryActor extends Stateful {
      * @param int $state
      */
     protected function setState($state) {
-        $this->sharedScanInfo->state = $state;
+        $this->sharedScanInfo->currentState = $state;
+        $this->sharedScanInfo->type = $this->getType();
 
         parent::setState($state);
     }
@@ -202,12 +203,12 @@ abstract class LibraryActor extends Stateful {
     }
 
     /**
-     * Update the progress in a set interval
+     * Update the progress in a set interval     * @param bool $force Force updating
      */
-    protected function updateProgress() {
+    protected function updateProgress($force = false) {
         $time = round(microtime(true) * 1000);
 
-        if (($time - $this->lastProgressUpdate) > ($this->progressRefreshInterval)) {
+        if ($force || ($time - $this->lastProgressUpdate) > ($this->progressRefreshInterval)) {
             $this->lastProgressUpdate = $time;
 
             $this->progressCallback->onProgress($this);
@@ -217,6 +218,7 @@ abstract class LibraryActor extends Stateful {
 
     /**
      * Signal the base actor to start the process
+     * @throws \ErrorException
      */
     protected function readyToPerform() {
         try {
@@ -230,6 +232,7 @@ abstract class LibraryActor extends Stateful {
 
     /**
      * Prepare the scan
+     * @throws ScanInProgressException
      */
     private function prepare() {
         $this->setExecutionTimeLimit();

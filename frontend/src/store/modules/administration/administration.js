@@ -26,7 +26,8 @@ const initialState = () => ({
     scan: {
         running: false,
         details: {
-            state: ScannerState.IDLE,
+            type: '',
+            currentState: ScannerState.FINISHED,
             currentFile: '',
             scannedFiles: 0,
             totalFiles: 0,
@@ -49,7 +50,9 @@ export default {
          * @param password
          * @param roles
          */
-        createUser: ({ commit }, { id, name, password, roles }) =>
+        createUser: ({ commit }, {
+            id, name, password, roles,
+        }) =>
             getValue(ADAPTER).put('user', {
                 id,
                 name,
@@ -125,66 +128,12 @@ export default {
             }).then(() => commit(REMOVE_FOLDER, id)),
 
         /**
-         * Start scanning the collection.
-         *
-         * @param dispatch
-         * @returns Promise
-         */
-        scanCollection: ({ dispatch }) =>
-            getValue(ADAPTER).post('library/scan')
-                .then(() => dispatch('updateProgress')),
-
-        /**
-         * Start cleaning the collection.
-         *
-         * @param dispatch
-         * @returns Promise
-         */
-        cleanCollection: ({ dispatch }) =>
-            getValue(ADAPTER).post('library/clean')
-                .then(() => dispatch('updateProgress')),
-
-        /**
-         * Wipe complete collection.
-         *
-         * @param dispatch
-         * @returns Promise
-         */
-        wipeCollection: ({ dispatch }) =>
-            getValue(ADAPTER).post('library/wipe')
-                .then(() => dispatch('updateProgress')),
-
-        /**
          * Update the progress of the currently active scan.
          *
          * @param commit
-         * @param rootState
-         * @param state
+         * @param data
          */
-        updateProgress: ({ commit, rootState, state }) => {
-            let scanProgressLoopFix = 0;
-
-            const eventSource =
-                new EventSource(`${rootState.config.api.base}library/scan-progress${serializeUrlParams({
-                    token: rootState.auth.token,
-                    refresh_interval: 0.2,
-                })}`);
-
-            eventSource.addEventListener('message', (e) => {
-                const data = JSON.parse(e.data);
-
-                if (data.running === false) {
-                    scanProgressLoopFix += 1;
-                }
-
-                // close connection if scan is finished
-                if ((state.scan.running === true && data.running === false) || scanProgressLoopFix > 2) {
-                    eventSource.close();
-                }
-
-                commit(UPDATE_PROGRESS, data);
-            }, false);
-        },
+        updateProgress: ({ commit }, data) => commit(UPDATE_PROGRESS, data),
     },
 
     mutations: {

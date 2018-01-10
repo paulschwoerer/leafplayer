@@ -5,13 +5,10 @@ namespace App\LeafPlayer\Controllers\Api;
 use App\LeafPlayer\Controllers\LibraryController;
 use App\LeafPlayer\Library\Enum\LibraryActorState;
 use App\LeafPlayer\Library\LibraryActor;
-use App\LeafPlayer\Models\Scan;
-use App\LeafPlayer\Library\ScannerState;
 use Fuz\Component\SharedMemory\SharedMemory;
 use Fuz\Component\SharedMemory\Storage\StorageFile;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
-use App\LeafPlayer\Utils\Math;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 define('MIN_REFRESH_INTERVAL', .1); // min refresh interval of progress tracking in seconds
@@ -38,6 +35,9 @@ class LibraryApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse A JSON response with information about the folder.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Library\InvalidFolderException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function checkFolder(Request $request) {
         $this->requirePermission('library.folder.check');
@@ -56,6 +56,9 @@ class LibraryApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse A JSON response containing the added folder.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Library\FolderNotAddedException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function addFolder(Request $request) {
         $this->requirePermission('library.folder.add');
@@ -79,6 +82,9 @@ class LibraryApiController extends BaseApiController {
      * @param Request $request
      * @param $id
      * @return JsonResponse A JSON response containing the updated folder.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Library\FolderNotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function updateFolderSelectedState(Request $request, $id) {
         $this->requirePermission('library.folder.update-selected-state');
@@ -100,6 +106,7 @@ class LibraryApiController extends BaseApiController {
      *
      * @param $id
      * @return JsonResponse A JSON response to determine if the operation was successful
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
      */
     public function removeFolder($id) {
         $this->requirePermission('library.folder.remove');
@@ -112,6 +119,7 @@ class LibraryApiController extends BaseApiController {
     /**
      * Get a list of all folders currently added
      * @return JsonResponse A JSON response containing a list of all folders
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
      */
     public function getAllFolders() {
         $this->requirePermission('library.folder.get-all');
@@ -124,6 +132,8 @@ class LibraryApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse A JSON response to determine if the operation was successful
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Library\ScanInProgressException
      */
     public function startScan(Request $request) {
         $this->requirePermission('library.scan');
@@ -141,6 +151,7 @@ class LibraryApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
      */
     public function cleanLibrary(Request $request) {
         $this->requirePermission('library.clean');
@@ -155,6 +166,7 @@ class LibraryApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
      */
     public function wipeLibrary(Request $request) {
         $this->requirePermission('library.wipe');
@@ -169,10 +181,15 @@ class LibraryApiController extends BaseApiController {
      *
      * @param Request $request
      * @return StreamedResponse The streamed response containing JSON encoded information about the scan
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getScanProgress(Request $request) {
-        // FIXME: rework
         $this->requirePermission('library.scan-progress');
+
+        set_time_limit(0);
+
+        @ob_end_clean();
 
         $this->validate($request, [
             'refreshInterval' => 'numeric'
@@ -188,32 +205,35 @@ class LibraryApiController extends BaseApiController {
 
         $response = new StreamedResponse(function() use ($refreshInterval, &$sharedScanInfo) {
             while(1) {
-                if (!isset($sharedScanInfo->state) || $sharedScanInfo->state === LibraryActorState::FINISHED) {
+                if (!isset($sharedScanInfo->currentState) || $sharedScanInfo->currentState === LibraryActorState::FINISHED) {
                     echo 'data: ' . json_encode([
                             'running' => false,
                             'details' => []
-                        ]) . "\n\n";
+                        ]) . PHP_EOL . PHP_EOL;
+
                 } else {
                     echo 'data: ' . json_encode([
                             'running' => true,
                             'details' => [
                                 'type' => $sharedScanInfo->type,
-                                'currentState' => $sharedScanInfo->state,
-                                'currentItem' => $sharedScanInfo->currentItem,
-                                'totalItemCount' => $sharedScanInfo->totalItemCount,
-                                'processedItemCount' => $sharedScanInfo->processedItemCount
+                                'currentState' => $sharedScanInfo->currentState,
+                                'currentItem' => is_string($sharedScanInfo->currentItem) ? $sharedScanInfo->currentItem : '',
+                                'totalItemCount' => is_int($sharedScanInfo->totalItemCount) ? $sharedScanInfo->totalItemCount : 0,
+                                'processedItemCount' => is_int($sharedScanInfo->processedItemCount) ? $sharedScanInfo->processedItemCount : 0
                             ]
-                        ]) . "\n\n";
+                        ]) . PHP_EOL . PHP_EOL;
                 }
 
-                ob_flush();
-                flush();
+                @ob_flush();
+                @flush();
 
                 usleep($refreshInterval * 1000000);
             }
         });
 
         $response->headers->set('Content-Type', 'text/event-stream');
+        $response->headers->set('Cache-Control', 'no-cache');
+        $response->headers->set('X-Accel-Buffering', 'no');
 
         return $response;
     }

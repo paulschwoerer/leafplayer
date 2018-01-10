@@ -27,7 +27,7 @@
             <div class="volume-controls">
                 <button class="mute" role="button" tabindex="0" @click="toggleMute">
                     <Icon v-show="muted" name="volume_off" />
-                    <Icon v-show="!muted && volume == 0" name="volume_mute" />
+                    <Icon v-show="!muted && volume === 0" name="volume_mute" />
                     <Icon v-show="!muted && volume > 0 && volume <= 0.5" name="volume_down" />
                     <Icon v-show="!muted && volume > 0.5" name="volume_up" />
                 </button>
@@ -94,7 +94,7 @@
             volume: VueTypes.number.isRequired,
             seek: VueTypes.number.isRequired,
             duration: VueTypes.number.isRequired,
-            currentSong: LeafPlayerPropTypes.song,
+            currentSong: VueTypes.oneOfType([LeafPlayerPropTypes.song, null]),
             currentQueueIndex: VueTypes.number.isRequired,
             queueSize: VueTypes.number.isRequired,
         },
@@ -181,9 +181,7 @@
             },
 
             calculatePercentage(xPos, element) {
-                return Math.min(1,
-                    Math.max(0, (xPos - element.getBoundingClientRect().left) / element.scrollWidth),
-                );
+                return Math.min(1, Math.max(0, (xPos - element.getBoundingClientRect().left) / element.scrollWidth));
             },
 
             onMouseMove(event) {

@@ -89,6 +89,8 @@ class LibraryScanner extends LibraryActor {
     protected function perform() {
         $this->setState(LibraryActorState::SEARCHING);
 
+        $this->updateProgress(true);
+
         $folderScanner = (new DirectoryScanner($this->getFolderPaths(), [
             FileExtension::JPG,
             FileExtension::JPEG
