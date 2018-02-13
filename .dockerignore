@@ -1,0 +1,20 @@
+**/.git
+**/.gitignore
+**/.gitkeep
+
+# TODO: Remove when vagrant support is dropped
+**/.vagrant
+./backend/after.sh
+./backend/Homestead.yaml
+./backend/Vagrantfile
+
+./backend/public/artwork
+./backend/storage/app/**
+./backend/storage/logs/**
+./backend/storage/framework/**
+./backend/tests
+./backend/vendor
+./backend/.env
+./backend/.env.dev.example
+./backend/composer.lock
+./backend/phpunit.xml
