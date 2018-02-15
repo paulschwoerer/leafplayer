@@ -42,7 +42,7 @@ class Wizard {
     }
 
     public function copyDevEnv() {
-        $this->fileSystem->copy(base_path('.env.prod.example'), base_path(ENV_FILE));
+        $this->fileSystem->copy(base_path('.env.dev.example'), base_path(ENV_FILE));
     }
 
     public function dropDatabaseTables() {
