@@ -1,37 +1,34 @@
 version: '2'
 services:
   app:
+    container_name: app
     build:
-      context: ./
+      context: "./"
       dockerfile: ./deploy/app.dockerfile
     working_dir: /var/www
     volumes:
       - ./backend:/var/www
-    environment:
-      - "DB_PORT=3306"
-      - "DB_HOST=database"
-      - ""
+      - ./testmusic:/var/testmusic
   web:
+    container_name: web
     build:
-      context: ./
+      context: "./"
       dockerfile: ./deploy/web.dockerfile
     working_dir: /var/www
-    volumes_from:
-      - app
+    volumes:
+      - ./backend:/var/www
     ports:
       - 8090:80
   database:
-      image: mysql:8.0.3
-      volumes:
-        - dbdata:/var/lib/mysql
-      environment:
-        - "MYSQL_DATABASE=leafplayer"
-        - "MYSQL_USER=leafplayer"
-        - "MYSQL_PASSWORD=secret"
-        - "MYSQL_ROOT_PASSWORD=secret"
-      ports:
-          - "33061:3306"
-
+    container_name: database
+    image: mysql:5.7
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      - "MYSQL_DATABASE=leafplayer"
+      - "MYSQL_USER=leafplayer"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"
 volumes:
   dbdata:
 

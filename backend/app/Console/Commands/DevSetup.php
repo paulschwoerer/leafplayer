@@ -34,5 +34,7 @@ class DevSetup extends Command {
 
             Artisan::call('db:seed', ['--force' => true]);
         }
+
+        $this->info("Successfully finished dev initialization");
     }
 }
