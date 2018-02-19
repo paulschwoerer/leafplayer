@@ -29,6 +29,14 @@ services:
       - "MYSQL_USER=leafplayer"
       - "MYSQL_PASSWORD=secret"
       - "MYSQL_ROOT_PASSWORD=secret"
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      - "PMA_HOST=database"
+    ports:
+      - 8091:80
+
 volumes:
   dbdata:
 
