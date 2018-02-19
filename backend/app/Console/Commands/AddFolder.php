@@ -26,6 +26,7 @@ class AddFolder extends Command
      * Execute the console command.
      *
      * @return void
+     * @throws \App\LeafPlayer\Exceptions\Library\FolderNotAddedException
      */
     public function fire() {
         (new LibraryController)->addFolder($this->argument('path'), true);

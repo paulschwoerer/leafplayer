@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\DB;
 
 const ENV_FILE = '.env';
 
+// TODO: deprecated
+
 class Wizard {
     private $fileSystem;
 

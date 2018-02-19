@@ -23,6 +23,7 @@ class CollectionApiController extends BaseApiController {
      * Get statistics of the collection.
      *
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
      */
     public function getCollectionStatistics() {
         $this->requirePermission('collection.statistics');
@@ -36,6 +37,8 @@ class CollectionApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function searchCollection(Request $request) {
         $this->requirePermission('collection.search');

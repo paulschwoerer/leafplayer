@@ -26,6 +26,9 @@ class PlaylistApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse Newly created playlist in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoEditPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function createPlaylist(Request $request) {
         $this->requirePermission('playlist.create');
@@ -65,6 +68,11 @@ class PlaylistApiController extends BaseApiController {
      * @param Request $request
      * @param $id
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoEditPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoViewPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function updatePlaylistProperties(Request $request, $id) {
         $this->requirePermission('playlist.update');
@@ -96,6 +104,9 @@ class PlaylistApiController extends BaseApiController {
      *
      * @param $id
      * @return JsonResponse Playlist in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoViewPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NotFoundException
      */
     public function getPlaylist($id) {
         $this->requirePermission('playlist.get');
@@ -115,6 +126,11 @@ class PlaylistApiController extends BaseApiController {
      * @param Request $request
      * @param $id
      * @return JsonResponse Playlist in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoEditPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoViewPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function addSongsToPlaylist(Request $request, $id) {
         $this->requirePermission('playlist.add-songs');
@@ -141,6 +157,8 @@ class PlaylistApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse Array of Playlists in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getPlaylists(Request $request) {
         $this->requirePermission('playlist.query');
@@ -166,7 +184,14 @@ class PlaylistApiController extends BaseApiController {
      * Remove the songs at the specified indexes from a playlist.
      *
      * @param Request $request
+     * @param $id
      * @return JsonResponse Playlist in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoEditPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoViewPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
+     * @throws \Exception
      */
     public function removeIndexesFromPlaylist(Request $request, $id) {
         $this->requirePermission('playlist.remove-indexes');
@@ -191,6 +216,13 @@ class PlaylistApiController extends BaseApiController {
      * @param Request $request
      * @param $id
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\InvalidOrderException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\ItemNotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoEditPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoViewPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function setPlaylistOrder(Request $request, $id) {
         $this->requirePermission('playlist.set-order');
@@ -212,6 +244,11 @@ class PlaylistApiController extends BaseApiController {
      *
      * @param $id
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoDeletePermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NoViewPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Playlist\NotFoundException
+     * @throws \Exception
      */
     public function deletePlaylist($id) {
         $this->requirePermission('playlist.delete');

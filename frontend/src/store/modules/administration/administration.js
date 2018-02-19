@@ -12,6 +12,7 @@ export const ADD_FOLDER = 'ADD_FOLDER';
 export const REMOVE_FOLDER = 'REMOVE_FOLDER';
 export const UPDATE_PROGRESS = 'UPDATE_PROGRESS';
 export const LOAD_ALL_FOLDERS = 'LOAD_ALL_FOLDERS';
+export const CHECK_FOR_SETUP = 'CHECK_FOR_SETUP';
 export const UPDATE_FOLDER_SELECTED_STATE = 'UPDATE_FOLDER_SELECTED_STATE';
 
 const initialState = () => ({
@@ -21,6 +22,8 @@ const initialState = () => ({
     // user pagination data
     userOffset: 0,
     totalUsers: NaN,
+
+    needsSetup: false,
 
     // current scan progress
     scan: {
@@ -134,6 +137,10 @@ export default {
          * @param data
          */
         updateProgress: ({ commit }, data) => commit(UPDATE_PROGRESS, data),
+
+        checkForSetup: ({ commit }) =>
+            getValue(ADAPTER).get('setup/needs-setup')
+                .then(({ data }) => commit(CHECK_FOR_SETUP, data)),
     },
 
     mutations: {
@@ -158,7 +165,16 @@ export default {
         },
 
         [CLEAR]: (state) => {
+            // do not override needsSetup
+            const { needsSetup } = state;
+
             setToInitialState(state, initialState());
+
+            state.needsSetup = needsSetup;
+        },
+
+        [CHECK_FOR_SETUP]: (state, { result }) => {
+            state.needsSetup = result;
         },
     },
 };

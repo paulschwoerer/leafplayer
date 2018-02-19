@@ -25,6 +25,7 @@ class AlbumApiController extends BaseApiController {
      * Get suggested albums.
      *
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
      */
     public function getSuggestedAlbums() {
         $this->requirePermission('album.suggestions');
@@ -47,6 +48,9 @@ class AlbumApiController extends BaseApiController {
      * @param Request $request
      * @param $id
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Album\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function increaseViews(Request $request, $id) {
         $this->requirePermission('album.increase-views');
@@ -67,6 +71,8 @@ class AlbumApiController extends BaseApiController {
      *
      * @param $id
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Album\NotFoundException
      */
     public function getAlbum($id) {
         $this->requirePermission('album.get');
@@ -85,6 +91,8 @@ class AlbumApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getAlbums(Request $request) {
         $this->requirePermission('album.query');

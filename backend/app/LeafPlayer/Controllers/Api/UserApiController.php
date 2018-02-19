@@ -26,6 +26,11 @@ class UserApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse The newly created user in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\InvalidPasswordException
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\IdTakenException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\InvalidUserIdException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function createUser(Request $request) {
         $this->requirePermission('user.create');
@@ -55,6 +60,8 @@ class UserApiController extends BaseApiController {
      *
      * @param $id
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
      */
     public function getUser($id) {
         $this->requirePermission('user.get');
@@ -71,6 +78,8 @@ class UserApiController extends BaseApiController {
      *
      * @param $id
      * @return JsonResponse An object to determine if the operation was successful.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\SelfDeleteException
      */
     public function removeUser($id) {
         $this->requirePermission('user.remove');
@@ -85,6 +94,10 @@ class UserApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse An object to determine if the operation was successful.
+     * @throws \App\LeafPlayer\Exceptions\Auth\InvalidPasswordException
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
      */
     public function setUserPassword(Request $request) {
         $this->requirePermission('user.set-password');
@@ -107,6 +120,8 @@ class UserApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse Array of users in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function queryUsers(Request $request) {
         $this->requirePermission('user.query');
@@ -131,6 +146,9 @@ class UserApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function addUserRoles(Request $request) {
         $this->requirePermission('user.add-roles');
@@ -149,6 +167,9 @@ class UserApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function removeUserRoles(Request $request) {
         $this->requirePermission('user.remove-roles');
@@ -167,6 +188,9 @@ class UserApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function removeAllUserRoles(Request $request) {
         $this->requirePermission('user.remove-all-roles');
@@ -188,6 +212,9 @@ class UserApiController extends BaseApiController {
      * @param Request $request
      * @param $id
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getUserPlaylists(Request $request, $id) {
         $this->requirePermission('user.get-playlists');

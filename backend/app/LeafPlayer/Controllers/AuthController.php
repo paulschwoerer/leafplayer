@@ -78,10 +78,7 @@ class AuthController extends BaseController {
      * Get the currently authenticated user.
      * @param array $with
      * @return User
-     * @throws ExpiredTokenException
-     * @throws InvalidTokenProvidedException
-     * @throws UnauthorizedException
-     * @throws UserNotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
      */
     public function getCurrentUser($with = []) {
         return (new UserController)->getUser(Auth::user()->id, $with);
@@ -93,8 +90,12 @@ class AuthController extends BaseController {
      * @param $oldPassword
      * @param $newPassword
      * @return bool
-     * @throws WrongPasswordException
+     * @throws ExpiredTokenException
      * @throws InvalidPasswordException
+     * @throws InvalidTokenProvidedException
+     * @throws UnauthorizedException
+     * @throws UserNotFoundException
+     * @throws WrongPasswordException
      */
     public function changeUserPassword($oldPassword, $newPassword) {
         $user = $this->getCurrentUser();

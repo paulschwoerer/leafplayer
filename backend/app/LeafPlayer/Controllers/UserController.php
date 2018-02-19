@@ -28,6 +28,7 @@ class UserController extends BaseController {
      * @param $password
      * @return bool
      * @throws InvalidPasswordException
+     * @throws NotFoundException
      */
     public function setUserPassword($id, $password) {
         $user = $this->getUser($id);
@@ -99,6 +100,7 @@ class UserController extends BaseController {
      * @param $id
      * @param $roles
      * @return User
+     * @throws NotFoundException
      */
     public function addUserRoles($id, $roles) {
         $user = $this->getUser($id);
@@ -114,6 +116,7 @@ class UserController extends BaseController {
      * @param $id
      * @param $roles
      * @return User
+     * @throws NotFoundException
      */
     public function removeUserRoles($id, $roles) {
         $user = $this->getUser($id);
@@ -128,6 +131,7 @@ class UserController extends BaseController {
      *
      * @param $id
      * @return mixed
+     * @throws NotFoundException
      */
     public function removeAllUserRoles($id) {
         $user = $this->getUser($id);

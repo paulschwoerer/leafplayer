@@ -27,6 +27,9 @@ class ArtistApiController extends BaseApiController {
      * @param Request $request
      * @param $id
      * @return JsonResponse The artist in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Artist\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function increaseViews(Request $request, $id) {
         $this->requirePermission('artist.increase-views');
@@ -47,6 +50,8 @@ class ArtistApiController extends BaseApiController {
      *
      * @param $id
      * @return JsonResponse Artist in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Artist\NotFoundException
      */
     public function getArtist($id) {
         $this->requirePermission('artist.get');
@@ -71,6 +76,8 @@ class ArtistApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse Array of Artists in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getArtists(Request $request) {
         $this->requirePermission('artist.query');

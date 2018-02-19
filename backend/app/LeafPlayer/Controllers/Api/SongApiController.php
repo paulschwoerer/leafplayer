@@ -27,6 +27,7 @@ class SongApiController extends BaseApiController {
      * Get popular songs
      *
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
      */
     public function getPopularSongs() {
         $this->requirePermission('song.popular');
@@ -50,6 +51,9 @@ class SongApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Song\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getSong(Request $request) {
         $this->requirePermission('song.get');
@@ -69,6 +73,8 @@ class SongApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getSongsById(Request $request) {
         $this->requirePermission('song.by-id');
@@ -102,6 +108,8 @@ class SongApiController extends BaseApiController {
      * @return BinaryFileResponse
      * @throws FileNotFoundException
      * @throws FileNotReadableException
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Song\NotFoundException
      */
     public function streamSong($id) {
         $this->requirePermission('song.stream');
@@ -134,6 +142,8 @@ class SongApiController extends BaseApiController {
      * @return BinaryFileResponse
      * @throws FileNotFoundException
      * @throws FileNotReadableException
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Song\NotFoundException
      */
     public function downloadSong($id) {
         $this->requirePermission('song.download');

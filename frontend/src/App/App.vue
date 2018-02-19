@@ -1,7 +1,7 @@
 <template>
     <div class="component-app">
         <transition name="fade">
-            <div v-if="authReady">
+            <div v-if="authReady && !needsSetup">
                 <SideBarContainer v-if="authenticated" />
                 <div id="content" :class="{ shifted: authenticated }">
                     <router-view class="view" />
@@ -10,23 +10,39 @@
                 <ModalRoot v-if="authenticated" />
             </div>
         </transition>
+
+        <transition name="fade">
+            <div v-if="needsSetup">
+                <SetupAdminAccount />
+            </div>
+        </transition>
     </div>
 </template>
 
 <script>
     import Auth from 'auth/index';
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import Spinner from 'components/Spinner';
     import ModalRoot from 'components/modal/ModalRoot';
     import ScrollTopButton from 'components/ScrollTopButton';
+    import SetupAdminAccount from 'components/SetupAdminAccount';
     import SideBarContainer from 'components/sidebar/SideBarContainer';
 
     export default {
         name: 'ComponentApp',
 
+        mounted() {
+            this.checkForSetup();
+        },
+
+        methods: mapActions({
+            checkForSetup: 'administration/checkForSetup',
+        }),
+
         computed: {
-            ...mapState('auth', {
-                authReady: state => state.ready,
+            ...mapState({
+                authReady: state => state.auth.ready,
+                needsSetup: state => state.administration.needsSetup,
             }),
 
             authenticated() {
@@ -39,6 +55,7 @@
             ModalRoot,
             ScrollTopButton,
             SideBarContainer,
+            SetupAdminAccount,
         },
     };
 </script>

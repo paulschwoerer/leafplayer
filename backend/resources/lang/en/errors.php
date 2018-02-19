@@ -1,10 +1,6 @@
 <?php
 
 return [
-    /*
-     * DEFAULT ERRORS
-     */
-
     'default' => [
         'bad_request' => 'Your request had an error. Please try again.',
         'forbidden' => 'Your request was valid, but you are not authorised to perform that action.',
@@ -72,9 +68,10 @@ return [
         'key_not_found' => 'The supplied key `:key` was not found in the .env file.'
     ],
     'setup' => [
-        'no_database_connection' => 'No connection to the database could be made.',
-        'invalid_credentials' => 'Access for user `:user` was denied.',
-        'unknown_database' => 'Database with name `:name` was not found.',
-        'unknown_error' => 'An unknown error was encountered, check the server logs for details.'
+        'no_database_connection' => 'No connection to the database could be made.', // TODO: deprecated
+        'invalid_credentials' => 'Access for user `:user` was denied.', // TODO: deprecated
+        'unknown_database' => 'Database with name `:name` was not found.', // TODO: deprecated
+        'unknown_error' => 'An unknown error was encountered, check the server logs for details.', // TODO: deprecated
+        'admin_account_exists' => 'An admin account already exists, you cannot create a new one.'
     ]
 ];
