@@ -44,4 +44,7 @@ return [
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'debug' => env('APP_DEBUG', false),
+
+    // Set this to true for every new deploy, so the server will run migrations
+    'needs_updating' => true,
 ];
