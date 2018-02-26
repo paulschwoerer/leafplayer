@@ -358,14 +358,16 @@ class LibraryScanner extends LibraryActor {
                 if (!$artExists) {
                     copy($artFile, $filePath);
 
-                    $album->arts()->save(Art::create([
+                    $album->arts()->create([
                         'file' => $fileName
-                    ]));
+                    ]);
                 } else {
                     $art = Art::where('file', $fileName)->first();
 
                     if ($art === null) {
-                        Log::warn('Unused album art file found: ' . $fileName);
+                        $album->arts()->create([
+                            'file' => $fileName
+                        ]);
                     } else {
                         $album->arts()->syncWithoutDetaching([
                             $art->id
@@ -394,14 +396,16 @@ class LibraryScanner extends LibraryActor {
         if (!$artExists) {
             file_put_contents($filePath, $imageData);
 
-            $album->arts()->save(Art::create([
+            $album->arts()->create([
                 'file' => $fileName
-            ]));
+            ]);
         } else {
             $art = Art::where('file', $fileName)->first();
 
             if ($art === null) {
-                Log::warn('Unused album art file found: ' . $fileName);
+                $album->arts()->create([
+                    'file' => $fileName
+                ]);
             } else {
                 $album->arts()->syncWithoutDetaching([
                     $art->id
