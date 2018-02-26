@@ -12,6 +12,8 @@ export const ADD_FOLDER = 'ADD_FOLDER';
 export const REMOVE_FOLDER = 'REMOVE_FOLDER';
 export const UPDATE_PROGRESS = 'UPDATE_PROGRESS';
 export const LOAD_ALL_FOLDERS = 'LOAD_ALL_FOLDERS';
+export const CREATE_ADMIN_ACCOUNT = 'CREATE_ADMIN_ACCOUNT';
+export const CHECK_FOR_SETUP = 'CHECK_FOR_SETUP';
 export const UPDATE_FOLDER_SELECTED_STATE = 'UPDATE_FOLDER_SELECTED_STATE';
 
 const initialState = () => ({
@@ -22,11 +24,14 @@ const initialState = () => ({
     userOffset: 0,
     totalUsers: NaN,
 
+    needsSetup: false,
+
     // current scan progress
     scan: {
         running: false,
         details: {
-            state: ScannerState.IDLE,
+            type: '',
+            currentState: ScannerState.FINISHED,
             currentFile: '',
             scannedFiles: 0,
             totalFiles: 0,
@@ -49,7 +54,9 @@ export default {
          * @param password
          * @param roles
          */
-        createUser: ({ commit }, { id, name, password, roles }) =>
+        createUser: ({ commit }, {
+            id, name, password, roles,
+        }) =>
             getValue(ADAPTER).put('user', {
                 id,
                 name,
@@ -85,7 +92,7 @@ export default {
          * @param commit
          */
         loadAllFolders: ({ commit }) =>
-            getValue(ADAPTER).get('scanner/folder')
+            getValue(ADAPTER).get('library/folder')
                 .then(response => commit(LOAD_ALL_FOLDERS, response)),
 
         /**
@@ -96,7 +103,7 @@ export default {
          * @param selected
          */
         addFolder: ({ commit }, { path, selected = true }) =>
-            getValue(ADAPTER).put('scanner/folder', {
+            getValue(ADAPTER).put('library/folder', {
                 path,
                 selected,
             }).then(({ data }) => commit(ADD_FOLDER, data)),
@@ -109,86 +116,39 @@ export default {
          * @param selected
          */
         updateFolderSelectedState: ({ commit }, { id, selected }) =>
-            getValue(ADAPTER).post(`scanner/folder/${id}`, {
+            getValue(ADAPTER).post(`library/folder/${id}`, {
                 selected,
             }).then(response => commit(UPDATE_FOLDER_SELECTED_STATE, response)),
 
         /**
-         * Remove a folder from the scanner.
+         * Remove a folder from the library.
          *
          * @param commit
          * @param id
          */
         removeFolder: ({ commit }, { id }) =>
-            getValue(ADAPTER).delete(`scanner/folder/${id}`, {
+            getValue(ADAPTER).delete(`library/folder/${id}`, {
                 id,
             }).then(() => commit(REMOVE_FOLDER, id)),
-
-        /**
-         * Start scanning the collection.
-         *
-         * @param dispatch
-         * @returns {*|AxiosPromise}
-         */
-        scanCollection: ({ dispatch }) => {
-            dispatch('updateProgress');
-            return getValue(ADAPTER).post('scanner/scan');
-        },
-
-        /**
-         * Start cleaning the collection.
-         *
-         * @param dispatch
-         * @returns {*|AxiosPromise}
-         */
-        cleanCollection: ({ dispatch }) => {
-            dispatch('updateProgress');
-            return getValue(ADAPTER).post('scanner/clean');
-        },
-
-        /**
-         * Clear complete collection.
-         *
-         * @param dispatch
-         * @returns {*|AxiosPromise}
-         */
-        clearCollection: ({ dispatch }) => {
-            dispatch('updateProgress');
-            return getValue(ADAPTER).post('scanner/clear');
-        },
 
         /**
          * Update the progress of the currently active scan.
          *
          * @param commit
-         * @param rootState
-         * @param state
+         * @param data
          */
-        updateProgress: ({ commit, rootState, state }) => {
-            let scanProgressLoopFix = 0;
+        updateProgress: ({ commit }, data) => commit(UPDATE_PROGRESS, data),
 
-            const eventSource =
-                new EventSource(`${rootState.config.api.base}scanner/progress${serializeUrlParams({
-                    token: rootState.auth.token,
-                    refresh_interval: 0.2,
-                })}`);
+        checkForSetup: ({ commit }) =>
+            getValue(ADAPTER).get('setup/needs-setup')
+                .then(({ data }) => commit(CHECK_FOR_SETUP, data)),
 
-            eventSource.addEventListener('message', (e) => {
-                const data = JSON.parse(e.data);
-
-                if (data.running === false) {
-                    scanProgressLoopFix += 1;
-                }
-
-                // close connection if scan is finished
-                if ((state.scan.running === true && data.running === false) || scanProgressLoopFix > 2) {
-                    scanProgressLoopFix = 0;
-                    eventSource.close();
-                }
-
-                commit(UPDATE_PROGRESS, data);
-            }, false);
-        },
+        createAdminAccount: ({ commit }, { username, displayName, password }) =>
+            getValue(ADAPTER).put('setup/create-admin', {
+                id: username,
+                name: displayName,
+                password,
+            }).then(() => commit(CREATE_ADMIN_ACCOUNT)),
     },
 
     mutations: {
@@ -213,7 +173,20 @@ export default {
         },
 
         [CLEAR]: (state) => {
+            // do not override needsSetup
+            const { needsSetup } = state;
+
             setToInitialState(state, initialState());
+
+            state.needsSetup = needsSetup;
+        },
+
+        [CHECK_FOR_SETUP]: (state, { result }) => {
+            state.needsSetup = result;
+        },
+
+        [CREATE_ADMIN_ACCOUNT]: (state) => {
+            state.needsSetup = false;
         },
     },
 };

@@ -1,12 +1,12 @@
 <template>
     <div class="component-scanner-actions">
-        <Button :disabled="scanRunning" :onClick="start">Start Scan</Button>
+        <Button :disabled="scanRunning" :onClick="scanCollection">Start New Scan</Button>
         <p>Add new media to your collection or refresh old.</p>
         <div class="seperator"></div>
-        <Button :disabled="scanRunning" :onClick="clean">Clean Up</Button>
+        <Button :disabled="scanRunning" :onClick="cleanCollection">Clean Up Library</Button>
         <p>Remove missing files from the collection.</p>
         <div class="seperator"></div>
-        <Button :disabled="scanRunning" icon="delete" variation="red" :onClick="clear">Clear database</Button>
+        <Button :disabled="scanRunning" icon="delete" variation="red" :onClick="confirmWipe">Wipe Library</Button>
         <p>Clear the database.</p>
         <p class="text-danger">Use with care!</p>
     </div>
@@ -16,7 +16,7 @@
     import { mapActions } from 'vuex';
     import VueTypes from 'vue-types';
     import Button from 'components/form/Button';
-    import ConfirmClearDatabaseModal from 'components/modal/ConfirmClearDatabaseModal';
+    import ConfirmWipeLibraryModal from 'components/modal/ConfirmWipeLibraryModal';
 
     export default {
         name: 'ComponentScannerActions',
@@ -25,13 +25,7 @@
             scanRunning: VueTypes.bool.isRequired,
             scanCollection: VueTypes.func.isRequired,
             cleanCollection: VueTypes.func.isRequired,
-            clearCollection: VueTypes.func.isRequired,
-        },
-
-        data() {
-            return {
-
-            };
+            wipeCollection: VueTypes.func.isRequired,
         },
 
         methods: {
@@ -39,17 +33,12 @@
                 openModal: 'modal/openModal',
             }),
 
-            start() {
-                return this.scanCollection();
-            },
-
-            clean() {
-                return this.cleanCollection();
-            },
-
-            clear() {
+            confirmWipe() {
                 return this.openModal({
-                    component: ConfirmClearDatabaseModal,
+                    component: ConfirmWipeLibraryModal,
+                    props: {
+                        onConfirm: this.wipeCollection,
+                    },
                 });
             },
         },

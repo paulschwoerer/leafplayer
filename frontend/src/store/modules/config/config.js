@@ -1,9 +1,11 @@
+/* global APP_BASE_URL */
+
 export default {
     namespaced: true,
 
     state: {
         api: {
-            base: '/api/',
+            base: `${APP_BASE_URL}api/`,
         },
     },
 

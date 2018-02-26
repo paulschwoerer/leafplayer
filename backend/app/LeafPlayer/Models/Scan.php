@@ -9,10 +9,11 @@ class Scan extends BaseModel {
     public $timestamps = true;
 
     protected $fillable = [
-        'complete',
-        'progress',
-        'current_file',
-        'scanned'
+        'type',
+        'aborted',
+        'duration',
+        'processed_items',
+        'total_items'
     ];
 
     /**

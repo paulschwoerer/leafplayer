@@ -25,6 +25,8 @@ class AuthApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse The token that was created for the user.
+     * @throws \App\LeafPlayer\Exceptions\Auth\InvalidCredentialsException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function authenticate(Request $request) {
         $this->validate($request, [
@@ -44,6 +46,8 @@ class AuthApiController extends BaseApiController {
      * Refresh the JWT token of a user.
      *
      * @return JsonResponse The refreshed token for the user.
+     * @throws \App\LeafPlayer\Exceptions\Auth\ExpiredTokenException
+     * @throws \App\LeafPlayer\Exceptions\Auth\TokenNotProvidedException
      */
     public function refreshToken() {
         $token = $this->controller->refreshToken();
@@ -60,6 +64,10 @@ class AuthApiController extends BaseApiController {
     /**
      * Get the currently authenticated user.
      * @return JsonResponse The current user in JSON format.
+     * @throws \App\LeafPlayer\Exceptions\Auth\ExpiredTokenException
+     * @throws \App\LeafPlayer\Exceptions\Auth\InvalidTokenProvidedException
+     * @throws \App\LeafPlayer\Exceptions\Auth\UserNotFoundException
+     * @throws \App\LeafPlayer\Exceptions\UnauthorizedException
      */
     public function getCurrentUser() {
         $user = $this->controller->getCurrentUser(['roles']);
@@ -74,6 +82,10 @@ class AuthApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse An object to determine if the operation was successful.
+     * @throws \App\LeafPlayer\Exceptions\Auth\InvalidPasswordException
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Auth\WrongPasswordException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function changeUserPassword(Request $request) {
         $this->requirePermission('auth.change-password');

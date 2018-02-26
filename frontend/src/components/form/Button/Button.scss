@@ -20,6 +20,11 @@
             background-color: $colorWhite;
             color: $colorRed;
         }
+
+        &.white-border button {
+            background-color: $colorWhite;
+            color: $colorBlue;
+        }
     }
 
     &.loading {
@@ -63,6 +68,14 @@
             color: $colorWhite;
             border-color: $colorRed;
             background-color: $colorRed;
+        }
+    }
+
+    &.white-border {
+        button {
+            color: $colorWhite;
+            border-color: $colorWhite;
+            background-color: transparent;
         }
     }
 

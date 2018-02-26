@@ -1,0 +1,44 @@
+# Docker-compose for development
+
+version: '2'
+services:
+  app:
+    container_name: app
+    build:
+      context: "./"
+      dockerfile: ./app.dev.dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+      - ./testmusic:/var/music
+  web:
+    container_name: web
+    build:
+      context: "./"
+      dockerfile: ./web.dev.dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - 8090:80
+  database:
+    container_name: database
+    image: mysql:5.7
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      - "MYSQL_DATABASE=leafplayer"
+      - "MYSQL_USER=leafplayer"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      - "PMA_HOST=database"
+    ports:
+      - 8081:80
+
+volumes:
+  dbdata:
+

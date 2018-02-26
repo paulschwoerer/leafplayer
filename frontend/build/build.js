@@ -2,6 +2,11 @@ require('./check-versions')()
 
 process.env.NODE_ENV = 'production'
 
+var argv = require('minimist')(process.argv.slice(2));
+
+// set base if specified
+process.env.APP_BASE_URL = typeof argv.base === 'string' ? argv.base : '/';
+
 var ora = require('ora')
 var rm = require('rimraf')
 var path = require('path')
@@ -9,6 +14,7 @@ var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.prod.conf')
+
 
 var spinner = ora('building for production...')
 spinner.start()

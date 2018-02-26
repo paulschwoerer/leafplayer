@@ -10,6 +10,10 @@ $app->group(['prefix' => 'api'], function() use ($app) {
 
     $app->group(['middleware' => ['throttle:100,1']], function() use ($app) {
         $app->post('auth/refresh', 'AuthApiController@refreshToken');
+
+        /* SETUP */
+        $app->put('setup/create-admin', 'SetupApiController@setupAdminAccount');
+        $app->get('setup/needs-setup', 'SetupApiController@needsSetup');
     });
 
     $app->group(['middleware' => ['throttle:100,1', 'auth:api'/*, 'jwt.refresh'*/]], function() use ($app) {
@@ -66,16 +70,16 @@ $app->group(['prefix' => 'api'], function() use ($app) {
         $app->get('collection/statistics', 'CollectionApiController@getCollectionStatistics');
         $app->post('collection/search', 'CollectionApiController@searchCollection');
 
-        /* SCANNER */
-        $app->post('scanner/scan', 'ScannerApiController@startScan');
-        $app->post('scanner/clean', 'ScannerApiController@cleanLibrary');
-        $app->post('scanner/clear', 'ScannerApiController@clearLibrary');
-        $app->get('scanner/progress', 'ScannerApiController@getScanProgress');
-        $app->get('scanner/folder', 'ScannerApiController@getAllFolders');
-        $app->get('scanner/folder/check', 'ScannerApiController@checkFolder');
-        $app->delete('scanner/folder/{id}', 'ScannerApiController@removeFolder');
-        $app->post('scanner/folder/{id}', 'ScannerApiController@updateFolderSelectedState');
-        $app->put('scanner/folder', 'ScannerApiController@addFolder');
+        /* LIBRARY */
+        $app->post('library/scan', 'LibraryApiController@startScan');
+        $app->post('library/clean', 'LibraryApiController@cleanLibrary');
+        $app->post('library/wipe', 'LibraryApiController@wipeLibrary');
+        $app->get('library/scan-progress', 'LibraryApiController@getScanProgress');
+        $app->get('library/folder', 'LibraryApiController@getAllFolders');
+        $app->get('library/folder/check', 'LibraryApiController@checkFolder');
+        $app->delete('library/folder/{id}', 'LibraryApiController@removeFolder');
+        $app->post('library/folder/{id}', 'LibraryApiController@updateFolderSelectedState');
+        $app->put('library/folder', 'LibraryApiController@addFolder');
     });
 	
 	// Catch non existing API methods

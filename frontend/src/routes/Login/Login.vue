@@ -20,6 +20,7 @@
             :onSubmit="handleLogin"
             submitLabel="Login"
             variation="light"
+            button-variation="white-border"
         />
 
         <footer>

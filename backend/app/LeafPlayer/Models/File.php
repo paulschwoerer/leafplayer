@@ -14,4 +14,11 @@ class File extends BaseModel {
     public $timestamps = false;
 
     protected $fillable = ['last_modified', 'path'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function song() {
+        return $this->belongsTo(Song::class);
+    }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\UnauthorizedException;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
@@ -20,7 +20,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler {
@@ -42,8 +41,9 @@ class Handler extends ExceptionHandler {
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $e
+     * @param  \Exception $e
      * @return void
+     * @throws Exception
      */
     public function report(Exception $e) {
         parent::report($e);
@@ -68,10 +68,10 @@ class Handler extends ExceptionHandler {
      * @return JsonResponse
      */
     private function handle(Request $request, Exception $e) {
-        if ($e instanceOf LeafPlayerException) {
+        if ($e instanceof LeafPlayerException) {
             $data   = $e->toArray();
             $status = $e->getStatus();
-        } else if ($e instanceOf NotFoundHttpException) {
+        } else if ($e instanceof NotFoundHttpException) {
             $data = [
                 'code' => 'not_found',
                 'status' => '404',
@@ -79,7 +79,7 @@ class Handler extends ExceptionHandler {
             ];
 
             $status = 404;
-        } else if ($e instanceOf MethodNotAllowedHttpException) {
+        } else if ($e instanceof MethodNotAllowedHttpException) {
             $data = [
                 'code' => 'method_not_allowed',
                 'status' => '405',
@@ -87,20 +87,39 @@ class Handler extends ExceptionHandler {
             ];
 
             $status = 405;
-        } else if ($e instanceof FatalErrorException || $e instanceof \ErrorException) {
-            $data = [
-                'code' => 'internal',
-                'status' => '500',
-                'description' => trans('errors.internal')
-            ];
-
-            $status = 500;
         } else if ($e instanceof PDOException) {
-            $data = [
-                'code' => 'database',
-                'status' => '500',
-                'description' => trans('errors.database')
-            ];
+            switch ($e->getCode()) {
+                case 2002:
+                    $data = [
+                        'code' => 'no_database_connection',
+                        'status' => '500',
+                        'description' => trans('errors.database.no_connection')
+                    ];
+
+                    break;
+                case 1049:
+                    $data = [
+                        'code' => 'unknown_database',
+                        'status' => '500',
+                        'description' => trans('errors.database.unknown_database', ['name' => DB::getDatabaseName()])
+                    ];
+
+                    break;
+                case 1045:
+                    $data = [
+                        'code' => 'invalid_database_credentials',
+                        'status' => '500',
+                        'description' => trans('errors.database.invalid_credentials', ['user' => env('DB_USERNAME', 'unknown')])
+                    ];
+
+                    break;
+                default:
+                    $data = [
+                        'code' => 'unknown_database_error',
+                        'status' => '500',
+                        'description' => trans('errors.database.unknown_error')
+                    ];
+            }
 
             $status = 500;
         } else if ($e instanceof TooManyRequestsHttpException) {
@@ -111,12 +130,18 @@ class Handler extends ExceptionHandler {
             ];
 
             $status = 429;
+        } else if ($e instanceof FatalErrorException || $e instanceof \ErrorException) {
+            $data = [
+                'code' => 'internal',
+                'status' => '500',
+                'description' => trans('errors.internal')
+            ];
+
+            $status = 500;
         } else {
-            if (config('app.debug')) {
-                Log::debug('Unhandled exception encountered:');
-                Log::debug(get_class($e));
-                Log::debug($e->getTraceAsString());
-            }
+            Log::error('Unhandled exception encountered:');
+            Log::error(get_class($e));
+            Log::error($e->getTraceAsString());
 
             $data = [
                 'code' => 'unknown',

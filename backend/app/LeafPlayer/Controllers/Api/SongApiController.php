@@ -7,8 +7,8 @@ use \Illuminate\Http\JsonResponse;
 use App\LeafPlayer\Utils\CommonValidations;
 use App\LeafPlayer\Controllers\SongController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use App\LeafPlayer\Exceptions\Scanner\FileNotFoundException;
-use App\LeafPlayer\Exceptions\Scanner\FileNotReadableException;
+use App\LeafPlayer\Exceptions\Library\FileNotFoundException;
+use App\LeafPlayer\Exceptions\Library\FileNotReadableException;
 
 /**
  * This controller is the layer between the API and the SongController.
@@ -23,6 +23,12 @@ class SongApiController extends BaseApiController {
         $this->controller = new SongController;
     }
 
+    /**
+     * Get popular songs
+     *
+     * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     */
     public function getPopularSongs() {
         $this->requirePermission('song.popular');
 
@@ -45,6 +51,9 @@ class SongApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Song\NotFoundException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getSong(Request $request) {
         $this->requirePermission('song.get');
@@ -64,6 +73,8 @@ class SongApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getSongsById(Request $request) {
         $this->requirePermission('song.by-id');
@@ -97,6 +108,8 @@ class SongApiController extends BaseApiController {
      * @return BinaryFileResponse
      * @throws FileNotFoundException
      * @throws FileNotReadableException
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Song\NotFoundException
      */
     public function streamSong($id) {
         $this->requirePermission('song.stream');
@@ -105,11 +118,13 @@ class SongApiController extends BaseApiController {
 
         $song = (new SongController)->getSong($id);
 
-        if (!file_exists($song->file->path)) {
+        $file = $song->getFirstAvailableFile();
+
+        if (!file_exists($file->path)) {
             throw new FileNotFoundException($song->id);
         }
 
-        if (!is_readable($song->file->path)) {
+        if (!is_readable($file->path)) {
             throw new FileNotReadableException($song->id);
         }
 
@@ -117,7 +132,7 @@ class SongApiController extends BaseApiController {
         $song->played++;
         $song->save();
 
-        return new BinaryFileResponse($song->file->path);
+        return new BinaryFileResponse($file->path);
     }
 
     /**
@@ -127,6 +142,8 @@ class SongApiController extends BaseApiController {
      * @return BinaryFileResponse
      * @throws FileNotFoundException
      * @throws FileNotReadableException
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Media\Song\NotFoundException
      */
     public function downloadSong($id) {
         $this->requirePermission('song.download');
@@ -135,10 +152,12 @@ class SongApiController extends BaseApiController {
 
         $song = (new SongController)->getSong($id);
 
-        if (!file_exists($song->file->path))
+        $file = $song->getFirstAvailableFile();
+
+        if (!file_exists($file->path))
             throw new FileNotFoundException($song->id);
 
-        if (!is_readable($song->file->path))
+        if (!is_readable($file->path))
             throw new FileNotReadableException($song->id);
 
         // update download count on Song
@@ -149,11 +168,9 @@ class SongApiController extends BaseApiController {
             $song->artist->name,
             $song->album->name,
             $song->title,
-            strtolower($song->file->format)
+            strtolower($file->format)
         );
 
-        echo $song->file->format;
-
-        return response()->download($song->file->path, $name);
+        return response()->download($file->path, $name);
     }
 }

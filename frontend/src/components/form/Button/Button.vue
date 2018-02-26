@@ -21,7 +21,7 @@
 
         props: {
             // color variation of the button
-            variation: VueTypes.oneOf(['blue', 'red', 'white']).def('blue'),
+            variation: VueTypes.oneOf(['blue', 'red', 'white', 'white-border']).def('blue'),
 
             // disable the button from the outside
             disabled: VueTypes.bool.def(false),

@@ -25,7 +25,7 @@
             </div>
 
             <div class="form-submit">
-                <Button :loading="busy">{{submitLabel}}</Button>
+                <Button :variation="buttonVariation" :loading="busy">{{submitLabel}}</Button>
             </div>
         </form>
     </div>
@@ -49,6 +49,8 @@
             value: VueTypes.isRequired,
 
             variation: VueTypes.oneOf(['dark', 'light']).def('dark'),
+
+            buttonVariation: Button.props.variation,
 
             fields: VueTypes.arrayOf(VueTypes.shape({
                 name: VueTypes.string.isRequired,

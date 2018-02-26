@@ -11,7 +11,7 @@
                     <Button variation="white" :onClick="loadSuggestedAlbums">More</Button>
                 </h2>
                 <Waterfall>
-                    <AlbumCard v-for="album in suggestedAlbums" key="album.id" :album="album" />
+                    <AlbumCard v-for="album in suggestedAlbums" v-if="album.id" key="album.id" :album="album" />
                 </Waterfall>
             </div>
 
@@ -52,7 +52,7 @@
     export default {
         name: 'RouteHome',
 
-        created() {
+        mounted() {
             if (!this.suggestedAlbums.length) {
                 this.loadSuggestedAlbums();
             }

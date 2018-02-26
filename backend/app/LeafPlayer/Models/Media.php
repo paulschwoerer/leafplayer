@@ -23,7 +23,7 @@ abstract class Media extends BaseModel {
      */
     public static function generateID() {
         do {
-            $id = Random::getRandomString(8);
+            $id = str_random(8);
         } while (self::find($id) != null);
 
         return $id;

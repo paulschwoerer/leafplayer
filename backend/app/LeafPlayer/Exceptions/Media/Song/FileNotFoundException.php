@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LeafPlayer\Exceptions\Scanner;
+namespace App\LeafPlayer\Exceptions\Library;
 
 use \App\LeafPlayer\Exceptions\NotFoundException;
  

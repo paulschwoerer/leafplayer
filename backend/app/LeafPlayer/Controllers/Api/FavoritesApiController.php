@@ -27,6 +27,9 @@ class FavoritesApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Favorites\UnknownTypeException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function addFavorites(Request $request) {
         $this->requirePermission('favorites.add');
@@ -50,6 +53,9 @@ class FavoritesApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Favorites\UnknownTypeException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function removeFavorites(Request $request) {
         $this->requirePermission('favorites.remove');
@@ -73,6 +79,8 @@ class FavoritesApiController extends BaseApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
+     * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function getFavorites(Request $request) {
         $this->requirePermission('favorites.view');

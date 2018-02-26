@@ -50,6 +50,8 @@ class PlaylistController extends BaseController {
      * @param $private
      * @return Playlist
      * @throws NoEditPermissionException
+     * @throws NoViewPermissionException
+     * @throws NotFoundException
      */
     public function updatePlaylistProperties($id, $name, $description, $private) {
         $playlist = $this->getPlaylist($id);
@@ -231,6 +233,7 @@ class PlaylistController extends BaseController {
      * @param $indexes
      * @return Playlist
      * @throws NoEditPermissionException
+     * @throws \Exception
      */
     public function removeIndexesFromPlaylist(Playlist $playlist, $indexes) {
         if (!$this->canCurrentUserEditPlaylist($playlist)) {
@@ -248,6 +251,9 @@ class PlaylistController extends BaseController {
      * @param $id
      * @return bool|null
      * @throws NoDeletePermissionException
+     * @throws NoViewPermissionException
+     * @throws NotFoundException
+     * @throws \Exception
      */
     public function deletePlaylist($id) {
         $playlist = $this->getPlaylist($id);

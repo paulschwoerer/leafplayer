@@ -12,7 +12,7 @@ class NotFoundException extends LeafPlayerException {
      * @param string $type
      * @param $arguments
      */
-    public function __construct($type, $arguments = []) {
+    public function __construct($type = 'errors.default.not_found', $arguments = []) {
         $message = $this->build($type, $arguments);
 
         parent::__construct($message);

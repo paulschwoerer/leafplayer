@@ -25,9 +25,9 @@
 
         <div class="advanced-controls">
             <div class="volume-controls">
-                <button class="mute" role="button" tabindex="0" @click="toggleMute">
+                <button class="mute" tabindex="0" @click="toggleMute">
                     <Icon v-show="muted" name="volume_off" />
-                    <Icon v-show="!muted && volume == 0" name="volume_mute" />
+                    <Icon v-show="!muted && volume === 0" name="volume_mute" />
                     <Icon v-show="!muted && volume > 0 && volume <= 0.5" name="volume_down" />
                     <Icon v-show="!muted && volume > 0.5" name="volume_up" />
                 </button>
@@ -37,10 +37,10 @@
                     </div>
                 </div>
             </div>
-            <button @click.prevent="toggleShuffle" class="shuffle" role="button" tabindex="0">
+            <button @click.prevent="toggleShuffle" class="shuffle" tabindex="0">
                 <Icon :class="{ active: shuffle }" name="shuffle"/>
             </button>
-            <button @click.prevent="cycleRepeatMode" class="repeat-mode" role="button" tabindex="0">
+            <button @click.prevent="cycleRepeatMode" class="repeat-mode" tabindex="0">
                 <Icon v-if="repeatModeNone" name="repeat" />
                 <Icon v-if="repeatModeAll" class="active" name="repeat" />
                 <Icon v-if="repeatModeOne" class="active" name="repeat_one" />
@@ -48,11 +48,9 @@
            <!-- <button class="equalizer" role="button" tabindex="0">
                 <Icon name="equalizer" />
             </button>-->
-            <button class="queue" role="button" tabindex="0">
-                <router-link :to="queueLink" tag="i" title="View your current queue" class="material-icons component-icon">
-                    queue_music
-                </router-link>
-            </button>
+            <router-link class="queue" :to="queueLink" tag="button">
+                <Icon name="queue_music" />
+            </router-link>
         </div>
         <div class="progress">
             <div ref="seekerElement" class="seek-bar" @mousedown="onSeekerMousedown">
@@ -94,7 +92,7 @@
             volume: VueTypes.number.isRequired,
             seek: VueTypes.number.isRequired,
             duration: VueTypes.number.isRequired,
-            currentSong: LeafPlayerPropTypes.song,
+            currentSong: VueTypes.oneOfType([LeafPlayerPropTypes.song, null]),
             currentQueueIndex: VueTypes.number.isRequired,
             queueSize: VueTypes.number.isRequired,
         },
@@ -181,9 +179,7 @@
             },
 
             calculatePercentage(xPos, element) {
-                return Math.min(1,
-                    Math.max(0, (xPos - element.getBoundingClientRect().left) / element.scrollWidth),
-                );
+                return Math.min(1, Math.max(0, (xPos - element.getBoundingClientRect().left) / element.scrollWidth));
             },
 
             onMouseMove(event) {
