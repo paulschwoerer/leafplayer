@@ -12,6 +12,7 @@ export const ADD_FOLDER = 'ADD_FOLDER';
 export const REMOVE_FOLDER = 'REMOVE_FOLDER';
 export const UPDATE_PROGRESS = 'UPDATE_PROGRESS';
 export const LOAD_ALL_FOLDERS = 'LOAD_ALL_FOLDERS';
+export const CREATE_ADMIN_ACCOUNT = 'CREATE_ADMIN_ACCOUNT';
 export const CHECK_FOR_SETUP = 'CHECK_FOR_SETUP';
 export const UPDATE_FOLDER_SELECTED_STATE = 'UPDATE_FOLDER_SELECTED_STATE';
 
@@ -141,6 +142,13 @@ export default {
         checkForSetup: ({ commit }) =>
             getValue(ADAPTER).get('setup/needs-setup')
                 .then(({ data }) => commit(CHECK_FOR_SETUP, data)),
+
+        createAdminAccount: ({ commit }, { username, displayName, password }) =>
+            getValue(ADAPTER).put('setup/create-admin', {
+                id: username,
+                name: displayName,
+                password,
+            }).then(() => commit(CREATE_ADMIN_ACCOUNT)),
     },
 
     mutations: {
@@ -175,6 +183,10 @@ export default {
 
         [CHECK_FOR_SETUP]: (state, { result }) => {
             state.needsSetup = result;
+        },
+
+        [CREATE_ADMIN_ACCOUNT]: (state) => {
+            state.needsSetup = false;
         },
     },
 };

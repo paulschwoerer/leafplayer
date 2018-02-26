@@ -16,13 +16,34 @@ The ability to change password and download songs are removed from the demo.
 
 <p align="center"><img width="80%" src="demo.png"></p>
 
-## Quick start
+## Installation
 
-To use LeafPlayer, you need to own a server, capable of running the [Lumen PHP framework](https://lumen.laravel.com/) and a supported database, for example MySQL. You can use your home computer as well in case you only want to listen to music in your home network. To access the frontend you need a modern browser (for example Firefox, Chrome, Safari).
+There are currently two methods to install LeafPlayer.
 
-### Installation
-To install LeafPlayer on your server or computer, simply grab the latest [release](https://github.com/paulschwoerer/leafplayer/releases) and copy the contents to yur web root.
-Make sure your server meets the following requirements:
+### Using Docker
+
+If you haven't heard about Docker, check it out [here](https://www.docker.com/what-docker). It's amazing!
+Prerequisites for using this method are to have [Docker](https://store.docker.com/search?type=edition&offering=community) and [docker-compose](https://docs.docker.com/compose/) installed.
+
+After that everything is fairly simple. Just grab the `docker-compose.yml` and `.env` file from the `dist` directory and copy them to a location of your choice on your server.
+
+Open the `.env` file and edit the following values
+
+- `APP_KEY`: Replace with a random 32 character string.
+- `JWT_KEY`: Same as above.
+- `APP_TIMEZONE`: Change to your desired timezone. See [http://php.net/manual/en/timezones.php](http://php.net/manual/en/timezones.php) for a full list. 
+- `DB_PASSWORD`: Change to something else if desired.
+- `HTTP_PORT`: The http port, that LeafPlayer should run on.
+- `HTTPS_PORT`: The https port, that LeafPlayer should run on.
+- `CERT_CHAIN`: Absolute path to your SSL certificate file
+- `CERT_KEY`: Absolute path to your SSL key file
+- `MUSIC_DIR`: Absolute path to your music files
+
+After that just run `docker-compose up -d`.
+
+### Not Using Docker (The old school method)
+
+You'll need to own a server or computer, capable of running the [Lumen PHP framework](https://lumen.laravel.com/) and a supported database, for example MySQL. Those requirements are the following:
 
 - Webserver
 - PHP >= 5.6.4
@@ -31,20 +52,22 @@ Make sure your server meets the following requirements:
 - Mbstring PHP Extension
 - [Composer](https://getcomposer.org/)
 
-You also need a working database server, preferably with a user and a database dedicated to your LeafPlayer installation.
+Simply grab the latest [release](https://github.com/paulschwoerer/leafplayer/releases) and copy the contents into your desired folder.
 
-If your server meets those requirements, you're ready to start the setup process and follow the instructions provided by the installer.
+You'll also need a database dedicated to your LeafPlayer installation.
 
-```sh
-composer install
+```bash
+ $ composer install
 
-php artisan lp:setup
+ $ php artisan lp:setup
 ```
  
 After the installer has finished successfully, you should be able to log in with the admin account you just created.
 
 - Note, that LeafPlayer is currently best suited to live at the root of a domain, so `example.com` or `leafplayer.example.com` but not in a subdirectory like `example.com/leafplayer`. If you need to deploy it to a subdirectory however, scroll down to the `Advanced` section.
 - The installer is currently being tested, so please let me know if any problems arise from using it.
+
+## Usage
 
 ### Adding Media
 
@@ -53,20 +76,32 @@ It's also possible to manage your collection from the console by using the scann
 
 (All commands must be prefixed with `php artisan `)
 
-- `scanner:folder:add {path}` Adds a folder to scan for files.
-- `scanner:folder:remove {id}` Removes a folder by its ID.
-- `scanner:folder:list` Lists all folders that are used for scanning.
-- `scanner:scan {--clean} {--no-progress} {--update-existing}` Starts a scan for media in the earlier specified folders.
-- `scanner:clean {--no-progress}` Cleans the database from missing files.
-- `scanner:clear {--confirm} {--remove-playlists} {--no-progress}` Deletes all media information from the database. Use with extreme care.
+- `lp:library:folder:add {path}` Adds a folder to scan for files.
+- `lp:library:folder:remove {id}` Removes a folder by its ID.
+- `lp:library:folder:list` Lists all folders that are used for scanning.
+- `lp:library:scan {--no-output}` Starts a scan for media in the earlier specified folders.
+- `lp:library:clean {--no-output}` Cleans the database from missing files.
+- `lp:library:wipe {--confirm} {--no-output}` Deletes all media information from the database. Use with care.
 
 ### Adding Users
 
 Users can be added in the "Users" tab of the administration panel. Currently it's only possible to add users with default permissions.
 
-### Upgrading
+## Upgrading
 
-There is currently no command to upgrade to a newer release. Currently it's a matter of replacing all files except of the `.env` file.
+### Using Docker
+
+Just pull the newest image and restart the containers.
+
+```bash
+ $ docker-compose pull
+ 
+ $ docker-compose up -d
+```
+
+### Not using Docker
+
+There is no command to upgrade to a newer release. Currently it's a matter of replacing all files except of the `.env` file and the `public/artwork` folder.
 
 ## A Short History
 
@@ -76,7 +111,12 @@ In late 2016 I was searching for a music streaming server to fit my needs, but n
 
 As it turned out, it was - and still is - a lot of work for a single person, which is why I'm searching for active contributors for the project to create something amazing.
 
+## Contributing
+
+Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for more info.
+
 ## Advanced
+
 ### Deploying into subdirectory
 There's two things that you need to do.
 - Rebuild the frontend with the following command (See [CONTRIBUTING.md](CONTRIBUTING.md) for more details on how to build the project)
@@ -88,7 +128,3 @@ There's two things that you need to do.
   ```htaccess
   RewriteBase /YOUR_BASE_URL/
   ```
-
-## Contributing
-
-Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for more info.

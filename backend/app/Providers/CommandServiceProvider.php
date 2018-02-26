@@ -9,12 +9,12 @@ use App\Console\Commands\LibraryClean;
 use App\Console\Commands\ListFolders;
 use App\Console\Commands\RemoveFolder;
 use App\Console\Commands\LibraryScan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use App\Console\Commands\LibraryWipe;
 use App\Console\Commands\KeyGenerate;
 
 class CommandServiceProvider extends ServiceProvider {
-
     /**
      * Register any application services.
      *

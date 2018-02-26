@@ -1,19 +1,21 @@
+# Docker-compose for development
+
 version: '2'
 services:
   app:
     container_name: app
     build:
       context: "./"
-      dockerfile: ./deploy/app.dockerfile
+      dockerfile: ./app.dev.dockerfile
     working_dir: /var/www
     volumes:
       - ./backend:/var/www
-      - ./testmusic:/var/testmusic
+      - ./testmusic:/var/music
   web:
     container_name: web
     build:
       context: "./"
-      dockerfile: ./deploy/web.dockerfile
+      dockerfile: ./web.dev.dockerfile
     working_dir: /var/www
     volumes:
       - ./backend:/var/www
@@ -35,7 +37,7 @@ services:
     environment:
       - "PMA_HOST=database"
     ports:
-      - 8091:80
+      - 8081:80
 
 volumes:
   dbdata:

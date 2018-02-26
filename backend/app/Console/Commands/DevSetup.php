@@ -14,7 +14,7 @@ class DevSetup extends Command {
 
     protected $signature = 'lp:dev-setup';
 
-    protected $description = 'This command will do the development setup process. It is not really meant to be run manually, but will rather be started after Homestead booted.';
+    protected $description = 'This command will do the development setup process.';
 
     public function __construct() {
         $this->wizard = new Wizard;

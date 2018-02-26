@@ -12,7 +12,7 @@ $app->group(['prefix' => 'api'], function() use ($app) {
         $app->post('auth/refresh', 'AuthApiController@refreshToken');
 
         /* SETUP */
-        $app->post('setup/create-admin', 'SetupApiController@setupAdminAccount');
+        $app->put('setup/create-admin', 'SetupApiController@setupAdminAccount');
         $app->get('setup/needs-setup', 'SetupApiController@needsSetup');
     });
 

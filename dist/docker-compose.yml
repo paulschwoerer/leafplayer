@@ -5,30 +5,37 @@ services:
     image: paulschwoerer/leafplayer-app
     working_dir: /var/www
     volumes:
+      - ${MUSIC_DIR}:/var/music
       - /var/www/storage
+      - leafplayer-art-storage:/var/www/public/artwork
     env_file: '.env'
+    restart: always
 
   web:
     container_name: leafplayer-web
     image: paulschwoerer/leafplayer-web
+    volumes:
+      - leafplayer-art-storage:/var/www/public/artwork
+      - ${CERT_CHAIN}:/var/certs/fullchain.pem
+      - ${CERT_KEY}:/var/certs/key.pem
     ports:
-      - 9623:80
+      - ${HTTP_PORT}:80
+      - ${HTTPS_PORT}:443
+    restart: always
 
   database:
     container_name: leafplayer-database
     image: mysql:5.6
     volumes:
-      - dbdata:/var/lib/mysql
+      - leafplayer-dbdata:/var/lib/mysql
     environment:
       - "MYSQL_DATABASE=leafplayer"
       - "MYSQL_USER=leafplayer"
-      - "MYSQL_PASSWORD=secret"
-      - "MYSQL_ROOT_PASSWORD=secret"
-
-  redis:
-    container_name: leafplayer-redis
-    image: redis:3.0-alpine
+      - "MYSQL_PASSWORD=${DB_PASSWORD}"
+      - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
+    restart: always
 
 volumes:
-  dbdata:
+  leafplayer-dbdata:
+  leafplayer-art-storage:
 

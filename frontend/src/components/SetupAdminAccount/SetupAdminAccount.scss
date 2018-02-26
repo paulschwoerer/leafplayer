@@ -1,3 +1,22 @@
-.component-setup-admin-account {
+@import '../../assets/sass/variables/_colors.scss';
 
+.component-setup-admin-account {
+  color: $colorWhite;
+  padding: 100px 20px;
+
+  .logo-container {
+    width: 120px;
+    height: auto;
+    margin: 20px auto;
+  }
+
+  .welcome {
+    text-align: center;
+  }
+
+  .steps {
+    max-width: 400px;
+    width: 100%;
+    margin: 20px auto;
+  }
 }

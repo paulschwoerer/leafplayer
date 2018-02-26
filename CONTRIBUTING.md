@@ -1,7 +1,7 @@
 # Contributing
 
 ### Prerequisites
-LeafPlayer recently switched to docker for easier development and deployment. If you don't know about docker, check it out [here](https://www.docker.com/what-docker). It's amazing!
+LeafPlayer recently switched to docker for easier development and deployment. If you haven't heard about docker, check it out [here](https://www.docker.com/what-docker). It's amazing!
 
 Obviously you need Git to clone the LeafPlayer repository into a directory of your choice.
 
@@ -14,7 +14,7 @@ After finishing the docker installation, bringing up the backend is merely a que
 ```bash
  $ docker-compose up -d
 
- $ docker-compose exec app bash bringupdev.sh
+ $ docker-compose exec app ./bringupdev
 ```
 
 ### Setting up the frontend
@@ -33,16 +33,9 @@ The frontend is based on the [VueJS webpack template](https://github.com/vuejs-t
 ```
 
 ### Usage
-TODO:
 
-You can place test music into the `testmusic` directory. It will be accessible in the app container via `/var/testmusic`
+You can place music files into the `testmusic` directory for testing. It will be accessible in the app container via `/var/music`
 
-You can also ssh into the containers app, web or database with `docker exec -it (web|app|database) /bin/bash`
+You can also ssh into the app or web container with `docker exec -it (web|app) /bin/sh`
 
-### Troubleshooting
-
-*Problem:* Weird port binding error when running ``docker-compose up -d``
-
-*Solution*: Restart docker
-
-If you're having any issues with the setup process, just pop me a message.
+A [phpmyadmin](https://www.phpmyadmin.net/) instance will be available at http://localhost:8081 for easy database debugging.
