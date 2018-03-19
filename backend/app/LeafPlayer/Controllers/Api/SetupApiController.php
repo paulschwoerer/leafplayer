@@ -6,9 +6,7 @@ use App\LeafPlayer\Controllers\SetupController;
 use Illuminate\Http\Request;
 
 /**
- * This controller is the layer between the API and the AlbumController.
- *
- * Class AlbumApiController
+ * Class SetupApiController
  * @package App\LeafPlayer\Controllers\Api
  */
 class SetupApiController extends BaseApiController {

@@ -2,6 +2,7 @@
 
 namespace App\LeafPlayer\Controllers\Api;
 
+use App\LeafPlayer\Exceptions\Auth\NoPermissionException;
 use App\LeafPlayer\Models\Artist;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
@@ -94,5 +95,17 @@ class ArtistApiController extends BaseApiController {
         $artists->makeVisible(['type', 'song_count', 'album_count']);
 
         return $this->paginatedResponse($artists, Artist::count(), $offset);
+    }
+
+    /**
+     * @param Request $request
+     * @throws NoPermissionException
+     */
+    public function downloadArtist(Request $request) {
+        if (config('app.is_demo')) {
+            throw new NoPermissionException('demo_mode');
+        }
+
+        // future ...
     }
 }

@@ -31,7 +31,7 @@
 
         <div class="seperator seperator-light" />
 
-        <div class="credits">
+        <div class="credits" v-if="isDemo">
             Credit for all demo music goes to <a href="http://www.purple-planet.com">purple-planet.com</a>
         </div>
 
@@ -56,6 +56,7 @@
     import { mapState, mapActions } from 'vuex';
     import Button from 'components/form/Button';
     import PageNames from 'data/enum/PageNames';
+    import { isDemo } from 'utils/demoUtils';
     import Player from 'components/sidebar/Player';
     import SearchInput from 'components/search/SearchInput';
     import SideBarPlaylistContainer from 'components/sidebar/SideBarPlaylistContainer';
@@ -109,6 +110,10 @@
                 return {
                     name: PageNames.HOME,
                 };
+            },
+
+            isDemo() {
+                return isDemo();
             },
         },
 

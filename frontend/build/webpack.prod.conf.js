@@ -29,6 +29,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env,
       APP_BASE_URL: JSON.stringify(process.env.APP_BASE_URL),
+      LEAFPLAYER_DEMO: JSON.stringify(process.env.LEAFPLAYER_DEMO),
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {

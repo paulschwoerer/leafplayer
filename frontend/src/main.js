@@ -7,7 +7,7 @@ import routes from 'routes';
 import { sync } from 'vuex-router-sync';
 import VueDnD from 'dnd/index';
 import store from 'store';
-import { setValue } from 'utils/injector';
+import { setValue, getValue } from 'utils/injector';
 import { ADAPTER } from 'data/Injectables';
 import Adapter from 'store/adapter';
 import 'normalize.css';
@@ -40,9 +40,14 @@ Vue.use(Auth, {
 });
 
 /* eslint-disable no-new */
-new Vue({
-    el: '#app',
-    store,
-    router,
-    render: h => h(App),
-});
+Promise.all(
+    store.dispatch('config/checkDemo'),
+    store.dispatch('config/checkSetup'),
+).then(() => {
+    new Vue({
+        el: '#app',
+        store,
+        router,
+        render: h => h(App),
+    });
+}).catch(e => console.error('Error during app initialization: ', e));

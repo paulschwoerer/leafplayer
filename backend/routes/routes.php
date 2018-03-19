@@ -14,6 +14,9 @@ $app->group(['prefix' => 'api'], function() use ($app) {
         /* SETUP */
         $app->put('setup/create-admin', 'SetupApiController@setupAdminAccount');
         $app->get('setup/needs-setup', 'SetupApiController@needsSetup');
+
+        /* DEMO */
+        $app->get('is-demo', 'ConfigApiController@isDemo');
     });
 
     $app->group(['middleware' => ['throttle:100,1', 'auth:api'/*, 'jwt.refresh'*/]], function() use ($app) {

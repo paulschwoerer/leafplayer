@@ -90,12 +90,9 @@ class AuthController extends BaseController {
      * @param $oldPassword
      * @param $newPassword
      * @return bool
-     * @throws ExpiredTokenException
      * @throws InvalidPasswordException
-     * @throws InvalidTokenProvidedException
-     * @throws UnauthorizedException
-     * @throws UserNotFoundException
      * @throws WrongPasswordException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
      */
     public function changeUserPassword($oldPassword, $newPassword) {
         $user = $this->getCurrentUser();

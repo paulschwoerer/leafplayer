@@ -31,18 +31,10 @@
     export default {
         name: 'ComponentApp',
 
-        mounted() {
-            this.checkForSetup();
-        },
-
-        methods: mapActions({
-            checkForSetup: 'administration/checkForSetup',
-        }),
-
         computed: {
             ...mapState({
                 authReady: state => state.auth.ready,
-                needsSetup: state => state.administration.needsSetup,
+                needsSetup: state => state.config.needsSetup,
             }),
 
             authenticated() {

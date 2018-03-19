@@ -2,6 +2,7 @@
 
 namespace App\LeafPlayer\Controllers\Api;
 
+use App\LeafPlayer\Exceptions\Auth\NoPermissionException;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use App\LeafPlayer\Utils\CommonValidations;
@@ -146,6 +147,10 @@ class SongApiController extends BaseApiController {
      * @throws \App\LeafPlayer\Exceptions\Media\Song\NotFoundException
      */
     public function downloadSong($id) {
+        if (config('app.is_demo')) {
+            throw new NoPermissionException('demo_mode');
+        }
+
         $this->requirePermission('song.download');
 
         set_time_limit(0); // this may take a while

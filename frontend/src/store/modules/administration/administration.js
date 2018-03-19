@@ -5,6 +5,7 @@ import { CLEAR } from 'store/globalMutations';
 import ScannerState from 'data/enum/ScannerState';
 import { serializeUrlParams } from 'utils/urlUtils';
 import { setToInitialState } from 'utils/storeUtils';
+import { ConfigMutationTypes } from '../config';
 
 import { ModelMutationTypes } from '../model';
 
@@ -13,7 +14,6 @@ export const REMOVE_FOLDER = 'REMOVE_FOLDER';
 export const UPDATE_PROGRESS = 'UPDATE_PROGRESS';
 export const LOAD_ALL_FOLDERS = 'LOAD_ALL_FOLDERS';
 export const CREATE_ADMIN_ACCOUNT = 'CREATE_ADMIN_ACCOUNT';
-export const CHECK_FOR_SETUP = 'CHECK_FOR_SETUP';
 export const UPDATE_FOLDER_SELECTED_STATE = 'UPDATE_FOLDER_SELECTED_STATE';
 
 const initialState = () => ({
@@ -139,16 +139,12 @@ export default {
          */
         updateProgress: ({ commit }, data) => commit(UPDATE_PROGRESS, data),
 
-        checkForSetup: ({ commit }) =>
-            getValue(ADAPTER).get('setup/needs-setup')
-                .then(({ data }) => commit(CHECK_FOR_SETUP, data)),
-
         createAdminAccount: ({ commit }, { username, displayName, password }) =>
             getValue(ADAPTER).put('setup/create-admin', {
                 id: username,
                 name: displayName,
                 password,
-            }).then(() => commit(CREATE_ADMIN_ACCOUNT)),
+            }).then(() => commit(ConfigMutationTypes.SET_SETUP, false)),
     },
 
     mutations: {
@@ -173,20 +169,7 @@ export default {
         },
 
         [CLEAR]: (state) => {
-            // do not override needsSetup
-            const { needsSetup } = state;
-
             setToInitialState(state, initialState());
-
-            state.needsSetup = needsSetup;
-        },
-
-        [CHECK_FOR_SETUP]: (state, { result }) => {
-            state.needsSetup = result;
-        },
-
-        [CREATE_ADMIN_ACCOUNT]: (state) => {
-            state.needsSetup = false;
         },
     },
 };

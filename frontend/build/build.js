@@ -6,6 +6,7 @@ var argv = require('minimist')(process.argv.slice(2));
 
 // set base if specified
 process.env.APP_BASE_URL = typeof argv.base === 'string' ? argv.base : '/';
+process.env.LEAFPLAYER_DEMO = !!(typeof argv.demo);
 
 var ora = require('ora')
 var rm = require('rimraf')

@@ -47,4 +47,6 @@ return [
 
     // Set this to true for every new deploy, so the server will run migrations
     'needs_updating' => true,
+
+    'is_demo' => env('LEAFPLAYER_DEMO', false),
 ];

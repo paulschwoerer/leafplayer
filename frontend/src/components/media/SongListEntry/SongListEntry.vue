@@ -19,7 +19,7 @@
         <td v-if="showDuration" class="duration">{{songDurationHumanReadable}}</td>
         <td v-if="showOptions" class="options" @click.stop="handleOptionsButtonClicked">
             <Icon rel="optionsButton" name="more_vert" />
-            <a @click.stop="" :href="songDownloadLink"><Icon name="file_download" /></a>
+            <a v-if="!isDemo" @click.stop="" :href="songDownloadLink"><Icon name="file_download" /></a>
 
             <SongPopover
                 v-if="popoverOpened"
@@ -40,6 +40,7 @@
     import PageNames from 'data/enum/PageNames';
     import { mapState, mapActions } from 'vuex';
     import { timeString } from 'utils/timeUtils';
+    import { isDemo } from 'utils/demoUtils';
     import { serializeUrlParams } from 'utils/urlUtils';
     import SongPopover from 'components/media/SongPopover';
     import PlayingIndicator from 'components/PlayingIndicator';
@@ -111,6 +112,10 @@
                     name: PageNames.ALBUM,
                     params: { [Params.ALBUM_ID]: this.song.album.id },
                 };
+            },
+
+            isDemo() {
+                return isDemo();
             },
         },
 

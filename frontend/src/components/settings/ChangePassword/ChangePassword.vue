@@ -18,6 +18,7 @@
     import { getValue } from 'utils/injector';
     import { ADAPTER } from 'data/Injectables';
     import Icon from 'components/content/Icon';
+    import { isDemo } from 'utils/demoUtils';
     import ValidationForm from 'components/form/ValidationForm';
     import { validatePassword } from 'utils/securityUtils';
     import Button from 'components/form/Button';
@@ -47,6 +48,10 @@
                         type: 'password',
                         label: 'Your old password',
                         required: true,
+                        validators: isDemo() ? [{
+                            validate: () => false,
+                            message: 'Changing of password not supported in demo.',
+                        }] : [],
                         errorOverride: this.oldPasswordWrong ? 'Password is not correct' : '',
                     },
                     {

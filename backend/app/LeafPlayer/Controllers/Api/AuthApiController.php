@@ -2,7 +2,7 @@
 
 namespace App\LeafPlayer\Controllers\Api;
 
-use Tymon\JWTAuth\JWTAuth;
+use App\LeafPlayer\Exceptions\Auth\NoPermissionException;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use App\LeafPlayer\Controllers\AuthController;
@@ -64,10 +64,7 @@ class AuthApiController extends BaseApiController {
     /**
      * Get the currently authenticated user.
      * @return JsonResponse The current user in JSON format.
-     * @throws \App\LeafPlayer\Exceptions\Auth\ExpiredTokenException
-     * @throws \App\LeafPlayer\Exceptions\Auth\InvalidTokenProvidedException
-     * @throws \App\LeafPlayer\Exceptions\Auth\UserNotFoundException
-     * @throws \App\LeafPlayer\Exceptions\UnauthorizedException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
      */
     public function getCurrentUser() {
         $user = $this->controller->getCurrentUser(['roles']);
@@ -85,9 +82,14 @@ class AuthApiController extends BaseApiController {
      * @throws \App\LeafPlayer\Exceptions\Auth\InvalidPasswordException
      * @throws \App\LeafPlayer\Exceptions\Auth\NoPermissionException
      * @throws \App\LeafPlayer\Exceptions\Auth\WrongPasswordException
+     * @throws \App\LeafPlayer\Exceptions\Media\User\NotFoundException
      * @throws \App\LeafPlayer\Exceptions\Request\ValidationException
      */
     public function changeUserPassword(Request $request) {
+        if (config('app.is_demo')) {
+            throw new NoPermissionException('demo_mode');
+        }
+
         $this->requirePermission('auth.change-password');
 
         $this->validate($request, [
