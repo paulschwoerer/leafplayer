@@ -359,7 +359,7 @@ class LibraryScanner extends LibraryActor {
                     copy($artFile, $filePath);
 
                     $album->arts()->create([
-                        'file' => $fileName
+                      'file' => $fileName
                     ]);
                 } else {
                     $art = Art::where('file', $fileName)->first();

@@ -298,6 +298,8 @@ abstract class LibraryActor extends Stateful {
             Log::error('[' . self::class . '] A database error occurred');
         } else {
             Log::error('[' . self::class . '] An unknown error occurred');
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
         }
 
         Log::error('Aborting scan');
