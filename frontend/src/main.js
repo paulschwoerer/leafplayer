@@ -40,10 +40,10 @@ Vue.use(Auth, {
 });
 
 /* eslint-disable no-new */
-Promise.all(
+Promise.all([
     store.dispatch('config/checkDemo'),
     store.dispatch('config/checkSetup'),
-).then(() => {
+]).then(() => {
     new Vue({
         el: '#app',
         store,
