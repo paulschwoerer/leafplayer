@@ -2,7 +2,7 @@
 **/.gitignore
 **/.gitkeep
 
-backend/public/artwork/**
+backend/public/artwork
 backend/storage/app/**
 backend/storage/logs/**
 backend/storage/framework/cache/**

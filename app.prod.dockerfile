@@ -30,9 +30,8 @@ COPY ./backend /var/www
 # Copy frontend index.html to lumen view
 COPY ./frontend/dist/index.html /var/www/resources/views/index.blade.php
 
-# Create and set permissions on app files and music directory
-RUN touch /var/www/storage/logs/lumen.log \
-    && mkdir /var/music
+# Create app log file
+RUN touch /var/www/storage/logs/lumen.log
 
 # Copy entrypoint script
 COPY ./deploy/entry.app.sh /usr/bin/entrypoint.sh
