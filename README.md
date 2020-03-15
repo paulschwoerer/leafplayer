@@ -1,18 +1,12 @@
 <p align="center"><img width="140"src="logo.png"></p>
 
+**Unfortunately, this project is put on ice for now.**
+
 # LeafPlayer
 
 LeafPlayer is a simple and fast, privately hosted music streaming server. It enables you to access your private music collection from anywhere where there's internet access.
 
-## Demo
-There is a demo available at [https://leafplayerdemo.paulschwoerer.de](https://leafplayerdemo.paulschwoerer.de).
-
-- Username: demo1 / demo2
-- Password: demodemo123
-
-Try dragging albums, artists and songs onto the player and the playlists in the sidebar.
-
-The ability to change password and download songs are removed from the demo.
+## Screenshot
 
 <p align="center"><img width="80%" src="demo.png"></p>
 
