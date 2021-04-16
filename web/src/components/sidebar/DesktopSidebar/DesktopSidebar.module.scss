@@ -1,0 +1,11 @@
+@import "scss/vars";
+
+.root {
+  background: $colorPrimaryShade;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  > nav {
+    margin: 2.5rem 0;
+  }
+}

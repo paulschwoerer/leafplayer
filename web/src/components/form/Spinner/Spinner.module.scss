@@ -1,0 +1,64 @@
+@import "scss/vars";
+
+@keyframes spinner {
+  0% {
+    stroke-dashoffset: 366.66%;
+    stroke-dasharray: 390%;
+  }
+
+  50% {
+    stroke-dashoffset: 166.66%;
+    stroke-dasharray: 390%;
+  }
+
+  100% {
+    stroke-dashoffset: 366.66%;
+    stroke-dasharray: 390%;
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.root {
+  margin: 0 auto;
+  animation: rotation 0.8s infinite linear;
+
+  &.sm {
+    width: 32px;
+    height: 32px;
+  }
+
+  &.md {
+    width: 48px;
+    height: 48px;
+  }
+
+  &.lg {
+    width: 64px;
+    height: 64px;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+
+    circle {
+      fill: transparent;
+      stroke-width: 5%;
+      animation: spinner 2s infinite;
+      stroke: $colorEmphasisLow;
+    }
+  }
+
+  &.invertColors svg circle {
+    stroke: #fff;
+  }
+}

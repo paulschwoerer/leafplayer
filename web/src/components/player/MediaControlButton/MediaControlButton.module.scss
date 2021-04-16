@@ -1,0 +1,52 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  position: relative;
+  border: 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  outline: 0;
+
+  &.small {
+    width: 20px;
+    height: 20px;
+  }
+
+  @include canHover {
+    &::before {
+      content: "";
+      position: absolute;
+      top: -0.35rem;
+      right: -0.35rem;
+      bottom: -0.35rem;
+      left: -0.35rem;
+      border-radius: 100%;
+      background: rgba(#fff, 0.2);
+      opacity: 0;
+      transition: opacity, 0.2s;
+    }
+
+    &:hover::before {
+      opacity: 1;
+    }
+  }
+
+  &.active {
+    color: $colorDanger;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  .icon {
+    width: 100%;
+    height: 100%;
+  }
+}

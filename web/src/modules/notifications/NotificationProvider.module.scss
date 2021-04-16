@@ -1,0 +1,48 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 0.5rem;
+
+  .notification {
+    position: relative;
+    padding: 0.75rem 3rem 0.75rem 1.5rem;
+    background: #fff;
+    margin-bottom: 0.5rem;
+    font-size: 0.9em;
+    cursor: pointer;
+
+    @include shadow(high);
+
+    .title {
+      color: $colorEmphasisMedium;
+      margin: 0;
+    }
+
+    .message {
+      margin: 0.5rem 0 0 0;
+    }
+
+    .close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      color: $colorEmphasisLow;
+      width: 16px;
+      height: 16px;
+    }
+
+    &.error {
+      background: $colorDanger;
+      color: #fff;
+
+      .title,
+      .close {
+        color: #fff;
+      }
+    }
+  }
+}

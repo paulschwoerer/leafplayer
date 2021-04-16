@@ -1,0 +1,17 @@
+@import "scss/mixins";
+
+.root {
+  position: relative;
+  height: 0;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+
+  .inner {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: red;
+  }
+}

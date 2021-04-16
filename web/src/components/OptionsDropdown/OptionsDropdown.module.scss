@@ -1,0 +1,85 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+$buttonSize: 44px;
+
+.root {
+  position: relative;
+
+  .toggleButton {
+    display: inline-grid;
+    place-items: center;
+    border: none;
+    background: none;
+    outline: 0;
+    width: $buttonSize;
+    height: $buttonSize;
+    user-select: none;
+    padding: 0;
+
+    @include hover() {
+      cursor: pointer;
+    }
+  }
+
+  .wrapper {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 8px);
+    z-index: 50;
+    background: #fff;
+
+    @include shadow(medium);
+
+    .triangle {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: inherit;
+      box-shadow: inherit;
+      top: -10px;
+      left: $buttonSize / 2;
+      transform: translateX(-50%) rotate(-45deg);
+      z-index: -1;
+    }
+
+    .options {
+      background: inherit;
+
+      .option {
+        padding: 1rem 1.5rem;
+        transition: background-color 0.1s;
+        white-space: nowrap;
+        display: block;
+        text-decoration: none;
+        color: inherit;
+
+        @include hover() {
+          cursor: pointer;
+          background: rgba(#000, 0.04);
+        }
+      }
+    }
+  }
+
+  &.right .wrapper {
+    right: 0;
+    left: auto;
+
+    .triangle {
+      left: auto;
+      right: $buttonSize / 2;
+      transform: translateX(50%) rotate(-45deg);
+    }
+  }
+
+  &.center .wrapper {
+    left: 50%;
+    transform: translateX(-50%);
+
+    .triangle {
+      left: 50%;
+      transform: translateX(-50%) rotate(-45deg);
+    }
+  }
+}

@@ -1,0 +1,11 @@
+@import "scss/vars";
+
+.root {
+  text-align: center;
+  padding-top: 20vh;
+
+  > h2,
+  > p {
+    color: $colorEmphasisLow;
+  }
+}

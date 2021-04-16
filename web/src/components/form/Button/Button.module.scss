@@ -1,0 +1,81 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  position: relative;
+  overflow: hidden;
+  height: 44px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  outline: 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.3s, background-color 0.3s;
+  flex-shrink: 0;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  &.primary {
+    color: #fff;
+    border-color: $colorPrimary;
+    background-color: $colorPrimary;
+
+    @include shadow(low);
+
+    &:hover {
+      background-color: #fff;
+      color: $colorPrimary;
+    }
+  }
+
+  &.primary.danger {
+    color: #fff;
+    border-color: $colorDanger;
+    background-color: $colorDanger;
+
+    &:hover {
+      background-color: #fff;
+      color: $colorDanger;
+    }
+  }
+
+  &.outlined {
+    color: currentColor;
+    border-color: currentColor;
+    background: transparent;
+
+    @include hover {
+      &::after {
+        content: "";
+        opacity: 0.15;
+        background: currentColor;
+
+        @include coverParent;
+      }
+    }
+  }
+
+  &:not(.primary):not(.outlined) {
+    color: $colorEmphasisMedium;
+    background: transparent;
+
+    &:hover {
+      background: rgba(#000, 0.05);
+    }
+  }
+
+  &:not(.primary).danger {
+    color: $colorDanger;
+  }
+}

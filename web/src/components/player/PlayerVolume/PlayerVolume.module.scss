@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  align-items: center;
+  width: 120px;
+  height: 20px;
+
+  .icon {
+    color: #fff;
+    margin: 0.5rem;
+    cursor: pointer;
+  }
+}

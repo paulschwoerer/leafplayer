@@ -1,0 +1,24 @@
+.root {
+  display: inline-block;
+
+  > svg {
+    fill: currentColor;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.sm {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.md {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.lg {
+    width: 36px;
+    height: 36px;
+  }
+}

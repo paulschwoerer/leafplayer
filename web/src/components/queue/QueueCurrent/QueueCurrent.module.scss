@@ -1,0 +1,75 @@
+@import "scss/mixins";
+
+.root {
+  position: relative;
+  margin-bottom: 1rem;
+  background: rgba(#000, 0.05);
+  overflow: hidden;
+  border-radius: 4px;
+
+  .background {
+    @include coverParent();
+
+    filter: blur(4px);
+    transform: scale(1.1);
+    background: no-repeat center center rgba(#000, 0.025);
+    background-size: cover;
+
+    &::after {
+      @include coverParent();
+
+      content: "";
+      background: rgba(#000, 0.25);
+    }
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    padding: 1rem;
+    color: #fff;
+    text-align: center;
+
+    .label {
+      text-transform: uppercase;
+      font-size: 0.7em;
+      letter-spacing: 1px;
+    }
+
+    .artwork {
+      margin: 1rem auto;
+      width: 120px;
+      height: 120px;
+
+      @include shadow(medium);
+    }
+
+    .title {
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+
+    .artist {
+      font-size: 0.85em;
+      opacity: 0.7;
+    }
+
+    @media screen and (min-width: 500px) {
+      text-align: left;
+
+      .artwork {
+        margin: 0;
+      }
+
+      .info {
+        display: flex;
+        padding: 1rem 0;
+        gap: 1rem;
+
+        .title {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

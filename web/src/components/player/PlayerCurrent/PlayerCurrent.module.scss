@@ -1,0 +1,57 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  width: 100%;
+
+  .artwork {
+    width: $mobilePlayerBarHeight;
+    height: $mobilePlayerBarHeight;
+    flex-shrink: 0;
+
+    > img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+
+    .title,
+    .artist {
+      display: block;
+      color: #fff;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .title {
+      font-weight: bold;
+    }
+
+    .artist {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @include desktop {
+    .artwork {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}

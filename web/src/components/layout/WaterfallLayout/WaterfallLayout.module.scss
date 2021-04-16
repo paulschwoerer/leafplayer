@@ -1,0 +1,35 @@
+@import "scss/mixins";
+
+.root {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(var(--min-width), 1fr));
+
+  &.sm {
+    --min-width: 120px;
+  }
+
+  &.md {
+    --min-width: 160px;
+  }
+
+  &.lg {
+    --min-width: 200px;
+  }
+
+  @include desktop {
+    gap: 3rem;
+
+    &.sm {
+      --min-width: 160px;
+    }
+
+    &.md {
+      --min-width: 200px;
+    }
+
+    &.lg {
+      --min-width: 240px;
+    }
+  }
+}

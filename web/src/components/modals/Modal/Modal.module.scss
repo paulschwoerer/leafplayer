@@ -1,0 +1,32 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(#000, 0.6);
+  display: grid;
+  place-content: center;
+  padding: 1rem;
+
+  .content {
+    position: relative;
+    background: #fff;
+    max-width: 400px;
+    padding: clamp(1rem, 2.5vw, 4rem);
+    border-radius: 4px;
+
+    @include shadow(medium);
+
+    .close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      cursor: pointer;
+      color: $colorEmphasisLow;
+    }
+  }
+}

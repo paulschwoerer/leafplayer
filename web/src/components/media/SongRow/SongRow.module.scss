@@ -1,0 +1,123 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .pre {
+    position: relative;
+    margin-right: 0.75rem;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 auto;
+
+    .artwork {
+      width: 100%;
+      height: 100%;
+      color: #fff;
+    }
+
+    .playControl {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      color: inherit;
+      cursor: pointer;
+      position: relative;
+    }
+  }
+
+  .main {
+    overflow: hidden;
+    margin: 0 0.75rem 0 0;
+
+    .artist {
+      font-size: 0.85em;
+      opacity: 0.6;
+    }
+
+    .title,
+    .artist {
+      margin: 0.3rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      min-width: 0;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .post {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+
+    .duration {
+      display: flex;
+      align-items: center;
+      color: $colorEmphasisMedium;
+    }
+
+    .options {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .overlay {
+    transition: opacity 0.15s, visibility 0 0.15s;
+    opacity: 0;
+    visibility: hidden;
+    background: rgba(#000, 0.3);
+
+    @include coverParent();
+  }
+
+  &.isPlaying .overlay {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .playControl .hoverContent,
+  .playControl .notHoverContent {
+    position: absolute;
+  }
+
+  .playControl .hoverContent {
+    visibility: hidden;
+  }
+
+  @include canHover {
+    transition: background 0.1s;
+    padding: 0.5rem;
+  }
+
+  @include hover() {
+    background: rgba(#000, 0.05);
+    border-radius: 0.5rem;
+
+    .overlay {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .playControl .hoverContent {
+      visibility: visible;
+    }
+
+    .playControl .notHoverContent {
+      visibility: hidden;
+    }
+  }
+}

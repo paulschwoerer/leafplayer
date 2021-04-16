@@ -1,0 +1,24 @@
+{
+  "body": {
+    "type": "object",
+    "properties": {
+      "inviteCode": {
+        "type": "string"
+      },
+      "username": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      },
+      "displayName": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "inviteCode",
+      "username",
+      "password"
+    ]
+  }
+}

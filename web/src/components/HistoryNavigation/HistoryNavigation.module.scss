@@ -1,0 +1,19 @@
+@import "scss/vars";
+
+.root {
+  margin-bottom: 1.5rem;
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    color: $colorEmphasisMedium;
+    cursor: pointer;
+    opacity: 0.8;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

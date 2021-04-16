@@ -1,0 +1,22 @@
+@import "scss/vars";
+
+.root {
+  .card {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(#000, 0.2);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+
+    .icon {
+      flex-shrink: 0;
+      color: $colorEmphasisLow;
+    }
+
+    .details {
+      margin-left: 1rem;
+      width: 100%;
+    }
+  }
+}

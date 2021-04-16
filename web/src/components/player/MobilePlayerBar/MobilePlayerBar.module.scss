@@ -1,0 +1,50 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $mobilePlayerBarHeight;
+  background: $colorPrimary;
+  z-index: 99;
+  display: flex;
+  color: #fff;
+  padding-right: 1rem;
+
+  @include shadow(high);
+
+  .artwork {
+    height: $mobilePlayerBarHeight;
+    width: $mobilePlayerBarHeight;
+    flex-shrink: 0;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 1rem;
+    overflow: hidden;
+
+    .title,
+    .artist {
+      margin: 0.125rem 0;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: inherit;
+      text-overflow: ellipsis;
+    }
+
+    .title {
+      font-weight: 500;
+    }
+  }
+
+  .playButton {
+    margin-left: auto;
+    align-self: center;
+    flex-shrink: 0;
+  }
+}

@@ -1,0 +1,50 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  padding: 5%;
+
+  .form {
+    max-width: 400px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 6px;
+    padding: 2rem;
+
+    @include shadow(medium);
+
+    .error {
+      position: relative;
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 2rem;
+      background: rgba($colorDanger, 0.8);
+      color: #fff;
+      border: 1px solid $colorDanger;
+      border-radius: 3px;
+      text-align: center;
+
+      @include shadow(low);
+
+      .closeBtn {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: 44px;
+        height: 44px;
+        cursor: pointer;
+        color: #fff;
+        padding: 14px;
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+    }
+  }
+}

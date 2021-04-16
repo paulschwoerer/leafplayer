@@ -1,0 +1,59 @@
+{
+  "name": "leafplayer-frontend",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/classnames": "^2.2.11",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/wicg-mediasession": "^1.1.0",
+    "@typescript-eslint/eslint-plugin": "^3.2.0",
+    "@typescript-eslint/parser": "^3.2.0",
+    "chokidar": "^3.5.1",
+    "classnames": "^2.2.6",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "formik": "^2.2.6",
+    "leafplayer-common": "file:../common",
+    "prettier": "^2.0.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "sass": "^1.32.8",
+    "stylelint": "^13.8.0",
+    "stylelint-config-standard": "^20.0.0",
+    "typescript": "^4.0.3"
+  },
+  "proxy": "http://localhost:3000",
+  "scripts": {
+    "start": "PORT=8080 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "lint": "yarn lint:ts && yarn lint:style",
+    "lint:ts": "eslint '*/**/*.{js,ts,tsx}'",
+    "lint:style": "stylelint '**/*.scss'",
+    "lint:fix": "yarn lint:ts:fix && yarn lint:style:fix",
+    "lint:ts:fix": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "lint:style:fix": "stylelint --fix '**/*.scss'"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

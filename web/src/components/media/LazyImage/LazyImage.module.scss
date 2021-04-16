@@ -1,0 +1,29 @@
+@import "scss/vars";
+
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: center center;
+    background-size: cover;
+
+    .visible {
+      opacity: 1;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0s 0.2s;
+    }
+
+    &:not(.visible) {
+      opacity: 0;
+      visibility: visible;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+  }
+}

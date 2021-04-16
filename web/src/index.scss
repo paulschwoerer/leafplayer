@@ -1,0 +1,26 @@
+@import "scss/vars";
+
+body {
+  margin: 0;
+  font-size: 15px;
+  font-family:
+    FiraSans,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: $colorPrimary;
+  color: $colorEmphasisHigh;
+
+  &.no-scroll {
+    overflow: hidden;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'FiraSans';
+  src: local('FiraSans'), url(./assets/fonts/FiraSans-Regular.ttf) format('truetype');
+}

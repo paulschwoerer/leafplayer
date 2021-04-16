@@ -1,0 +1,44 @@
+@import "scss/mixins";
+@import "scss/vars";
+
+.root {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: #fff;
+  color: $colorEmphasisMedium;
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  transition: background-color 0.15s;
+  outline: 0;
+  user-select: none;
+
+  &:disabled {
+    cursor: auto;
+    opacity: 0.5;
+  }
+
+  &.withBorder {
+    border: 1px solid rgba(#000, 0.2);
+  }
+
+  &.primary {
+    color: #fff;
+    background: $colorPrimary;
+
+    @include shadow(low);
+  }
+
+  @include canHover {
+    &:hover:not(:disabled) {
+      cursor: pointer;
+
+      &:not(.primary) {
+        background: rgba(#000, 0.1);
+      }
+    }
+  }
+}

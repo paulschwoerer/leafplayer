@@ -1,0 +1,71 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+$buttonSize: 44px;
+
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $colorPrimary;
+  z-index: 100;
+  padding: 1.5rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+
+  .button {
+    display: inline-grid;
+    place-items: center;
+    border: none;
+    background: none;
+    outline: 0;
+    width: $buttonSize;
+    height: $buttonSize;
+    user-select: none;
+    padding: 0;
+    color: inherit;
+
+    @include hover() {
+      cursor: pointer;
+    }
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .artwork {
+    padding: 1rem 2rem;
+  }
+
+  .info {
+    padding: 1rem 0;
+    text-align: center;
+
+    p {
+      margin: 0.5rem;
+    }
+
+    .title {
+      font-weight: 500;
+      font-size: 1.25em;
+    }
+
+    .artist {
+      color: rgba(#fff, 0.7);
+    }
+  }
+
+  .progress {
+    margin-top: auto;
+    padding: 1rem 0;
+  }
+
+  .mainControls {
+    padding: 1.5rem 0;
+  }
+}

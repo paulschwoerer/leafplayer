@@ -1,0 +1,12 @@
+@import "scss/vars";
+
+.root {
+  color: currentColor;
+  white-space: nowrap;
+  text-decoration: none;
+
+  &.underlined,
+  &:hover {
+    text-decoration: underline;
+  }
+}

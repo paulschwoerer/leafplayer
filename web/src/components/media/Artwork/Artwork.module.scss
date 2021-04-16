@@ -1,0 +1,76 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  display: block;
+  position: relative;
+  height: 0;
+  padding-top: 100%;
+  overflow: hidden;
+  width: 100%;
+
+  &.isRounded {
+    border-radius: 100%;
+  }
+
+  .image {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .overlay {
+    display: none;
+  }
+
+  @include canHover() {
+    .overlay {
+      display: flex;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(#000, 0.3);
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      .playPause {
+        display: none;
+        color: #fff;
+        cursor: pointer;
+        padding: 1rem;
+      }
+
+      .playingIndicator {
+        display: none;
+        color: #fff;
+      }
+
+      &.isPlaying,
+      &:hover {
+        opacity: 1;
+
+        .playPause {
+          display: block;
+        }
+
+        .playingIndicator {
+          display: none;
+        }
+      }
+
+      &.isPlaying:not(:hover) {
+        .playPause {
+          display: none;
+        }
+
+        .playingIndicator {
+          display: block;
+        }
+      }
+    }
+  }
+}

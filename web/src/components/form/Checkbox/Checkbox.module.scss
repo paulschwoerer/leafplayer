@@ -1,0 +1,21 @@
+@import "scss/vars";
+
+.root {
+  padding: 0.5rem 0;
+
+  label {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.35rem;
+    color: $colorEmphasisMedium;
+    cursor: pointer;
+
+    input {
+      display: none;
+    }
+  }
+
+  .icon {
+    color: $colorPrimary;
+  }
+}

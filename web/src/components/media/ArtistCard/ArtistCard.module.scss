@@ -1,0 +1,25 @@
+@import "scss/vars";
+
+.root {
+  .info {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    text-align: center;
+
+    .name {
+      font-weight: bold;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .counts {
+      opacity: 0.6;
+    }
+  }
+}

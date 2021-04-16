@@ -1,0 +1,116 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  display: grid;
+  grid-template-columns: 1fr 200px 1fr;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    ". artwork ."
+    "details details details"
+    "list list list";
+  gap: 2rem;
+
+  .artwork {
+    grid-area: artwork;
+
+    @include shadow(low);
+  }
+
+  .details {
+    grid-area: details;
+    color: $colorEmphasisMedium;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+
+    > p,
+    > h2 {
+      margin: 0.5rem 0;
+    }
+
+    > h2 {
+      margin: 0;
+      font-size: 2rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .misc {
+      opacity: 0.65;
+
+      > span {
+        display: inline-flex;
+        align-items: center;
+
+        &:not(:last-of-type)::after {
+          content: "•";
+          display: inline-block;
+          margin: 0 0.5rem;
+        }
+      }
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+
+      .desktopButtons {
+        display: none;
+      }
+    }
+  }
+
+  .list {
+    grid-area: list;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 560px) {
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: 240px 1fr;
+
+    .details {
+      text-align: left;
+
+      .actions {
+        justify-content: flex-start;
+      }
+    }
+
+    &:not(.aside) .details {
+      padding: 0.5rem 0;
+
+      .actions {
+        margin-top: auto;
+      }
+    }
+
+    &.aside {
+      grid-template-areas:
+        "artwork list"
+        "details list";
+    }
+
+    &.above {
+      grid-template-areas:
+        "artwork details"
+        "list list";
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    &:not(.aside) .details .actions {
+      .desktopButtons {
+        display: block;
+      }
+
+      .dropdownToggle {
+        display: none;
+      }
+    }
+  }
+}

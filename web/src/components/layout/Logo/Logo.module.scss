@@ -1,0 +1,12 @@
+@import "scss/vars";
+
+.root {
+  display: flex;
+  padding: 1rem;
+
+  img {
+    margin: 0 auto;
+    width: 60px;
+    height: 60px;
+  }
+}

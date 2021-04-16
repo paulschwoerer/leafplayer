@@ -1,0 +1,10 @@
+{
+  "querystring": {
+    "type": "object",
+    "properties": {
+      "count": {
+        "type": "number"
+      }
+    }
+  }
+}

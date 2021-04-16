@@ -1,0 +1,13 @@
+{
+    "watch": [
+        "lib",
+        "common",
+        "main.ts"
+    ],
+    "ext": "js,ts,json",
+    "ignore": [
+        "lib/**/*.spec.ts",
+        "lib/**/*.test.ts"
+    ],
+    "exec": "ts-node ./main.ts serve"
+}

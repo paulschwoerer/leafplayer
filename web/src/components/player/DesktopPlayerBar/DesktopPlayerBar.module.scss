@@ -1,0 +1,56 @@
+@import "scss/vars";
+
+$padding: 0.75rem;
+
+.root {
+  background: $colorPrimary;
+  padding: $padding;
+
+  .layout {
+    height: 100%;
+    display: grid;
+    grid-template-columns: calc(#{$desktopSidebarWidth} - #{$padding * 2}) 2rem 1fr 2rem 120px 64px;
+    grid-template-rows: 1fr 22px;
+    grid-template-areas:
+      "current . controls . volume queue"
+      "current . progress . volume queue";
+  }
+
+  .volume,
+  .controls,
+  .progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .volume {
+    grid-area: volume;
+  }
+
+  .current {
+    display: flex;
+    align-items: center;
+    grid-area: current;
+    min-height: 0;
+    min-width: 0;
+  }
+
+  .controls {
+    grid-area: controls;
+  }
+
+  .progress {
+    grid-area: progress;
+  }
+
+  .queueButton {
+    grid-area: queue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    width: auto;
+  }
+}

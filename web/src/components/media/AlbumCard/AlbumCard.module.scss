@@ -1,0 +1,27 @@
+@import "scss/vars";
+
+.root {
+  background: #fff;
+
+  .info {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem 0;
+
+    .name,
+    .artist {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .name {
+      font-weight: bold;
+    }
+
+    .artist {
+      opacity: 0.6;
+    }
+  }
+}

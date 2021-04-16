@@ -1,0 +1,65 @@
+@import "scss/mixins";
+
+.root {
+  display: grid;
+  grid-template-columns: 1fr 200px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: ". artwork ." "content content content";
+  position: relative;
+  overflow: hidden;
+  padding: 1rem;
+  gap: 1rem;
+  border-radius: 4px;
+  color: #fff;
+
+  .background {
+    @include coverParent();
+
+    background: no-repeat center center rgba(#000, 0.025);
+    background-size: cover;
+    filter: blur(4px);
+    transform: scale(1.1);
+
+    &::after {
+      @include coverParent();
+
+      content: "";
+      background: rgba(#000, 0.25);
+    }
+  }
+
+  .artwork {
+    grid-area: artwork;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem 0;
+    z-index: 1;
+    text-align: center;
+    grid-area: content;
+
+    .name h1 {
+      font-size: 2rem;
+      margin: 0 0 1.5rem 0;
+    }
+  }
+
+  @media screen and (min-width: 1000px) {
+    padding: 2rem;
+    gap: 2rem;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "artwork content";
+
+    .content {
+      text-align: left;
+
+      .name h1 {
+        font-size: 3rem;
+      }
+    }
+  }
+}

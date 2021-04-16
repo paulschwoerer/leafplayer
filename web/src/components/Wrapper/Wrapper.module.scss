@@ -1,0 +1,53 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  .layout {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "main";
+    min-height: 100vh;
+
+    .desktopSidebar {
+      display: none;
+    }
+
+    .main {
+      grid-area: main;
+    }
+
+    .desktopPlayerBar {
+      display: none;
+    }
+  }
+
+  @include desktop {
+    .mobileMenu {
+      display: none;
+    }
+
+    .mobilePlayerBar {
+      display: none;
+    }
+
+    .layout {
+      grid-template-columns: $desktopSidebarWidth 1fr;
+      grid-template-rows: 1fr 80px;
+      grid-template-areas:
+        "sidebar main"
+        "player player";
+      height: 100vh;
+
+      .desktopSidebar {
+        display: block;
+        grid-area: sidebar;
+      }
+
+      .desktopPlayerBar {
+        display: block;
+        grid-area: player;
+      }
+    }
+  }
+}

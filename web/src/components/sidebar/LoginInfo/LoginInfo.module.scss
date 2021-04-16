@@ -1,0 +1,17 @@
+.root {
+  padding: 1rem 1.5rem;
+  color: #fff;
+
+  .name,
+  .logout {
+    display: block;
+  }
+
+  .name {
+    margin-bottom: 0.25rem;
+  }
+
+  .logout {
+    color: inherit;
+  }
+}
