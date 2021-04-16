@@ -4,6 +4,10 @@
 
 Leafplayer is a minimalistic music streaming server with a focus on performance and a slick UI. It enables you to listen to your private music collection from anywhere in the world.
 
+![01](https://user-images.githubusercontent.com/22923578/115007130-f579e480-9ea9-11eb-9eca-70684a38949a.jpg)
+
+See more [screenshots](#screenshots)
+
 ## Installation
 ### Install using Docker
 
@@ -53,3 +57,8 @@ Instructions will be added soon.
 ### Contributing
 
 I'm searching for contributors on this project, hit me up if you're interested.
+
+# Screenshots
+
+![02](https://user-images.githubusercontent.com/22923578/115007273-17736700-9eaa-11eb-91bf-0d3b58c47213.jpg)
+![03](https://user-images.githubusercontent.com/22923578/115007279-180bfd80-9eaa-11eb-8cda-f963dd43810f.jpg)
