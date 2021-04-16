@@ -1,3 +1,5 @@
+<p align="center"><img width="140"src="logo.png"></p>
+
 # Leafplayer
 
 Leafplayer is a minimalistic music streaming server with a focus on performance and a slick UI. It enables you to listen to your private music collection from anywhere in the world.
