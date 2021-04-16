@@ -1,4 +1,5 @@
 {
+  "root": true,
   "compilerOptions": {
     "target": "es5",
     "lib": [
@@ -22,7 +23,7 @@
     "baseUrl": "src"
   },
   "include": [
-    "src"
+    "./src/**/*"
   ],
   "rules": {
     "@typescript-eslint/no-empty-function": "warn"

@@ -1,5 +1,4 @@
 import { FullSong } from 'leafplayer-common';
-import { useArtworkUrl } from 'modules/api';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
 import React, {
