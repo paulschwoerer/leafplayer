@@ -1,10 +1,11 @@
 import { statSync } from 'fs';
 import { IAudioMetadata, parseFile } from 'music-metadata';
 import { basename, extname } from 'path';
-import { printInfo, printSuccess } from '../helpers/cli';
+import { printInfo } from '../helpers/cli';
 import { AlbumsService } from '../services/AlbumsService';
 import { ArtistsService } from '../services/ArtistsService';
 import { LibraryService } from '../services/LibraryService';
+import { AudioFileRow } from './../database/rows';
 import ArtworkExtractor from './ArtworkExtractor';
 import ArtworkProcessor from './ArtworkProcessor';
 import { DirNode, FileNode, FileTreeBuilder } from './FileTreeBuilder';
@@ -17,8 +18,14 @@ type Config = {
   storageDir: string;
 };
 
+type Options = {
+  forceRescan?: boolean;
+};
+
 export default class MusicScanner {
   private skippedFiles: string[] = [];
+
+  private options: Options | undefined;
 
   private fileTreeBuilder: FileTreeBuilder;
   private artworkExtractor: ArtworkExtractor;
@@ -51,7 +58,11 @@ export default class MusicScanner {
     this.artworkProcessor = new ArtworkProcessor(this.config.storageDir);
   }
 
-  async run(): Promise<void> {
+  async run(options?: Options): Promise<void> {
+    if (options) {
+      this.options = options;
+    }
+
     const start = Date.now();
     const paths = await this.libraryService.getEnabledMediaDirectories();
 
@@ -91,7 +102,7 @@ export default class MusicScanner {
     file: FileNode,
     directoryArtworks: FileNode[],
   ): Promise<void> {
-    let savedFile;
+    let savedFile: AudioFileRow | undefined;
 
     try {
       savedFile = await this.libraryService.getAudioFileByPath(file.path);
@@ -100,7 +111,11 @@ export default class MusicScanner {
       return;
     }
 
-    if (savedFile && savedFile.lastModified === file.lastModified) {
+    if (
+      savedFile &&
+      savedFile.lastModified === file.lastModified &&
+      !this.shouldForceRescan()
+    ) {
       this.skippedFiles.push(file.path);
       return;
     }
@@ -237,5 +252,13 @@ export default class MusicScanner {
     const stat = statSync(path);
 
     return stat.isDirectory();
+  }
+
+  private shouldForceRescan(): boolean {
+    if (!this.options) {
+      return false;
+    }
+
+    return this.options.forceRescan || false;
   }
 }

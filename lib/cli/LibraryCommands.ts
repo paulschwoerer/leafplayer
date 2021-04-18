@@ -34,8 +34,12 @@ export function LibraryCommands(
 ): void {
   cli
     .command('library:scan')
+    .option(
+      '-f, --force-rescan',
+      'force rescan of files, even if they did not change since last run',
+    )
     .description('run media scanner')
-    .action(async () => {
+    .action(async ({ forceRescan }: { forceRescan?: boolean }) => {
       printInfo('Running music scanner ...');
       const scanner = new MusicScanner(
         config,
@@ -44,7 +48,9 @@ export function LibraryCommands(
         libraryService,
       );
 
-      await scanner.run();
+      await scanner.run({
+        forceRescan,
+      });
       printSuccess('Scan finished');
     });
 
