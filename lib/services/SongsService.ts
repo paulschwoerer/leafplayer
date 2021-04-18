@@ -1,5 +1,6 @@
-import Knex from 'knex';
 import { FullSong } from '@common';
+import { createSongsQuery, orderByDiscAndTrack } from '@query/songs';
+import Knex from 'knex';
 import { SongRow } from '../database/rows';
 import { createNamespacedWhereParams } from '../helpers/db';
 import { weighStringsUsingSearchTerm } from '../helpers/search';
@@ -15,27 +16,6 @@ export interface SongsService {
     sortBy?: keyof SongRow,
     sortDirection?: 'asc' | 'desc',
   ): Promise<FullSong[]>;
-}
-
-function createSongsQuery(
-  db: Knex,
-  sortBy?: keyof SongRow,
-  sortDirection?: 'asc' | 'desc',
-) {
-  return db('songs')
-    .select(
-      db.ref('id').withSchema('songs'),
-      db.ref('track').withSchema('songs'),
-      db.ref('title').withSchema('songs'),
-      db.ref('duration').withSchema('songs'),
-      db.ref('artistId').withSchema('songs'),
-      db.ref('albumId').withSchema('songs'),
-      db.ref('name').as('albumName').withSchema('albums'),
-      db.ref('name').as('artistName').withSchema('artists'),
-    )
-    .orderBy(`songs.${sortBy || 'title'}`, sortDirection || 'asc')
-    .innerJoin('albums', 'songs.albumId', 'albums.id')
-    .innerJoin('artists', 'songs.artistId', 'artists.id');
 }
 
 type Row = Omit<SongRow, 'fileId'> & {
@@ -67,9 +47,12 @@ function toFullSong({
 
 export function createSongsService({ db }: Injects): SongsService {
   return {
-    async findAllWhere(params, sortBy, sortDirection) {
-      const rows = await createSongsQuery(db, sortBy, sortDirection).where(
-        createNamespacedWhereParams('songs', params),
+    async findAllWhere(params) {
+      const orderedByDiskAndTrack = orderByDiscAndTrack();
+      const rows = await orderedByDiskAndTrack(
+        createSongsQuery(db).where(
+          createNamespacedWhereParams('songs', params),
+        ),
       );
 
       return rows.map(toFullSong);

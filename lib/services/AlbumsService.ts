@@ -110,7 +110,7 @@ export function createAlbumsService({
     },
 
     async findSongsOfAlbum(albumId) {
-      return songsService.findAllWhere({ albumId }, 'track', 'asc');
+      return songsService.findAllWhere({ albumId });
     },
 
     async findIdByNameAndArtistId(params): Promise<string | undefined> {

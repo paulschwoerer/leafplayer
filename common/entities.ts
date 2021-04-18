@@ -6,6 +6,7 @@ export type PartialSong = {
 export type FullSong = PartialSong & {
   duration: number;
   track?: number;
+  disk: number;
   artist: PartialArtist;
   album: PartialAlbum;
 };

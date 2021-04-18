@@ -44,6 +44,7 @@ export type SongRow = {
   title: string;
   duration: number;
   track: number | null;
+  disk: number;
 };
 
 export type MediaFolderRow = {

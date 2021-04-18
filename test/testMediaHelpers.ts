@@ -59,6 +59,7 @@ export async function insertDummySongs(
     duration: 1,
     title: `Test Song ${index + 1}`,
     track: index + 1,
+    disk: 1,
   }));
 
   await db('songs').insert(songs);

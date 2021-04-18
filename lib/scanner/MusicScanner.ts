@@ -168,7 +168,7 @@ export default class MusicScanner {
 
     const title = tags.common.title || basename(file.path, extname(file.path));
     const track = tags.common.track.no || null;
-    // const disk = tags.common.disk.no || 1;
+    const disk = tags.common.disk.no || 1;
     const duration = tags.format.duration;
     // const bitRate = tags.format.bitrate;
     // const sampleRate = tags.format.sampleRate;
@@ -184,6 +184,7 @@ export default class MusicScanner {
       albumId,
       title,
       track,
+      disk,
       duration,
     };
 

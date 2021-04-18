@@ -14,6 +14,7 @@ import React, { ReactElement, useContext } from 'react';
 import AppLink from '../../layout/AppLink/AppLink';
 import Artwork from '../Artwork/Artwork';
 import { SongCount } from '../Counts';
+import DiskNumber from '../DiskNumber/DiskNumber';
 import { SongRow } from '../SongRow/SongRow';
 import styles from './AlbumWithSongs.module.scss';
 
@@ -36,6 +37,9 @@ function AlbumWithSongs({
   ] = useContext(PlayerContext);
   const [isCurrentlyPlayingAlbum, togglePlayPause] = useAlbumPlayState(id);
 
+  const disks = transformSongsToDisks(songs);
+  const hasMultipleDisks = disks.size > 1;
+
   function onSongClicked(songId: string) {
     if (current && current.song.id === songId) {
       playerIsPlaying ? pause() : play();
@@ -57,6 +61,45 @@ function AlbumWithSongs({
 
   function onEnqueueClicked() {
     addSongsToQueue(songs, { replaceQueue: false, startPlaying: false });
+  }
+
+  function renderSong(song: FullSong) {
+    return (
+      <SongRow
+        key={song.id}
+        song={song}
+        onPlay={() => onSongClicked(song.id)}
+        isCurrentlyPlaying={
+          playerIsPlaying && !!current && current.song.id === song.id
+        }
+        options={
+          <OptionsDropdown align="right">
+            <OptionsDropdown.Option onClick={() => playNext([song])}>
+              Play Next
+            </OptionsDropdown.Option>
+            <OptionsDropdown.Option
+              onClick={() =>
+                addSongsToQueue([song], {
+                  replaceQueue: false,
+                  startPlaying: false,
+                })
+              }
+            >
+              Enqueue
+            </OptionsDropdown.Option>
+          </OptionsDropdown>
+        }
+      />
+    );
+  }
+
+  function renderDisks(disks: Map<number, FullSong[]>) {
+    const entries: ReactElement[] = [];
+    disks.forEach((songs, disk) => {
+      entries.push(<DiskNumber disk={disk} />);
+      entries.push(...songs.map(renderSong));
+    });
+    return entries;
   }
 
   const artworkUrl = useArtworkUrl({ type: 'album', id, size: 256 });
@@ -115,36 +158,21 @@ function AlbumWithSongs({
         </div>
       </div>
       <div className={styles.list}>
-        {songs.map(song => (
-          <SongRow
-            key={song.id}
-            song={song}
-            onPlay={() => onSongClicked(song.id)}
-            isCurrentlyPlaying={
-              playerIsPlaying && !!current && current.song.id === song.id
-            }
-            options={
-              <OptionsDropdown align="right">
-                <OptionsDropdown.Option onClick={() => playNext([song])}>
-                  Play Next
-                </OptionsDropdown.Option>
-                <OptionsDropdown.Option
-                  onClick={() =>
-                    addSongsToQueue([song], {
-                      replaceQueue: false,
-                      startPlaying: false,
-                    })
-                  }
-                >
-                  Enqueue
-                </OptionsDropdown.Option>
-              </OptionsDropdown>
-            }
-          />
-        ))}
+        <If condition={hasMultipleDisks}>{renderDisks(disks)}</If>
+        <If condition={!hasMultipleDisks}>{songs.map(renderSong)}</If>
       </div>
     </div>
   );
 }
 
 export default AlbumWithSongs;
+
+function transformSongsToDisks(songs: FullSong[]): Map<number, FullSong[]> {
+  const disks = new Map<number, FullSong[]>();
+
+  for (const song of songs) {
+    disks.set(song.disk, [...(disks.get(song.disk) || []), song]);
+  }
+
+  return disks;
+}

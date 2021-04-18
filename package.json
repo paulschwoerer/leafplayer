@@ -15,7 +15,8 @@
     "make-migration": "knex migrate:make -x ts --migrations-directory=lib/database/migrations"
   },
   "_moduleAliases": {
-    "@common": "./common"
+    "@common": "./common",
+    "@query": "./lib/query"
   },
   "ava": {
     "files": [

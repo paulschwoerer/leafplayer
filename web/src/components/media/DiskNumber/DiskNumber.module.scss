@@ -1,0 +1,21 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  display: flex;
+  align-items: center;
+  color: $colorEmphasisLow;
+
+  .icon {
+    width: 48px;
+    height: 24px;
+  }
+
+  .disk {
+    font-weight: bold;
+  }
+
+  @include canHover {
+    padding: 0.5rem;
+  }
+}
