@@ -1,6 +1,7 @@
 import { FullAlbum, FullArtist, FullSong } from '@common';
 import { toFullAlbum } from '@mappers/album';
 import { createAlbumsQuery, orderByYearDesc } from '@query/albums';
+import { createArtistQuery, orderByName } from '@query/artists';
 import Knex from 'knex';
 import { findRandomIdsOfTable } from '../helpers/random';
 import { weighStringsUsingSearchTerm } from '../helpers/search';
@@ -36,18 +37,6 @@ type Injects = {
   songsService: SongsService;
 };
 
-function createArtistQuery(db: Knex) {
-  return db('artists')
-    .select(
-      db.ref('id').withSchema('artists'),
-      db.ref('name').withSchema('artists'),
-    )
-    .leftJoin('albums', 'albums.artistId', 'artists.id')
-    .leftJoin('songs', 'songs.artistId', 'artists.id')
-    .orderBy('artists.name', 'asc')
-    .countDistinct({ songCount: 'songs.id', albumCount: 'albums.id' });
-}
-
 function withFallbackCounts(row: {
   id: string;
   name: string;
@@ -68,7 +57,10 @@ export function createArtistsService({
 }: Injects): ArtistsService {
   return {
     async findAll() {
-      const rows = await createArtistQuery(db).groupBy('artists.id');
+      const orderedByName = orderByName();
+      const rows = await orderedByName(createArtistQuery(db)).groupBy(
+        'artists.id',
+      );
 
       return rows.map(withFallbackCounts);
     },
