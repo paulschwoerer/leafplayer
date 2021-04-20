@@ -1,5 +1,7 @@
-import Knex from 'knex';
 import { FullAlbum, FullArtist, FullSong } from '@common';
+import { toFullAlbum } from '@mappers/album';
+import { createAlbumsQuery, orderByYearDesc } from '@query/albums';
+import Knex from 'knex';
 import { findRandomIdsOfTable } from '../helpers/random';
 import { weighStringsUsingSearchTerm } from '../helpers/search';
 import { generateUuid } from '../helpers/uuid';
@@ -127,7 +129,12 @@ export function createArtistsService({
     },
 
     async getAlbumsOfArtist(artistId) {
-      return albumsService.findAllWhere({ artistId }, 'year', 'desc');
+      const orderedByYearDesc = orderByYearDesc();
+      const rows = await orderedByYearDesc(
+        createAlbumsQuery(db).where('albums.artistId', artistId),
+      );
+
+      return rows.map(toFullAlbum);
     },
 
     async getAlbumsArtistAppearsOn(artistId) {

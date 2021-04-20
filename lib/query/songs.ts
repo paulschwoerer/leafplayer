@@ -1,7 +1,17 @@
-import Knex, { QueryBuilder } from 'knex';
+import Knex from 'knex';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function createSongsQuery(db: Knex) {
+type SongsQueryBuilder = ReturnType<typeof query>;
+
+export function createSongsQuery(db: Knex): SongsQueryBuilder {
+  return query(db);
+}
+
+export function orderByDiscAndTrack() {
+  return (query: SongsQueryBuilder): SongsQueryBuilder =>
+    query.orderBy('songs.disk', 'asc').orderBy('songs.track', 'asc');
+}
+
+function query(db: Knex) {
   return db('songs')
     .select(
       db.ref('id').withSchema('songs'),
@@ -19,9 +29,4 @@ export function createSongsQuery(db: Knex) {
     .from('songs')
     .innerJoin('albums', 'songs.albumId', 'albums.id')
     .innerJoin('artists', 'songs.artistId', 'artists.id');
-}
-
-export function orderByDiscAndTrack<T extends QueryBuilder>() {
-  return (query: T): T =>
-    query.orderBy('disk', 'asc').orderBy('track', 'asc') as T;
 }

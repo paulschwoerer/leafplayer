@@ -16,7 +16,8 @@
   },
   "_moduleAliases": {
     "@common": "./common",
-    "@query": "./lib/query"
+    "@query": "./lib/query",
+    "@mappers": "./lib/mappers"
   },
   "ava": {
     "files": [

@@ -29,6 +29,9 @@
       ],
       "@query/*": [
         "./lib/query/*"
+      ],
+      "@mappers/*": [
+        "./lib/mappers/*"
       ]
     }
   },

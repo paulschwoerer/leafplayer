@@ -1,5 +1,7 @@
-import Knex from 'knex';
 import { FullAlbum, FullSong } from '@common';
+import { toFullAlbum } from '@mappers/album';
+import { createAlbumsQuery, orderByName } from '@query/albums';
+import Knex from 'knex';
 import { AlbumRow } from '../database/rows';
 import { findRandomIdsOfTable } from '../helpers/random';
 import { weighStringsUsingSearchTerm } from '../helpers/search';
@@ -14,11 +16,6 @@ export interface AlbumsService {
   }): Promise<string>;
   findById(id: string): Promise<FullAlbum | undefined>;
   findAll(): Promise<FullAlbum[]>;
-  findAllWhere(
-    params: Partial<AlbumRow>,
-    sortBy?: keyof AlbumRow,
-    sortDirection?: 'asc' | 'desc',
-  ): Promise<FullAlbum[]>;
   findSongsOfAlbum(albumId: string): Promise<FullSong[]>;
   findIdByNameAndArtistId(params: {
     name: string;
@@ -32,43 +29,6 @@ type Injects = {
   db: Knex;
   songsService: SongsService;
 };
-
-function createAlbumsQuery(
-  db: Knex,
-  sortBy?: keyof AlbumRow,
-  sortDirection?: 'asc' | 'desc',
-) {
-  return db('albums')
-    .select(
-      db.ref('id').withSchema('albums'),
-      db.ref('name').withSchema('albums'),
-      db.ref('year').withSchema('albums'),
-      db.ref('createdAt').withSchema('albums'),
-      db.ref('updatedAt').withSchema('albums'),
-      db.ref('id').as('artistId').withSchema('artists'),
-      db.ref('name').as('artistName').withSchema('artists'),
-    )
-    .orderBy(`albums.${sortBy || 'name'}`, sortDirection || 'asc')
-    .innerJoin('artists', 'albums.artistId', 'artists.id');
-}
-
-function toFullAlbum({
-  artistId,
-  artistName,
-  year,
-  ...rest
-}: AlbumRow & {
-  artistName: string;
-}) {
-  return {
-    ...rest,
-    artist: {
-      id: artistId,
-      name: artistName,
-    },
-    year: year || undefined,
-  };
-}
 
 export function createAlbumsService({
   db,
@@ -88,7 +48,10 @@ export function createAlbumsService({
     },
 
     async findById(id) {
-      const row = await createAlbumsQuery(db).where('albums.id', id).first();
+      const orderedByName = orderByName();
+      const row = await orderedByName(
+        createAlbumsQuery(db).where('albums.id', id),
+      ).first();
 
       if (!row) {
         return undefined;
@@ -99,14 +62,6 @@ export function createAlbumsService({
 
     async findAll() {
       const rows = await createAlbumsQuery(db).where(true);
-
-      return rows.map(toFullAlbum);
-    },
-
-    async findAllWhere(params, sortBy, sortDirection) {
-      const rows = await createAlbumsQuery(db, sortBy, sortDirection).where(
-        params,
-      );
 
       return rows.map(toFullAlbum);
     },
