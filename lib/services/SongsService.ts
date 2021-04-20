@@ -11,11 +11,7 @@ type Injects = {
 
 export interface SongsService {
   search(q: string, count: number): Promise<FullSong[]>;
-  findAllWhere(
-    params: Partial<SongRow>,
-    sortBy?: keyof SongRow,
-    sortDirection?: 'asc' | 'desc',
-  ): Promise<FullSong[]>;
+  findAllWhere(params: Partial<SongRow>): Promise<FullSong[]>;
 }
 
 type Row = Omit<SongRow, 'fileId'> & {

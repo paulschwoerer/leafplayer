@@ -4,12 +4,17 @@ import { UserRow } from '../database/rows';
 import { createPasswordHash } from '../helpers/passwords';
 import { generateUuid } from '../helpers/uuid';
 
+type CreateUserParams = {
+  username: string;
+  displayName: string;
+  password: string;
+};
 export interface UsersService {
   createUser({
     username,
     displayName,
     password,
-  }: Omit<UserRow, 'id'>): Promise<string>;
+  }: CreateUserParams): Promise<string>;
   getAllUsers(): Promise<User[]>;
   doesUserExist(username: string): Promise<boolean>;
   findByUsername(username: string): Promise<UserRow | undefined>;

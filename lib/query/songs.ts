@@ -13,6 +13,8 @@ export function createSongsQuery(db: Knex) {
       db.ref('albumId').withSchema('songs'),
       db.ref('name').withSchema('albums').as('albumName'),
       db.ref('name').withSchema('artists').as('artistName'),
+      db.ref('createdAt').withSchema('songs'),
+      db.ref('updatedAt').withSchema('songs'),
     )
     .from('songs')
     .innerJoin('albums', 'songs.albumId', 'albums.id')

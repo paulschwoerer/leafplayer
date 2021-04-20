@@ -43,6 +43,8 @@ function createAlbumsQuery(
       db.ref('id').withSchema('albums'),
       db.ref('name').withSchema('albums'),
       db.ref('year').withSchema('albums'),
+      db.ref('createdAt').withSchema('albums'),
+      db.ref('updatedAt').withSchema('albums'),
       db.ref('id').as('artistId').withSchema('artists'),
       db.ref('name').as('artistName').withSchema('artists'),
     )

@@ -83,10 +83,13 @@ export function createSessionsService({ db }: Injects): SessionsService {
           db.ref('id').as('sessionId').withSchema('sessions'),
           db.ref('id').as('userId').withSchema('users'),
           db.ref('username').withSchema('users'),
+          db.ref('createdAt').withSchema('users'),
+          db.ref('updatedAt').withSchema('users'),
           db.ref('displayName').withSchema('users'),
           db.ref('password').withSchema('users'),
+          db.ref('createdAt').withSchema('users'),
+          db.ref('updatedAt').withSchema('users'),
         )
-
         .innerJoin('users', 'sessions.userId', 'users.id')
         .where('sessions.token', token)
         .andWhere('sessions.expiresAt', '>=', getCurrentUnixTimestamp())
@@ -105,13 +108,13 @@ export function createSessionsService({ db }: Injects): SessionsService {
           console.error('Could not update session lastUsedAt attribute', e),
         );
 
+      const { sessionId, userId, ...user } = row;
+
       return {
-        id: row.sessionId,
+        id: sessionId,
         user: {
-          id: row.userId,
-          username: row.username,
-          displayName: row.displayName,
-          password: row.password,
+          id: userId,
+          ...user,
         },
       };
     },

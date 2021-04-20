@@ -16,12 +16,22 @@ type Injects = {
   config: Config;
 };
 
+type SongParams = {
+  fileId: string;
+  albumId: string;
+  artistId: string;
+  title: string;
+  duration: number;
+  track: number | null;
+  disk: number;
+};
+
 export interface LibraryService {
   updateSongByFileId(
     fileId: string,
-    params: Partial<Omit<SongRow, 'id' | 'fileId'>>,
+    params: Partial<SongParams>,
   ): Promise<void>;
-  createSong(params: Omit<SongRow, 'id'>): Promise<void>;
+  createSong(params: SongParams): Promise<void>;
   createAudioFile(params: Omit<AudioFileRow, 'id'>): Promise<string>;
   updateAudioFile(
     id: string,
@@ -41,7 +51,10 @@ export interface LibraryService {
 export function createLibraryService({ db, config }: Injects): LibraryService {
   return {
     async updateSongByFileId(fileId, params) {
-      await db('songs').update(params).where({ fileId });
+      await db('songs')
+        .update(params)
+        .update('updatedAt', db.fn.now())
+        .where({ fileId });
     },
 
     async createSong(params) {

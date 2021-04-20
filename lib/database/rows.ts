@@ -1,14 +1,19 @@
 import Knex from 'knex';
 import { FileFormat } from '../scanner/types';
 
-export type UserRow = {
+type Timestamps = {
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type UserRow = Timestamps & {
   id: string;
   username: string;
   displayName: string;
   password: string;
 };
 
-export type InvitationRow = {
+export type InvitationRow = Timestamps & {
   id: number;
   code: string;
   used: boolean;
@@ -16,14 +21,14 @@ export type InvitationRow = {
   comment: string | null;
 };
 
-export type AlbumRow = {
+export type AlbumRow = Timestamps & {
   id: string;
   artistId: string;
   name: string;
   year: number | null;
 };
 
-export type ArtistRow = {
+export type ArtistRow = Timestamps & {
   id: string;
   name: string;
 };
@@ -36,7 +41,7 @@ export type AudioFileRow = {
   lastModified: number;
 };
 
-export type SongRow = {
+export type SongRow = Timestamps & {
   id: string;
   fileId: string;
   albumId: string;
@@ -63,21 +68,34 @@ export type SessionRow = {
   expiresAt: number;
 };
 
+type DefaultTInsert<T extends Record<string, unknown>> = Pick<T, 'id'> &
+  Partial<Omit<T, 'createdAt' | 'updatedAt'>>;
+type DefaultTUpdate<T> = Partial<Omit<T, 'id' | 'createdAt'>>;
+
 declare module 'knex/types/tables' {
   interface Tables {
     users: Knex.CompositeTableType<
       UserRow,
-      UserRow & Partial<Pick<UserRow, 'displayName'>>,
-      Partial<Omit<UserRow, 'id'>>
+      DefaultTInsert<UserRow>,
+      DefaultTUpdate<UserRow>
     >;
     invitations: Knex.CompositeTableType<
       InvitationRow,
       Pick<InvitationRow, 'code' | 'expiresAt'> &
-        Partial<Pick<InvitationRow, 'comment' | 'used'>>,
+        Partial<Pick<InvitationRow, 'comment' | 'used'>> &
+        Omit<InvitationRow, 'updatedAt' | 'createdAt' | 'id' | 'used'>,
       Partial<Omit<InvitationRow, 'id'>>
     >;
-    albums: Knex.CompositeTableType<AlbumRow, AlbumRow, never>;
-    artists: Knex.CompositeTableType<ArtistRow, ArtistRow, never>;
+    albums: Knex.CompositeTableType<
+      AlbumRow,
+      DefaultTInsert<AlbumRow>,
+      DefaultTUpdate<AlbumRow>
+    >;
+    artists: Knex.CompositeTableType<
+      ArtistRow,
+      DefaultTInsert<ArtistRow>,
+      DefaultTUpdate<ArtistRow>
+    >;
     audio_files: Knex.CompositeTableType<
       AudioFileRow,
       AudioFileRow,
@@ -85,8 +103,8 @@ declare module 'knex/types/tables' {
     >;
     songs: Knex.CompositeTableType<
       SongRow,
-      SongRow,
-      Partial<Omit<SongRow, 'id'>>
+      DefaultTInsert<SongRow>,
+      DefaultTUpdate<SongRow>
     >;
     media_folders: Knex.CompositeTableType<
       MediaFolderRow,
