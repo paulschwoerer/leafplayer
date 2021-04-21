@@ -82,8 +82,7 @@ declare module 'knex/types/tables' {
     invitations: Knex.CompositeTableType<
       InvitationRow,
       Pick<InvitationRow, 'code' | 'expiresAt'> &
-        Partial<Pick<InvitationRow, 'comment' | 'used'>> &
-        Omit<InvitationRow, 'updatedAt' | 'createdAt' | 'id' | 'used'>,
+        Partial<Omit<InvitationRow, 'id' | 'createdAt' | 'updatedAt'>>,
       Partial<Omit<InvitationRow, 'id'>>
     >;
     albums: Knex.CompositeTableType<

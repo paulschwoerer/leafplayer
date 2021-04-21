@@ -28,16 +28,11 @@ test('findAll -> Retrieving all artists', async t => {
     albumsService: createAlbumsService({ db, songsService }),
   });
 
-  const artists = await artistsService.findAll();
+  const [artist] = await artistsService.findAll();
 
-  t.deepEqual(artists, [
-    {
-      id: artistId,
-      name: 'Test Artist 1',
-      albumCount: 1,
-      songCount: 2,
-    },
-  ]);
+  t.is(artist?.id, artistId);
+  t.is(artist?.albumCount, 1);
+  t.is(artist?.songCount, 2);
 });
 
 test('findById -> Retrieving artist without albums, expect an albumCount of 0 is set', async t => {
@@ -54,12 +49,9 @@ test('findById -> Retrieving artist without albums, expect an albumCount of 0 is
 
   const artist = await artistsService.findById(artistId);
 
-  t.deepEqual(artist, {
-    id: artistId,
-    name: 'Test Artist 1',
-    albumCount: 0,
-    songCount: 1,
-  });
+  t.is(artist?.id, artistId);
+  t.is(artist?.albumCount, 0);
+  t.is(artist?.songCount, 1);
 });
 
 test('findById -> Retrieving a single artist', async t => {
@@ -74,14 +66,11 @@ test('findById -> Retrieving a single artist', async t => {
     albumsService: createAlbumsService({ db, songsService }),
   });
 
-  const artists = await artistsService.findById(artistId);
+  const artist = await artistsService.findById(artistId);
 
-  t.deepEqual(artists, {
-    id: artistId,
-    name: 'Test Artist 1',
-    albumCount: 1,
-    songCount: 2,
-  });
+  t.is(artist?.id, artistId);
+  t.is(artist?.albumCount, 1);
+  t.is(artist?.songCount, 2);
 });
 
 test('findById -> Retrieving an artist without albums results in the artist with albumCount set to 0', async t => {
@@ -96,14 +85,11 @@ test('findById -> Retrieving an artist without albums results in the artist with
     albumsService: createAlbumsService({ db, songsService }),
   });
 
-  const artists = await artistsService.findById(artistId);
+  const artist = await artistsService.findById(artistId);
 
-  t.deepEqual(artists, {
-    id: artistId,
-    name: 'Test Artist 1',
-    albumCount: 0,
-    songCount: 1,
-  });
+  t.is(artist?.id, artistId);
+  t.is(artist?.albumCount, 0);
+  t.is(artist?.songCount, 1);
 });
 
 async function insertArtistWithAlbumAndTwoSongs(db: Knex): Promise<string> {

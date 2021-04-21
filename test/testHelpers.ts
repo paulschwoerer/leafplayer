@@ -1,5 +1,6 @@
 import { ExecutionContext } from 'ava';
 import { FastifyInstance } from 'fastify';
+import { createDiscoverService } from '../lib/services/DiscoverService';
 import { Response as LightMyRequestResponse } from 'light-my-request';
 import { v4 as uuidv4 } from 'uuid';
 import { createPasswordHash } from '../lib/helpers/passwords';
@@ -77,17 +78,19 @@ export function createServerFromTestContext(
     config: config.security,
     usersService,
   });
+  const discoverService = createDiscoverService({ db });
 
   return initServer({
     config,
     sessionsService,
-    albumsService: albumsService,
-    artistsService: artistsService,
-    songsService: songsService,
+    albumsService,
+    artistsService,
+    songsService,
     artworksService,
     authService,
     invitationsService,
-    audioFilesService: audioFilesService,
+    audioFilesService,
+    discoverService,
   });
 }
 
