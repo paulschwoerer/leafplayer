@@ -12,6 +12,7 @@ import { createArtistsService } from './services/ArtistsService';
 import { createArtworksService } from './services/ArtworksService';
 import { createAudioFilesService } from './services/AudioFilesService';
 import { createAuthService } from './services/AuthService';
+import { createDiscoverService } from './services/DiscoverService';
 import { createInvitationsService } from './services/InvitationsService';
 import { createLibraryService } from './services/LibraryService';
 import { createSessionsService } from './services/SessionsService';
@@ -47,6 +48,7 @@ const invitationsService = createInvitationsService({
   config: config.security,
   usersService,
 });
+const discoverService = createDiscoverService({ db });
 
 // ----------------- CLI initialization ----------------- //
 let server: FastifyInstance;
@@ -74,14 +76,15 @@ program
 
     server = await initServer({
       config,
-      albumsService: albumsService,
-      artistsService: artistsService,
-      songsService: songsService,
+      albumsService,
+      artistsService,
+      songsService,
       artworksService,
-      authService: authService,
+      authService,
       sessionsService,
       invitationsService,
-      audioFilesService: audioFilesService,
+      audioFilesService,
+      discoverService,
     });
 
     await server.listen(port, host);

@@ -1,8 +1,7 @@
-import { AlbumsService } from './../services/AlbumsService';
+import { AlbumWithSongsResponseDto, SongsResponseDto } from '@common';
 import { FastifyPluginAsync } from 'fastify';
-import { AlbumResponseDto, AlbumsResponseDto, SongsResponseDto } from '@common';
 import { sendNotFoundApiError } from '../helpers/responses';
-import GetRandomAlbumsSchema from '../schemas/getRandomAlbums.json';
+import { AlbumsService } from './../services/AlbumsService';
 
 type Injects = {
   albumsService: AlbumsService;
@@ -20,7 +19,7 @@ export function AlbumsController({
 
     router.get<{ Params: { albumId: string } }>(
       '/:albumId',
-      async (request, reply): Promise<AlbumResponseDto> => {
+      async (request, reply): Promise<AlbumWithSongsResponseDto> => {
         const { albumId } = request.params;
 
         const album = await albumsService.findById(albumId);
@@ -48,18 +47,6 @@ export function AlbumsController({
         return {
           songs,
         };
-      },
-    );
-
-    router.get<{ Querystring: { count?: number } }>(
-      '/random',
-      { schema: GetRandomAlbumsSchema },
-      async (request): Promise<AlbumsResponseDto> => {
-        const { count } = request.query;
-
-        const albums = await albumsService.findRandomAlbums(count || 5);
-
-        return { albums };
       },
     );
   };

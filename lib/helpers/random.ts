@@ -1,5 +1,3 @@
-import Knex from 'knex';
-
 export function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -28,22 +26,4 @@ export function getRandomArrayElements<T = unknown>(
   }
 
   return result;
-}
-
-export async function findRandomIdsOfTable(
-  query: Knex,
-  tableName: string,
-  count: number,
-): Promise<string[]> {
-  type Row = { id: string };
-
-  const rows: Row[] = await query(tableName).select('id').where(true);
-
-  if (rows.length === 0) {
-    return [];
-  }
-
-  const ids = rows.map(row => row.id);
-
-  return getRandomArrayElements<string>(ids, count);
 }

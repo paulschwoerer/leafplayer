@@ -1,9 +1,9 @@
 import { FullAlbum, FullArtist, FullSong } from '@common';
-import { toFullAlbum } from '@mappers/album';
+import { toFullAlbum } from '@mappers/albums';
+import { toFullArtist } from '@mappers/artists';
 import { createAlbumsQuery, orderByYearDesc } from '@query/albums';
 import { createArtistQuery, orderByName } from '@query/artists';
 import Knex from 'knex';
-import { findRandomIdsOfTable } from '../helpers/random';
 import { weighStringsUsingSearchTerm } from '../helpers/search';
 import { generateUuid } from '../helpers/uuid';
 import { AlbumsService } from './AlbumsService';
@@ -27,7 +27,6 @@ export interface ArtistsService {
   findByIdWithAlbums(id: string): Promise<ArtistWithAlbums | undefined>;
   getAlbumsOfArtist(artistId: string): Promise<FullAlbum[]>;
   getAlbumsArtistAppearsOn(artistId: string): Promise<FullAlbum[]>;
-  findRandomArtists(count: number): Promise<FullArtist[]>;
   search(q: string, count: number): Promise<FullArtist[]>;
 }
 
@@ -36,19 +35,6 @@ type Injects = {
   albumsService: AlbumsService;
   songsService: SongsService;
 };
-
-function withFallbackCounts(row: {
-  id: string;
-  name: string;
-  albumCount?: number;
-  songCount?: number;
-}) {
-  return {
-    ...row,
-    albumCount: row.albumCount || 0,
-    songCount: row.songCount || 0,
-  };
-}
 
 export function createArtistsService({
   db,
@@ -62,7 +48,7 @@ export function createArtistsService({
         'artists.id',
       );
 
-      return rows.map(withFallbackCounts);
+      return rows.map(toFullArtist);
     },
 
     async findById(id) {
@@ -72,7 +58,7 @@ export function createArtistsService({
         return undefined;
       }
 
-      return withFallbackCounts(row);
+      return toFullArtist(row);
     },
 
     async create(params) {
@@ -165,16 +151,6 @@ export function createArtistsService({
       return row.id;
     },
 
-    async findRandomArtists(count) {
-      const randomIds = await findRandomIdsOfTable(db, 'artists', count);
-
-      const rows = await createArtistQuery(db)
-        .whereIn('artists.id', randomIds)
-        .groupBy('artists.id');
-
-      return rows.map(withFallbackCounts);
-    },
-
     async search(q, count) {
       const rows = await createArtistQuery(db)
         .groupBy('artists.id')
@@ -184,7 +160,7 @@ export function createArtistsService({
         return weighStringsUsingSearchTerm(q, a.name, b.name);
       });
 
-      return weightedRows.slice(0, count).map(withFallbackCounts);
+      return weightedRows.slice(0, count).map(toFullArtist);
     },
   };
 }

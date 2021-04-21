@@ -5,6 +5,7 @@ import { AuthController } from './AuthController';
 import { SearchController } from './SearchController';
 import { SessionsController } from './SessionsController';
 import { StreamController } from './StreamController';
+import { DiscoverController } from './DiscoverController';
 
 export {
   AlbumsController,
@@ -14,4 +15,5 @@ export {
   SearchController,
   SessionsController,
   StreamController,
+  DiscoverController,
 };

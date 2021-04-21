@@ -16,6 +16,8 @@ function query(db: Knex) {
     .select(
       db.ref('id').withSchema('artists'),
       db.ref('name').withSchema('artists'),
+      db.ref('createdAt').withSchema('artists'),
+      db.ref('updatedAt').withSchema('artists'),
     )
     .leftJoin('albums', 'albums.artistId', 'artists.id')
     .leftJoin('songs', 'songs.artistId', 'artists.id')

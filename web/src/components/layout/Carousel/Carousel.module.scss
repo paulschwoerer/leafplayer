@@ -1,0 +1,29 @@
+
+.root {
+  .viewport {
+    overflow-x: auto;
+    background:
+      linear-gradient(90deg, white 30%, rgba(255, 255, 255, 0)),
+      linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) 0 100%,
+      radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-position: top left, top right, top left, top right;
+    background-size: 40px 100%, 40px 100%, 20px 100%, 20px 100%;
+    background-attachment: local, local, scroll, scroll;
+
+    .track {
+      --min-width: 180px;
+
+      display: flex;
+      gap: 1.5rem;
+      justify-content: flex-start;
+
+      > * {
+        flex: 0 0 var(--min-width);
+        mix-blend-mode: multiply;
+      }
+    }
+  }
+}

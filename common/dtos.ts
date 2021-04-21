@@ -2,6 +2,9 @@ import { FullAlbum, FullSong, FullArtist, User, UserSession } from './entities';
 
 export type AlbumResponseDto = {
   album: FullAlbum;
+};
+
+export type AlbumWithSongsResponseDto = AlbumResponseDto & {
   songs: FullSong[];
 };
 
@@ -11,7 +14,10 @@ export type AlbumsResponseDto = {
 
 export type ArtistResponseDto = {
   artist: FullArtist;
-  albums: AlbumResponseDto[];
+};
+
+export type ArtistWithAlbumsResponseDto = ArtistResponseDto & {
+  albums: AlbumWithSongsResponseDto[];
   appearsOn: FullAlbum[];
 };
 

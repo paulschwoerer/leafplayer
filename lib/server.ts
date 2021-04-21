@@ -14,6 +14,7 @@ import {
   SearchController,
   SessionsController,
   StreamController,
+  DiscoverController,
 } from './controllers';
 import { comparePasswords } from './helpers/passwords';
 import { AuthMiddleware, TokenAuthMiddleware } from './middlewares';
@@ -22,6 +23,7 @@ import { ArtistsService } from './services/ArtistsService';
 import { ArtworksService } from './services/ArtworksService';
 import { AudioFilesService } from './services/AudioFilesService';
 import { AuthService } from './services/AuthService';
+import { DiscoverService } from './services/DiscoverService';
 import { InvitationsService } from './services/InvitationsService';
 import { SessionsService } from './services/SessionsService';
 import { SongsService } from './services/SongsService';
@@ -36,6 +38,7 @@ type Injects = {
   artworksService: ArtworksService;
   audioFilesService: AudioFilesService;
   invitationsService: InvitationsService;
+  discoverService: DiscoverService;
 };
 
 export async function initServer({
@@ -48,6 +51,7 @@ export async function initServer({
   artworksService,
   audioFilesService,
   invitationsService,
+  discoverService,
 }: Injects): Promise<FastifyInstance> {
   const app = fastify({ logger: false });
 
@@ -97,6 +101,15 @@ export async function initServer({
           }),
           {
             prefix: 'sessions',
+          },
+        );
+
+        await authenticated.register(
+          DiscoverController({
+            discoverService,
+          }),
+          {
+            prefix: 'discover',
           },
         );
 

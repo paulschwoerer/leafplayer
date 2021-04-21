@@ -1,0 +1,15 @@
+.root {
+  height: var(--height);
+
+  &.sm {
+    --height: 1rem;
+  }
+
+  &.md {
+    --height: 2rem;
+  }
+
+  &.lg {
+    --height: 4rem;
+  }
+}

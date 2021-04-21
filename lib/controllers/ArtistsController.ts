@@ -1,12 +1,11 @@
-import { FastifyPluginAsync } from 'fastify';
 import {
-  ArtistResponseDto,
+  ArtistWithAlbumsResponseDto,
   ArtistsResponseDto,
   SongsResponseDto,
 } from '@common';
+import { FastifyPluginAsync } from 'fastify';
 import { sendNotFoundApiError } from '../helpers/responses';
 import { ArtistsService } from '../services/ArtistsService';
-import GetRandomArtistsSchema from '../schemas/getRandomArtists.json';
 
 type Injects = {
   artistsService: ArtistsService;
@@ -27,7 +26,7 @@ export function ArtistsController({
 
     router.get<{ Params: { artistId: string } }>(
       '/:artistId',
-      async (request, reply): Promise<ArtistResponseDto> => {
+      async (request, reply): Promise<ArtistWithAlbumsResponseDto> => {
         const { artistId } = request.params;
 
         const data = await artistsService.findByIdWithAlbums(artistId);
@@ -48,18 +47,6 @@ export function ArtistsController({
         const songs = await artistsService.findAllSongsByArtist(artistId);
 
         return { songs };
-      },
-    );
-
-    router.get<{ Querystring: { count?: number } }>(
-      '/random',
-      { schema: GetRandomArtistsSchema },
-      async (request): Promise<ArtistsResponseDto> => {
-        const { count } = request.query;
-
-        const artists = await artistsService.findRandomArtists(count || 5);
-
-        return { artists };
       },
     );
   };

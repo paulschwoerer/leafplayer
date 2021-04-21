@@ -1,9 +1,8 @@
 import { FullAlbum, FullSong } from '@common';
-import { toFullAlbum } from '@mappers/album';
+import { toFullAlbum } from '@mappers/albums';
 import { createAlbumsQuery, orderByName } from '@query/albums';
 import Knex from 'knex';
 import { AlbumRow } from '../database/rows';
-import { findRandomIdsOfTable } from '../helpers/random';
 import { weighStringsUsingSearchTerm } from '../helpers/search';
 import { generateUuid } from '../helpers/uuid';
 import { SongsService } from './SongsService';
@@ -21,7 +20,6 @@ export interface AlbumsService {
     name: string;
     artistId: string;
   }): Promise<string | undefined>;
-  findRandomAlbums(count: number): Promise<FullAlbum[]>;
   search(q: string, count: number): Promise<FullAlbum[]>;
 }
 
@@ -78,17 +76,6 @@ export function createAlbumsService({
       }
 
       return row.id;
-    },
-
-    async findRandomAlbums(count) {
-      const randomIds = await findRandomIdsOfTable(db, 'albums', count);
-
-      const albumRows = await createAlbumsQuery(db).whereIn(
-        'albums.id',
-        randomIds,
-      );
-
-      return albumRows.map(toFullAlbum);
     },
 
     async search(q, count) {
