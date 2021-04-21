@@ -35,6 +35,8 @@ function mapFileFormatToMimeType(format: FileFormat) {
       return 'audio/mpeg';
     case FileFormat.OPUS:
       return 'audio/opus';
+    case FileFormat.FLAC:
+      return 'audio/flac';
     default:
       return '';
   }

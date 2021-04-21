@@ -7,6 +7,7 @@ export enum FileFormat {
   JPG = 'jpg',
   MP3 = 'mp3',
   OPUS = 'opus',
+  FLAC = 'flac',
 }
 
 export type FileFormatFilter = {

@@ -49,6 +49,11 @@ export default class MusicScanner {
         type: FileType.AUDIO,
       },
       {
+        regex: /^\.flac$/,
+        format: FileFormat.FLAC,
+        type: FileType.AUDIO,
+      },
+      {
         regex: /^\.jpe?g$/,
         format: FileFormat.JPG,
         type: FileType.IMAGE,
