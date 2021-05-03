@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import styles from './OptionsDropdown.module.scss';
 
 type Props = {
-  align?: 'left' | 'center' | 'right';
+  align?: 'left' | 'right';
   className?: string;
 };
 
@@ -23,7 +23,7 @@ type OptionProps = {
 };
 
 function OptionsDropdown({
-  align = 'center',
+  align = 'right',
   children,
   className,
 }: PropsWithChildren<Props>): ReactElement {
@@ -69,8 +69,7 @@ function OptionsDropdown({
           className={styles.wrapper}
           onClick={() => setIsExpanded(false)}
         >
-          <span className={styles.triangle} />
-          <div className={styles.options}>{children}</div>
+          {children}
         </div>
       </If>
     </div>

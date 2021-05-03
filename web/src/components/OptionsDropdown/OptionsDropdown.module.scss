@@ -1,69 +1,41 @@
 @import "scss/vars";
 @import "scss/mixins";
 
-$buttonSize: 44px;
-
 .root {
   position: relative;
 
   .wrapper {
     position: absolute;
-    left: 0;
-    top: calc(100% + 8px);
+    top: 50%;
     z-index: 50;
     background: #fff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0;
+    transform: translateY(-50%);
+    transition: background 0.15s;
 
-    @include shadow(medium);
+    @include shadow(high);
 
-    .triangle {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: inherit;
-      box-shadow: inherit;
-      top: -10px;
-      left: $buttonSize / 2;
-      transform: translateX(-50%) rotate(-45deg);
-      z-index: -1;
-    }
+    .option {
+      padding: 1rem 1.5rem;
+      transition: background-color 0.1s;
+      white-space: nowrap;
+      display: block;
+      text-decoration: none;
+      color: inherit;
 
-    .options {
-      background: inherit;
-
-      .option {
-        padding: 1rem 1.5rem;
-        transition: background-color 0.1s;
-        white-space: nowrap;
-        display: block;
-        text-decoration: none;
-        color: inherit;
-
-        @include hover() {
-          cursor: pointer;
-          background: rgba(#000, 0.04);
-        }
+      @include hover() {
+        cursor: pointer;
+        background: rgba(#000, 0.08);
       }
     }
   }
 
-  &.right .wrapper {
-    right: 0;
-    left: auto;
-
-    .triangle {
-      left: auto;
-      right: $buttonSize / 2;
-      transform: translateX(50%) rotate(-45deg);
-    }
+  &.left .wrapper {
+    right: 100%;
   }
 
-  &.center .wrapper {
-    left: 50%;
-    transform: translateX(-50%);
-
-    .triangle {
-      left: 50%;
-      transform: translateX(-50%) rotate(-45deg);
-    }
+  &.right .wrapper {
+    left: 100%;
   }
 }

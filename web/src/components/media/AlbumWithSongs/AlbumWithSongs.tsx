@@ -73,7 +73,7 @@ function AlbumWithSongs({
           playerIsPlaying && !!current && current.song.id === song.id
         }
         options={
-          <OptionsDropdown align="right">
+          <OptionsDropdown align="left">
             <OptionsDropdown.Option onClick={() => playNext([song])}>
               Play Next
             </OptionsDropdown.Option>

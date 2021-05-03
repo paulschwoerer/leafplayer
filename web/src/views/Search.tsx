@@ -90,7 +90,7 @@ function Search(): ReactElement {
               })
             }
             options={
-              <OptionsDropdown align="right">
+              <OptionsDropdown align="left">
                 <OptionsDropdown.Option onClick={() => playNext([song])}>
                   Play Next
                 </OptionsDropdown.Option>

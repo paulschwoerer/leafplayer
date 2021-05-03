@@ -23,7 +23,7 @@ function QueueNextUp({ queue, onPlay, onRemove }: Props): ReactElement {
             song={item.song}
             onPlay={() => onPlay && onPlay(i)}
             options={
-              <OptionsDropdown align="right">
+              <OptionsDropdown align="left">
                 <OptionsDropdown.Option onClick={() => onRemove && onRemove(i)}>
                   Remove from Queue
                 </OptionsDropdown.Option>
