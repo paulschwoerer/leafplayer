@@ -1,5 +1,7 @@
-import classnames from 'classnames';
 import DefaultAlbumImage from 'assets/album-default.jpg';
+import classnames from 'classnames';
+import { PauseIcon, PlayIcon } from 'components/icons';
+import IconButton from 'components/icons/IconButton/IconButton';
 import If from 'components/If';
 import AppLink from 'components/layout/AppLink/AppLink';
 import { useMediaQuery } from 'helpers/mediaQuery';
@@ -8,10 +10,8 @@ import { FullSong } from 'leafplayer-common';
 import { useArtworkUrl } from 'modules/api';
 import React, { ReactElement } from 'react';
 import LazyImage from '../LazyImage/LazyImage';
-import styles from './SongRow.module.scss';
 import PlayingIndicator from '../PlayingIndicator/PlayingIndicator';
-import Icon from 'components/icons/Icon/Icon';
-import { PauseIcon, PlayIcon } from 'components/icons';
+import styles from './SongRow.module.scss';
 
 type Props = {
   song: FullSong;
@@ -105,7 +105,7 @@ function renderPlayControl({
   return (
     <div className={styles.playControl}>
       <div className={styles.hoverContent} onClick={onPlay}>
-        <Icon icon={isCurrentlyPlaying ? <PauseIcon /> : <PlayIcon />} />
+        <IconButton icon={isCurrentlyPlaying ? <PauseIcon /> : <PlayIcon />} />
       </div>
       <div className={styles.notHoverContent}>
         {isCurrentlyPlaying ? <PlayingIndicator /> : <span>{song.track}</span>}

@@ -1,5 +1,5 @@
 import { CloseIcon } from 'components/icons';
-import Icon from 'components/icons/Icon/Icon';
+import IconButton from 'components/icons/IconButton/IconButton';
 import React, { PropsWithChildren, ReactElement, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.scss';
@@ -40,9 +40,9 @@ function Modal({
     <div className={styles.root} onClick={hideModal}>
       <div className={styles.content} onClick={e => e.stopPropagation()}>
         {children}
-        <span className={styles.close} onClick={hideModal}>
-          <Icon icon={<CloseIcon />} />
-        </span>
+        <div className={styles.close}>
+          <IconButton icon={<CloseIcon />} onClick={hideModal} />
+        </div>
       </div>
     </div>,
     document.body,

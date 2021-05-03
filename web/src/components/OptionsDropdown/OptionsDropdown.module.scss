@@ -6,22 +6,6 @@ $buttonSize: 44px;
 .root {
   position: relative;
 
-  .toggleButton {
-    display: inline-grid;
-    place-items: center;
-    border: none;
-    background: none;
-    outline: 0;
-    width: $buttonSize;
-    height: $buttonSize;
-    user-select: none;
-    padding: 0;
-
-    @include hover() {
-      cursor: pointer;
-    }
-  }
-
   .wrapper {
     position: absolute;
     left: 0;

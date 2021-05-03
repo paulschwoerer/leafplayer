@@ -1,0 +1,20 @@
+@import "scss/mixins";
+
+$size: 44px;
+
+.root {
+  display: inline-grid;
+  place-items: center;
+  border: none;
+  background: none;
+  outline: 0;
+  width: $size;
+  height: $size;
+  user-select: none;
+  padding: 0;
+  color: inherit;
+
+  @include hover() {
+    cursor: pointer;
+  }
+}

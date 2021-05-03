@@ -1,7 +1,4 @@
 @import "scss/vars";
-@import "scss/mixins";
-
-$buttonSize: 44px;
 
 .root {
   position: fixed;
@@ -15,23 +12,6 @@ $buttonSize: 44px;
   color: #fff;
   display: flex;
   flex-direction: column;
-
-  .button {
-    display: inline-grid;
-    place-items: center;
-    border: none;
-    background: none;
-    outline: 0;
-    width: $buttonSize;
-    height: $buttonSize;
-    user-select: none;
-    padding: 0;
-    color: inherit;
-
-    @include hover() {
-      cursor: pointer;
-    }
-  }
 
   header {
     display: flex;

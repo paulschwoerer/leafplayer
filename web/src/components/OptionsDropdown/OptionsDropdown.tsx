@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { OptionsIcon } from 'components/icons';
-import Icon from 'components/icons/Icon/Icon';
+import IconButton from 'components/icons/IconButton/IconButton';
 import If from 'components/If';
 import React, {
   PropsWithChildren,
@@ -62,9 +62,7 @@ function OptionsDropdown({
         [styles.isExpanded]: isExpanded,
       })}
     >
-      <button className={styles.toggleButton} onClick={toggleExpanded}>
-        <Icon icon={<OptionsIcon />} />
-      </button>
+      <IconButton icon={<OptionsIcon />} onClick={toggleExpanded} />
       <If condition={isExpanded}>
         <div
           ref={ref}

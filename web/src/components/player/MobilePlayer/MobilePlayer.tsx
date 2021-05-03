@@ -1,6 +1,6 @@
 import DefaultAlbumImage from 'assets/album-default.jpg';
 import { ExpandMoreIcon, QueueIcon } from 'components/icons';
-import Icon from 'components/icons/Icon/Icon';
+import IconButton from 'components/icons/IconButton/IconButton';
 import AspectRatioOneToOne from 'components/layout/AspectRatioOneToOne/AspectRatioOneToOne';
 import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import LazyImage from 'components/media/LazyImage/LazyImage';
@@ -45,13 +45,9 @@ function MobilePlayer({ onClose }: Props): ReactElement {
   return (
     <div className={styles.root}>
       <header>
-        <button className={styles.button} onClick={onClose}>
-          <Icon icon={<ExpandMoreIcon />} />
-        </button>
+        <IconButton icon={<ExpandMoreIcon />} onClick={onClose} />
         <InvisibleLink to={`/queue`}>
-          <button className={styles.button} onClick={onClose}>
-            <Icon icon={<QueueIcon />} />
-          </button>
+          <IconButton icon={<QueueIcon />} onClick={onClose} />
         </InvisibleLink>
       </header>
       <section className={styles.artwork}>
