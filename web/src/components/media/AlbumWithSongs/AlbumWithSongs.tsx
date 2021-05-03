@@ -96,7 +96,7 @@ function AlbumWithSongs({
   function renderDisks(disks: Map<number, FullSong[]>) {
     const entries: ReactElement[] = [];
     disks.forEach((songs, disk) => {
-      entries.push(<DiskNumber disk={disk} />);
+      entries.push(<DiskNumber key={disk} disk={disk} />);
       entries.push(...songs.map(renderSong));
     });
     return entries;
