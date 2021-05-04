@@ -66,8 +66,8 @@
     }
   }
 
-  &:not(.primary):not(.outlined) {
-    color: $colorEmphasisMedium;
+  &.text {
+    color: inherit;
     background: transparent;
 
     &:hover {

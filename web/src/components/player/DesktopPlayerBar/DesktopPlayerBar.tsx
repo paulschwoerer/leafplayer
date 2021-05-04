@@ -1,14 +1,15 @@
 import classNames from 'classnames';
-import React, { ReactElement, useContext } from 'react';
+import { ButtonText } from 'components/form/Button/Button';
+import { QueueIcon } from 'components/icons';
+import Icon from 'components/icons/Icon/Icon';
+import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import { PlayerContext } from 'modules/player/context';
-import styles from './DesktopPlayerBar.module.scss';
+import React, { ReactElement, useContext } from 'react';
 import PlayerControls from '../PlayerControls/PlayerControls';
 import PlayerCurrent from '../PlayerCurrent/PlayerCurrent';
 import PlayerProgress from '../PlayerProgress/PlayerProgress';
-import Icon from 'components/icons/Icon/Icon';
-import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import PlayerVolume from '../PlayerVolume/PlayerVolume';
-import { QueueIcon } from 'components/icons';
+import styles from './DesktopPlayerBar.module.scss';
 
 type Props = {
   className: string;
@@ -78,7 +79,10 @@ function DesktopPlayerBar({ className }: Props): ReactElement {
           <PlayerCurrent current={current} />
         </div>
         <InvisibleLink to="/queue" className={styles.queueButton}>
-          <Icon icon={<QueueIcon />} />
+          <ButtonText>
+            Queue
+            <Icon icon={<QueueIcon />} />
+          </ButtonText>
         </InvisibleLink>
       </div>
     </div>

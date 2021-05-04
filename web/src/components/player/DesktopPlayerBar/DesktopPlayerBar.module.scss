@@ -9,11 +9,11 @@ $padding: 0.75rem;
   .layout {
     height: 100%;
     display: grid;
-    grid-template-columns: calc(#{$desktopSidebarWidth} - #{$padding * 2}) 2rem 1fr 2rem 120px 64px;
+    grid-template-columns: calc(#{$desktopSidebarWidth} - #{$padding * 2}) 1rem 1fr 1rem 120px 1rem min-content;
     grid-template-rows: 1fr 22px;
     grid-template-areas:
-      "current . controls . volume queue"
-      "current . progress . volume queue";
+      "current . controls . volume . queue"
+      "current . progress . volume . queue";
   }
 
   .volume,
@@ -50,7 +50,5 @@ $padding: 0.75rem;
     justify-content: center;
     align-items: center;
     color: #fff;
-    cursor: pointer;
-    width: auto;
   }
 }
