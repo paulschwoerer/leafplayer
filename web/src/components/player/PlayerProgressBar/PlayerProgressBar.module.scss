@@ -2,15 +2,6 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
-
-  .time {
-    color: #fff;
-    width: 60px;
-    margin: 0 0.5rem;
-    white-space: nowrap;
-    text-align: center;
-  }
 
   .bufferedOverlay {
     position: absolute;

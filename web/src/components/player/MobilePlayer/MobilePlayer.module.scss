@@ -1,6 +1,10 @@
 @import "scss/vars";
 
 .root {
+  display: grid;
+  grid-template-rows: min-content 30vh 1fr 1fr 1fr;
+  grid-template-areas: "header" "artwork" "info" "progress" "controls";
+  gap: 1rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -8,26 +12,33 @@
   bottom: 0;
   background: $colorPrimary;
   z-index: 100;
-  padding: 1.5rem;
+  padding: 1rem;
   color: #fff;
-  display: flex;
   flex-direction: column;
 
   header {
     display: flex;
     justify-content: space-between;
+    grid-area: header;
   }
 
-  .artwork {
-    padding: 1rem 2rem;
+  .artworkWrapper {
+    display: flex;
+    justify-content: center;
+    grid-area: artwork;
+
+    .artwork {
+      width: 100%;
+      max-width: 30vh;
+    }
   }
 
   .info {
-    padding: 1rem 0;
     text-align: center;
+    grid-area: info;
 
     p {
-      margin: 0.5rem;
+      margin: 0;
     }
 
     .title {
@@ -37,15 +48,50 @@
 
     .artist {
       color: rgba(#fff, 0.7);
+      margin-top: 1rem;
     }
   }
 
   .progress {
     margin-top: auto;
     padding: 1rem 0;
+    grid-area: progress;
+
+    .durations {
+      display: flex;
+      margin-bottom: 0.5rem;
+      justify-content: space-between;
+    }
   }
 
   .mainControls {
-    padding: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  @media screen and (orientation: landscape) {
+    grid-template-rows: min-content min(80vh, 20vw) 1fr;
+    grid-template-columns: min(80vh, 20vw) 1fr;
+    grid-template-areas: "header header" "artwork info" "progress progress";
+
+    .artworkWrapper {
+      flex-direction: column;
+
+      .artwork {
+        max-width: 100%;
+      }
+    }
+
+    .info {
+      text-align: left;
+    }
+
+    .mainControls {
+      grid-area: info;
+      align-self: end;
+      justify-content: flex-start;
+    }
   }
 }

@@ -2,12 +2,17 @@ import classNames from 'classnames';
 import { ButtonText } from 'components/form/Button/Button';
 import { QueueIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
+import IconButton from 'components/icons/IconButton/IconButton';
 import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
+import Duration from 'components/media/Duration/Duration';
+import { useMediaQuery } from 'helpers/mediaQuery';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import PlayerControls from '../PlayerControls/PlayerControls';
 import PlayerCurrent from '../PlayerCurrent/PlayerCurrent';
-import PlayerProgress from '../PlayerProgress/PlayerProgress';
+import PlayerProgressBar from '../PlayerProgressBar/PlayerProgressBar';
+import PlayerRepeatButton from '../PlayerRepeatButton';
+import PlayerShuffleButton from '../PlayerShuffleButton';
 import PlayerVolume from '../PlayerVolume/PlayerVolume';
 import styles from './DesktopPlayerBar.module.scss';
 
@@ -41,25 +46,35 @@ function DesktopPlayerBar({ className }: Props): ReactElement {
     },
   ] = useContext(PlayerContext);
 
+  const [isSeeking, setIsSeeking] = useState(false);
+  const [userSeek, setUserSeek] = useState(0);
+  const useSmallQueueButton = useMediaQuery('(max-width: 950px)');
+
   return (
     <div className={classNames(styles.root, className)}>
       <div className={styles.layout}>
-        <div className={styles.controls}>
+        <div className={styles.mainControls}>
           <PlayerControls
             isPlaying={isPlaying}
             canPlay={!!current}
             canSkipNext={canSkipNext}
             canSkipPrevious={canSkipPrevious}
-            repeatMode={repeatMode}
-            setRepeatMode={setRepeatMode}
             skipNext={skipNext}
             skipPrevious={skipPrevious}
             togglePlayPause={togglePlayPause}
-            shuffle={shuffle}
-            setShuffle={setShuffle}
           />
+          <div className={styles.durations}>
+            <Duration seconds={isSeeking ? userSeek : current ? seek : null} />
+            <span className={styles.slash}>/</span>
+            <Duration seconds={current ? current.song.duration : null} />
+          </div>
         </div>
-        <div className={styles.volume}>
+        <div className={styles.sideControls}>
+          <PlayerRepeatButton
+            repeatMode={repeatMode}
+            setRepeatMode={setRepeatMode}
+          />
+          <PlayerShuffleButton shuffle={shuffle} setShuffle={setShuffle} />
           <PlayerVolume
             volume={volume}
             isMuted={isMuted}
@@ -68,21 +83,35 @@ function DesktopPlayerBar({ className }: Props): ReactElement {
           />
         </div>
         <div className={styles.progress}>
-          <PlayerProgress
-            totalDuration={current?.song.duration || null}
+          <PlayerProgressBar
+            totalDuration={current?.song.duration || 0}
             elapsedDuration={seek}
-            onSetSeek={setSeek}
             bufferedTo={bufferedTo}
+            isSeeking={isSeeking}
+            userSeek={userSeek}
+            onSeekStart={value => {
+              setIsSeeking(true);
+              setUserSeek(value);
+            }}
+            onSeekUpdate={setUserSeek}
+            onSeekRelease={value => {
+              setIsSeeking(false);
+              setSeek(value);
+            }}
           />
         </div>
         <div className={styles.current}>
           <PlayerCurrent current={current} />
         </div>
         <InvisibleLink to="/queue" className={styles.queueButton}>
-          <ButtonText>
-            Queue
-            <Icon icon={<QueueIcon />} />
-          </ButtonText>
+          {useSmallQueueButton ? (
+            <IconButton icon={<QueueIcon />} />
+          ) : (
+            <ButtonText>
+              Queue
+              <Icon icon={<QueueIcon />} />
+            </ButtonText>
+          )}
         </InvisibleLink>
       </div>
     </div>

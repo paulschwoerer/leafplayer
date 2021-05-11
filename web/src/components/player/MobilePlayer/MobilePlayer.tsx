@@ -3,12 +3,15 @@ import { ExpandMoreIcon, QueueIcon } from 'components/icons';
 import IconButton from 'components/icons/IconButton/IconButton';
 import AspectRatioOneToOne from 'components/layout/AspectRatioOneToOne/AspectRatioOneToOne';
 import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
+import Duration from 'components/media/Duration/Duration';
 import LazyImage from 'components/media/LazyImage/LazyImage';
 import { useArtworkUrl } from 'modules/api';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import PlayerControls from '../PlayerControls/PlayerControls';
-import PlayerProgress from '../PlayerProgress/PlayerProgress';
+import PlayerProgressBar from '../PlayerProgressBar/PlayerProgressBar';
+import PlayerRepeatButton from '../PlayerRepeatButton';
+import PlayerShuffleButton from '../PlayerShuffleButton';
 import styles from './MobilePlayer.module.scss';
 
 type Props = {
@@ -42,6 +45,9 @@ function MobilePlayer({ onClose }: Props): ReactElement {
     size: 512,
   });
 
+  const [isSeeking, setIsSeeking] = useState(false);
+  const [userSeek, setUserSeek] = useState(0);
+
   return (
     <div className={styles.root}>
       <header>
@@ -50,36 +56,53 @@ function MobilePlayer({ onClose }: Props): ReactElement {
           <IconButton icon={<QueueIcon />} onClick={onClose} />
         </InvisibleLink>
       </header>
-      <section className={styles.artwork}>
-        <AspectRatioOneToOne>
-          <LazyImage url={artworkUrl} fallback={DefaultAlbumImage} />
-        </AspectRatioOneToOne>
+      <section className={styles.artworkWrapper}>
+        <div className={styles.artwork}>
+          <AspectRatioOneToOne>
+            <LazyImage url={artworkUrl} fallback={DefaultAlbumImage} />
+          </AspectRatioOneToOne>
+        </div>
       </section>
       <section className={styles.info}>
         <p className={styles.title}>{current?.song.title}</p>
         <p className={styles.artist}>{current?.song.artist.name}</p>
       </section>
       <section className={styles.progress}>
-        <PlayerProgress
-          bufferedTo={bufferedTo}
+        <div className={styles.durations}>
+          <Duration seconds={isSeeking ? userSeek : current ? seek : null} />
+          <Duration seconds={current ? current.song.duration : null} />
+        </div>
+        <PlayerProgressBar
+          totalDuration={current?.song.duration || 0}
           elapsedDuration={seek}
-          onSetSeek={setSeek}
-          totalDuration={current?.song.duration || null}
+          bufferedTo={bufferedTo}
+          isSeeking={isSeeking}
+          userSeek={userSeek}
+          onSeekStart={value => {
+            setIsSeeking(true);
+            setUserSeek(value);
+          }}
+          onSeekUpdate={setUserSeek}
+          onSeekRelease={value => {
+            setIsSeeking(false);
+            setSeek(value);
+          }}
         />
       </section>
       <section className={styles.mainControls}>
+        <PlayerShuffleButton shuffle={shuffle} setShuffle={setShuffle} />
         <PlayerControls
           isPlaying={isPlaying}
           canPlay={!!current}
           canSkipNext={canSkipNext}
           canSkipPrevious={canSkipPrevious}
-          repeatMode={repeatMode}
-          setRepeatMode={setRepeatMode}
           skipNext={skipNext}
           skipPrevious={skipPrevious}
           togglePlayPause={togglePlayPause}
-          shuffle={shuffle}
-          setShuffle={setShuffle}
+        />
+        <PlayerRepeatButton
+          repeatMode={repeatMode}
+          setRepeatMode={setRepeatMode}
         />
       </section>
     </div>

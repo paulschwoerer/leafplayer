@@ -6,13 +6,6 @@
   display: flex;
   justify-content: space-between;
 
-  .before,
-  .after {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   .dragContainer {
     display: flex;
     align-items: center;
@@ -21,7 +14,7 @@
     cursor: pointer;
     touch-action: none;
 
-    .range {
+    .track {
       position: relative;
       width: 100%;
       height: 3px;
@@ -40,7 +33,7 @@
         transition: opacity 0.1s;
       }
 
-      .value {
+      .trackValue {
         position: absolute;
         top: 0;
         left: 0;
@@ -62,7 +55,7 @@
       opacity: 1;
     }
 
-    .value {
+    .trackValue {
       background: $colorDanger;
     }
   }

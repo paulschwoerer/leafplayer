@@ -1,42 +1,26 @@
 import classNames from 'classnames';
-import React, { ReactElement, ReactNode, useState } from 'react';
+import { clamp } from 'helpers/math';
+import React, { PropsWithChildren, ReactElement } from 'react';
 import styles from './Slider.module.scss';
 
 type Props = {
   value: number;
-  onDragStart?: (value: number) => void;
-  onDragRelease?: (value: number) => void;
-  onDragUpdate?: (value: number) => void;
+  isDragging: boolean;
   disabled?: boolean;
-  before?: (props: { isDragging: boolean; dragValue: number }) => ReactNode;
-  after?: (props: { isDragging: boolean; dragValue: number }) => ReactNode;
-  rangeOverlay?: () => ReactNode;
+  onDragStart: (value: number) => void;
+  onDragRelease: (value: number) => void;
+  onDragUpdate: (value: number) => void;
 };
-
-function calculateValue(pointerX: number, referenceEl: HTMLElement): number {
-  return Math.min(
-    1,
-    Math.max(
-      0,
-      (pointerX - referenceEl.getBoundingClientRect().left) /
-        referenceEl.scrollWidth,
-    ),
-  );
-}
 
 function Slider({
   value,
+  disabled,
+  isDragging,
   onDragStart,
   onDragRelease,
   onDragUpdate,
-  disabled,
-  before,
-  after,
-  rangeOverlay,
-}: Props): ReactElement {
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragValue, setDragValue] = useState(0);
-
+  children,
+}: PropsWithChildren<Props>): ReactElement {
   function onPointerDown(ev: React.PointerEvent<HTMLDivElement>): void {
     if (disabled) {
       return;
@@ -47,10 +31,6 @@ function Slider({
     const value = calculateValue(ev.clientX, ev.currentTarget);
 
     onDragStart && onDragStart(value);
-    onDragUpdate && onDragUpdate(value);
-
-    setDragValue(value);
-    setIsDragging(true);
   }
 
   function onPointerMove(ev: React.PointerEvent<HTMLDivElement>): void {
@@ -61,8 +41,6 @@ function Slider({
     const value = calculateValue(ev.clientX, ev.currentTarget);
 
     onDragUpdate && onDragUpdate(value);
-
-    setDragValue(value);
   }
 
   function onPointerUp(ev: React.PointerEvent<HTMLDivElement>): void {
@@ -72,13 +50,10 @@ function Slider({
 
     const value = calculateValue(ev.clientX, ev.currentTarget);
 
-    onDragUpdate && onDragUpdate(value);
     onDragRelease && onDragRelease(value);
-
-    setIsDragging(false);
   }
 
-  const valuePercent = (isDragging ? dragValue : value) * 100;
+  const valuePercent = clamp(value * 100, 0, 100);
 
   return (
     <div
@@ -87,29 +62,36 @@ function Slider({
         [styles.disabled]: disabled,
       })}
     >
-      {before && (
-        <div className={styles.before}>{before({ isDragging, dragValue })}</div>
-      )}
       <div
         className={styles.dragContainer}
+        onPointerUp={onPointerUp}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
       >
-        <div className={styles.range}>
-          {rangeOverlay && rangeOverlay()}
+        <div className={styles.track}>
+          {children}
+
           <span
-            className={styles.value}
+            className={styles.trackValue}
             style={{ width: `${valuePercent}%` }}
           />
+
           <span className={styles.knob} style={{ left: `${valuePercent}%` }} />
         </div>
       </div>
-      {after && (
-        <div className={styles.after}>{after({ isDragging, dragValue })}</div>
-      )}
     </div>
+  );
+}
+
+function calculateValue(pointerX: number, referenceEl: HTMLElement): number {
+  return Math.min(
+    1,
+    Math.max(
+      0,
+      (pointerX - referenceEl.getBoundingClientRect().left) /
+        referenceEl.scrollWidth,
+    ),
   );
 }
 

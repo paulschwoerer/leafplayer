@@ -1,31 +1,34 @@
 @import "scss/vars";
+@import "scss/mixins";
 
 $padding: 0.75rem;
 
 .root {
   background: $colorPrimary;
+  color: #fff;
   padding: $padding;
+
+  --gap: 1rem;
+
+  @media (min-width: 950px) {
+    --gap: 2rem;
+  }
 
   .layout {
     height: 100%;
     display: grid;
-    grid-template-columns: calc(#{$desktopSidebarWidth} - #{$padding * 2}) 1rem 1fr 1rem 120px 1rem min-content;
+    grid-template-columns: calc(#{$desktopSidebarWidth} - #{$padding * 2}) calc(1rem + var(--gap)) 1fr 1fr var(--gap) min-content;
     grid-template-rows: 1fr 22px;
     grid-template-areas:
-      "current . controls . volume . queue"
-      "current . progress . volume . queue";
+      "current . main-controls side-controls . queue"
+      "current . progress progress . queue";
   }
 
-  .volume,
-  .controls,
+  .sideControls,
+  .mainControls,
   .progress {
     display: flex;
-    justify-content: center;
     align-items: center;
-  }
-
-  .volume {
-    grid-area: volume;
   }
 
   .current {
@@ -36,12 +39,24 @@ $padding: 0.75rem;
     min-width: 0;
   }
 
-  .controls {
-    grid-area: controls;
+  .mainControls {
+    grid-area: main-controls;
+    gap: 2rem;
+
+    .durations .slash {
+      margin: 0 0.25rem;
+    }
+  }
+
+  .sideControls {
+    grid-area: side-controls;
+    justify-content: flex-end;
+    gap: 1rem;
   }
 
   .progress {
     grid-area: progress;
+    justify-content: center;
   }
 
   .queueButton {
