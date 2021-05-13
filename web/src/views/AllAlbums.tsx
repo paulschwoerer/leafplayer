@@ -16,7 +16,7 @@ function AllAlbums(): ReactElement {
         headline="Albums"
         content={
           <SearchInput
-            placeholder="Filter"
+            placeholder="Search"
             value={filter}
             onChange={setFilter}
           />
