@@ -46,10 +46,7 @@ export function createAlbumsService({
     },
 
     async findById(id) {
-      const orderedByName = orderByName();
-      const row = await orderedByName(
-        createAlbumsQuery(db).where('albums.id', id),
-      ).first();
+      const row = await createAlbumsQuery(db).where('albums.id', id).first();
 
       if (!row) {
         return undefined;
@@ -59,7 +56,8 @@ export function createAlbumsService({
     },
 
     async findAll() {
-      const rows = await createAlbumsQuery(db).where(true);
+      const orderedByName = orderByName();
+      const rows = await orderedByName(createAlbumsQuery(db).where(true));
 
       return rows.map(toFullAlbum);
     },
