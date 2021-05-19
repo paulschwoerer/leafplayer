@@ -217,6 +217,10 @@ export function playerReducer(state: State, action: Action): State {
     case 'setBuffered': {
       const { to } = action;
 
+      if (state.bufferedTo === to) {
+        return state;
+      }
+
       return {
         ...state,
         bufferedTo: to,
