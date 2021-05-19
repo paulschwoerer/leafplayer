@@ -1,7 +1,14 @@
 
 .root {
+  --gap: 1rem;
+  --itemWidth: 100px;
+  --trackWidth: min-content;
+  --padding: 2rem;
+
   .viewport {
     overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: var(--padding);
     background:
       linear-gradient(90deg, white 30%, rgba(255, 255, 255, 0)),
       linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) 0 100%,
@@ -14,15 +21,30 @@
     background-attachment: local, local, scroll, scroll;
 
     .track {
-      --min-width: 180px;
-
       display: flex;
-      gap: 1.5rem;
-      justify-content: flex-start;
+      gap: var(--gap);
+      width: var(--trackWidth);
 
       > * {
-        flex: 0 0 var(--min-width);
+        flex: 0 0 var(--itemWidth);
         mix-blend-mode: multiply;
+        scroll-snap-align: start;
+      }
+    }
+  }
+
+  > header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    > nav {
+      margin-left: auto;
+    }
+
+    @media screen and (max-width: 500px) {
+      > nav {
+        display: none;
       }
     }
   }

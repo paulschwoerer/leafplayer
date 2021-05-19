@@ -9,7 +9,7 @@ import { getRandomArrayElements } from '../helpers/random';
 export interface DiscoverService {
   findRandomArtists(count: number): Promise<FullArtist[]>;
   findRandomAlbums(count: number): Promise<FullAlbum[]>;
-  findRecentlyAddedAlbums(): Promise<FullAlbum[]>;
+  findRecentlyAddedAlbums(limit: number): Promise<FullAlbum[]>;
 }
 
 type Injects = {
@@ -34,10 +34,10 @@ export function createDiscoverService({ db }: Injects): DiscoverService {
 
       return rows.map(toFullAlbum);
     },
-    async findRecentlyAddedAlbums() {
+    async findRecentlyAddedAlbums(limit) {
       const rows = await createAlbumsQuery(db)
         .orderBy('albums.createdAt', 'desc')
-        .limit(5);
+        .limit(limit);
 
       return rows.map(toFullAlbum);
     },

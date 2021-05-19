@@ -1,9 +1,7 @@
-import { ButtonText } from 'components/form/Button/Button';
+import RoundButton from 'components/form/RoundButton/RoundButton';
 import { ReloadIcon } from 'components/icons';
-import Icon from 'components/icons/Icon/Icon';
 import ApiLoader from 'components/layout/ApiLoader';
 import Carousel from 'components/layout/Carousel/Carousel';
-import SectionHeader from 'components/layout/SectionHeader/SectionHeader';
 import Spacer from 'components/layout/Spacer/Spacer';
 import ViewHeader from 'components/layout/ViewHeader/ViewHeader';
 import { AlbumCard, FakeAlbumCard } from 'components/media/AlbumCard/AlbumCard';
@@ -31,20 +29,17 @@ function Landing(): ReactElement {
 
       <ApiLoader<AlbumsResponseDto>
         slug="discover/recent"
-        renderContent={({ albums }) => (
-          <>
-            <SectionHeader headline="Recently added Albums" />
-            {albums.length ? (
-              <Carousel>
-                {albums.map(album => (
-                  <AlbumCard key={album.id} album={album} />
-                ))}
-              </Carousel>
-            ) : (
-              <EmptyLibrary />
-            )}
-          </>
-        )}
+        renderContent={({ albums }) =>
+          albums.length ? (
+            <Carousel headline="Recently added Albums">
+              {albums.map(album => (
+                <AlbumCard key={album.id} album={album} />
+              ))}
+            </Carousel>
+          ) : (
+            <EmptyLibrary />
+          )
+        }
       />
 
       <Spacer />
@@ -52,26 +47,23 @@ function Landing(): ReactElement {
       <ApiLoader<AlbumsResponseDto>
         slug="discover/albums"
         useCachedData
-        renderContent={({ albums }, reload) => (
-          <>
-            <SectionHeader headline="Albums you might like">
-              <ButtonText onClick={reload}>
-                Refresh
-                <Icon icon={<ReloadIcon />} />
-              </ButtonText>
-            </SectionHeader>
-            {albums.length ? (
-              <Carousel>
-                <FakeAlbumCard label="Surprise me" onPlay={playRandomAlbum} />
-                {albums.map(album => (
-                  <AlbumCard key={album.id} album={album} />
-                ))}
-              </Carousel>
-            ) : (
-              <EmptyLibrary />
-            )}
-          </>
-        )}
+        renderContent={({ albums }, reload) =>
+          albums.length ? (
+            <Carousel
+              headline="Albums you might like"
+              headerContent={
+                <RoundButton icon={<ReloadIcon />} onClick={reload} />
+              }
+            >
+              <FakeAlbumCard label="Surprise me" onPlay={playRandomAlbum} />
+              {albums.map(album => (
+                <AlbumCard key={album.id} album={album} />
+              ))}
+            </Carousel>
+          ) : (
+            <EmptyLibrary />
+          )
+        }
       />
 
       <Spacer />
@@ -79,26 +71,23 @@ function Landing(): ReactElement {
       <ApiLoader<ArtistsResponseDto>
         slug="discover/artists"
         useCachedData
-        renderContent={({ artists }, reload) => (
-          <>
-            <SectionHeader headline="Artists you might like">
-              <ButtonText onClick={reload}>
-                Refresh
-                <Icon icon={<ReloadIcon />} />
-              </ButtonText>
-            </SectionHeader>
-            {artists.length ? (
-              <Carousel>
-                <FakeArtistCard label="Surprise me" onPlay={playRandomArtist} />
-                {artists.map(artist => (
-                  <ArtistCard key={artist.id} artist={artist} />
-                ))}
-              </Carousel>
-            ) : (
-              <EmptyLibrary />
-            )}
-          </>
-        )}
+        renderContent={({ artists }, reload) =>
+          artists.length ? (
+            <Carousel
+              headline="Artists you might like"
+              headerContent={
+                <RoundButton icon={<ReloadIcon />} onClick={reload} />
+              }
+            >
+              <FakeArtistCard label="Surprise me" onPlay={playRandomArtist} />
+              {artists.map(artist => (
+                <ArtistCard key={artist.id} artist={artist} />
+              ))}
+            </Carousel>
+          ) : (
+            <EmptyLibrary />
+          )
+        }
       />
     </>
   );

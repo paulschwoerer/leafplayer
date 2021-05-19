@@ -17,4 +17,13 @@ $size: 44px;
   @include hover() {
     cursor: pointer;
   }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: initial;
+  }
+
+  &.mirrored {
+    transform: scaleX(-1);
+  }
 }

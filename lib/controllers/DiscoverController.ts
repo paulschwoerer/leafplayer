@@ -18,7 +18,7 @@ export function DiscoverController({
     router.get(
       '/recent',
       async (): Promise<AlbumsResponseDto> => {
-        const albums = await discoverService.findRecentlyAddedAlbums();
+        const albums = await discoverService.findRecentlyAddedAlbums(8);
 
         return {
           albums,
@@ -29,7 +29,7 @@ export function DiscoverController({
     router.get(
       '/artists',
       async (): Promise<ArtistsResponseDto> => {
-        const artists = await discoverService.findRandomArtists(5);
+        const artists = await discoverService.findRandomArtists(7);
 
         return {
           artists,
@@ -40,7 +40,7 @@ export function DiscoverController({
     router.get(
       '/albums',
       async (): Promise<AlbumsResponseDto> => {
-        const albums = await discoverService.findRandomAlbums(5);
+        const albums = await discoverService.findRandomAlbums(7);
 
         return {
           albums,
