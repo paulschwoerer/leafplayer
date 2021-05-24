@@ -35,7 +35,7 @@ function Carousel({
   children,
   headline,
   gap = 16,
-  minItemWidth = 120,
+  minItemWidth = 140,
   teaserWidth = 32,
   headerContent,
 }: PropsWithChildren<Props>): ReactElement {
