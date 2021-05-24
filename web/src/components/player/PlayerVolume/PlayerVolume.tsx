@@ -1,8 +1,9 @@
-import Icon from 'components/icons/Icon/Icon';
 import Slider from 'components/form/Slider/Slider';
+import { VolumeDownIcon, VolumeOffIcon, VolumeUpIcon } from 'components/icons';
+import Icon from 'components/icons/Icon/Icon';
+import { clamp } from 'helpers/math';
 import React, { ReactElement, useState } from 'react';
 import styles from './PlayerVolume.module.scss';
-import { VolumeDownIcon, VolumeOffIcon, VolumeUpIcon } from 'components/icons';
 
 type Props = {
   volume: number;
@@ -10,6 +11,8 @@ type Props = {
   onSetVolume: (volume: number) => void;
   onToggleMute: () => void;
 };
+
+const MOUSE_WHEEL_STEP = 1 / 12;
 
 function PlayerVolume({
   volume,
@@ -20,8 +23,20 @@ function PlayerVolume({
   const displayVolume = isMuted ? 0 : volume;
   const [isAdjusting, setIsAdjusting] = useState(false);
 
+  function onWheel(ev: React.WheelEvent) {
+    ev.stopPropagation();
+    ev.preventDefault();
+
+    const direction = Math.sign(ev.deltaY) * -1;
+    const newVolume = clamp(volume + direction * MOUSE_WHEEL_STEP, 0, 1);
+
+    if (newVolume !== volume) {
+      onSetVolume(newVolume);
+    }
+  }
+
   return (
-    <div className={styles.root}>
+    <div className={styles.root} onWheel={onWheel}>
       {renderVolumeIcon({ volume, isMuted, onClick: onToggleMute })}
       <Slider
         value={displayVolume}
