@@ -1,6 +1,6 @@
 import If from 'components/If';
+import Carousel from 'components/layout/Carousel/Carousel';
 import SectionHeader from 'components/layout/SectionHeader/SectionHeader';
-import WaterfallLayout from 'components/layout/WaterfallLayout/WaterfallLayout';
 import { AlbumCard } from 'components/media/AlbumCard/AlbumCard';
 import { ArtistCard } from 'components/media/ArtistCard/ArtistCard';
 import { SongRowWithArtwork } from 'components/media/SongRow/SongRow';
@@ -73,21 +73,19 @@ function Search(): ReactElement {
   return (
     <>
       <If condition={results.artists.length > 0}>
-        <SectionHeader headline="Artists" />
-        <WaterfallLayout>
+        <Carousel headline="Artists">
           {results.artists.map(artist => (
             <ArtistCard artist={artist} key={artist.id} />
           ))}
-        </WaterfallLayout>
+        </Carousel>
       </If>
 
       <If condition={results.albums.length > 0}>
-        <SectionHeader headline="Albums" />
-        <WaterfallLayout>
+        <Carousel headline="Albums">
           {results.albums.map(album => (
             <AlbumCard album={album} key={album.id} />
           ))}
-        </WaterfallLayout>
+        </Carousel>
       </If>
 
       <If condition={results.songs.length > 0}>
