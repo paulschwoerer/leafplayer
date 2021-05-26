@@ -10,11 +10,13 @@ type Props = {
   className?: string;
   withBorder?: boolean;
   primary?: boolean;
+  mirrored?: boolean;
 };
 
 function RoundButton({
   icon,
   disabled,
+  mirrored,
   className,
   onClick,
   withBorder,
@@ -29,7 +31,7 @@ function RoundButton({
       onClick={onClick}
       disabled={disabled}
     >
-      <Icon icon={icon} size="md" />
+      <Icon mirrored={mirrored} icon={icon} size="md" />
     </button>
   );
 }

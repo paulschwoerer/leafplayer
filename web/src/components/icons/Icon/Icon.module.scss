@@ -1,6 +1,10 @@
 .root {
   display: inline-block;
 
+  &.mirrored {
+    transform: scaleX(-1);
+  }
+
   > svg {
     fill: currentColor;
     width: 100%;

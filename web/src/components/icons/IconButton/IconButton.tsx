@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { ReactElement } from 'react';
 import Icon from '../Icon/Icon';
 import styles from './IconButton.module.scss';
@@ -17,12 +16,8 @@ function IconButton({
   onClick,
 }: Props): ReactElement {
   return (
-    <button
-      className={classNames(styles.root, { [styles.mirrored]: mirrored })}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      <Icon icon={icon} />
+    <button className={styles.root} disabled={disabled} onClick={onClick}>
+      <Icon icon={icon} mirrored={mirrored} />
     </button>
   );
 }

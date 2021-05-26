@@ -1,4 +1,3 @@
-import HistoryNavigation from 'components/HistoryNavigation/HistoryNavigation';
 import ApiLoader from 'components/layout/ApiLoader';
 import ArtistAppearsOn from 'components/media/ArtistAppearsOn/ArtistAppearsOn';
 import ArtistDiscography from 'components/media/ArtistDiscography/ArtistDiscography';
@@ -14,32 +13,26 @@ function ArtistDetails(): ReactElement {
   const [, { addSongsToQueue }] = useContext(PlayerContext);
 
   return (
-    <>
-      <HistoryNavigation />
+    <ApiLoader<ArtistWithAlbumsResponseDto>
+      slug={`artists/${id}`}
+      renderContent={({ artist, albums, appearsOn }) => (
+        <>
+          <ArtistHeader
+            artist={artist}
+            onPlayClicked={() =>
+              addSongsToQueue(
+                albums.flatMap(album => album.songs),
+                { replaceQueue: true, startPlaying: true },
+              )
+            }
+          />
 
-      <ApiLoader<ArtistWithAlbumsResponseDto>
-        slug={`artists/${id}`}
-        renderContent={({ artist, albums, appearsOn }) => (
-          <>
-            <ArtistHeader
-              artist={artist}
-              onPlayClicked={() =>
-                addSongsToQueue(
-                  albums.flatMap(album => album.songs),
-                  { replaceQueue: true, startPlaying: true },
-                )
-              }
-            />
+          {albums.length > 0 && <ArtistDiscography albumsWithSongs={albums} />}
 
-            {albums.length > 0 && (
-              <ArtistDiscography albumsWithSongs={albums} />
-            )}
-
-            {appearsOn.length > 0 && <ArtistAppearsOn albums={appearsOn} />}
-          </>
-        )}
-      />
-    </>
+          {appearsOn.length > 0 && <ArtistAppearsOn albums={appearsOn} />}
+        </>
+      )}
+    />
   );
 }
 

@@ -1,4 +1,3 @@
-import HistoryNavigation from 'components/HistoryNavigation/HistoryNavigation';
 import ApiLoader from 'components/layout/ApiLoader';
 import AlbumWithSongs from 'components/media/AlbumWithSongs/AlbumWithSongs';
 import { AlbumWithSongsResponseDto } from 'leafplayer-common';
@@ -9,15 +8,12 @@ function AlbumDetails(): ReactElement {
   const { id } = useParams<{ id: string }>();
 
   return (
-    <>
-      <HistoryNavigation />
-      <ApiLoader<AlbumWithSongsResponseDto>
-        slug={`albums/${id}`}
-        renderContent={({ album, songs }) => (
-          <AlbumWithSongs album={album} songs={songs} hideArtist={false} />
-        )}
-      />
-    </>
+    <ApiLoader<AlbumWithSongsResponseDto>
+      slug={`albums/${id}`}
+      renderContent={({ album, songs }) => (
+        <AlbumWithSongs album={album} songs={songs} hideArtist={false} />
+      )}
+    />
   );
 }
 

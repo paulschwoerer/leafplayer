@@ -1,18 +1,26 @@
 import { ChevronLeftIcon } from 'components/icons';
-import Icon from 'components/icons/Icon/Icon';
+import IconButton from 'components/icons/IconButton/IconButton';
 import React, { ReactElement } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './HistoryNavigation.module.scss';
 
 function HistoryNavigation(): ReactElement {
   const history = useHistory();
+  const disabled = history.length === 1;
 
   return (
     <div className={styles.root}>
-      <span className={styles.back} onClick={() => history.goBack()}>
-        <Icon icon={<ChevronLeftIcon />} />
-        back
-      </span>
+      <IconButton
+        disabled={disabled}
+        icon={<ChevronLeftIcon />}
+        onClick={() => history.goBack()}
+      />
+      <IconButton
+        disabled={disabled}
+        icon={<ChevronLeftIcon />}
+        mirrored
+        onClick={() => history.goForward()}
+      />
     </div>
   );
 }

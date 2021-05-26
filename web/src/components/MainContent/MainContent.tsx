@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import HeaderBar from 'components/layout/HeaderBar/HeaderBar';
 import { AuthenticatedRoute } from 'modules/auth';
 import React, { ReactElement } from 'react';
 import AlbumDetails from 'views/AlbumDetails';
@@ -19,6 +20,7 @@ function MainContent({ className }: Props): ReactElement {
   return (
     <div className={classNames(styles.root, className)}>
       <div className={styles.inner}>
+        <HeaderBar />
         <AuthenticatedRoute path="/search" component={Search} />
         <AuthenticatedRoute path="/artists" component={AllArtists} />
         <AuthenticatedRoute path="/artist/:id" component={ArtistDetails} />

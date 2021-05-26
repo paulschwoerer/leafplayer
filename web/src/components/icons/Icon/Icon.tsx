@@ -7,12 +7,21 @@ type Props = {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   onClick?: (ev: React.MouseEvent) => void;
+  mirrored?: boolean;
 };
 
-function Icon({ icon, size = 'md', className, onClick }: Props): ReactElement {
+function Icon({
+  icon,
+  size = 'md',
+  mirrored,
+  className,
+  onClick,
+}: Props): ReactElement {
   return (
     <span
-      className={classNames(styles.root, styles[size], className)}
+      className={classNames(styles.root, styles[size], className, {
+        [styles.mirrored]: mirrored,
+      })}
       onClick={onClick}
     >
       {icon}

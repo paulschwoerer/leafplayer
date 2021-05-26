@@ -24,11 +24,6 @@ const navEntries = [
     exact: true,
   },
   {
-    label: 'Search',
-    icon: <SearchIcon />,
-    to: '/search',
-  },
-  {
     label: 'Artists',
     icon: <ArtistsIcon />,
     to: '/artists',
