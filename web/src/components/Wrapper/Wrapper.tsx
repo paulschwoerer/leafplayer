@@ -3,7 +3,6 @@ import {
   AlbumIcon,
   ArtistsIcon,
   ExploreIcon,
-  SearchIcon,
   SettingsIcon,
 } from 'components/icons';
 import MobileMenu from 'components/mobile/MobileMenu/MobileMenu';
