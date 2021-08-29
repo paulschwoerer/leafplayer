@@ -21,20 +21,6 @@ function Login({ history }: RouteComponentProps): ReactElement {
       stayLoggedIn: true,
     },
 
-    validate: values => {
-      const errors: { [key: string]: string } = {};
-
-      if (!values.username) {
-        errors.username = 'Required';
-      }
-
-      if (!values.password) {
-        errors.password = 'Required';
-      }
-
-      return errors;
-    },
-
     onSubmit: async values => {
       setError('');
 
@@ -44,7 +30,11 @@ function Login({ history }: RouteComponentProps): ReactElement {
       );
 
       if (isApiError(result)) {
-        setError(result.error);
+        if (result.statusCode === 401) {
+          setError('Invalid credentials');
+        } else {
+          setError(result.error);
+        }
       } else {
         authContext.storeUser(result.user);
         authContext.storeArtworkToken(result.artworkToken);
