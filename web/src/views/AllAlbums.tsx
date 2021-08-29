@@ -1,4 +1,5 @@
-import SearchInput from 'components/form/SearchInput/SearchInput';
+import Input from 'components/form/Input/Input';
+import { SearchIcon } from 'components/icons';
 import ApiLoader from 'components/layout/ApiLoader';
 import ViewHeader from 'components/layout/ViewHeader/ViewHeader';
 import WaterfallLayout from 'components/layout/WaterfallLayout/WaterfallLayout';
@@ -12,15 +13,14 @@ function AllAlbums(): ReactElement {
 
   return (
     <>
-      <ViewHeader
-        headline="Albums"
-        content={
-          <SearchInput
-            placeholder="Search"
-            value={filter}
-            onChange={setFilter}
-          />
-        }
+      <ViewHeader headline="Albums" />
+
+      <Input
+        name="search"
+        icon={<SearchIcon />}
+        placeholder="Search Albums"
+        value={filter}
+        onInput={ev => setFilter(ev.currentTarget.value)}
       />
 
       <ApiLoader<AlbumsResponseDto>
@@ -35,10 +35,7 @@ function AllAlbums(): ReactElement {
               return album;
             }
 
-            return (
-              album.name.toLowerCase().includes(filter.toLowerCase()) ||
-              album.artist.name.toLowerCase().includes(filter.toLowerCase())
-            );
+            return album.name.toLowerCase().includes(filter.toLowerCase());
           });
 
           return (

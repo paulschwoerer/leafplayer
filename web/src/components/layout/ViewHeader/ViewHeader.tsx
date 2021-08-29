@@ -1,18 +1,12 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import styles from './ViewHeader.module.scss';
 
 type Props = {
   headline: string;
-  content?: ReactNode;
 };
 
-function ViewHeader({ headline, content }: Props): ReactElement {
-  return (
-    <div className={styles.root}>
-      <h1>{headline}</h1>
-      <div>{content}</div>
-    </div>
-  );
+function ViewHeader({ headline }: Props): ReactElement {
+  return <h1 className={styles.root}>{headline}</h1>;
 }
 
 export default ViewHeader;
