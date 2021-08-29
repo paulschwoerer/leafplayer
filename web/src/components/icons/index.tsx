@@ -1,4 +1,5 @@
 import { ReactComponent as Album } from './album.svg';
+import { ReactComponent as ArrowForward } from './arrow_forward.svg';
 import { ReactComponent as Cached } from './cached.svg';
 import { ReactComponent as CheckBox } from './check_box.svg';
 import { ReactComponent as CheckBoxOutlineBlank } from './check_box_outline_blank.svg';
@@ -28,6 +29,7 @@ import { ReactComponent as VolumeOff } from './volume_off.svg';
 import { ReactComponent as VolumeUp } from './volume_up.svg';
 
 export const AlbumIcon = Album;
+export const ArrowForwardIcon = ArrowForward;
 export const ReloadIcon = Cached;
 export const CheckBoxUncheckedIcon = CheckBoxOutlineBlank;
 export const CheckBoxCheckedIcon = CheckBox;

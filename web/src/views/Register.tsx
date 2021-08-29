@@ -1,7 +1,6 @@
-import AuthForm from 'components/form/AuthForm/AuthForm';
-import { ButtonPrimary } from 'components/form/Button/Button';
+import { ButtonPrimary, ButtonText } from 'components/form/Button/Button';
+import FormCard from 'components/form/FormCard/FormCard';
 import Input from 'components/form/Input/Input';
-import AppLink from 'components/layout/AppLink/AppLink';
 import { useFormik } from 'formik';
 import { RegisterRequestDto } from 'leafplayer-common';
 import { isApiError, makeApiPostRequest } from 'modules/api';
@@ -73,16 +72,15 @@ function Register(): ReactElement {
   function renderActions(): ReactElement {
     return (
       <>
-        <AppLink to="/login">Login instead</AppLink>
-
         <ButtonPrimary type="submit">Create Account</ButtonPrimary>
+        <ButtonText to="/login">Login instead</ButtonText>
       </>
     );
   }
 
   return (
     <div>
-      <AuthForm
+      <FormCard
         error={error}
         onCloseError={() => setError('')}
         actions={renderActions()}
@@ -94,7 +92,7 @@ function Register(): ReactElement {
           name="inviteCode"
           value={formik.values.inviteCode}
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onInput={formik.handleChange}
           error={formik.touched.inviteCode && formik.errors.inviteCode}
         />
 
@@ -102,9 +100,10 @@ function Register(): ReactElement {
           type="text"
           label="Username"
           name="username"
+          autoComplete="username"
           value={formik.values.username}
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onInput={formik.handleChange}
           error={formik.touched.username && formik.errors.username}
         />
 
@@ -114,7 +113,7 @@ function Register(): ReactElement {
           name="displayName"
           value={formik.values.displayName || formik.values.username}
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onInput={formik.handleChange}
           error={formik.touched.displayName && formik.errors.displayName}
         />
 
@@ -124,7 +123,7 @@ function Register(): ReactElement {
           name="password"
           value={formik.values.password}
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onInput={formik.handleChange}
           error={formik.touched.password && formik.errors.password}
         />
 
@@ -134,10 +133,10 @@ function Register(): ReactElement {
           name="passwordRepeat"
           value={formik.values.passwordRepeat}
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onInput={formik.handleChange}
           error={formik.touched.passwordRepeat && formik.errors.passwordRepeat}
         />
-      </AuthForm>
+      </FormCard>
     </div>
   );
 }

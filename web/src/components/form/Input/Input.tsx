@@ -1,74 +1,73 @@
 import classNames from 'classnames';
-import { ExclamationMarkIcon } from 'components/icons';
-import React, { ChangeEvent, ReactElement, useState } from 'react';
-import Icon from '../../icons/Icon/Icon';
+import React, { ChangeEvent, ReactElement, useEffect, useRef } from 'react';
 import styles from './Input.module.scss';
 
 type Props = {
-  type: 'text' | 'email' | 'password' | 'search';
-  label: string;
+  type?: 'text' | 'email' | 'password' | 'search';
+  label?: string;
   value: string;
   name: string;
-  variation?: 'dark' | 'light';
+  icon?: ReactElement;
+  placeholder?: string;
+  autoComplete?: string;
+  autoFocus?: boolean;
   error?: string | false;
   onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
+  onInput?: React.FormEventHandler<HTMLInputElement>;
 };
 
 function Input({
-  error,
-  type,
+  type = 'text',
   label,
-  name,
-  onBlur,
-  onChange,
   value,
-  className,
+  name,
+  icon,
+  placeholder,
+  autoComplete,
+  autoFocus,
+  error,
+  onBlur,
+  onInput,
 }: Props): ReactElement {
-  const [isFocused, setIsFocused] = useState(false);
+  const ref = useRef<HTMLInputElement>(null);
 
-  function handleBlur(event: ChangeEvent<HTMLInputElement>) {
-    setIsFocused(false);
-
-    if (onBlur) {
-      onBlur(event);
+  useEffect(() => {
+    if (autoFocus && ref.current) {
+      ref.current.focus();
     }
-  }
+  }, [autoFocus]);
 
   return (
     <div
-      className={classNames(styles.root, className, {
+      className={classNames(styles.root, {
         [styles.hasError]: !!error,
         [styles.hasValue]: !!value,
-        [styles.isFocused]: isFocused,
+        [styles.hasLabel]: !!label,
+        [styles.hasIcon]: !!icon,
       })}
     >
-      <label htmlFor={name} className={styles.label}>
-        {label}
-      </label>
-
       <input
         type={type}
         id={name}
         name={name}
         value={value}
-        onChange={onChange}
-        onFocus={() => setIsFocused(true)}
-        onBlur={handleBlur}
+        placeholder={placeholder || label}
+        autoComplete={autoComplete}
+        onInput={onInput}
+        onBlur={onBlur}
+        ref={ref}
+        aria-describedby={`${name}-error`}
       />
 
-      {error && (
-        <Icon
-          icon={<ExclamationMarkIcon />}
-          size="sm"
-          className={styles.icon}
-        />
-      )}
+      {icon && <span className={styles.icon}>{icon}</span>}
 
-      <span className={styles.line} />
+      {label && <label htmlFor={name}>{label}</label>}
 
-      <span className={styles.error}>{error}</span>
+      <div className={styles.errorContainer}>
+        <span id={`${name}-error`} className={styles.error}>
+          {error}
+        </span>
+      </div>
     </div>
   );
 }

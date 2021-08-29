@@ -1,95 +1,115 @@
 @import "scss/vars";
 
-$inputPadding: 5px;
-
 .root {
-  position: relative;
-  display: inline-block;
-  margin: 1.25rem 0 1.5rem 0;
-  width: 100%;
-  max-width: 100%;
-  color: $colorEmphasisHigh;
+  --padding: 1rem;
+  --radius: 0.5rem;
+  --duration: 150ms;
+  --height: var(--tapTarget);
 
-  .label {
+  position: relative;
+
+  > label {
     position: absolute;
-    top: $inputPadding;
-    left: $inputPadding;
-    color: inherit;
+    left: calc(var(--padding) - 0.25rem);
+    top: 0.35rem;
+    color: $colorEmphasisLow;
+    transition: color var(--duration), opacity var(--duration), transform var(--duration);
+    padding: 0 0.25rem;
+    font-size: 0.75em;
+    transform: translateY(0.5rem);
+    opacity: 0;
+    z-index: 1;
     pointer-events: none;
-    transition: all 0.25s;
   }
 
-  input {
-    font-size: 1rem;
-    color: inherit;
-    border-color: $colorEmphasisHigh;
-    padding: $inputPadding;
+  > input {
+    position: relative;
+    background: var(--colorInteractionBackground);
+    border: 1px solid var(--colorInteractionBorder);
+    border-radius: var(--radius);
+    padding: 0 var(--padding);
+    height: var(--height);
     display: block;
-    border: none;
-    background: transparent;
-    width: 100%;
-    min-width: 100%;
-    max-width: 100%;
     outline: 0;
+    width: 100%;
+    transform: translateY(0);
+    color: inherit;
+    transition: border-color 0.15s, padding-top 0.15s;
+    z-index: 1;
+    font: var(--font);
+
+    &:-webkit-autofill ~ .root,
+    &:-webkit-autofill:hover ~ .root,
+    &:-webkit-autofill:focus ~ .root {
+      background: red;
+    }
+
+    &:focus {
+      border-color: $colorPrimary;
+    }
+
+    &::placeholder {
+      color: $colorEmphasisLow;
+      opacity: 1;
+    }
+  }
+
+  &.hasIcon {
+    > input {
+      padding-left: calc(var(--padding) + 2rem);
+    }
+  }
+
+  &.hasLabel.hasValue {
+    > input {
+      padding-top: 0.8rem;
+    }
+
+    > label {
+      color: $colorPrimary;
+      transform: translate(0);
+      opacity: 1;
+    }
   }
 
   .icon {
+    display: flex;
+    align-items: center;
     position: absolute;
-    right: $inputPadding;
-    top: $inputPadding;
-    bottom: 0;
+    left: var(--padding);
+    top: 0;
+    height: var(--height);
+    z-index: 1;
   }
 
-  .line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: $colorEmphasisMedium;
-    transition: transform 0.1s, background-color 0.1s;
+  .errorContainer {
+    display: block;
+    width: 100%;
+    color: #fff;
+    margin-top: calc(var(--radius) * -1);
+    padding: calc(var(--radius) + 0.1em) var(--padding) 0.2em;
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: $colorDanger;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform var(--duration);
   }
 
   .error {
-    position: absolute;
-    display: flex;
-    align-items: center;
+    display: block;
     width: 100%;
-    padding: 4px 5px;
-    font-size: 0.9em;
-    color: $colorDanger;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  &.isFocused {
-    .line {
-      background: $colorPrimary;
-      transform: scaleY(2);
-    }
+    font-size: 0.75em;
+    min-height: 1em;
+    line-height: 1;
   }
 
   &.hasError {
-    .error {
-      opacity: 1;
+    > input:not(:focus) {
+      border-color: $colorDanger;
     }
 
-    .line {
-      background: $colorDanger;
-      transform: scaleY(2);
-    }
-
-    .icon {
-      color: $colorDanger;
-    }
-  }
-
-  &.isFocused,
-  &.hasValue {
-    .label {
-      top: -14px;
-      font-size: 0.8em;
-      opacity: 0.8;
+    .errorContainer {
+      transform: scaleY(1);
     }
   }
 }

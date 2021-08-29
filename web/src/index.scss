@@ -4,7 +4,7 @@ body {
   margin: 0;
   font-size: 15px;
   font-family:
-    FiraSans,
+    "FiraSans",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -14,6 +14,11 @@ body {
   &.no-scroll {
     overflow: hidden;
   }
+
+  --font: 1rem "FiraSans", sans-serif;
+  --tapTarget: 48px;
+  --colorInteractionBackground: #fbfbfb;
+  --colorInteractionBorder: #ebebeb;
 }
 
 * {

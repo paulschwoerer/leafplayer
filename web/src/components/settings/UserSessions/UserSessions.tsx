@@ -124,7 +124,7 @@ function UserSessions(): ReactElement {
                 name="password"
                 type="password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onInput={ev => setPassword(ev.currentTarget.value)}
               />
 
               <ButtonPrimary

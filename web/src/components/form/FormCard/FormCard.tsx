@@ -1,8 +1,8 @@
 import { CloseIcon } from 'components/icons';
-import Icon from 'components/icons/Icon/Icon';
+import IconButton from 'components/icons/IconButton/IconButton';
 import React, { PropsWithChildren, ReactElement, ReactNode } from 'react';
 import Logo from '../../layout/Logo/Logo';
-import styles from './AuthForm.module.scss';
+import styles from './FormCard.module.scss';
 
 type Props = {
   actions?: ReactNode;
@@ -11,7 +11,7 @@ type Props = {
   onSubmit?: () => void;
 };
 
-function AuthForm({
+function FormCard({
   error,
   children,
   actions,
@@ -25,11 +25,7 @@ function AuthForm({
         {!!error && (
           <div className={styles.error}>
             {error}
-            <Icon
-              icon={<CloseIcon />}
-              className={styles.closeBtn}
-              onClick={onCloseError}
-            />
+            <IconButton onClick={onCloseError} icon={<CloseIcon />} />
           </div>
         )}
         {children}
@@ -39,4 +35,4 @@ function AuthForm({
   );
 }
 
-export default AuthForm;
+export default FormCard;

@@ -1,8 +1,7 @@
-import AuthForm from 'components/form/AuthForm/AuthForm';
-import { ButtonPrimary } from 'components/form/Button/Button';
+import { ButtonPrimary, ButtonText } from 'components/form/Button/Button';
 import Checkbox from 'components/form/Checkbox/Checkbox';
+import FormCard from 'components/form/FormCard/FormCard';
 import Input from 'components/form/Input/Input';
-import AppLink from 'components/layout/AppLink/AppLink';
 import { useFormik } from 'formik';
 import { AuthRequestDto, AuthResponseDto } from 'leafplayer-common';
 import { isApiError, makeApiPostRequest } from 'modules/api';
@@ -57,16 +56,16 @@ function Login({ history }: RouteComponentProps): ReactElement {
   function renderActions(): ReactElement {
     return (
       <>
-        <AppLink to="/register">Create Account</AppLink>
-
         <ButtonPrimary type="submit">Login</ButtonPrimary>
+
+        <ButtonText to="/register">Create Account</ButtonText>
       </>
     );
   }
 
   return (
     <>
-      <AuthForm
+      <FormCard
         error={error}
         onCloseError={() => setError('')}
         actions={renderActions()}
@@ -76,9 +75,10 @@ function Login({ history }: RouteComponentProps): ReactElement {
           type="text"
           label="Username"
           name="username"
+          autoComplete="username"
           value={formik.values.username}
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onInput={formik.handleChange}
           error={formik.touched.username && formik.errors.username}
         />
 
@@ -88,7 +88,7 @@ function Login({ history }: RouteComponentProps): ReactElement {
           name="password"
           value={formik.values.password}
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onInput={formik.handleChange}
           error={formik.touched.password && formik.errors.password}
         />
 
@@ -99,7 +99,7 @@ function Login({ history }: RouteComponentProps): ReactElement {
         >
           Stay logged in
         </Checkbox>
-      </AuthForm>
+      </FormCard>
     </>
   );
 }

@@ -2,24 +2,26 @@
 @import "scss/mixins";
 
 .root {
+  --height: var(--tapTarget);
+  --radius: calc(var(--height) / 2);
+
+  display: inline-flex;
   position: relative;
   overflow: hidden;
-  height: 44px;
-  font-size: 14px;
-  display: inline-flex;
+  height: var(--height);
+  justify-content: center;
   align-items: center;
-  justify-items: center;
   gap: 0.5rem;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
   outline: 0;
   border: 1px solid transparent;
-  border-radius: 2px;
-  text-transform: uppercase;
-  font-weight: 500;
+  border-radius: 0.5rem;
   white-space: nowrap;
   cursor: pointer;
   transition: color 0.3s, background-color 0.3s;
-  flex-shrink: 0;
+  text-decoration: none;
+  font: var(--font);
+  font-weight: 500;
 
   &:disabled {
     pointer-events: none;
@@ -33,7 +35,8 @@
 
     @include shadow(low);
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background-color: #fff;
       color: $colorPrimary;
     }
@@ -44,7 +47,8 @@
     border-color: $colorDanger;
     background-color: $colorDanger;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background-color: #fff;
       color: $colorDanger;
     }
@@ -73,9 +77,18 @@
     &:hover {
       background: rgba(#000, 0.05);
     }
+
+    &:focus-visible {
+      background: rgba(#000, 0.15);
+    }
   }
 
   &:not(.primary).danger {
     color: $colorDanger;
+  }
+
+  .linkIcon {
+    flex-shrink: 0;
+    opacity: 0.5;
   }
 }
