@@ -6,7 +6,7 @@
   overflow: hidden;
 
   .inner {
-    padding: 1rem 1rem calc(#{$mobilePlayerBarHeight} + 48px + 1rem + 1rem) 1rem;
+    padding: 1rem 1rem calc(#{$mobilePlayerBarHeight} + 48px + 2rem) 1rem;
     max-width: 1400px;
     margin: 0 auto;
   }
@@ -15,7 +15,7 @@
     overflow-y: auto;
 
     .inner {
-      padding: 1rem 2rem 2rem;
+      padding: 2rem;
     }
   }
 }

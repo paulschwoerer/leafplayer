@@ -3,6 +3,7 @@ import {
   AlbumIcon,
   ArtistsIcon,
   ExploreIcon,
+  SearchIcon,
   SettingsIcon,
 } from 'components/icons';
 import MobileMenu from 'components/mobile/MobileMenu/MobileMenu';
@@ -21,6 +22,11 @@ const navEntries = [
     icon: <ExploreIcon />,
     to: '/',
     exact: true,
+  },
+  {
+    label: 'Search',
+    icon: <SearchIcon />,
+    to: '/search',
   },
   {
     label: 'Artists',

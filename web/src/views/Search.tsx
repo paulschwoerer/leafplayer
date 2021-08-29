@@ -1,3 +1,5 @@
+import Input from 'components/form/Input/Input';
+import { SearchIcon } from 'components/icons';
 import If from 'components/If';
 import Carousel from 'components/layout/Carousel/Carousel';
 import SectionHeader from 'components/layout/SectionHeader/SectionHeader';
@@ -49,7 +51,7 @@ export function useSearchQuery(): [string, (query: string) => void] {
 }
 
 function Search(): ReactElement {
-  const [searchQuery] = useSearchQuery();
+  const [searchQuery, setSearchQuery] = useSearchQuery();
   const [results, setResults] = useState<Results>(emptyResults);
   const [, { addSongsToQueue, playNext }] = useContext(PlayerContext);
 
@@ -72,6 +74,15 @@ function Search(): ReactElement {
 
   return (
     <>
+      <Input
+        name="search"
+        type="search"
+        placeholder="e.g. 'Bob Marley'"
+        icon={<SearchIcon />}
+        value={searchQuery}
+        autoFocus
+        onInput={ev => setSearchQuery(ev.currentTarget.value)}
+      />
       <If condition={results.artists.length > 0}>
         <Carousel headline="Artists">
           {results.artists.map(artist => (
