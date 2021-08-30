@@ -32,7 +32,12 @@ export function SessionsController({
         );
 
         return {
-          sessions,
+          sessions: sessions.map(({ id, os, browser, lastUsedAt }) => ({
+            id,
+            os,
+            browser,
+            lastUsedAt,
+          })),
           currentSessionId,
         };
       },
