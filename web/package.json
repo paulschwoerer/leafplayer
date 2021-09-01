@@ -22,6 +22,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "formik": "^2.2.6",
     "leafplayer-common": "file:../common",
+    "msw": "^0.35.0",
     "prettier": "^2.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
