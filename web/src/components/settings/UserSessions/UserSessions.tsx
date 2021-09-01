@@ -33,7 +33,7 @@ function Session({
           <p>
             {session.browser} on {session.os} <br />
             <small>
-              <span>Last accessed on </span>
+              Last accessed on{' '}
               {new Intl.DateTimeFormat().format(
                 dateFromUnixTimestamp(session.lastUsedAt),
               )}
@@ -130,7 +130,7 @@ function UserSessions(): ReactElement {
               <ButtonPrimary
                 onClick={() => revokeSession().then(reloadSessions)}
               >
-                Revoke Session
+                Revoke
               </ButtonPrimary>
               <ButtonText onClick={closeModal}>Cancel</ButtonText>
             </Modal>
