@@ -1,9 +1,11 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { throwNotImplemented } from 'helpers/context';
 import {
   RevokeSessionRequestDto,
   UserSessionsResponseDto,
 } from 'leafplayer-common';
+import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -102,4 +104,28 @@ test('can revoke a session', async () => {
       message: 'The session was successfully revoked',
     }),
   );
+});
+
+test('can logout of the current session', async () => {
+  const mockLogout = jest.fn();
+
+  render(
+    <AuthContext.Provider
+      value={{
+        logout: mockLogout,
+        artworkToken: null,
+        user: null,
+        storeArtworkToken: () => throwNotImplemented,
+        storeUser: () => throwNotImplemented,
+      }}
+    >
+      <UserSessions />
+    </AuthContext.Provider>,
+  );
+
+  const logoutButton = await screen.findByRole('button', { name: 'Logout' });
+
+  fireEvent.click(logoutButton);
+
+  await waitFor(() => expect(mockLogout).toHaveBeenCalledTimes(1));
 });

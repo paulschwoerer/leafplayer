@@ -1,52 +1,74 @@
 import { ButtonPrimary, ButtonText } from 'components/form/Button/Button';
-import Icon from 'components/icons/Icon/Icon';
 import Input from 'components/form/Input/Input';
-import If from 'components/If';
+import { ComputerIcon } from 'components/icons';
+import Icon from 'components/icons/Icon/Icon';
 import ApiLoader from 'components/layout/ApiLoader';
 import Modal from 'components/modals/Modal/Modal';
 import { dateFromUnixTimestamp } from 'helpers/time';
 import { UserSession, UserSessionsResponseDto } from 'leafplayer-common';
 import { isApiError, makeApiDeleteRequest } from 'modules/api';
+import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { ReactElement, ReactNode, useContext, useState } from 'react';
 import styles from './UserSessions.module.scss';
-import { ComputerIcon } from 'components/icons';
 
-type SessionProps = {
-  isCurrent: boolean;
-  session: UserSession;
-  onRevokeSession?: () => void;
+type BaseSessionProps = {
+  details: ReactNode;
+  action: ReactNode;
 };
 
-function Session({
-  isCurrent,
-  session,
-  onRevokeSession,
-}: SessionProps): ReactElement {
+type SessionProps = {
+  session: UserSession;
+  onRevoke?: () => void;
+};
+
+type CurrentSessionProps = {
+  onLogout?: () => void;
+};
+
+function BaseSession({ action, details }: BaseSessionProps) {
   return (
     <div className={styles.card}>
       <Icon icon={<ComputerIcon />} className={styles.icon} />
-      <div className={styles.details}>
-        {isCurrent ? (
-          <p>Your current session</p>
-        ) : (
-          <p>
-            {session.browser} on {session.os} <br />
-            <small>
-              Last accessed on{' '}
-              {new Intl.DateTimeFormat().format(
-                dateFromUnixTimestamp(session.lastUsedAt),
-              )}
-            </small>
-          </p>
-        )}
-      </div>
-      <If condition={!isCurrent}>
-        <ButtonText danger onClick={onRevokeSession}>
+      <div className={styles.details}>{details}</div>
+      {action}
+    </div>
+  );
+}
+
+function CurrentSession({ onLogout }: CurrentSessionProps) {
+  return (
+    <BaseSession
+      details={<p>Your current session</p>}
+      action={
+        <ButtonText danger onClick={onLogout}>
+          Logout
+        </ButtonText>
+      }
+    />
+  );
+}
+
+function Session({ session, onRevoke }: SessionProps): ReactElement {
+  return (
+    <BaseSession
+      details={
+        <p>
+          {session.browser} on {session.os} <br />
+          <small>
+            Last accessed on{' '}
+            {new Intl.DateTimeFormat().format(
+              dateFromUnixTimestamp(session.lastUsedAt),
+            )}
+          </small>
+        </p>
+      }
+      action={
+        <ButtonText danger onClick={onRevoke}>
           Revoke session
         </ButtonText>
-      </If>
-    </div>
+      }
+    />
   );
 }
 
@@ -66,6 +88,7 @@ function UserSessions(): ReactElement {
   const [sessionToRevoke, setSessionToRevoke] = useState<string | null>(null);
   const [password, setPassword] = useState('');
 
+  const { logout } = useContext(AuthContext);
   const { showNotification } = useContext(NotificationContext);
 
   async function revokeSession() {
@@ -98,44 +121,51 @@ function UserSessions(): ReactElement {
     <div className={styles.root}>
       <ApiLoader<UserSessionsResponseDto>
         slug="sessions"
-        renderContent={({ sessions, currentSessionId }, reloadSessions) => (
-          <>
-            {sessions
-              .sort((a, b) => sessionSort(a, b, currentSessionId))
-              .map(session => (
+        renderContent={({ sessions, currentSessionId }, reloadSessions) => {
+          const sorted = sessions.sort((a, b) =>
+            sessionSort(a, b, currentSessionId),
+          );
+
+          return (
+            <>
+              <CurrentSession onLogout={logout} />
+              {sorted.slice(1).map(session => (
                 <Session
                   key={session.id}
-                  isCurrent={session.id === currentSessionId}
                   session={session}
-                  onRevokeSession={() => setSessionToRevoke(session.id)}
+                  onRevoke={() => setSessionToRevoke(session.id)}
                 />
               ))}
 
-            <small>
-              If you notice anything suspicious in this list, please inform the
-              administrator of your server
-            </small>
+              <small>
+                If you notice anything suspicious in this list, please inform
+                the administrator of your server
+              </small>
 
-            <Modal isVisible={sessionToRevoke !== null} hideModal={closeModal}>
-              <p>Please enter your password to proceed</p>
-
-              <Input
-                label="Password"
-                name="password"
-                type="password"
-                value={password}
-                onInput={ev => setPassword(ev.currentTarget.value)}
-              />
-
-              <ButtonPrimary
-                onClick={() => revokeSession().then(reloadSessions)}
+              <Modal
+                isVisible={sessionToRevoke !== null}
+                hideModal={closeModal}
               >
-                Revoke
-              </ButtonPrimary>
-              <ButtonText onClick={closeModal}>Cancel</ButtonText>
-            </Modal>
-          </>
-        )}
+                <p>Please enter your password to proceed</p>
+
+                <Input
+                  label="Password"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onInput={ev => setPassword(ev.currentTarget.value)}
+                />
+
+                <ButtonPrimary
+                  onClick={() => revokeSession().then(reloadSessions)}
+                >
+                  Revoke
+                </ButtonPrimary>
+                <ButtonText onClick={closeModal}>Cancel</ButtonText>
+              </Modal>
+            </>
+          );
+        }}
       />
     </div>
   );
