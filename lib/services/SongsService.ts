@@ -1,4 +1,5 @@
 import { FullSong } from '@common';
+import { toFullSong } from '@mappers/songs';
 import { createSongsQuery, orderByDiscAndTrack } from '@query/songs';
 import Knex from 'knex';
 import { SongRow } from '../database/rows';
@@ -12,33 +13,6 @@ type Injects = {
 export interface SongsService {
   search(q: string, count: number): Promise<FullSong[]>;
   findAllWhere(params: Partial<SongRow>): Promise<FullSong[]>;
-}
-
-type Row = Omit<SongRow, 'fileId'> & {
-  artistName: string;
-  albumName: string;
-};
-
-function toFullSong({
-  artistName,
-  albumName,
-  artistId,
-  albumId,
-  track,
-  ...rest
-}: Row) {
-  return {
-    ...rest,
-    track: track || undefined,
-    album: {
-      id: albumId,
-      name: albumName,
-    },
-    artist: {
-      id: artistId,
-      name: artistName,
-    },
-  };
 }
 
 export function createSongsService({ db }: Injects): SongsService {
@@ -60,7 +34,7 @@ export function createSongsService({ db }: Injects): SongsService {
         .orWhere('artists.name', 'like', `%${q}%`)
         .orWhere('albums.name', 'like', `%${q}%`);
 
-      const weightedRows = rows.sort((a: Row, b: Row): number => {
+      const weightedRows = rows.sort((a, b): number => {
         return weighStringsUsingSearchTerm(q, a.title, b.title);
       });
 
