@@ -15,6 +15,7 @@ import { createSessionsService } from '../lib/services/SessionsService';
 import { createSongsService } from '../lib/services/SongsService';
 import { createUsersService } from '../lib/services/UsersService';
 import { TestContext } from './testContext';
+import { createSearchService } from '../lib/services/SearchService';
 
 export async function waitFor(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -60,6 +61,7 @@ export function createServerFromTestContext(
   const sessionsService = createSessionsService({ db });
   const usersService = createUsersService({ db });
   const songsService = createSongsService({ db });
+  const searchService = createSearchService({ db });
   const albumsService = createAlbumsService({ db, songsService });
   const artworksService = createArtworksService({ config });
   const authService = createAuthService({
@@ -85,7 +87,7 @@ export function createServerFromTestContext(
     sessionsService,
     albumsService,
     artistsService,
-    songsService,
+    searchService,
     artworksService,
     authService,
     invitationsService,

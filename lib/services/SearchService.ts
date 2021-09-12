@@ -1,22 +1,27 @@
-import { Knex } from 'knex';
-import { createArtistQuery } from '@query/artists';
-import { DBConnector } from '../database/DBConnector';
-import { weighStringsUsingSearchTerm } from '../helpers/search';
-import { Service } from 'typedi';
 import { FullArtist } from '@common';
-import { toFullArtist } from '@mappers/artists';
-import { AlbumRow } from 'lib/database/rows';
-import { createAlbumsQuery } from '@query/albums';
 import { toFullAlbum } from '@mappers/albums';
-import { createSongsQuery } from '@query/songs';
+import { toFullArtist } from '@mappers/artists';
 import { toFullSong } from '@mappers/songs';
+import { createAlbumsQuery } from '@query/albums';
+import { createArtistQuery } from '@query/artists';
+import { createSongsQuery } from '@query/songs';
+import Knex from 'knex';
+import { AlbumRow } from 'lib/database/rows';
+import { weighStringsUsingSearchTerm } from '../helpers/search';
+import { FullAlbum, FullSong } from './../../common/entities';
 
 type Injects = {
   db: Knex;
 };
 
 export interface SearchService {
-  search(q: string): Promise<FullArtist[]>;
+  search(
+    q: string,
+  ): Promise<{
+    artists: FullArtist[];
+    albums: FullAlbum[];
+    songs: FullSong[];
+  }>;
 }
 
 export function createSearchService({ db }: Injects): SearchService {
@@ -65,7 +70,15 @@ export function createSearchService({ db }: Injects): SearchService {
 
   return {
     async search(q: string) {
-      return [];
+      const artists = await searchArtists(q);
+      const albums = await searchAlbums(q);
+      const songs = await searchSongs(q);
+
+      return {
+        artists,
+        albums,
+        songs,
+      };
     },
   };
 }

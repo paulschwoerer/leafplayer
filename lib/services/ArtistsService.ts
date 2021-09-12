@@ -4,7 +4,6 @@ import { toFullArtist } from '@mappers/artists';
 import { createAlbumsQuery, orderByYearDesc } from '@query/albums';
 import { createArtistQuery, orderByName } from '@query/artists';
 import Knex from 'knex';
-import { weighStringsUsingSearchTerm } from '../helpers/search';
 import { generateUuid } from '../helpers/uuid';
 import { AlbumsService } from './AlbumsService';
 import { SongsService } from './SongsService';
@@ -27,7 +26,6 @@ export interface ArtistsService {
   findByIdWithAlbums(id: string): Promise<ArtistWithAlbums | undefined>;
   getAlbumsOfArtist(artistId: string): Promise<FullAlbum[]>;
   getAlbumsArtistAppearsOn(artistId: string): Promise<FullAlbum[]>;
-  search(q: string, count: number): Promise<FullArtist[]>;
 }
 
 type Injects = {
@@ -149,18 +147,6 @@ export function createArtistsService({
       }
 
       return row.id;
-    },
-
-    async search(q, count) {
-      const rows = await createArtistQuery(db)
-        .groupBy('artists.id')
-        .orWhereRaw('artists.name LIKE ?', [`%${q}%`]);
-
-      const weightedRows = rows.sort((a, b): number => {
-        return weighStringsUsingSearchTerm(q, a.name, b.name);
-      });
-
-      return weightedRows.slice(0, count).map(toFullArtist);
     },
   };
 }

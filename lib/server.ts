@@ -11,10 +11,10 @@ import {
   ArtistsController,
   ArtworksController,
   AuthController,
+  DiscoverController,
   SearchController,
   SessionsController,
   StreamController,
-  DiscoverController,
 } from './controllers';
 import { comparePasswords } from './helpers/passwords';
 import { AuthMiddleware, TokenAuthMiddleware } from './middlewares';
@@ -25,8 +25,8 @@ import { AudioFilesService } from './services/AudioFilesService';
 import { AuthService } from './services/AuthService';
 import { DiscoverService } from './services/DiscoverService';
 import { InvitationsService } from './services/InvitationsService';
+import { SearchService } from './services/SearchService';
 import { SessionsService } from './services/SessionsService';
-import { SongsService } from './services/SongsService';
 
 type Injects = {
   config: LeafplayerConfig;
@@ -34,7 +34,7 @@ type Injects = {
   sessionsService: SessionsService;
   albumsService: AlbumsService;
   artistsService: ArtistsService;
-  songsService: SongsService;
+  searchService: SearchService;
   artworksService: ArtworksService;
   audioFilesService: AudioFilesService;
   invitationsService: InvitationsService;
@@ -47,7 +47,7 @@ export async function initServer({
   albumsService,
   artistsService,
   sessionsService,
-  songsService,
+  searchService,
   artworksService,
   audioFilesService,
   invitationsService,
@@ -115,9 +115,7 @@ export async function initServer({
 
         await authenticated.register(
           SearchController({
-            albumsService,
-            artistsService,
-            songsService,
+            searchService,
           }),
           {
             prefix: 'search',

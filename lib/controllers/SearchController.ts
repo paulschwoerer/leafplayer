@@ -1,19 +1,13 @@
-import { FastifyPluginAsync } from 'fastify';
 import { SearchResponseDto } from '@common';
-import { AlbumsService } from '../services/AlbumsService';
-import { ArtistsService } from '../services/ArtistsService';
-import { SongsService } from '../services/SongsService';
+import { FastifyPluginAsync } from 'fastify';
+import { SearchService } from '../services/SearchService';
 
 type Injects = {
-  albumsService: AlbumsService;
-  artistsService: ArtistsService;
-  songsService: SongsService;
+  searchService: SearchService;
 };
 
 export function SearchController({
-  albumsService,
-  artistsService,
-  songsService,
+  searchService,
 }: Injects): FastifyPluginAsync {
   return async function (router) {
     router.get<{ Querystring: { q: string } }>(
@@ -21,16 +15,10 @@ export function SearchController({
       async (request): Promise<SearchResponseDto> => {
         const { q } = request.query;
 
-        const albums = await albumsService.search(q, 5);
-        const artists = await artistsService.search(q, 5);
-        const songs = await songsService.search(q, 10);
+        const results = await searchService.search(q);
 
         return {
-          results: {
-            albums,
-            artists,
-            songs,
-          },
+          results,
         };
       },
     );

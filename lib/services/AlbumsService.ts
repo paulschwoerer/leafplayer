@@ -2,8 +2,6 @@ import { FullAlbum, FullSong } from '@common';
 import { toFullAlbum } from '@mappers/albums';
 import { createAlbumsQuery, orderByName } from '@query/albums';
 import Knex from 'knex';
-import { AlbumRow } from '../database/rows';
-import { weighStringsUsingSearchTerm } from '../helpers/search';
 import { generateUuid } from '../helpers/uuid';
 import { SongsService } from './SongsService';
 
@@ -20,7 +18,6 @@ export interface AlbumsService {
     name: string;
     artistId: string;
   }): Promise<string | undefined>;
-  search(q: string, count: number): Promise<FullAlbum[]>;
 }
 
 type Injects = {
@@ -74,20 +71,6 @@ export function createAlbumsService({
       }
 
       return row.id;
-    },
-
-    async search(q, count) {
-      type Row = AlbumRow & { artistName: string };
-
-      const rows = await createAlbumsQuery(db)
-        .whereRaw('albums.name LIKE ?', [`%${q}%`])
-        .orWhereRaw('artists.name LIKE ?', [`%${q}%`]);
-
-      const weightedRows = rows.sort((a: Row, b: Row): number => {
-        return weighStringsUsingSearchTerm(q, a.name, b.name);
-      });
-
-      return weightedRows.slice(0, count).map(toFullAlbum);
     },
   };
 }

@@ -15,6 +15,7 @@ import { createAuthService } from './services/AuthService';
 import { createDiscoverService } from './services/DiscoverService';
 import { createInvitationsService } from './services/InvitationsService';
 import { createLibraryService } from './services/LibraryService';
+import { createSearchService } from './services/SearchService';
 import { createSessionsService } from './services/SessionsService';
 import { createSongsService } from './services/SongsService';
 import { createUsersService } from './services/UsersService';
@@ -28,6 +29,7 @@ const db = initializeDatabase(config.database);
 // --------------- Service initialization -------------- //
 const usersService = createUsersService({ db });
 const songsService = createSongsService({ db });
+const searchService = createSearchService({ db });
 const albumsService = createAlbumsService({ db, songsService });
 const artworksService = createArtworksService({ config });
 const sessionsService = createSessionsService({ db });
@@ -78,7 +80,7 @@ program
       config,
       albumsService,
       artistsService,
-      songsService,
+      searchService,
       artworksService,
       authService,
       sessionsService,
