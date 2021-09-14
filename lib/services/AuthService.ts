@@ -73,12 +73,8 @@ export function createAuthService({
     async authenticate({ username, password }, browser) {
       const user = await usersService.findByUsername(username);
 
-      if (!user) {
-        return Error('invalid credentials');
-      }
-
-      if (!comparePasswords(password, user.password)) {
-        return Error('invalid credentials');
+      if (!user || !comparePasswords(password, user.password)) {
+        return Error('Invalid credentials');
       }
 
       const sessionToken = await sessionsService.create({

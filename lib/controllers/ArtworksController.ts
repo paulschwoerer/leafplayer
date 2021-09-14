@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify';
 import { Stream } from 'stream';
-import { sendNotFoundApiError } from '../helpers/responses';
+import { sendNotFoundError } from '../helpers/responses';
 import { isUuidV4 } from '../helpers/uuid';
 import GetArtworkSchema from '../schemas/getArtwork.json';
 
@@ -46,7 +46,7 @@ export function ArtworksController({
         const { size } = request.query;
 
         if (!['album', 'artist'].includes(type)) {
-          return sendNotFoundApiError(reply);
+          return sendNotFoundError(reply);
         }
 
         if (!isUuidV4(id)) {
@@ -60,7 +60,7 @@ export function ArtworksController({
         );
 
         if (result instanceof Error) {
-          return sendNotFoundApiError(reply);
+          return sendNotFoundError(reply);
         }
 
         return reply

@@ -1,6 +1,6 @@
 import { AlbumWithSongsResponseDto, SongsResponseDto } from '@common';
 import { FastifyPluginAsync } from 'fastify';
-import { sendNotFoundApiError } from '../helpers/responses';
+import { sendNotFoundError } from '../helpers/responses';
 import { AlbumsService } from './../services/AlbumsService';
 
 type Injects = {
@@ -25,7 +25,7 @@ export function AlbumsController({
         const album = await albumsService.findById(albumId);
 
         if (!album) {
-          return sendNotFoundApiError(reply);
+          return sendNotFoundError(reply);
         }
 
         const songs = await albumsService.findSongsOfAlbum(albumId);

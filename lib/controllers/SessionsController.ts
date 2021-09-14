@@ -5,6 +5,10 @@ import {
   UserSessionsResponseDto,
 } from '@common';
 import RevokeSessionSchema from '../schemas/revokeSession.json';
+import {
+  sendNotAuthorizedError,
+  sendNotFoundError,
+} from '../helpers/responses';
 
 interface SessionsService {
   findByIdAndUserId(params: {
@@ -54,7 +58,7 @@ export function SessionsController({
         const userId = request.auth.getUserId();
 
         if (!request.auth.isValidPassword(password)) {
-          return reply.status(401).send();
+          return sendNotAuthorizedError(reply, 'Invalid password given');
         }
 
         const session = await sessionsService.findByIdAndUserId({
@@ -63,7 +67,7 @@ export function SessionsController({
         });
 
         if (!session) {
-          return reply.status(404).send();
+          return sendNotFoundError(reply);
         }
 
         await sessionsService.deleteById(id);

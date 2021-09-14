@@ -101,7 +101,7 @@ function UserSessions(): ReactElement {
     if (isApiError(response)) {
       showNotification({
         title: 'Failed to revoke session',
-        message: response.error,
+        message: response.message,
         type: 'error',
       });
     } else {

@@ -1,4 +1,5 @@
 import Knex from 'knex';
+import { LeafplayerConfig } from 'lib/config';
 import { InvitationRow } from '../database/rows';
 import { getCurrentUnixTimestamp } from '../helpers/time';
 import { UsersService } from './UsersService';
@@ -8,14 +9,9 @@ export enum CreateInvitationResult {
   INVITE_CODE_TOO_SHORT,
 }
 
-type Config = {
-  invitationMaxAge: number;
-  minimumInviteCodeLength: number;
-};
-
 type Injects = {
   db: Knex;
-  config: Config;
+  config: LeafplayerConfig;
   usersService: UsersService;
 };
 
@@ -35,7 +31,7 @@ export interface InvitationsService {
 
 export function createInvitationsService({
   db,
-  config,
+  config: { security: securityConfig },
   usersService,
 }: Injects): InvitationsService {
   async function isValidInviteCode(code: string): Promise<boolean> {
@@ -57,13 +53,19 @@ export function createInvitationsService({
       const isValid = await isValidInviteCode(code);
 
       if (!isValid) {
-        return Error('invalid invite code');
+        return Error('Invalid invite code');
       }
 
       const userExists = await usersService.doesUserExist(userDetails.username);
 
       if (userExists) {
-        return Error('username taken');
+        return Error('Username taken');
+      }
+
+      if (userDetails.password.length < securityConfig.minimumPasswordLength) {
+        return Error(
+          `Password needs at least ${securityConfig.minimumPasswordLength} characters`,
+        );
       }
 
       // TODO: a transaction would be nice
@@ -95,7 +97,7 @@ export function createInvitationsService({
       await db('invitations').insert({
         code,
         comment: comment || null,
-        expiresAt: getCurrentUnixTimestamp() + config.invitationMaxAge,
+        expiresAt: getCurrentUnixTimestamp() + securityConfig.invitationMaxAge,
       });
     },
 
@@ -112,7 +114,7 @@ export function createInvitationsService({
     },
 
     getMinimumInviteCodeLength() {
-      return config.minimumInviteCodeLength;
+      return securityConfig.minimumInviteCodeLength;
     },
   };
 }

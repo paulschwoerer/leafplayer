@@ -5,6 +5,7 @@ import {
   ArtistsResponseDto,
 } from '@common';
 import { FastifyPluginAsync } from 'fastify';
+import { sendNotFoundError } from '../helpers/responses';
 import { DiscoverService } from './../services/DiscoverService';
 
 type Injects = {
@@ -54,7 +55,7 @@ export function DiscoverController({
         const [artist] = await discoverService.findRandomArtists(1);
 
         if (!artist) {
-          return reply.status(404).send('library is empty');
+          return sendNotFoundError(reply, 'The library seems to be empty');
         }
 
         return {
@@ -69,7 +70,7 @@ export function DiscoverController({
         const [album] = await discoverService.findRandomAlbums(1);
 
         if (!album) {
-          return reply.status(404).send('library is empty');
+          return sendNotFoundError(reply, 'The library seems to be empty');
         }
 
         return {

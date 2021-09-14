@@ -53,8 +53,8 @@ export function isApiError(object: unknown): object is ApiError {
 
   return (
     typeof maybeApiError.statusCode === 'number' &&
-    typeof maybeApiError.code === 'string' &&
-    typeof maybeApiError.error === 'string'
+    typeof maybeApiError.error === 'string' &&
+    typeof maybeApiError.message === 'string'
   );
 }
 

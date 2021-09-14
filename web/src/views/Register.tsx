@@ -62,7 +62,7 @@ function Register(): ReactElement {
       );
 
       if (isApiError(result)) {
-        setError(result.error);
+        setError(result.message);
       } else {
         history.push('/login');
       }

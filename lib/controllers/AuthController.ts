@@ -1,13 +1,14 @@
-import { FastifyPluginAsync } from 'fastify';
 import {
   AuthRequestDto,
   RegisterRequestDto,
   User,
   UserResponseDto,
 } from '@common';
+import { FastifyPluginAsync } from 'fastify';
 import { UAParser } from 'ua-parser-js';
 import LoginSchema from '../schemas/login.json';
 import RegisterSchema from '../schemas/register.json';
+import { InvitationsService } from '../services/InvitationsService';
 import { Middleware } from './../middlewares/Middleware';
 
 type Credentials = {
@@ -27,13 +28,6 @@ interface AuthService {
   ): Promise<AuthResult | Error>;
   makeJwtToken(): string;
   logout(sessionId: string): Promise<Error | undefined>;
-}
-
-interface InvitationsService {
-  createUserUsingInviteCode(
-    inviteCode: string,
-    userDetails: { username: string; displayName?: string; password: string },
-  ): Promise<Error | undefined>;
 }
 
 type Config = {
@@ -114,16 +108,6 @@ export function AuthController({
       { schema: RegisterSchema },
       async (request, reply) => {
         const { username, password, displayName, inviteCode } = request.body;
-
-        if (password.length < config.minimumPasswordLength) {
-          return reply
-            .status(400)
-            .send(
-              Error(
-                `password needs at least ${config.minimumPasswordLength} characters`,
-              ),
-            );
-        }
 
         const result = await invitationsService.createUserUsingInviteCode(
           inviteCode,

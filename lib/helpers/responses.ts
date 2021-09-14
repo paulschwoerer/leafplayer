@@ -1,7 +1,7 @@
 import { FastifyReply } from 'fastify';
-import { ApiError, ApiErrorCode } from '@common';
+import { ApiError } from '@common';
 
-export function sendApiError(
+function sendApiError(
   reply: FastifyReply,
   { statusCode, code, error }: ApiError,
   headers: Record<string, string> = {},
@@ -12,29 +12,24 @@ export function sendApiError(
     .send({ statusCode, code, error });
 }
 
-export function sendNotFoundApiError(
+export function sendNotFoundError(
   reply: FastifyReply,
   message?: string,
 ): FastifyReply {
   return sendApiError(reply, {
     statusCode: 404,
-    code: ApiErrorCode.NOT_FOUND,
-    error: 'Resource not found',
-    message,
+    error: 'Not Found',
+    message: message || 'The requested resource was not found',
   });
 }
 
 export function sendNotAuthorizedError(
   reply: FastifyReply,
-  headers?: Record<string, string>,
+  message?: string,
 ): FastifyReply {
-  return sendApiError(
-    reply,
-    {
-      statusCode: 401,
-      code: ApiErrorCode.NOT_AUTHORIZED,
-      error: 'not authorized',
-    },
-    headers,
-  );
+  return sendApiError(reply, {
+    statusCode: 401,
+    error: 'Not Authorized',
+    message: message || 'Not authorized to perform this action',
+  });
 }

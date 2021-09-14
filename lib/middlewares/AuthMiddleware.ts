@@ -1,4 +1,5 @@
 import { FastifyRequest } from 'fastify';
+import { sendNotAuthorizedError } from '../helpers/responses';
 import { Middleware } from './Middleware';
 
 type User = {
@@ -48,13 +49,13 @@ export function createAuthMiddleware({
     const sessionToken = extractSessionTokenFromRequest(request);
 
     if (!sessionToken) {
-      return reply.status(401).send();
+      return sendNotAuthorizedError(reply, 'No session token given');
     }
 
     const session = await sessionsService.findWithUserByToken(sessionToken);
 
     if (!session) {
-      return reply.status(401).send();
+      return sendNotAuthorizedError(reply, 'Invalid or expired session');
     }
 
     const authContext = createAuthContext(comparePasswords, session);

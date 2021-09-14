@@ -47,7 +47,7 @@ const libraryService = createLibraryService({ db, config });
 const audioFilesService = createAudioFilesService({ db });
 const invitationsService = createInvitationsService({
   db,
-  config: config.security,
+  config,
   usersService,
 });
 const discoverService = createDiscoverService({ db });

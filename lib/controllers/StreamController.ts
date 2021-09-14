@@ -2,7 +2,7 @@ import { FileFormat } from '../scanner/types';
 import { FastifyPluginAsync } from 'fastify';
 import { createReadStream, statSync } from 'fs';
 import { AudioFilesService } from '../services/AudioFilesService';
-import { sendNotFoundApiError } from '../helpers/responses';
+import { sendNotFoundError } from '../helpers/responses';
 
 const CHUNK_SIZE = 1024 * 1024;
 
@@ -58,7 +58,7 @@ export function StreamController({
         const audioFile = await audioFilesService.findBySongId(songId);
 
         if (!audioFile) {
-          return sendNotFoundApiError(reply);
+          return sendNotFoundError(reply);
         }
 
         const stat = statSync(audioFile.path);

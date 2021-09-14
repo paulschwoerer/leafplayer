@@ -31,7 +31,7 @@ function Login({ history }: RouteComponentProps): ReactElement {
 
       if (isApiError(result)) {
         if (result.statusCode === 401) {
-          setError('Invalid credentials');
+          setError(result.message);
         } else {
           setError(result.error);
         }

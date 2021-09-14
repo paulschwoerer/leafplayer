@@ -4,7 +4,7 @@ import {
   SongsResponseDto,
 } from '@common';
 import { FastifyPluginAsync } from 'fastify';
-import { sendNotFoundApiError } from '../helpers/responses';
+import { sendNotFoundError } from '../helpers/responses';
 import { ArtistsService } from '../services/ArtistsService';
 
 type Injects = {
@@ -32,7 +32,7 @@ export function ArtistsController({
         const data = await artistsService.findByIdWithAlbums(artistId);
 
         if (!data) {
-          return sendNotFoundApiError(reply);
+          return sendNotFoundError(reply);
         }
 
         return data;
