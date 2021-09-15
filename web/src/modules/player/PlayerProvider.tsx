@@ -164,12 +164,12 @@ export function PlayerProvider({
     }
   }
 
-  function setSeek(time: number) {
+  const setSeek = useCallback((time: number) => {
     if (audioRef.current) {
       dispatch({ type: 'setSeek', time });
       audioRef.current.currentTime = time;
     }
-  }
+  }, []);
 
   function setVolume(volume: number) {
     if (audioRef.current) {
@@ -209,7 +209,7 @@ export function PlayerProvider({
     } else if (canSkipPrevious) {
       dispatch({ type: 'skipPrevious' });
     }
-  }, [canSkipPrevious, hasPassedSkipThreshold]);
+  }, [canSkipPrevious, hasPassedSkipThreshold, setSeek]);
 
   useEffect(() => {
     updateMediaSessionPlayState(playbackState);
@@ -246,12 +246,15 @@ export function PlayerProvider({
 
   useEffect(() => {
     addMediaSessionListeners({
+      play,
+      pause,
       skipNext,
       skipPrevious,
+      seekTo: setSeek,
     });
 
     return () => removeMediaSessionListeners();
-  }, [skipNext, skipPrevious]);
+  }, [play, pause, skipNext, skipPrevious, setSeek]);
 
   useEffect(() => {
     registerKeyboardShortcuts({
