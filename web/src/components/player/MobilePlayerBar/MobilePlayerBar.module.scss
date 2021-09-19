@@ -32,9 +32,8 @@
     .artist {
       margin: 0.125rem 0;
       min-width: 0;
-      white-space: nowrap;
-      overflow: inherit;
-      text-overflow: ellipsis;
+
+      @include text-ellipsis();
     }
 
     .title {

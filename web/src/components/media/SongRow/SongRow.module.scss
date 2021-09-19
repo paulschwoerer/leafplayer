@@ -51,10 +51,9 @@
     .title,
     .artist {
       margin: 0.3rem 0;
-      white-space: nowrap;
-      overflow: hidden;
       min-width: 0;
-      text-overflow: ellipsis;
+
+      @include text-ellipsis();
     }
   }
 

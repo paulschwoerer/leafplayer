@@ -30,9 +30,8 @@
     .artist {
       display: block;
       color: #fff;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+
+      @include text-ellipsis();
     }
 
     .title {

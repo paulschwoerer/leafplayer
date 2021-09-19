@@ -1,4 +1,5 @@
 @import "scss/vars";
+@import "scss/mixins";
 
 .root {
   background: #fff;
@@ -11,9 +12,8 @@
     .name,
     .artist {
       display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+
+      @include text-ellipsis();
     }
 
     .name {

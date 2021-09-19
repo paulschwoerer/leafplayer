@@ -1,4 +1,5 @@
 @import "scss/vars";
+@import "scss/mixins";
 
 .root {
   .info {
@@ -9,9 +10,8 @@
 
     .name {
       font-weight: bold;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
+
+      @include text-ellipsis();
 
       &:hover {
         text-decoration: underline;

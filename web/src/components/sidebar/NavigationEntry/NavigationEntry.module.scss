@@ -1,4 +1,5 @@
 @import "scss/vars";
+@import "scss/mixins";
 
 .navEntry {
   display: flex;
@@ -10,13 +11,11 @@
   cursor: pointer;
 
   &:hover {
-    //color: $colorDanger;
     background-color: rgba(#fff, 0.05);
   }
 
   &.active {
     position: relative;
-    //background-color: rgba(#fff, 0.05);
 
     &::after {
       content: "";
@@ -36,8 +35,6 @@
   }
 
   .label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include text-ellipsis();
   }
 }

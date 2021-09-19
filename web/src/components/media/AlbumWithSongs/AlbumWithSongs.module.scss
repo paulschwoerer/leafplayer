@@ -32,8 +32,8 @@
     > h2 {
       margin: 0;
       font-size: 2rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
+
+      @include text-ellipsis();
     }
 
     .misc {
