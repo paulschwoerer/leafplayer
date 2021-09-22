@@ -33,8 +33,10 @@ export class MusicCleaner {
 
   private async processAudioFiles(files: AudioFileRow[]): Promise<void> {
     for (const file of files) {
+      // eslint-disable-next-line no-await-in-loop
       const exists = await isReadable(file.path);
       if (!exists) {
+        // eslint-disable-next-line no-await-in-loop
         await this.processMissingFile(file);
       }
     }

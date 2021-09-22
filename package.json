@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "tsc --project tsconfig.prod.json",
-    "lint": "eslint --ext .ts lib/",
+    "lint": "eslint --ext .ts lib/ test/",
     "lint:fix": "npm run lint -- --fix",
     "test": "ava",
     "test:watch": "ava --watch",

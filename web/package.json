@@ -38,12 +38,12 @@
     "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "lint": "yarn lint:ts && yarn lint:style",
-    "lint:ts": "eslint '*/**/*.{js,ts,tsx}'",
-    "lint:style": "stylelint '**/*.scss'",
-    "lint:fix": "yarn lint:ts:fix && yarn lint:style:fix",
-    "lint:ts:fix": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-    "lint:style:fix": "stylelint --fix '**/*.scss'"
+    "lint": "npm run lint:ts && npm run lint:style",
+    "lint:ts": "eslint './src/**/*.{ts,tsx}'",
+    "lint:style": "stylelint './src/**/*.scss'",
+    "lint:fix": "npm run lint:ts:fix && npm run lint:style:fix",
+    "lint:ts:fix": "eslint './src/**/*.{ts,tsx}' --quiet --fix",
+    "lint:style:fix": "stylelint --fix './src/**/*.scss'"
   },
   "browserslist": {
     "production": [

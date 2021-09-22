@@ -1,4 +1,4 @@
-name: docker
+name: Publish Docker Image
 
 on:
   push:
@@ -23,7 +23,6 @@ jobs:
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-
 
       - name: Login to DockerHub
         if: github.event_name != 'pull_request'

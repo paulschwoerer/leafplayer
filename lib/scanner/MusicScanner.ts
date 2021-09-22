@@ -83,6 +83,7 @@ export default class MusicScanner {
     }
 
     for (const tree of trees) {
+      // eslint-disable-next-line no-await-in-loop
       await this.walk(tree);
     }
 
@@ -95,10 +96,12 @@ export default class MusicScanner {
 
   private async walk(node: DirNode): Promise<void> {
     for (const dir of node.childDirs) {
+      // eslint-disable-next-line no-await-in-loop
       await this.walk(dir);
     }
 
     for (const file of node.audioFiles) {
+      // eslint-disable-next-line no-await-in-loop
       await this.analyzeAudioFile(file, node.imageFiles);
     }
   }

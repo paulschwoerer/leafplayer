@@ -6,21 +6,12 @@ import { promisify } from 'util';
 const stdio = 'inherit';
 
 async function buildBackend() {
-  await execa('npm', ['install'], {
-    stdio,
-  });
-
   await execa('npm', ['run', 'build'], {
     stdio,
   });
 }
 
 async function buildFrontend() {
-  await execa('npm', ['install'], {
-    cwd: 'web',
-    stdio,
-  });
-
   await execa('npm', ['run', 'build'], {
     cwd: 'web',
     stdio,

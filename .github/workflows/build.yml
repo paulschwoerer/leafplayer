@@ -1,14 +1,100 @@
-name: build
+name: Build
 
 on:
   push:
     branches: [main]
+  pull_request:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install frontend dependencies
+        run: npm ci --quiet
+        working-directory: web
+
+      - name: Install dependencies
+        run: npm ci --quiet
+
+      - name: Lint Frontend
+        run: npm run lint
+        working-directory: web
+        env:
+          CI: true
+
+      - name: Lint
+        run: npm run lint
+        env:
+          CI: true
+
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install frontend dependencies
+        run: npm ci --quiet
+        working-directory: web
+
+      - name: Install dependencies
+        run: npm ci --quiet
+
+      - name: Lint Frontend
+        run: npm run test
+        working-directory: web
+        env:
+          CI: true
+
+      - name: Lint
+        run: npm run test
+        env:
+          CI: true
+
   build:
     runs-on: ubuntu-latest
+    name: Build
+    needs: [lint, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      - name: checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v2
-      - name: build application
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install gulp
+        run: npm install --global gulp-cli
+
+      - name: Install frontend dependencies
+        run: npm ci --quiet
+        working-directory: web
+
+      - name: Install dependencies
+        run: npm ci --quiet
+
+      - name: Build application
         run: make build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: leafplayer-main
+          path: ./build/*
+          retention-days: 7

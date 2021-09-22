@@ -65,6 +65,7 @@ export default class ArtworkProcessor {
 
     for (const albumId in this.albumArtworks) {
       try {
+        // eslint-disable-next-line no-await-in-loop
         await this.saveArtwork('album', albumId, this.albumArtworks[albumId]);
       } catch (e) {
         printError(`Could not process artwork for album ${albumId}`);
@@ -74,6 +75,7 @@ export default class ArtworkProcessor {
 
     for (const artistId in this.artistArtworks) {
       try {
+        // eslint-disable-next-line no-await-in-loop
         await this.saveArtwork(
           'artist',
           artistId,

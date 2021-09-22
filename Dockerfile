@@ -1,7 +1,7 @@
 ARG IMAGE_VERSION=14.16-alpine
 
 # --------------------------
-# FRONTEND BUILD
+# BUILD
 # --------------------------
 FROM node:${IMAGE_VERSION} as builder
 
