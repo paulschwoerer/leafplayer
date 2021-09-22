@@ -1,0 +1,89 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  --height: var(--tapTarget);
+  --radius: 0.5rem;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: var(--radius);
+  background: var(--colorInteractionBackground);
+  border: 1px solid var(--colorInteractionBorder);
+  height: var(--height);
+  width: 100%;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+
+  &:focus {
+    border-color: $colorPrimary;
+    outline: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .current {
+    @include text-ellipsis();
+  }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    border-left: 1px solid var(--colorInteractionBorder);
+    height: 80%;
+    margin: auto 0 auto auto;
+
+    > * {
+      transform: rotate(90deg);
+      transition: transform 0.3s;
+    }
+  }
+
+  .options {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    background: inherit;
+    border-radius: var(--radius);
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    @include shadow(high);
+
+    .option {
+      display: block;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      transition: color 0.15s, background-color 0.15s;
+
+      @include text-ellipsis();
+
+      &:hover,
+      &.selected {
+        background-color: $colorPrimary;
+        color: #fff;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--colorInteractionBorder);
+      }
+    }
+  }
+
+  &.collapsed {
+    .options {
+      visibility: hidden;
+    }
+
+    .arrow > * {
+      transform: rotate(-90deg);
+    }
+  }
+}

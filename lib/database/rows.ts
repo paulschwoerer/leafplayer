@@ -2,8 +2,8 @@ import Knex from 'knex';
 import { FileFormat } from '../scanner/types';
 
 type Timestamps = {
-  createdAt: number;
-  updatedAt: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type UserRow = Timestamps & {
