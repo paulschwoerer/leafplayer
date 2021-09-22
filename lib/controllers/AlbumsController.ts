@@ -1,7 +1,8 @@
 import { AlbumWithSongsResponseDto, SongsResponseDto } from '@common';
+import { useSortMiddleware, withTimestamps } from '@middlewares/SortMiddleware';
+import { AlbumsService } from '@services/AlbumsService';
 import { FastifyPluginAsync } from 'fastify';
 import { sendNotFoundError } from '../helpers/responses';
-import { AlbumsService } from './../services/AlbumsService';
 
 type Injects = {
   albumsService: AlbumsService;
@@ -11,11 +12,15 @@ export function AlbumsController({
   albumsService,
 }: Injects): FastifyPluginAsync {
   return async function (router) {
-    router.get('/', async () => {
-      const albums = await albumsService.findAll();
+    router.get(
+      '/',
+      useSortMiddleware(withTimestamps('name', 'year')),
+      async request => {
+        const albums = await albumsService.find(request.sort);
 
-      return { albums };
-    });
+        return { albums };
+      },
+    );
 
     router.get<{ Params: { albumId: string } }>(
       '/:albumId',

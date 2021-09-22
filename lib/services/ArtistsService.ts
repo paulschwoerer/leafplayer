@@ -2,7 +2,8 @@ import { FullAlbum, FullArtist, FullSong } from '@common';
 import { toFullAlbum } from '@mappers/albums';
 import { toFullArtist } from '@mappers/artists';
 import { createAlbumsQuery, orderByYearDesc } from '@query/albums';
-import { createArtistQuery, orderByName } from '@query/artists';
+import { createArtistQuery, orderBy } from '@query/artists';
+import { SortParam } from '@typings/SortParam';
 import Knex from 'knex';
 import { generateUuid } from '../helpers/uuid';
 import { AlbumsService } from './AlbumsService';
@@ -18,7 +19,7 @@ type ArtistWithAlbums = {
 };
 
 export interface ArtistsService {
-  findAll(): Promise<FullArtist[]>;
+  find(sort?: SortParam): Promise<FullArtist[]>;
   findById(id: string): Promise<FullArtist | undefined>;
   create(params: { name: string }): Promise<string>;
   findIdByName(name: string): Promise<string | undefined>;
@@ -34,18 +35,21 @@ type Injects = {
   songsService: SongsService;
 };
 
+const DEFAULT_SORT: SortParam = {
+  field: 'name',
+  direction: 'asc',
+};
+
 export function createArtistsService({
   db,
   albumsService,
   songsService,
 }: Injects): ArtistsService {
   return {
-    async findAll() {
-      const orderedByName = orderByName();
-      const rows = await orderedByName(createArtistQuery(db)).groupBy(
-        'artists.id',
-      );
+    async find(sort) {
+      const ordered = orderBy(sort || DEFAULT_SORT);
 
+      const rows = await ordered(createArtistQuery(db)).groupBy('artists.id');
       return rows.map(toFullArtist);
     },
 

@@ -1,11 +1,12 @@
 import {
-  ArtistWithAlbumsResponseDto,
   ArtistsResponseDto,
+  ArtistWithAlbumsResponseDto,
   SongsResponseDto,
 } from '@common';
+import { useSortMiddleware, withTimestamps } from '@middlewares/SortMiddleware';
+import { ArtistsService } from '@services/ArtistsService';
 import { FastifyPluginAsync } from 'fastify';
 import { sendNotFoundError } from '../helpers/responses';
-import { ArtistsService } from '../services/ArtistsService';
 
 type Injects = {
   artistsService: ArtistsService;
@@ -17,8 +18,9 @@ export function ArtistsController({
   return async function (router) {
     router.get(
       '/',
-      async (): Promise<ArtistsResponseDto> => {
-        const artists = await artistsService.findAll();
+      useSortMiddleware(withTimestamps('name')),
+      async (request): Promise<ArtistsResponseDto> => {
+        const artists = await artistsService.find(request.sort);
 
         return { artists };
       },

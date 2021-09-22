@@ -1,3 +1,4 @@
+import { SortParam } from '@typings/SortParam';
 import Knex from 'knex';
 
 type AlbumsQueryBuilder = ReturnType<typeof query>;
@@ -6,9 +7,10 @@ export function createAlbumsQuery(db: Knex): AlbumsQueryBuilder {
   return query(db);
 }
 
-export function orderByName() {
-  return (query: AlbumsQueryBuilder): AlbumsQueryBuilder =>
-    query.orderBy('albums.name', 'asc');
+export function orderBy({ field, direction }: SortParam) {
+  return (query: AlbumsQueryBuilder): AlbumsQueryBuilder => {
+    return query.orderBy(`albums.${field}`, direction);
+  };
 }
 
 export function orderByYearDesc() {

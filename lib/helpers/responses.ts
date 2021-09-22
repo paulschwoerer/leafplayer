@@ -1,15 +1,8 @@
-import { FastifyReply } from 'fastify';
 import { ApiError } from '@common';
+import { FastifyReply } from 'fastify';
 
-function sendApiError(
-  reply: FastifyReply,
-  { statusCode, code, error }: ApiError,
-  headers: Record<string, string> = {},
-): FastifyReply {
-  return reply
-    .headers(headers)
-    .status(statusCode)
-    .send({ statusCode, code, error });
+function sendApiError(reply: FastifyReply, error: ApiError): FastifyReply {
+  return reply.status(error.statusCode).send(error);
 }
 
 export function sendNotFoundError(
@@ -31,5 +24,16 @@ export function sendNotAuthorizedError(
     statusCode: 401,
     error: 'Not Authorized',
     message: message || 'Not authorized to perform this action',
+  });
+}
+
+export function sendBadRequestError(
+  reply: FastifyReply,
+  message: string,
+): FastifyReply {
+  return sendApiError(reply, {
+    statusCode: 400,
+    error: 'Bad Request',
+    message: message,
   });
 }

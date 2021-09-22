@@ -1,6 +1,7 @@
 import { FullAlbum, FullSong } from '@common';
 import { toFullAlbum } from '@mappers/albums';
-import { createAlbumsQuery, orderByName } from '@query/albums';
+import { createAlbumsQuery, orderBy } from '@query/albums';
+import { SortParam } from '@typings/SortParam';
 import Knex from 'knex';
 import { generateUuid } from '../helpers/uuid';
 import { SongsService } from './SongsService';
@@ -12,7 +13,7 @@ export interface AlbumsService {
     year?: number;
   }): Promise<string>;
   findById(id: string): Promise<FullAlbum | undefined>;
-  findAll(): Promise<FullAlbum[]>;
+  find(sort?: SortParam): Promise<FullAlbum[]>;
   findSongsOfAlbum(albumId: string): Promise<FullSong[]>;
   findIdByNameAndArtistId(params: {
     name: string;
@@ -23,6 +24,11 @@ export interface AlbumsService {
 type Injects = {
   db: Knex;
   songsService: SongsService;
+};
+
+const DEFAULT_SORT: SortParam = {
+  field: 'name',
+  direction: 'asc',
 };
 
 export function createAlbumsService({
@@ -52,9 +58,9 @@ export function createAlbumsService({
       return toFullAlbum(row);
     },
 
-    async findAll() {
-      const orderedByName = orderByName();
-      const rows = await orderedByName(createAlbumsQuery(db).where(true));
+    async find(sort) {
+      const ordered = orderBy(sort || DEFAULT_SORT);
+      const rows = await ordered(createAlbumsQuery(db).where(true));
 
       return rows.map(toFullAlbum);
     },

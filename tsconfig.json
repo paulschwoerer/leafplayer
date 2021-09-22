@@ -27,11 +27,20 @@
       "@common": [
         "./common"
       ],
+      "@mappers/*": [
+        "./lib/mappers/*"
+      ],
+      "@middlewares/*": [
+        "./lib/middlewares/*"
+      ],
       "@query/*": [
         "./lib/query/*"
       ],
-      "@mappers/*": [
-        "./lib/mappers/*"
+      "@services/*": [
+        "./lib/services/*"
+      ],
+      "@typings/*": [
+        "lib/typings/*"
       ]
     }
   },
