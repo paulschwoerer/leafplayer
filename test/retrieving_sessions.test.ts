@@ -1,6 +1,5 @@
 import { UserSessionsResponseDto } from '@common';
 import anyTest, { TestInterface } from 'ava';
-import 'module-alias/register';
 import { afterEachHook, beforeEachHook, TestContext } from './testContext';
 import { createServerAndInsertTestUserAndLogin } from './testHelpers';
 

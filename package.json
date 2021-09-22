@@ -28,7 +28,8 @@
       "ts"
     ],
     "require": [
-      "ts-node/register"
+      "ts-node/register",
+      "./test/prerequisites.ts"
     ]
   },
   "dependencies": {

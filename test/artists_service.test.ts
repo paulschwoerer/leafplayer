@@ -1,4 +1,3 @@
-import 'module-alias/register';
 import anyTest, { TestInterface } from 'ava';
 import Knex from 'knex';
 import { createAlbumsService } from '../lib/services/AlbumsService';

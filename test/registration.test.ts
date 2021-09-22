@@ -1,4 +1,3 @@
-import 'module-alias/register';
 import anyTest, { ExecutionContext, TestInterface } from 'ava';
 import { getCurrentUnixTimestamp } from '../lib/helpers/time';
 import { afterEachHook, beforeEachHook, TestContext } from './testContext';

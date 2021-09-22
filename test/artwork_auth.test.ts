@@ -1,4 +1,3 @@
-import 'module-alias/register';
 import anyTest, { TestInterface } from 'ava';
 import jwt from 'jsonwebtoken';
 import { afterEachHook, beforeEachHook, TestContext } from './testContext';
