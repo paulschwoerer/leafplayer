@@ -42,7 +42,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "fastify": "^3.10.1",
-    "fastify-static": "^3.4.0",
+    "fastify-static": "^4.2.4",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.15",
     "md5-file": "^5.0.0",
