@@ -106,7 +106,7 @@ Finally, start the server. Don't forget to replace `supersecret` with a secure, 
 ```sh
 cd "$LP_DIRECTORY"
 
-APP_SECRET=supersecret node main.js serve
+NODE_ENV=production APP_SECRET=supersecret node main.js serve
 ```
 
 You should now see the Leafplayer web interface by navigating to [localhost:3000](http://localhost:3000) in your browser.
