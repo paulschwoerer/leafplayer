@@ -1,20 +1,45 @@
-<p align="center"><img width="140"src="logo.png"></p>
+<p align="center"><img width="256"src="https://user-images.githubusercontent.com/22923578/137105016-a7402b45-8e82-44d7-acff-84fc875c6212.png"></p>
 
-# Leafplayer
+<p align="center">
+    <a href="#features">Features</a> | 
+    <a href="#installation">Installation</a> | 
+    <a href="#usage">Usage</a> | 
+    <a href="#screenshots">Screenshots</a>
+</p>
+
+<p align="center">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/paulschwoerer/leafplayer/build">
+  <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/paulschwoerer/leafplayer">
+  <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/paulschwoerer/leafplayer">
+</p>
+
+
+
+<p align="center"><b>Looking for contributors!</b> <a href="mailto:hello@paulschwoerer.de">Hit me up</a> if you're interested.</p>
 
 Leafplayer is a minimalistic music streaming server with a focus on performance and a slick UI. It enables you to listen to your private music collection from anywhere in the world.
 
 ![01](https://user-images.githubusercontent.com/22923578/115007130-f579e480-9ea9-11eb-9eca-70684a38949a.jpg)
 
-See more [screenshots](#screenshots)
+## Features
+
+These are some notable features, in no particularly order.
+
+* Modern, mobile-friendly interface
+* Native media controls
+* Artworks from media tags for artists and albums  
+* Multiple user accounts
+* Registration of accounts using invite codes
+* Fast search
 
 ## Installation
-### Install using Docker
 
-After installing [Docker](https://docs.docker.com/get-docker/), use the following command to get up and running. Set `APP_SECRET` to a secure, random string. Also, don't forget to adjust the /path/to/your/music directory.
+### With Docker
+
+Use the following command to get up and running quickly. Don't forget to replace `supersecret` with a secure, random string and adjust the `/path/to/your/music` directory.
 
 ```sh
-sudo docker run -d \
+docker run -d \
   -e "APP_SECRET=supersecret" \
   -v "/path/to/your/music:/music:ro" \
   -v "leafplayer-storage:/var/lib/leafplayer" \
@@ -25,24 +50,68 @@ sudo docker run -d \
 
 You should now see the Leafplayer web interface by navigating to [localhost:3000](http://localhost:3000) in your browser.
 
-To create an initial admin account, run the following command.
+### Without Docker (Linux only)
+
+You need to have a working install of [NodeJS](https://nodejs.org/en/download/) v14.x.x.
 
 ```sh
-sudo docker exec leafplayer node main.js \
-  users:add \
-  --username admin \
-  --password supersecret
+# check your node version
+node --version
 ```
 
-You can now add your music directory and start a music scan.
+After that, grab the latest Leafplayer release from the [releases page](https://github.com/paulschwoerer/leafplayer/releases) and extract it into a directory of your choice, for example `/opt/leafplayer`.
 
 ```sh
-sudo docker exec leafplayer node main.js \
-  library:dir --add /music
+# specify the version to use
+LP_VERSION="1.0.0"
 
-sudo docker exec leafplayer node main.js \
-  library:scan
+# specify the Leafplayer directory
+LP_DIRECTORY="/opt/leafplayer"
+
+# specify a user to run Leafplayer as
+LP_USER="lpuser"
+
+# add the user
+adduser "$LP_USER"
+
+# create the Leafplayer directory
+sudo mkdir "$LP_DIRECTORY"
+
+# download the specified release
+wget -P /tmp "https://github.com/paulschwoerer/leafplayer/releases/download/v$LP_VERSION/leafplayer-v$LP_VERSION.zip"
+
+# unzip release
+sudo unzip -q "/tmp/leafplayer-v$LP_VERSION.zip" -d "$LP_DIRECTORY"
+
+# give the Leafplayer user permission to write to the directory
+sudo chown -R $LP_USER "$LP_DIRECTORY"
+
+# install dependencies
+cd "$LP_DIRECTORY" && npm install
+
+# finally, remove downloaded file
+rm "/tmp/leafplayer-v$LP_VERSION.zip"
 ```
+
+Leafplayer will use `/var/lib/leafplayer` as its storage directory. Make sure it exists and that the user account, which will run Leafplayer, owns it.
+
+```sh
+sudo mkdir /var/lib/leafplayer
+
+chown "$LP_USER" /var/lib/leafplayer
+```
+
+Finally, start the server. Don't forget to replace `supersecret` with a secure, random string.
+
+```sh
+cd "$LP_DIRECTORY"
+
+APP_SECRET=supersecret node main.js serve
+```
+
+You should now see the Leafplayer web interface by navigating to [localhost:3000](http://localhost:3000) in your browser.
+
+### Reverse Proxy
 
 Note, that the setup above will only allow you to access your Leafplayer instance from your local machine. When deploying a live instance, you should setup a reverse proxy to handle TLS. See for example [Caddy](https://caddyserver.com/) for a simple-to-use solution.
 
@@ -50,15 +119,32 @@ Note, that the setup above will only allow you to access your Leafplayer instanc
 caddy reverse-proxy --from music.yourdomain.home --to localhost:3000
 ```
 
-### Install using NodeJS on Linux
+## Usage
 
-Instructions will be added soon.
+If you followed the docker instructions, prefix the following commands as follows.
 
-### Contributing
+```sh
+sudo docker exec leafplayer node main.js ...
+```
 
-I'm searching for contributors on this project, hit me up if you're interested.
+To create an initial admin account, run the following command.
 
-# Screenshots
+```sh
+node main.js users:add \
+  --username admin \
+  --password supersecret
+```
 
-![02](https://user-images.githubusercontent.com/22923578/115007273-17736700-9eaa-11eb-91bf-0d3b58c47213.jpg)
-![03](https://user-images.githubusercontent.com/22923578/115007279-180bfd80-9eaa-11eb-8cda-f963dd43810f.jpg)
+You can now add your music directory and start a music scan.
+
+```sh
+node main.js library:dir --add /music
+
+node main.js library:scan
+```
+
+## Screenshots
+
+![Desktop 1](https://user-images.githubusercontent.com/22923578/115007273-17736700-9eaa-11eb-91bf-0d3b58c47213.jpg)
+![Desktop 2](https://user-images.githubusercontent.com/22923578/115007279-180bfd80-9eaa-11eb-8cda-f963dd43810f.jpg)
+![Mobile](https://user-images.githubusercontent.com/22923578/137108444-ef15701c-0e1e-4177-a9c5-fba3216b9db0.jpg)
