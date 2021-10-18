@@ -1,3 +1,4 @@
+import { AuthContext } from '@typings/AuthContext';
 import { FastifyRequest } from 'fastify';
 import { sendNotAuthorizedError } from '../helpers/responses';
 import { Middleware } from './Middleware';
@@ -16,13 +17,6 @@ type SessionWithUser = {
   id: string;
   user: UserWithPassword;
 };
-
-interface AuthContext {
-  getUser(): User;
-  getUserId(): string;
-  getSessionId(): string;
-  isValidPassword(password: string): boolean;
-}
 
 declare module 'fastify' {
   interface FastifyRequest {

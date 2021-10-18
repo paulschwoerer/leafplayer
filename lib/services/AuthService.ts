@@ -1,22 +1,15 @@
-import jwt from 'jsonwebtoken';
 import { User } from '@common';
-import { UserRow } from '../database/rows';
-import { comparePasswords } from '../helpers/passwords';
+import jwt from 'jsonwebtoken';
+import Knex from 'knex';
+import { LeafplayerConfig } from '../config';
+import { comparePasswords, createPasswordHash } from '../helpers/passwords';
 import { getCurrentUnixTimestamp } from '../helpers/time';
-
-type Config = {
-  sessionMaxAge: number;
-  secret: string;
-};
+import { SessionsService } from './SessionsService';
+import { UsersService } from './UsersService';
 
 type Credentials = {
   username: string;
   password: string;
-};
-
-type SessionWithUser = {
-  id: string;
-  user: UserRow;
 };
 
 type Browser = {
@@ -24,30 +17,11 @@ type Browser = {
   os: string;
 };
 
-type SessionCreateParams = {
-  userId: string;
-  browser: Browser;
-  maxAge: number;
-};
-
-interface SessionsService {
-  create(params: SessionCreateParams): Promise<string>;
-  findWithUserByToken(token: string): Promise<SessionWithUser | undefined>;
-  deleteById(id: string): Promise<Error | undefined>;
-}
-
-type UserWithPassword = User & {
-  password: string;
-};
-
-interface UsersService {
-  findByUsername(username: string): Promise<UserWithPassword | undefined>;
-}
-
 type Injects = {
-  usersService: UsersService;
+  db: Knex;
+  config: LeafplayerConfig;
   sessionsService: SessionsService;
-  config: Config;
+  usersService: UsersService;
 };
 
 export interface AuthService {
@@ -55,18 +29,33 @@ export interface AuthService {
     credentials: Credentials,
     browser: Browser,
   ): Promise<{ user: User; sessionToken: string } | Error>;
-  logout(sessionId: string): Promise<Error | undefined>;
+  logout(sessionId: string): Promise<void>;
+  changeUserPassword(params: {
+    userId: string;
+    newPassword: string;
+    activeSessionId: string;
+  }): Promise<Error | void>;
   makeJwtToken(): string;
   isValidJwtToken(token: string): boolean;
+  validatePasswordSecurity(password: string): Error | void;
 }
 
 export function createAuthService({
+  db,
+  config: { security: securityConfig },
   sessionsService,
   usersService,
-  config,
 }: Injects): AuthService {
   function generateSessionExpireTimestamp(from: number): number {
-    return from + config.sessionMaxAge;
+    return from + securityConfig.sessionMaxAge;
+  }
+
+  function validatePasswordSecurity(password: string): Error | void {
+    if (password.length < securityConfig.minimumPasswordLength) {
+      return Error(
+        `Password needs at least ${securityConfig.minimumPasswordLength} characters`,
+      );
+    }
   }
 
   return {
@@ -80,7 +69,7 @@ export function createAuthService({
       const sessionToken = await sessionsService.create({
         userId: user.id,
         browser,
-        maxAge: config.sessionMaxAge,
+        maxAge: securityConfig.sessionMaxAge,
       });
 
       return {
@@ -93,8 +82,34 @@ export function createAuthService({
       };
     },
 
-    async logout(sessionId) {
+    logout(sessionId) {
       return sessionsService.deleteById(sessionId);
+    },
+
+    async changeUserPassword({ userId, newPassword, activeSessionId }) {
+      const pwResult = validatePasswordSecurity(newPassword);
+      if (pwResult instanceof Error) {
+        return pwResult;
+      }
+
+      await db.transaction(async trx => {
+        await trx('users')
+          .update({
+            password: createPasswordHash(newPassword),
+          })
+          .where({
+            id: userId,
+          });
+
+        await trx('sessions')
+          .delete()
+          .where({
+            userId,
+          })
+          .whereNot({
+            id: activeSessionId,
+          });
+      });
     },
 
     makeJwtToken() {
@@ -102,18 +117,20 @@ export function createAuthService({
         {
           exp: generateSessionExpireTimestamp(getCurrentUnixTimestamp()),
         },
-        config.secret,
+        securityConfig.secret,
       );
     },
 
     isValidJwtToken(token) {
       try {
-        jwt.verify(token, config.secret);
+        jwt.verify(token, securityConfig.secret);
 
         return true;
       } catch (e) {
         return false;
       }
     },
+
+    validatePasswordSecurity,
   };
 }

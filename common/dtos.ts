@@ -43,6 +43,11 @@ export type RegisterRequestDto = {
   password: string;
 };
 
+export type ChangePasswordRequestDto = {
+  currentPassword: string;
+  newPassword: string;
+};
+
 export type UserResponseDto = {
   user: User;
   artworkToken: string;
