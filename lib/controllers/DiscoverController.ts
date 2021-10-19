@@ -3,10 +3,10 @@ import {
   AlbumsResponseDto,
   ArtistResponseDto,
   ArtistsResponseDto,
-} from '@common';
+} from '@/common';
 import { FastifyPluginAsync } from 'fastify';
-import { sendNotFoundError } from '../helpers/responses';
-import { DiscoverService } from './../services/DiscoverService';
+import { sendNotFoundError } from '@/helpers/responses';
+import { DiscoverService } from '@/services/DiscoverService';
 
 type Injects = {
   discoverService: DiscoverService;

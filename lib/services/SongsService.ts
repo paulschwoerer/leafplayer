@@ -1,9 +1,9 @@
-import { FullSong } from '@common';
-import { toFullSong } from '@mappers/songs';
-import { createSongsQuery, orderByDiscAndTrack } from '@query/songs';
+import { FullSong } from '@/common';
+import { toFullSong } from '@/mappers/songs';
+import { createSongsQuery, orderByDiscAndTrack } from '@/query/songs';
 import Knex from 'knex';
-import { SongRow } from '../database/rows';
-import { createNamespacedWhereParams } from '../helpers/db';
+import { SongRow } from '@/database/rows';
+import { createNamespacedWhereParams } from '@/helpers/db';
 
 type Injects = {
   db: Knex;

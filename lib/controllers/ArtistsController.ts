@@ -2,11 +2,14 @@ import {
   ArtistsResponseDto,
   ArtistWithAlbumsResponseDto,
   SongsResponseDto,
-} from '@common';
-import { useSortMiddleware, withTimestamps } from '@middlewares/SortMiddleware';
-import { ArtistsService } from '@services/ArtistsService';
+} from '@/common';
+import {
+  useSortMiddleware,
+  withTimestamps,
+} from '@/middlewares/SortMiddleware';
+import { ArtistsService } from '@/services/ArtistsService';
 import { FastifyPluginAsync } from 'fastify';
-import { sendNotFoundError } from '../helpers/responses';
+import { sendNotFoundError } from '@/helpers/responses';
 
 type Injects = {
   artistsService: ArtistsService;

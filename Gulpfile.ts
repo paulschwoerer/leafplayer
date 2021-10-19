@@ -31,7 +31,6 @@ async function makeReleasePackageJson() {
     author,
     license,
     dependencies,
-    _moduleAliases,
   } = await readJsonFile('package.json');
 
   const output = {
@@ -42,7 +41,6 @@ async function makeReleasePackageJson() {
     author,
     license,
     dependencies,
-    _moduleAliases,
   };
 
   await writeJsonFile('build/package.json', output);

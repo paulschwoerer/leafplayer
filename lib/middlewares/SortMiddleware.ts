@@ -1,5 +1,5 @@
-import { SortParam } from '@typings/SortParam';
-import { sendBadRequestError } from '../helpers/responses';
+import { SortParam } from '@/typings/SortParam';
+import { sendBadRequestError } from '@/helpers/responses';
 import { Middleware } from './Middleware';
 
 declare module 'fastify' {

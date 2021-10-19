@@ -1,7 +1,7 @@
 import { createReadStream } from 'fs';
 import path from 'path';
 import { Stream } from 'stream';
-import { isReadable, statFile } from '../helpers/filesystem';
+import { isReadable, statFile } from '@/helpers/filesystem';
 
 type StreamWithSize = {
   stream: Stream;

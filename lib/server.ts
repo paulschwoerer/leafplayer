@@ -5,7 +5,7 @@ import fastify, {
 } from 'fastify';
 import fastifyStatic from 'fastify-static';
 import path from 'path';
-import { LeafplayerConfig } from './config';
+import { LeafplayerConfig } from '@/config';
 import {
   AlbumsController,
   ArtistsController,
@@ -16,17 +16,18 @@ import {
   SessionsController,
   StreamController,
 } from './controllers';
-import { comparePasswords } from './helpers/passwords';
-import { AuthMiddleware, TokenAuthMiddleware } from './middlewares';
-import { AlbumsService } from './services/AlbumsService';
-import { ArtistsService } from './services/ArtistsService';
-import { ArtworksService } from './services/ArtworksService';
-import { AudioFilesService } from './services/AudioFilesService';
-import { AuthService } from './services/AuthService';
-import { DiscoverService } from './services/DiscoverService';
-import { InvitationsService } from './services/InvitationsService';
-import { SearchService } from './services/SearchService';
-import { SessionsService } from './services/SessionsService';
+import { comparePasswords } from '@/helpers/passwords';
+import { createAuthMiddleware } from '@/middlewares/AuthMiddleware';
+import { createTokenAuthMiddleware } from '@/middlewares/TokenAuthMiddleware';
+import { AlbumsService } from '@/services/AlbumsService';
+import { ArtistsService } from '@/services/ArtistsService';
+import { ArtworksService } from '@/services/ArtworksService';
+import { AudioFilesService } from '@/services/AudioFilesService';
+import { AuthService } from '@/services/AuthService';
+import { DiscoverService } from '@/services/DiscoverService';
+import { InvitationsService } from '@/services/InvitationsService';
+import { SearchService } from '@/services/SearchService';
+import { SessionsService } from '@/services/SessionsService';
 
 type Injects = {
   config: LeafplayerConfig;
@@ -63,7 +64,7 @@ export async function initServer({
     await reply.sendFile('index.html');
   });
 
-  const authMiddleware = AuthMiddleware({
+  const authMiddleware = createAuthMiddleware({
     sessionsService,
     comparePasswords,
   });
@@ -85,7 +86,7 @@ export async function initServer({
       await api.register(async tokenAuthenticated => {
         tokenAuthenticated.addHook<{ Querystring: { token?: string } }>(
           'preValidation',
-          TokenAuthMiddleware(authService),
+          createTokenAuthMiddleware(authService),
         );
         await api.register(ArtworksController({ artworksService }), {
           prefix: 'artworks',

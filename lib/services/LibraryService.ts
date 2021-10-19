@@ -1,9 +1,9 @@
-import { FullSong } from '@common';
+import { FullSong } from '@/common';
 import Knex from 'knex';
 import path from 'path';
-import { AudioFileRow } from '../database/rows';
-import { isReadable, removeDir } from '../helpers/filesystem';
-import { generateUuid } from '../helpers/uuid';
+import { AudioFileRow } from '@/database/rows';
+import { isReadable, removeDir } from '@/helpers/filesystem';
+import { generateUuid } from '@/helpers/uuid';
 
 export type SavedSong = FullSong & { fileLastModified: number };
 

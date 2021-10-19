@@ -1,7 +1,7 @@
 import { mkdirSync } from 'fs';
 import path, { join as joinPath } from 'path';
 import sharp from 'sharp';
-import { printError, printInfo } from '../helpers/cli';
+import { printError, printInfo } from '@/helpers/cli';
 
 type ArtworkFileSource = {
   type: 'file';

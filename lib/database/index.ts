@@ -1,9 +1,9 @@
 import { chmodSync, existsSync } from 'fs';
 import Knex from 'knex';
 import path from 'path';
-import { unixCheckIfWorldReadable } from '../helpers/filesystem';
-import { createPasswordHash } from '../helpers/passwords';
-import { generateUuid } from '../helpers/uuid';
+import { unixCheckIfWorldReadable } from '@/helpers/filesystem';
+import { createPasswordHash } from '@/helpers/passwords';
+import { generateUuid } from '@/helpers/uuid';
 
 type Config = {
   file: string;

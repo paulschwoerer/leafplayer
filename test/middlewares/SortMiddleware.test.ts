@@ -1,5 +1,5 @@
-import { useSortMiddleware } from '@middlewares/SortMiddleware';
-import { SortParam } from '@typings/SortParam';
+import { useSortMiddleware } from '@/middlewares/SortMiddleware';
+import { SortParam } from '@/typings/SortParam';
 import test from 'ava';
 import fastify, { FastifyInstance } from 'fastify';
 

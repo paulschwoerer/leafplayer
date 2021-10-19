@@ -1,4 +1,4 @@
-import { User } from '@common';
+import { User } from '@/common';
 
 export interface AuthContext {
   getUser(): User;

@@ -1,4 +1,4 @@
-import { SortParam } from '@typings/SortParam';
+import { SortParam } from '@/typings/SortParam';
 import Knex from 'knex';
 
 type ArtistsQueryBuilder = ReturnType<typeof query>;

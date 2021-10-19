@@ -3,19 +3,19 @@ import {
   ChangePasswordRequestDto,
   RegisterRequestDto,
   UserResponseDto,
-} from '@common';
-import { AuthService } from '@services/AuthService';
+} from '@/common';
+import { AuthService } from '@/services/AuthService';
 import { FastifyPluginAsync } from 'fastify';
 import { UAParser } from 'ua-parser-js';
 import {
   sendBadRequestError,
   sendNotAuthorizedError,
-} from '../helpers/responses';
-import ChangePasswordSchema from '../schemas/changePassword.json';
-import LoginSchema from '../schemas/login.json';
-import RegisterSchema from '../schemas/register.json';
-import { InvitationsService } from '../services/InvitationsService';
-import { Middleware } from './../middlewares/Middleware';
+} from '@/helpers/responses';
+import ChangePasswordSchema from '@/schemas/changePassword.json';
+import LoginSchema from '@/schemas/login.json';
+import RegisterSchema from '@/schemas/register.json';
+import { InvitationsService } from '@/services/InvitationsService';
+import { Middleware } from '@/middlewares/Middleware';
 
 type Config = {
   minimumPasswordLength: number;

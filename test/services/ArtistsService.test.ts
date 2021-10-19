@@ -1,6 +1,6 @@
-import { createAlbumsService } from '@services/AlbumsService';
-import { createArtistsService } from '@services/ArtistsService';
-import { createSongsService } from '@services/SongsService';
+import { createAlbumsService } from '@/services/AlbumsService';
+import { createArtistsService } from '@/services/ArtistsService';
+import { createSongsService } from '@/services/SongsService';
 import anyTest, { TestInterface } from 'ava';
 import Knex from 'knex';
 import { FileFormat } from '../../lib/scanner/types';

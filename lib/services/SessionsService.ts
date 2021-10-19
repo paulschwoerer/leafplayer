@@ -1,9 +1,9 @@
 import Knex from 'knex';
-import { UserSession } from '@common';
+import { UserSession } from '@/common';
 import uid from 'uid-safe';
-import { UserRow } from '../database/rows';
-import { getCurrentUnixTimestamp } from '../helpers/time';
-import { generateUuid } from '../helpers/uuid';
+import { UserRow } from '@/database/rows';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
+import { generateUuid } from '@/helpers/uuid';
 
 type Browser = {
   os: string;

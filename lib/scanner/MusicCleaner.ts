@@ -1,8 +1,8 @@
 import Knex from 'knex';
-import { AudioFileRow } from '../database/rows';
-import { printError, printInfo } from '../helpers/cli';
-import { isReadable } from '../helpers/filesystem';
-import { AudioFilesService } from '../services/AudioFilesService';
+import { AudioFileRow } from '@/database/rows';
+import { printError, printInfo } from '@/helpers/cli';
+import { isReadable } from '@/helpers/filesystem';
+import { AudioFilesService } from '@/services/AudioFilesService';
 
 type MusicCleanerOptions = {
   removeMissing: boolean;

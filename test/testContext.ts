@@ -1,10 +1,10 @@
 import { ExecutionContext } from 'ava';
 import Knex from 'knex';
 import uid from 'uid-safe';
-import { LeafplayerConfig } from '../lib/config';
-import { initializeDatabase, runMigrations } from '../lib/database';
-import { removeDir } from '../lib/helpers/filesystem';
-import { generateUuid } from '../lib/helpers/uuid';
+import { LeafplayerConfig } from '@/config';
+import { initializeDatabase, runMigrations } from '@/database';
+import { removeDir } from '@/helpers/filesystem';
+import { generateUuid } from '@/helpers/uuid';
 
 export type TestContext = {
   db: Knex;

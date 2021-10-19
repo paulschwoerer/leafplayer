@@ -24,25 +24,16 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@common": [
+      "@/common": [
         "./common"
       ],
-      "@mappers/*": [
-        "./lib/mappers/*"
-      ],
-      "@middlewares/*": [
-        "./lib/middlewares/*"
-      ],
-      "@query/*": [
-        "./lib/query/*"
-      ],
-      "@services/*": [
-        "./lib/services/*"
-      ],
-      "@typings/*": [
-        "lib/typings/*"
+      "@/*": [
+        "./lib/*"
       ]
-    }
+    },
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+    ]
   },
   "include": [
     "./lib/**/*",

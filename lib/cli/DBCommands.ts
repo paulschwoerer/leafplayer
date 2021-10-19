@@ -1,7 +1,7 @@
 import commander from 'commander';
 import Knex from 'knex';
-import { runMigrations, seedDevDatabase } from '../database';
-import { printInfo, printSuccess } from '../helpers/cli';
+import { runMigrations, seedDevDatabase } from '@/database';
+import { printInfo, printSuccess } from '@/helpers/cli';
 
 type Injects = {
   db: Knex;

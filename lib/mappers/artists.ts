@@ -1,5 +1,5 @@
-import { FullArtist } from '@common';
-import { ArtistRow } from '../database/rows';
+import { FullArtist } from '@/common';
+import { ArtistRow } from '@/database/rows';
 
 export function toFullArtist(
   row: ArtistRow & {

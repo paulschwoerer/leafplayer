@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import { AudioFileRow } from '../database/rows';
+import { AudioFileRow } from '@/database/rows';
 
 export interface AudioFilesService {
   findById(id: string): Promise<AudioFileRow | undefined>;

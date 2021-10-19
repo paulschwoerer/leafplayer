@@ -1,9 +1,9 @@
-import { User } from '@common';
+import { User } from '@/common';
 import jwt from 'jsonwebtoken';
 import Knex from 'knex';
-import { LeafplayerConfig } from '../config';
-import { comparePasswords, createPasswordHash } from '../helpers/passwords';
-import { getCurrentUnixTimestamp } from '../helpers/time';
+import { LeafplayerConfig } from '@/config';
+import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
 import { SessionsService } from './SessionsService';
 import { UsersService } from './UsersService';
 

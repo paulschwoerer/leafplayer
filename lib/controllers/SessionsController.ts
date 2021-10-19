@@ -1,11 +1,8 @@
-import { RevokeSessionRequestDto, UserSessionsResponseDto } from '@common';
-import { SessionsService } from '@services/SessionsService';
+import { RevokeSessionRequestDto, UserSessionsResponseDto } from '@/common';
+import { SessionsService } from '@/services/SessionsService';
 import { FastifyPluginAsync } from 'fastify';
-import {
-  sendNotAuthorizedError,
-  sendNotFoundError,
-} from '../helpers/responses';
-import RevokeSessionSchema from '../schemas/revokeSession.json';
+import { sendNotAuthorizedError, sendNotFoundError } from '@/helpers/responses';
+import RevokeSessionSchema from '@/schemas/revokeSession.json';
 
 type Injects = {
   sessionsService: SessionsService;

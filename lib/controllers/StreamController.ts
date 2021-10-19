@@ -1,8 +1,8 @@
-import { FileFormat } from '../scanner/types';
+import { FileFormat } from '@/scanner/types';
 import { FastifyPluginAsync } from 'fastify';
 import { createReadStream, statSync } from 'fs';
-import { AudioFilesService } from '../services/AudioFilesService';
-import { sendNotFoundError } from '../helpers/responses';
+import { AudioFilesService } from '@/services/AudioFilesService';
+import { sendNotFoundError } from '@/helpers/responses';
 
 const CHUNK_SIZE = 1024 * 1024;
 

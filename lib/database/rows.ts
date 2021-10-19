@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import { FileFormat } from '../scanner/types';
+import { FileFormat } from '@/scanner/types';
 
 type Timestamps = {
   createdAt: string;

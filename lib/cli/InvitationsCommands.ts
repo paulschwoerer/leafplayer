@@ -1,6 +1,6 @@
 import commander from 'commander';
-import { InvitationsService } from '../services/InvitationsService';
-import { printInfo, printError, printSuccess } from '../helpers/cli';
+import { InvitationsService } from '@/services/InvitationsService';
+import { printInfo, printError, printSuccess } from '@/helpers/cli';
 
 type Injects = {
   invitationsService: InvitationsService;

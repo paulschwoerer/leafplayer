@@ -1,6 +1,6 @@
-import { User } from '@common';
-import { AuthService } from '@services/AuthService';
-import { InvitationsService } from '@services/InvitationsService';
+import { User } from '@/common';
+import { AuthService } from '@/services/AuthService';
+import { InvitationsService } from '@/services/InvitationsService';
 import anyTest, { TestInterface } from 'ava';
 import { FastifyInstance } from 'fastify';
 import td from 'testdouble';

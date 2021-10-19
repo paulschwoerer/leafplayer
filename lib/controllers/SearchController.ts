@@ -1,6 +1,6 @@
-import { SearchResponseDto } from '@common';
+import { SearchResponseDto } from '@/common';
 import { FastifyPluginAsync } from 'fastify';
-import { SearchService } from '../services/SearchService';
+import { SearchService } from '@/services/SearchService';
 
 type Injects = {
   searchService: SearchService;

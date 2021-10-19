@@ -1,9 +1,9 @@
-import { FullAlbum, FullSong } from '@common';
-import { toFullAlbum } from '@mappers/albums';
-import { createAlbumsQuery, orderBy } from '@query/albums';
-import { SortParam } from '@typings/SortParam';
+import { FullAlbum, FullSong } from '@/common';
+import { toFullAlbum } from '@/mappers/albums';
+import { createAlbumsQuery, orderBy } from '@/query/albums';
+import { SortParam } from '@/typings/SortParam';
 import Knex from 'knex';
-import { generateUuid } from '../helpers/uuid';
+import { generateUuid } from '@/helpers/uuid';
 import { SongsService } from './SongsService';
 
 export interface AlbumsService {

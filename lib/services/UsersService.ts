@@ -1,8 +1,8 @@
 import Knex from 'knex';
-import { User } from '@common';
-import { UserRow } from '../database/rows';
-import { createPasswordHash } from '../helpers/passwords';
-import { generateUuid } from '../helpers/uuid';
+import { User } from '@/common';
+import { UserRow } from '@/database/rows';
+import { createPasswordHash } from '@/helpers/passwords';
+import { generateUuid } from '@/helpers/uuid';
 
 type CreateUserParams = {
   username: string;

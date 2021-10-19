@@ -1,6 +1,6 @@
-import { User } from '@common';
-import { Middleware } from '@middlewares/Middleware';
-import { AuthContext } from '@typings/AuthContext';
+import { User } from '@/common';
+import { Middleware } from '@/middlewares/Middleware';
+import { AuthContext } from '@/typings/AuthContext';
 
 type Params = {
   user: User;

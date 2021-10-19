@@ -1,4 +1,4 @@
-import { ApiError } from '@common';
+import { ApiError } from '@/common';
 import { FastifyReply } from 'fastify';
 
 function sendApiError(reply: FastifyReply, error: ApiError): FastifyReply {
