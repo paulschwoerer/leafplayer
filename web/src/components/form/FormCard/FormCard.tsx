@@ -1,12 +1,11 @@
-import { CloseIcon } from 'components/icons';
-import IconButton from 'components/icons/IconButton/IconButton';
+import { ErrorAlert } from 'components/Alert/Alert';
 import React, { PropsWithChildren, ReactElement, ReactNode } from 'react';
 import Logo from '../../layout/Logo/Logo';
 import styles from './FormCard.module.scss';
 
 type Props = {
   actions?: ReactNode;
-  error?: string;
+  error: string;
   onCloseError?: () => void;
   onSubmit?: () => void;
 };
@@ -22,12 +21,7 @@ function FormCard({
     <div className={styles.root}>
       <Logo />
       <form className={styles.form} onSubmit={onSubmit}>
-        {!!error && (
-          <div className={styles.error}>
-            {error}
-            <IconButton onClick={onCloseError} icon={<CloseIcon />} />
-          </div>
-        )}
+        <ErrorAlert message={error} onClose={onCloseError} />
         {children}
         <div className={styles.actions}>{actions}</div>
       </form>
