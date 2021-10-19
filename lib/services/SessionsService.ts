@@ -1,6 +1,7 @@
 import Knex from 'knex';
-import { UserSession } from '@/common';
 import uid from 'uid-safe';
+
+import { UserSession } from '@/common';
 import { UserRow } from '@/database/rows';
 import { getCurrentUnixTimestamp } from '@/helpers/time';
 import { generateUuid } from '@/helpers/uuid';

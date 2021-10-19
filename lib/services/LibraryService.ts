@@ -1,6 +1,8 @@
-import { FullSong } from '@/common';
-import Knex from 'knex';
 import path from 'path';
+
+import Knex from 'knex';
+
+import { FullSong } from '@/common';
 import { AudioFileRow } from '@/database/rows';
 import { isReadable, removeDir } from '@/helpers/filesystem';
 import { generateUuid } from '@/helpers/uuid';

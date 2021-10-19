@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+
 import { computeSha256 } from './hashing';
 
 const BCRYPT_WORKLOAD = 12;

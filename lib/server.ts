@@ -1,21 +1,13 @@
+import path from 'path';
+
+import fastifyStatic from 'fastify-static';
 import fastify, {
   FastifyInstance,
   FastifyReply,
   FastifyRequest,
 } from 'fastify';
-import fastifyStatic from 'fastify-static';
-import path from 'path';
+
 import { LeafplayerConfig } from '@/config';
-import {
-  AlbumsController,
-  ArtistsController,
-  ArtworksController,
-  AuthController,
-  DiscoverController,
-  SearchController,
-  SessionsController,
-  StreamController,
-} from './controllers';
 import { comparePasswords } from '@/helpers/passwords';
 import { createAuthMiddleware } from '@/middlewares/AuthMiddleware';
 import { createTokenAuthMiddleware } from '@/middlewares/TokenAuthMiddleware';
@@ -28,6 +20,17 @@ import { DiscoverService } from '@/services/DiscoverService';
 import { InvitationsService } from '@/services/InvitationsService';
 import { SearchService } from '@/services/SearchService';
 import { SessionsService } from '@/services/SessionsService';
+
+import {
+  AlbumsController,
+  ArtistsController,
+  ArtworksController,
+  AuthController,
+  DiscoverController,
+  SearchController,
+  SessionsController,
+  StreamController,
+} from './controllers';
 
 type Injects = {
   config: LeafplayerConfig;

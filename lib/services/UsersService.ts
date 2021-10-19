@@ -1,4 +1,5 @@
 import Knex from 'knex';
+
 import { User } from '@/common';
 import { UserRow } from '@/database/rows';
 import { createPasswordHash } from '@/helpers/passwords';

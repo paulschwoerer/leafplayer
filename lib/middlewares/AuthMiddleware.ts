@@ -1,6 +1,8 @@
-import { AuthContext } from '@/typings/AuthContext';
 import { FastifyRequest } from 'fastify';
+
+import { AuthContext } from '@/typings/AuthContext';
 import { sendNotAuthorizedError } from '@/helpers/responses';
+
 import { Middleware } from './Middleware';
 
 type User = {

@@ -1,7 +1,9 @@
 import Knex from 'knex';
 import { LeafplayerConfig } from 'lib/config';
+
 import { InvitationRow } from '@/database/rows';
 import { getCurrentUnixTimestamp } from '@/helpers/time';
+
 import { AuthService } from './AuthService';
 import { UsersService } from './UsersService';
 

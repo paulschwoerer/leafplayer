@@ -1,11 +1,14 @@
 import { statSync } from 'fs';
-import { IAudioMetadata, parseFile } from 'music-metadata';
 import { basename, extname } from 'path';
+
+import { IAudioMetadata, parseFile } from 'music-metadata';
+
 import { printInfo } from '@/helpers/cli';
 import { AlbumsService } from '@/services/AlbumsService';
 import { ArtistsService } from '@/services/ArtistsService';
 import { LibraryService } from '@/services/LibraryService';
 import { AudioFileRow } from '@/database/rows';
+
 import ArtworkExtractor from './ArtworkExtractor';
 import ArtworkProcessor from './ArtworkProcessor';
 import { DirNode, FileNode, FileTreeBuilder } from './FileTreeBuilder';

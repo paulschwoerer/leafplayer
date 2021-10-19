@@ -1,4 +1,5 @@
 import commander from 'commander';
+
 import { UsersService } from '@/services/UsersService';
 import { printError, printSuccess } from '@/helpers/cli';
 

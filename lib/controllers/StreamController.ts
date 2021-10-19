@@ -1,6 +1,8 @@
-import { FileFormat } from '@/scanner/types';
-import { FastifyPluginAsync } from 'fastify';
 import { createReadStream, statSync } from 'fs';
+
+import { FastifyPluginAsync } from 'fastify';
+
+import { FileFormat } from '@/scanner/types';
 import { AudioFilesService } from '@/services/AudioFilesService';
 import { sendNotFoundError } from '@/helpers/responses';
 

@@ -1,9 +1,11 @@
-import { User } from '@/common';
-import { AuthService } from '@/services/AuthService';
-import { InvitationsService } from '@/services/InvitationsService';
 import anyTest, { TestInterface } from 'ava';
 import { FastifyInstance } from 'fastify';
 import td from 'testdouble';
+
+import { User } from '@/common';
+import { AuthService } from '@/services/AuthService';
+import { InvitationsService } from '@/services/InvitationsService';
+
 import { SecurityConfig } from '../../lib/config';
 import { AuthController } from '../../lib/controllers';
 import { mockAuthMiddleware } from '../testAuthHelpers';

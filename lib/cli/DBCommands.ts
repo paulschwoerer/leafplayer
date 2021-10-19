@@ -1,5 +1,6 @@
 import commander from 'commander';
 import Knex from 'knex';
+
 import { runMigrations, seedDevDatabase } from '@/database';
 import { printInfo, printSuccess } from '@/helpers/cli';
 

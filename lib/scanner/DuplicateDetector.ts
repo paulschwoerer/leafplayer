@@ -1,5 +1,6 @@
-import { FileNode } from './FileTreeBuilder';
 import fs from 'fs';
+
+import { FileNode } from './FileTreeBuilder';
 
 export default class DuplicateDetector {
   private fileSizeCache: Record<string, string[]> = {};

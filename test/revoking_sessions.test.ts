@@ -1,7 +1,9 @@
 import anyTest, { ExecutionContext, TestInterface } from 'ava';
 import uid from 'uid-safe';
+
 import { getCurrentUnixTimestamp } from '@/helpers/time';
 import { generateUuid } from '@/helpers/uuid';
+
 import { afterEachHook, beforeEachHook, TestContext } from './testContext';
 import { createServerAndInsertTestUserAndLogin } from './testHelpers';
 

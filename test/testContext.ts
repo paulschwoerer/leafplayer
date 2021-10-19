@@ -1,6 +1,7 @@
 import { ExecutionContext } from 'ava';
 import Knex from 'knex';
 import uid from 'uid-safe';
+
 import { LeafplayerConfig } from '@/config';
 import { initializeDatabase, runMigrations } from '@/database';
 import { removeDir } from '@/helpers/filesystem';

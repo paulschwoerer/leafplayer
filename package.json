@@ -61,6 +61,7 @@
     "ava": "^3.15.0",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^3.3.1",
     "execa": "^5.0.0",
     "gulp": "^4.0.2",

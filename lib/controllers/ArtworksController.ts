@@ -1,5 +1,7 @@
-import { FastifyPluginAsync } from 'fastify';
 import { Stream } from 'stream';
+
+import { FastifyPluginAsync } from 'fastify';
+
 import { sendNotFoundError } from '@/helpers/responses';
 import { isUuidV4 } from '@/helpers/uuid';
 import GetArtworkSchema from '@/schemas/getArtwork.json';

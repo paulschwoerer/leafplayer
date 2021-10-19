@@ -1,4 +1,5 @@
 import test from 'ava';
+
 import { weighStringsUsingSearchTerm } from './search';
 
 test('it should weigh items correctly 01', t => {

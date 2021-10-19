@@ -1,5 +1,7 @@
 import anyTest, { ExecutionContext, TestInterface } from 'ava';
+
 import { getCurrentUnixTimestamp } from '@/helpers/time';
+
 import { afterEachHook, beforeEachHook, TestContext } from './testContext';
 import {
   createServerFromTestContext,

@@ -1,11 +1,13 @@
+import Knex from 'knex';
+
 import { FullAlbum, FullArtist, FullSong } from '@/common';
 import { toFullAlbum } from '@/mappers/albums';
 import { toFullArtist } from '@/mappers/artists';
 import { createAlbumsQuery, orderByYearDesc } from '@/query/albums';
 import { createArtistQuery, orderBy } from '@/query/artists';
 import { SortParam } from '@/typings/SortParam';
-import Knex from 'knex';
 import { generateUuid } from '@/helpers/uuid';
+
 import { AlbumsService } from './AlbumsService';
 import { SongsService } from './SongsService';
 

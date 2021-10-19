@@ -1,5 +1,4 @@
-import { statSync, constants, Stats } from 'fs';
-import { access, stat, rm } from 'fs';
+import { statSync, constants, Stats, access, stat, rm } from 'fs';
 
 export function unixCheckIfWorldReadable(path: string): boolean {
   const stat = statSync(path);

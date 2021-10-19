@@ -1,3 +1,5 @@
+import { FastifyPluginAsync } from 'fastify';
+
 import {
   ArtistsResponseDto,
   ArtistWithAlbumsResponseDto,
@@ -8,7 +10,6 @@ import {
   withTimestamps,
 } from '@/middlewares/SortMiddleware';
 import { ArtistsService } from '@/services/ArtistsService';
-import { FastifyPluginAsync } from 'fastify';
 import { sendNotFoundError } from '@/helpers/responses';
 
 type Injects = {

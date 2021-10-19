@@ -1,3 +1,6 @@
+import { FastifyPluginAsync } from 'fastify';
+import { UAParser } from 'ua-parser-js';
+
 import {
   AuthRequestDto,
   ChangePasswordRequestDto,
@@ -5,8 +8,6 @@ import {
   UserResponseDto,
 } from '@/common';
 import { AuthService } from '@/services/AuthService';
-import { FastifyPluginAsync } from 'fastify';
-import { UAParser } from 'ua-parser-js';
 import {
   sendBadRequestError,
   sendNotAuthorizedError,

@@ -1,4 +1,5 @@
 import Knex from 'knex';
+
 import { FileFormat } from '@/scanner/types';
 
 type Timestamps = {

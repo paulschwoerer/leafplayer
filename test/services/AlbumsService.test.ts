@@ -1,7 +1,9 @@
-import { createAlbumsService } from '@/services/AlbumsService';
-import { createSongsService } from '@/services/SongsService';
 import anyTest, { TestInterface } from 'ava';
 import Knex from 'knex';
+
+import { createAlbumsService } from '@/services/AlbumsService';
+import { createSongsService } from '@/services/SongsService';
+
 import { afterEachHook, beforeEachHook, TestContext } from '../testContext';
 
 const test = anyTest as TestInterface<TestContext>;

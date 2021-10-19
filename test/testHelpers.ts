@@ -2,6 +2,7 @@ import { ExecutionContext } from 'ava';
 import fastify, { FastifyInstance } from 'fastify';
 import { Response as LightMyRequestResponse } from 'light-my-request';
 import { v4 as uuidv4 } from 'uuid';
+
 import { createPasswordHash } from '@/helpers/passwords';
 import { initServer } from '@/server';
 import { createAlbumsService } from '@/services/AlbumsService';
@@ -15,6 +16,7 @@ import { createSearchService } from '@/services/SearchService';
 import { createSessionsService } from '@/services/SessionsService';
 import { createSongsService } from '@/services/SongsService';
 import { createUsersService } from '@/services/UsersService';
+
 import { TestContext } from './testContext';
 
 export async function waitFor(ms: number): Promise<void> {

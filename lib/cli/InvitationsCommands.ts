@@ -1,4 +1,5 @@
 import commander from 'commander';
+
 import { InvitationsService } from '@/services/InvitationsService';
 import { printInfo, printError, printSuccess } from '@/helpers/cli';
 

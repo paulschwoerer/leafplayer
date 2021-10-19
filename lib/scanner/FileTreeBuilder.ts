@@ -1,6 +1,7 @@
-import { FileType, FileFormatFilter, FileFormat } from './types';
 import { readdirSync, Stats, statSync } from 'fs';
 import { extname } from 'path';
+
+import { FileType, FileFormatFilter, FileFormat } from './types';
 
 type TreeNode = {
   path: string;

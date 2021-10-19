@@ -1,5 +1,7 @@
-import { UserSessionsResponseDto } from '@/common';
 import anyTest, { TestInterface } from 'ava';
+
+import { UserSessionsResponseDto } from '@/common';
+
 import { afterEachHook, beforeEachHook, TestContext } from './testContext';
 import { createServerAndInsertTestUserAndLogin } from './testHelpers';
 

@@ -1,10 +1,11 @@
+import { FastifyPluginAsync } from 'fastify';
+
 import {
   AlbumResponseDto,
   AlbumsResponseDto,
   ArtistResponseDto,
   ArtistsResponseDto,
 } from '@/common';
-import { FastifyPluginAsync } from 'fastify';
 import { sendNotFoundError } from '@/helpers/responses';
 import { DiscoverService } from '@/services/DiscoverService';
 

@@ -1,4 +1,5 @@
 import anyTest, { TestInterface } from 'ava';
+
 import { afterEachHook, beforeEachHook, TestContext } from './testContext';
 import {
   createServerAndInsertTestUserAndLogin,

@@ -1,8 +1,10 @@
+import anyTest, { TestInterface } from 'ava';
+import Knex from 'knex';
+
 import { createAuthService } from '@/services/AuthService';
 import { createSessionsService } from '@/services/SessionsService';
 import { createUsersService } from '@/services/UsersService';
-import anyTest, { TestInterface } from 'ava';
-import Knex from 'knex';
+
 import { LeafplayerConfig } from '../../lib/config';
 import {
   comparePasswords,

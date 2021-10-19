@@ -1,5 +1,6 @@
-import { ApiError } from '@/common';
 import { FastifyReply } from 'fastify';
+
+import { ApiError } from '@/common';
 
 function sendApiError(reply: FastifyReply, error: ApiError): FastifyReply {
   return reply.status(error.statusCode).send(error);

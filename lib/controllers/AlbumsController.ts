@@ -1,10 +1,11 @@
+import { FastifyPluginAsync } from 'fastify';
+
 import { AlbumWithSongsResponseDto, SongsResponseDto } from '@/common';
 import {
   useSortMiddleware,
   withTimestamps,
 } from '@/middlewares/SortMiddleware';
 import { AlbumsService } from '@/services/AlbumsService';
-import { FastifyPluginAsync } from 'fastify';
 import { sendNotFoundError } from '@/helpers/responses';
 
 type Injects = {

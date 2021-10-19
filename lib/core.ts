@@ -1,12 +1,12 @@
 import { Command } from 'commander';
 import { FastifyInstance } from 'fastify';
+
 import { DBCommands } from '@/cli/DBCommands';
 import { InvitationsCommands } from '@/cli/InvitationsCommands';
 import { LibraryCommands } from '@/cli/LibraryCommands';
 import { UsersCommands } from '@/cli/UsersCommands';
 import { initConfig } from '@/config';
 import { initializeDatabase, runMigrations } from '@/database';
-import { initServer } from './server';
 import { createAlbumsService } from '@/services/AlbumsService';
 import { createArtistsService } from '@/services/ArtistsService';
 import { createArtworksService } from '@/services/ArtworksService';
@@ -19,6 +19,8 @@ import { createSearchService } from '@/services/SearchService';
 import { createSessionsService } from '@/services/SessionsService';
 import { createSongsService } from '@/services/SongsService';
 import { createUsersService } from '@/services/UsersService';
+
+import { initServer } from './server';
 
 // --------------- Config initialization --------------- //
 const config = initConfig();
