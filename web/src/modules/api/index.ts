@@ -77,32 +77,21 @@ async function makeApiRequest<TResponse, TBody = unknown>(
   });
 
   if (!response.ok) {
-    if (!response.body) {
-      return {
-        code: 'UNEXPECTED_STATUS_CODE',
-        error: 'Unexpected status code',
-        statusCode: response.status,
-        message: `Unexpected status: ${response.statusText}`,
-      };
-    }
-
     try {
       const jsonBody = await response.json();
 
       return isApiError(jsonBody)
         ? jsonBody
         : {
-            code: 'UNKNOWN_ERROR',
-            error: 'Unknown error',
+            error: 'Unknown Error',
             statusCode: response.status,
             message: await response.text(),
           };
     } catch (e) {
       return {
-        code: 'PROCESSING_ERROR',
-        error: 'Something went wrong while processing the server response',
+        error: response.statusText,
         statusCode: response.status,
-        message: `The error was: ${e.message || e}`,
+        message: `Unexpected status: ${response.statusText}`,
       };
     }
   }
