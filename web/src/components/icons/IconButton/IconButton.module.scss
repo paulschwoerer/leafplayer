@@ -14,6 +14,10 @@ $size: 44px;
   padding: 0;
   color: inherit;
 
+  &:focus {
+    outline: 1px dashed currentColor;
+  }
+
   @include hover() {
     cursor: pointer;
   }
