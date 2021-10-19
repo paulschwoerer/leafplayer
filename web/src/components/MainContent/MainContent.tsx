@@ -8,7 +8,7 @@ import ArtistDetails from 'views/ArtistDetails';
 import Landing from 'views/Landing';
 import Queue from 'views/Queue';
 import Search from 'views/Search';
-import UserSettings from 'views/UserSettings';
+import UserSettings from 'views/UserSettings/UserSettings';
 import styles from './MainContent.module.scss';
 
 type Props = {

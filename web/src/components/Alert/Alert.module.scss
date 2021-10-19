@@ -1,0 +1,27 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 2rem;
+  color: #fff;
+  border: 1px solid;
+  border-radius: 3px;
+
+  &.error {
+    background: rgba($colorDanger, 0.8);
+    border-color: $colorDanger;
+  }
+
+  &.success {
+    background: rgba($colorAccent, 0.8);
+    border-color: $colorAccent;
+  }
+
+  @include shadow(low);
+}

@@ -1,23 +1,11 @@
+import { RevokeSessionRequestDto, UserSessionsResponseDto } from '@common';
+import { SessionsService } from '@services/SessionsService';
 import { FastifyPluginAsync } from 'fastify';
-import {
-  RevokeSessionRequestDto,
-  UserSession,
-  UserSessionsResponseDto,
-} from '@common';
-import RevokeSessionSchema from '../schemas/revokeSession.json';
 import {
   sendNotAuthorizedError,
   sendNotFoundError,
 } from '../helpers/responses';
-
-interface SessionsService {
-  findByIdAndUserId(params: {
-    id: string;
-    userId: string;
-  }): Promise<UserSession | undefined>;
-  findAllByUserId(userId: string): Promise<UserSession[]>;
-  deleteById(id: string): Promise<Error | undefined>;
-}
+import RevokeSessionSchema from '../schemas/revokeSession.json';
 
 type Injects = {
   sessionsService: SessionsService;

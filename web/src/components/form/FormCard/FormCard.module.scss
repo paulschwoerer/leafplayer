@@ -1,4 +1,3 @@
-@import "scss/vars";
 @import "scss/mixins";
 
 .root {
@@ -15,22 +14,6 @@
     padding: 2rem;
 
     @include shadow(medium);
-
-    .error {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.5rem 1rem;
-      margin-bottom: 2rem;
-      background: rgba($colorDanger, 0.8);
-      color: #fff;
-      border: 1px solid $colorDanger;
-      border-radius: 3px;
-
-      @include shadow(low);
-    }
 
     .actions {
       display: flex;

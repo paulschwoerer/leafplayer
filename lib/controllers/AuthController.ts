@@ -1,34 +1,21 @@
 import {
   AuthRequestDto,
+  ChangePasswordRequestDto,
   RegisterRequestDto,
-  User,
   UserResponseDto,
 } from '@common';
+import { AuthService } from '@services/AuthService';
 import { FastifyPluginAsync } from 'fastify';
 import { UAParser } from 'ua-parser-js';
+import {
+  sendBadRequestError,
+  sendNotAuthorizedError,
+} from '../helpers/responses';
+import ChangePasswordSchema from '../schemas/changePassword.json';
 import LoginSchema from '../schemas/login.json';
 import RegisterSchema from '../schemas/register.json';
 import { InvitationsService } from '../services/InvitationsService';
 import { Middleware } from './../middlewares/Middleware';
-
-type Credentials = {
-  username: string;
-  password: string;
-};
-
-type AuthResult = {
-  user: User;
-  sessionToken: string;
-};
-
-interface AuthService {
-  authenticate(
-    credentials: Credentials,
-    browserInfo: Browser,
-  ): Promise<AuthResult | Error>;
-  makeJwtToken(): string;
-  logout(sessionId: string): Promise<Error | undefined>;
-}
 
 type Config = {
   minimumPasswordLength: number;
@@ -100,6 +87,33 @@ export function AuthController({
         const artworkToken = authService.makeJwtToken();
 
         return { user: auth.getUser(), artworkToken };
+      },
+    );
+
+    router.post<{ Body: ChangePasswordRequestDto }>(
+      '/password',
+      { schema: ChangePasswordSchema, preValidation: authMiddleware },
+      async (request, reply) => {
+        const { currentPassword, newPassword } = request.body;
+
+        if (!request.auth.isValidPassword(currentPassword)) {
+          return sendNotAuthorizedError(
+            reply,
+            'incorrect current password given',
+          );
+        }
+
+        const result = await authService.changeUserPassword({
+          activeSessionId: request.auth.getSessionId(),
+          newPassword,
+          userId: request.auth.getUserId(),
+        });
+
+        if (result instanceof Error) {
+          return sendBadRequestError(reply, result.message);
+        }
+
+        return reply.status(204).send();
       },
     );
 

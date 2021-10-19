@@ -1,6 +1,5 @@
 import { ExecutionContext } from 'ava';
-import { FastifyInstance } from 'fastify';
-import { createDiscoverService } from '../lib/services/DiscoverService';
+import fastify, { FastifyInstance } from 'fastify';
 import { Response as LightMyRequestResponse } from 'light-my-request';
 import { v4 as uuidv4 } from 'uuid';
 import { createPasswordHash } from '../lib/helpers/passwords';
@@ -10,15 +9,20 @@ import { createArtistsService } from '../lib/services/ArtistsService';
 import { createArtworksService } from '../lib/services/ArtworksService';
 import { createAudioFilesService } from '../lib/services/AudioFilesService';
 import { createAuthService } from '../lib/services/AuthService';
+import { createDiscoverService } from '../lib/services/DiscoverService';
 import { createInvitationsService } from '../lib/services/InvitationsService';
+import { createSearchService } from '../lib/services/SearchService';
 import { createSessionsService } from '../lib/services/SessionsService';
 import { createSongsService } from '../lib/services/SongsService';
 import { createUsersService } from '../lib/services/UsersService';
 import { TestContext } from './testContext';
-import { createSearchService } from '../lib/services/SearchService';
 
 export async function waitFor(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function createMinimalServer(): FastifyInstance {
+  return fastify({ logger: process.env.TEST_DEBUG === 'true' });
 }
 
 export async function insertValidTestUser(
@@ -65,8 +69,9 @@ export function createServerFromTestContext(
   const albumsService = createAlbumsService({ db, songsService });
   const artworksService = createArtworksService({ config });
   const authService = createAuthService({
+    db,
     usersService,
-    config: config.security,
+    config,
     sessionsService,
   });
   const artistsService = createArtistsService({
@@ -78,6 +83,7 @@ export function createServerFromTestContext(
   const invitationsService = createInvitationsService({
     db,
     config,
+    authService,
     usersService,
   });
   const discoverService = createDiscoverService({ db });

@@ -34,8 +34,9 @@ const albumsService = createAlbumsService({ db, songsService });
 const artworksService = createArtworksService({ config });
 const sessionsService = createSessionsService({ db });
 const authService = createAuthService({
+  db,
+  config,
   sessionsService,
-  config: config.security,
   usersService,
 });
 const artistsService = createArtistsService({
@@ -48,6 +49,7 @@ const audioFilesService = createAudioFilesService({ db });
 const invitationsService = createInvitationsService({
   db,
   config,
+  authService,
   usersService,
 });
 const discoverService = createDiscoverService({ db });

@@ -2,6 +2,7 @@ import Knex from 'knex';
 import { LeafplayerConfig } from 'lib/config';
 import { InvitationRow } from '../database/rows';
 import { getCurrentUnixTimestamp } from '../helpers/time';
+import { AuthService } from './AuthService';
 import { UsersService } from './UsersService';
 
 export enum CreateInvitationResult {
@@ -12,6 +13,7 @@ export enum CreateInvitationResult {
 type Injects = {
   db: Knex;
   config: LeafplayerConfig;
+  authService: AuthService;
   usersService: UsersService;
 };
 
@@ -32,6 +34,7 @@ export interface InvitationsService {
 export function createInvitationsService({
   db,
   config: { security: securityConfig },
+  authService,
   usersService,
 }: Injects): InvitationsService {
   async function isValidInviteCode(code: string): Promise<boolean> {
@@ -62,10 +65,11 @@ export function createInvitationsService({
         return Error('Username taken');
       }
 
-      if (userDetails.password.length < securityConfig.minimumPasswordLength) {
-        return Error(
-          `Password needs at least ${securityConfig.minimumPasswordLength} characters`,
-        );
+      const pwResult = authService.validatePasswordSecurity(
+        userDetails.password,
+      );
+      if (pwResult instanceof Error) {
+        return pwResult;
       }
 
       // TODO: a transaction would be nice

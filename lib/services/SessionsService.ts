@@ -27,7 +27,7 @@ type SessionCreateParams = {
 
 export interface SessionsService {
   create(params: SessionCreateParams): Promise<string>;
-  deleteById(id: string): Promise<Error | undefined>;
+  deleteById(id: string): Promise<void>;
   findWithUserByToken(token: string): Promise<SessionWithUser | undefined>;
   findByIdAndUserId(params: {
     id: string;
@@ -57,11 +57,7 @@ export function createSessionsService({ db }: Injects): SessionsService {
     },
 
     async deleteById(id) {
-      try {
-        await db('sessions').where({ id }).delete();
-      } catch (e) {
-        return e;
-      }
+      await db('sessions').where({ id }).delete();
     },
 
     async findByIdAndUserId(params) {
