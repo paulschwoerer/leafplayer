@@ -1,3 +1,10 @@
 **/node_modules
 **/build
 .local/
+.github/
+**/.vscode/
+
+.env
+
+.dockerignore
+Dockerfile
