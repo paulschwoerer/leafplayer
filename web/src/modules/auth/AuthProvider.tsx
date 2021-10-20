@@ -20,6 +20,8 @@ export function AuthProvider({
 
   const logout = async () => {
     await makeApiPostRequest('auth/logout');
+
+    localStorage.clear();
     setUser(null);
   };
 

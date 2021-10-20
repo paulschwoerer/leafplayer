@@ -68,7 +68,8 @@ type Action =
   | { type: 'removeQueueItem'; index: number }
   | { type: 'goToQueueIndex'; index: number }
   | { type: 'playbackError' }
-  | { type: 'setBuffered'; to: number };
+  | { type: 'setBuffered'; to: number }
+  | { type: 'setState'; state: Partial<State> };
 
 export function playerReducer(state: State, action: Action): State {
   switch (action.type) {
@@ -224,6 +225,14 @@ export function playerReducer(state: State, action: Action): State {
       return {
         ...state,
         bufferedTo: to,
+      };
+    }
+    case 'setState': {
+      const { state: newState } = action;
+
+      return {
+        ...state,
+        ...newState,
       };
     }
   }

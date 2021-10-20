@@ -20,6 +20,7 @@ import {
   updateMediaSessionPlayState,
   updateMediaSessionPositionState,
 } from './mediaSession';
+import { LocalStoragePlayerPersistor } from './persistence/LocalStoragePlayerPersistor';
 import {
   loadAlbumSongsFromAPI,
   loadArtistSongsFromAPI,
@@ -210,6 +211,51 @@ export function PlayerProvider({
       dispatch({ type: 'skipPrevious' });
     }
   }, [canSkipPrevious, hasPassedSkipThreshold, setSeek]);
+
+  useEffect(() => {
+    const persistor = new LocalStoragePlayerPersistor();
+
+    persistor
+      .retrieve()
+      .then(state => {
+        if (state !== null) {
+          dispatch({
+            type: 'setState',
+            state: {
+              ...state,
+              ...state.settings,
+            },
+          });
+        }
+      })
+      .catch(e =>
+        console.error(`could not retrieve persisted player state: ${e}`),
+      );
+  }, []);
+
+  useEffect(() => {
+    const persistor = new LocalStoragePlayerPersistor();
+
+    window.onbeforeunload = () => {
+      persistor
+        .persist({
+          current,
+          history,
+          queue,
+          settings: {
+            isMuted,
+            repeatMode,
+            shuffle,
+            volume,
+          },
+        })
+        .catch(e => `could not persist player state: ${e}`);
+    };
+
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [current, history, isMuted, queue, repeatMode, shuffle, volume]);
 
   useEffect(() => {
     updateMediaSessionPlayState(playbackState);
