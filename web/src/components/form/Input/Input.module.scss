@@ -35,7 +35,6 @@
     transform: translateY(0);
     color: inherit;
     transition: border-color 0.15s, padding-top 0.15s;
-    z-index: 1;
     font: var(--font);
 
     &:-webkit-autofill ~ .root,
