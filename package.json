@@ -13,7 +13,8 @@
     "lint:fix": "npm run lint -- --fix",
     "test": "ava",
     "test:watch": "ava --watch",
-    "make-migration": "knex migrate:make -x ts --migrations-directory=lib/database/migrations"
+    "make-migration": "knex migrate:make -x ts --migrations-directory=lib/database/migrations",
+    "release": "npx standard-version"
   },
   "ava": {
     "files": [
