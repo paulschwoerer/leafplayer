@@ -4,15 +4,11 @@ on:
   push:
     branches: ["main"]
     tags: ["v*.*.*"]
-  workflow_dispatch:
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
