@@ -144,24 +144,26 @@ function UserSessions(): ReactElement {
 
               <Modal
                 isVisible={sessionToRevoke !== null}
+                title="Revoking Session"
                 hideModal={closeModal}
               >
-                <p>Please enter your password to proceed</p>
-
-                <Input
-                  label="Password"
-                  name="password"
-                  type="password"
-                  value={password}
-                  onInput={ev => setPassword(ev.currentTarget.value)}
-                />
-
-                <ButtonPrimary
-                  onClick={() => revokeSession().then(reloadSessions)}
+                <form
+                  onSubmit={() => revokeSession().then(reloadSessions)}
+                  className={styles.revokeForm}
                 >
-                  Revoke
-                </ButtonPrimary>
-                <ButtonText onClick={closeModal}>Cancel</ButtonText>
+                  <b>Enter your password to proceed</b>
+
+                  <Input
+                    label="Password"
+                    name="password"
+                    type="password"
+                    value={password}
+                    onInput={ev => setPassword(ev.currentTarget.value)}
+                  />
+
+                  <ButtonPrimary type="submit">Revoke</ButtonPrimary>
+                  <ButtonText onClick={closeModal}>Cancel</ButtonText>
+                </form>
               </Modal>
             </>
           );

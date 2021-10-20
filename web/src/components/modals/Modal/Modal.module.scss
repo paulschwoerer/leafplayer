@@ -1,7 +1,7 @@
 @import "scss/vars";
 @import "scss/mixins";
 
-.root {
+.wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -9,24 +9,47 @@
   bottom: 0;
   background: rgba(#000, 0.6);
   display: grid;
-  place-content: center;
+  justify-content: stretch;
+  align-content: center;
   padding: 1rem;
+  z-index: 99;
 
-  .content {
-    position: relative;
+  .modal {
     background: #fff;
-    max-width: 400px;
-    padding: clamp(1rem, 2.5vw, 4rem);
+    max-width: 600px;
+    width: 100%;
+    margin: auto;
     border-radius: 4px;
 
-    @include shadow(medium);
+    @include shadow(high);
 
-    .close {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      cursor: pointer;
-      color: $colorEmphasisLow;
+    &:focus {
+      outline: 1px dashed rgba(#fff, 0.8);
+      outline-offset: 2px;
     }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem;
+    background: $colorPrimary;
+    color: #fff;
+
+    > h1 {
+      letter-spacing: 1.5px;
+      font-weight: normal;
+      text-transform: uppercase;
+      font-size: 1em;
+    }
+
+    > button {
+      margin-left: auto;
+    }
+  }
+
+  .content {
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
   }
 }
