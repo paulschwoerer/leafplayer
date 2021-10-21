@@ -226,6 +226,12 @@ export function PlayerProvider({
               ...state.settings,
             },
           });
+
+          if (audioRef.current) {
+            audioRef.current.volume = state.settings.isMuted
+              ? 0
+              : state.settings.volume;
+          }
         }
       })
       .catch(e =>
