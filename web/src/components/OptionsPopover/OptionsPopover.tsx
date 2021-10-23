@@ -12,29 +12,24 @@ import React, {
 import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
 import { Link } from 'react-router-dom';
-import styles from './OptionsDropdown.module.scss';
+import styles from './OptionsPopover.module.scss';
 
-type Props = {
+type PopoverProps = {
   align?: 'left' | 'right';
 };
 
-type OptionProps = {
-  onClick?: () => void;
-  to?: string;
-};
-
-type DesktopOptionsProps = {
+type DesktopPopoverProps = {
   isVisible: boolean;
   referenceRef: React.MutableRefObject<HTMLElement | null>;
   align?: 'left' | 'right';
 };
 
-function DesktopOptionsDropdown({
+function DesktopPopover({
   isVisible,
   align,
   referenceRef,
   children,
-}: PropsWithChildren<DesktopOptionsProps>): ReactElement | null {
+}: PropsWithChildren<DesktopPopoverProps>): ReactElement | null {
   const popperRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
 
@@ -80,14 +75,14 @@ function DesktopOptionsDropdown({
   );
 }
 
-type MobileOptionsProps = {
+type MobilePopoverProps = {
   isVisible: boolean;
 };
 
-function MobileOptionsDropdown({
+function MobilePopover({
   isVisible,
   children,
-}: PropsWithChildren<MobileOptionsProps>): ReactElement {
+}: PropsWithChildren<MobilePopoverProps>): ReactElement {
   const nodeRef = useRef(null);
 
   return createPortal(
@@ -100,10 +95,10 @@ function MobileOptionsDropdown({
   );
 }
 
-function OptionsDropdown({
+function OptionsPopover({
   align = 'right',
   children,
-}: PropsWithChildren<Props>): ReactElement {
+}: PropsWithChildren<PopoverProps>): ReactElement {
   const [isVisible, setIsVisible] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -140,13 +135,13 @@ function OptionsDropdown({
         ref={buttonRef}
       />
       {isMobile ? (
-        <MobileOptionsDropdown isVisible={isVisible}>
+        <MobilePopover isVisible={isVisible}>
           <div className={styles.options} onClick={() => setIsVisible(false)}>
             {children}
           </div>
-        </MobileOptionsDropdown>
+        </MobilePopover>
       ) : (
-        <DesktopOptionsDropdown
+        <DesktopPopover
           isVisible={isVisible}
           referenceRef={buttonRef}
           align={align}
@@ -154,11 +149,16 @@ function OptionsDropdown({
           <div className={styles.options} onClick={() => setIsVisible(false)}>
             {children}
           </div>
-        </DesktopOptionsDropdown>
+        </DesktopPopover>
       )}
     </div>
   );
 }
+
+type OptionProps = {
+  onClick?: () => void;
+  to?: string;
+};
 
 function Option({
   to,
@@ -180,6 +180,6 @@ function Option({
   );
 }
 
-OptionsDropdown.Option = Option;
+OptionsPopover.Option = Option;
 
-export default OptionsDropdown;
+export default OptionsPopover;
