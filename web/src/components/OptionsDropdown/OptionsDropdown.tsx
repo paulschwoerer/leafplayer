@@ -1,5 +1,6 @@
 import { OptionsIcon } from 'components/icons';
 import IconButton from 'components/icons/IconButton/IconButton';
+import AppearFromBottom from 'components/transitions/AppearFromBottom/AppearFromBottom';
 import { useMediaQuery } from 'helpers/mediaQuery';
 import React, {
   PropsWithChildren,
@@ -24,7 +25,7 @@ type OptionProps = {
 
 type DesktopOptionsProps = {
   isVisible: boolean;
-  referenceRef: HTMLElement | null;
+  referenceRef: React.MutableRefObject<HTMLElement | null>;
   align?: 'left' | 'right';
 };
 
@@ -38,7 +39,7 @@ function DesktopOptionsDropdown({
   const arrowRef = useRef<HTMLDivElement>(null);
 
   const { styles: popperStyles, attributes, update } = usePopper(
-    referenceRef,
+    referenceRef.current,
     popperRef.current,
     {
       modifiers: [
@@ -86,14 +87,16 @@ type MobileOptionsProps = {
 function MobileOptionsDropdown({
   isVisible,
   children,
-}: PropsWithChildren<MobileOptionsProps>): ReactElement | null {
-  if (!isVisible) {
-    return null;
-  }
+}: PropsWithChildren<MobileOptionsProps>): ReactElement {
+  const nodeRef = useRef(null);
 
   return createPortal(
-    <div className={styles.mobileWrapper}>{children}</div>,
-    document.body,
+    <AppearFromBottom nodeRef={nodeRef} in={isVisible}>
+      <div ref={nodeRef} className={styles.mobileWrapper}>
+        {children}
+      </div>
+    </AppearFromBottom>,
+    document.getElementById('popper-container') || document.body,
   );
 }
 
@@ -103,7 +106,7 @@ function OptionsDropdown({
 }: PropsWithChildren<Props>): ReactElement {
   const [isVisible, setIsVisible] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const referenceRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const isMobile = useMediaQuery('(max-width: 700px)');
 
@@ -134,7 +137,7 @@ function OptionsDropdown({
       <IconButton
         icon={<OptionsIcon />}
         onClick={() => setIsVisible(!isVisible)}
-        ref={referenceRef}
+        ref={buttonRef}
       />
       {isMobile ? (
         <MobileOptionsDropdown isVisible={isVisible}>
@@ -145,7 +148,7 @@ function OptionsDropdown({
       ) : (
         <DesktopOptionsDropdown
           isVisible={isVisible}
-          referenceRef={referenceRef.current}
+          referenceRef={buttonRef}
           align={align}
         >
           <div className={styles.options} onClick={() => setIsVisible(false)}>
