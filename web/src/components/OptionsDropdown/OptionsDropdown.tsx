@@ -1,7 +1,6 @@
-import classNames from 'classnames';
 import { OptionsIcon } from 'components/icons';
 import IconButton from 'components/icons/IconButton/IconButton';
-import If from 'components/If';
+import { useMediaQuery } from 'helpers/mediaQuery';
 import React, {
   PropsWithChildren,
   ReactElement,
@@ -9,12 +8,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { createPortal } from 'react-dom';
+import { usePopper } from 'react-popper';
 import { Link } from 'react-router-dom';
 import styles from './OptionsDropdown.module.scss';
 
 type Props = {
   align?: 'left' | 'right';
-  className?: string;
 };
 
 type OptionProps = {
@@ -22,56 +22,137 @@ type OptionProps = {
   to?: string;
 };
 
+type DesktopOptionsProps = {
+  isVisible: boolean;
+  referenceRef: HTMLElement | null;
+  align?: 'left' | 'right';
+};
+
+function DesktopOptionsDropdown({
+  isVisible,
+  align,
+  referenceRef,
+  children,
+}: PropsWithChildren<DesktopOptionsProps>): ReactElement | null {
+  const popperRef = useRef<HTMLDivElement>(null);
+  const arrowRef = useRef<HTMLDivElement>(null);
+
+  const { styles: popperStyles, attributes, update } = usePopper(
+    referenceRef,
+    popperRef.current,
+    {
+      modifiers: [
+        { name: 'offset', options: { offset: [0, 10] } },
+        { name: 'arrow', options: { element: arrowRef.current } },
+      ],
+      placement: align,
+      strategy: 'absolute',
+    },
+  );
+
+  useEffect(() => {
+    if (!popperRef.current) {
+      return;
+    }
+
+    if (isVisible) {
+      popperRef.current.setAttribute('data-show', '');
+
+      if (update) {
+        update().catch(e => console.error('could not update popper: ', e));
+      }
+    } else {
+      popperRef.current.removeAttribute('data-show');
+    }
+  }, [isVisible, update]);
+
+  return (
+    <div
+      className={styles.desktopWrapper}
+      ref={popperRef}
+      style={popperStyles.popper}
+      {...attributes.popper}
+    >
+      <div className={styles.arrow} ref={arrowRef} style={popperStyles.arrow} />
+      {children}
+    </div>
+  );
+}
+
+type MobileOptionsProps = {
+  isVisible: boolean;
+};
+
+function MobileOptionsDropdown({
+  isVisible,
+  children,
+}: PropsWithChildren<MobileOptionsProps>): ReactElement | null {
+  if (!isVisible) {
+    return null;
+  }
+
+  return createPortal(
+    <div className={styles.mobileWrapper}>{children}</div>,
+    document.body,
+  );
+}
+
 function OptionsDropdown({
   align = 'right',
   children,
-  className,
 }: PropsWithChildren<Props>): ReactElement {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const referenceRef = useRef<HTMLButtonElement>(null);
 
-  function toggleExpanded() {
-    setIsExpanded(!isExpanded);
-  }
+  const isMobile = useMediaQuery('(max-width: 700px)');
 
   useEffect(() => {
     function onDocumentClick(ev: MouseEvent) {
-      if (!ref.current) {
+      if (!rootRef.current) {
         return;
       }
 
-      if (!ev.target || !(ev.target instanceof Element)) {
-        return setIsExpanded(false);
-      }
-
-      if (!ref.current.contains(ev.target)) {
-        setIsExpanded(false);
+      if (
+        !ev.target ||
+        !(ev.target instanceof Element) ||
+        !rootRef.current.contains(ev.target)
+      ) {
+        setIsVisible(false);
       }
     }
 
-    if (isExpanded) {
+    if (isVisible) {
       document.addEventListener('click', onDocumentClick);
     }
 
     return () => document.removeEventListener('click', onDocumentClick);
-  }, [isExpanded]);
+  }, [isVisible]);
 
   return (
-    <div
-      className={classNames(styles.root, className, styles[align], {
-        [styles.isExpanded]: isExpanded,
-      })}
-    >
-      <IconButton icon={<OptionsIcon />} onClick={toggleExpanded} />
-      <If condition={isExpanded}>
-        <div
-          ref={ref}
-          className={styles.wrapper}
-          onClick={() => setIsExpanded(false)}
+    <div className={styles.root} ref={rootRef}>
+      <IconButton
+        icon={<OptionsIcon />}
+        onClick={() => setIsVisible(!isVisible)}
+        ref={referenceRef}
+      />
+      {isMobile ? (
+        <MobileOptionsDropdown isVisible={isVisible}>
+          <div className={styles.options} onClick={() => setIsVisible(false)}>
+            {children}
+          </div>
+        </MobileOptionsDropdown>
+      ) : (
+        <DesktopOptionsDropdown
+          isVisible={isVisible}
+          referenceRef={referenceRef.current}
+          align={align}
         >
-          {children}
-        </div>
-      </If>
+          <div className={styles.options} onClick={() => setIsVisible(false)}>
+            {children}
+          </div>
+        </DesktopOptionsDropdown>
+      )}
     </div>
   );
 }

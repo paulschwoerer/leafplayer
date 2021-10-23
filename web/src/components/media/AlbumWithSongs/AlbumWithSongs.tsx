@@ -138,19 +138,21 @@ function AlbumWithSongs({
             icon={isCurrentlyPlayingAlbum ? <PauseIcon /> : <PlayIcon />}
             onClick={togglePlayPause}
           />
-          <OptionsDropdown className={styles.dropdownToggle}>
-            <OptionsDropdown.Option onClick={onPlayNextClicked}>
-              Play Next
-            </OptionsDropdown.Option>
-            <OptionsDropdown.Option onClick={onEnqueueClicked}>
-              Enqueue
-            </OptionsDropdown.Option>
-            <If condition={!hideArtist}>
-              <OptionsDropdown.Option to={`/artist/${artist.id}`}>
-                Open Artist Page
+          <div className={styles.dropdownToggle}>
+            <OptionsDropdown>
+              <OptionsDropdown.Option onClick={onPlayNextClicked}>
+                Play Next
               </OptionsDropdown.Option>
-            </If>
-          </OptionsDropdown>
+              <OptionsDropdown.Option onClick={onEnqueueClicked}>
+                Enqueue
+              </OptionsDropdown.Option>
+              <If condition={!hideArtist}>
+                <OptionsDropdown.Option to={`/artist/${artist.id}`}>
+                  Open Artist Page
+                </OptionsDropdown.Option>
+              </If>
+            </OptionsDropdown>
+          </div>
           <span className={styles.desktopButtons}>
             <ButtonText onClick={onPlayNextClicked}>Play Next</ButtonText>
             <ButtonText onClick={onEnqueueClicked}>Enqueue</ButtonText>

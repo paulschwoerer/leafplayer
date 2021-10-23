@@ -36,6 +36,7 @@ function Base({
       onPlay();
     }
   }
+
   return (
     <div
       className={classnames(styles.root, {
@@ -59,12 +60,10 @@ function Base({
           )}
         </If>
       </div>
-      <div className={styles.post}>
-        <span className={styles.duration}>
-          {durationToString(song.duration)}
-        </span>
-        <div className={styles.options}>{options}</div>
+      <div className={styles.duration}>
+        <span>{durationToString(song.duration)}</span>
       </div>
+      <div className={styles.options}>{options}</div>
     </div>
   );
 }
