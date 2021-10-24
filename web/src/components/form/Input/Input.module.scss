@@ -4,7 +4,7 @@
   --padding: 1rem;
   --radius: 0.5rem;
   --duration: 150ms;
-  --height: var(--tapTarget);
+  --height: var(--tap-target);
 
   position: relative;
 
@@ -12,7 +12,7 @@
     position: absolute;
     left: calc(var(--padding) - 0.25rem);
     top: 0.35rem;
-    color: $colorEmphasisLow;
+    color: var(--color-emphasis-medium);
     transition: color var(--duration), opacity var(--duration), transform var(--duration);
     padding: 0 0.25rem;
     font-size: 0.75em;
@@ -24,8 +24,8 @@
 
   > input {
     position: relative;
-    background: var(--colorInteractionBackground);
-    border: 1px solid var(--colorInteractionBorder);
+    background-color: var(--color-interaction-background);
+    border: 1px solid var(--color-interaction-border);
     border-radius: var(--radius);
     padding: 0 var(--padding);
     height: var(--height);
@@ -33,22 +33,22 @@
     outline: 0;
     width: 100%;
     transform: translateY(0);
-    color: inherit;
+    color: var(--color-emphasis-high);
     transition: border-color 0.15s, padding-top 0.15s;
     font: var(--font);
 
     &:-webkit-autofill ~ .root,
     &:-webkit-autofill:hover ~ .root,
     &:-webkit-autofill:focus ~ .root {
-      background: red;
+      background-color: red;
     }
 
     &:focus {
-      border-color: $colorPrimary;
+      border-color: var(--color-interaction-focus);
     }
 
     &::placeholder {
-      color: $colorEmphasisLow;
+      color: var(--color-emphasis-low);
       opacity: 1;
     }
   }
@@ -65,7 +65,7 @@
     }
 
     > label {
-      color: $colorPrimary;
+      color: var(--color-interaction-focus);
       transform: translate(0);
       opacity: 1;
     }
@@ -88,7 +88,7 @@
     margin-top: calc(var(--radius) * -1);
     padding: calc(var(--radius) + 0.1em) var(--padding) 0.2em;
     border-radius: 0 0 var(--radius) var(--radius);
-    background: $colorDanger;
+    background-color: var(--color-danger);
     transform: scaleY(0);
     transform-origin: top;
     transition: transform var(--duration);
@@ -104,7 +104,7 @@
 
   &.hasError {
     > input:not(:focus) {
-      border-color: $colorDanger;
+      border-color: var(--color-danger);
     }
 
     .errorContainer {

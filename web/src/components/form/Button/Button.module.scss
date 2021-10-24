@@ -2,7 +2,7 @@
 @import "scss/mixins";
 
 .root {
-  --height: var(--tapTarget);
+  --height: var(--tap-target);
   --radius: calc(var(--height) / 2);
 
   display: inline-flex;
@@ -30,40 +30,40 @@
 
   &.primary {
     color: #fff;
-    border-color: $colorPrimary;
-    background-color: $colorPrimary;
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
 
     @include shadow(low);
 
     &:hover,
     &:focus-visible {
-      background-color: #fff;
-      color: $colorPrimary;
+      background-color: transparent;
+      color: var(--color-interaction-focus);
     }
   }
 
   &.primary.danger {
     color: #fff;
-    border-color: $colorDanger;
-    background-color: $colorDanger;
+    border-color: var(--color-danger);
+    background-color: var(--color-danger);
 
     &:hover,
     &:focus-visible {
-      background-color: #fff;
-      color: $colorDanger;
+      background-color: transparent;
+      color: var(--color-danger);
     }
   }
 
   &.outlined {
     color: currentColor;
     border-color: currentColor;
-    background: transparent;
+    background-color: transparent;
 
     @include hover {
       &::after {
         content: "";
         opacity: 0.15;
-        background: currentColor;
+        background-color: currentColor;
 
         @include coverParent;
       }
@@ -72,19 +72,16 @@
 
   &.text {
     color: inherit;
-    background: transparent;
+    background-color: transparent;
 
+    &:focus-visible,
     &:hover {
-      background: rgba(#000, 0.05);
-    }
-
-    &:focus-visible {
-      background: rgba(#000, 0.15);
+      background-color: var(--color-interaction-border);
     }
   }
 
   &:not(.primary).danger {
-    color: $colorDanger;
+    color: var(--color-danger);
   }
 
   .linkIcon {

@@ -83,6 +83,7 @@ function Select({ value, options, onChange }: Props): ReactElement {
           <li
             className={classNames(styles.option, {
               [styles.selected]: i === selectedIndex,
+              [styles.active]: value.value === option.value,
             })}
             key={option.value}
             onClick={() => selectOption(option)}

@@ -5,11 +5,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: $colorDanger;
+  color: var(--color-danger);
   padding: 10vh 10vw;
 
   .message {
     margin-top: 2rem;
-    color: $colorDanger;
+    color: var(--color-danger);
   }
 }

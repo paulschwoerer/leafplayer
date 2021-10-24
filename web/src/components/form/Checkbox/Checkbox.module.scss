@@ -8,7 +8,7 @@
     align-items: center;
     display: inline-flex;
     gap: 0.35rem;
-    color: $colorEmphasisMedium;
+    color: var(--color-emphasis-medium);
     cursor: pointer;
 
     input {
@@ -19,11 +19,10 @@
 
   .icon {
     position: relative;
-    color: $colorPrimary;
+    color: var(--color-primary);
   }
 
   &.focus .icon {
-    content: '';
-    outline: 1px solid $colorPrimary;
+    outline: 1px dashed var(--color-interaction-focus);
   }
 }

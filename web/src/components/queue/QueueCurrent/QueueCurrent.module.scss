@@ -3,7 +3,7 @@
 .root {
   position: relative;
   margin-bottom: 1rem;
-  background: rgba(#000, 0.05);
+  background-color: rgba(#000, 0.05);
   overflow: hidden;
   border-radius: 4px;
 
@@ -12,14 +12,14 @@
 
     filter: blur(4px);
     transform: scale(1.1);
-    background: no-repeat center center rgba(#000, 0.025);
+    background-color: no-repeat center center rgba(#000, 0.025);
     background-size: cover;
 
     &::after {
       @include coverParent();
 
       content: "";
-      background: rgba(#000, 0.25);
+      background-color: rgba(#000, 0.25);
     }
   }
 

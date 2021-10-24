@@ -1,0 +1,65 @@
+.root {
+  border: 1px solid var(--color-interaction-border);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  overflow: hidden;
+  position: relative;
+
+  .solarSystem {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 6rem;
+    display: grid;
+    place-content: center;
+    color: var(--color-emphasis-high);
+
+    .earth {
+      width: 42px;
+      height: 42px;
+      transition: color 0.3s;
+    }
+
+    .disk {
+      position: absolute;
+      width: 10rem;
+      right: -2rem;
+      top: 0;
+      bottom: 0;
+      transition: transform 0.3s;
+
+      .sun,
+      .moon {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        transition: transform 0.3s, color 0.3s;
+        color: currentColor;
+      }
+
+      .sun {
+        left: 0;
+      }
+
+      .moon {
+        right: 0;
+      }
+    }
+
+    &.night .disk {
+      transform: rotate(180deg);
+
+      .sun {
+        transform: rotate(180deg);
+      }
+    }
+
+    &:not(.night) .disk {
+      .moon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}

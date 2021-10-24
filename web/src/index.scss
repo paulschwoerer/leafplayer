@@ -1,6 +1,53 @@
-@import "scss/vars";
-
 body {
+  --font: 1rem "FiraSans", sans-serif;
+  --tap-target: 48px;
+
+  // general colors
+  --color-primary: #435f7a;
+  --color-primary-shade: #34495e;
+  --color-success: #27ae60;
+  --color-danger: #e74c3c;
+
+  // interaction element colors
+  --color-interaction-background: #fbfbfb;
+  --color-interaction-border: #ebebeb;
+  --color-interaction-focus: #435f7a;
+
+  // text colors
+  --color-emphasis-high: #121212;
+  --color-emphasis-medium: #474747;
+  --color-emphasis-low: #616161;
+
+  // background colors
+  --color-elevation-low: #fff;
+  --color-elevation-medium: #fff;
+  --color-elevation-high: #fff;
+
+  background-color: var(--color-primary);
+
+  &[data-theme='night'] {
+    // general colors
+    --color-primary: #2b3d4f;
+    --color-primary-shade: #1d2935;
+
+    // interaction element colors
+    --color-interaction-background: var(--color-primary);
+    --color-interaction-border: #243342;
+    --color-interaction-focus: #e2e2e2; //#61f3d5;
+
+    // text colors
+    --color-emphasis-high: #fff;
+    --color-emphasis-medium: #f5f5f5;
+    --color-emphasis-low: #ebebeb;
+
+    // background colors
+    --color-elevation-low: #161f27;
+    --color-elevation-medium: var(--color-primary-shade);
+    --color-elevation-high: #32475d;
+
+    background-color: var(--color-elevation-low);
+  }
+
   margin: 0;
   font-size: 15px;
   font-family:
@@ -8,17 +55,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: $colorPrimary;
-  color: $colorEmphasisHigh;
+  color: var(--color-emphasis-high);
 
   &.no-scroll {
     overflow: hidden;
   }
-
-  --font: 1rem "FiraSans", sans-serif;
-  --tapTarget: 48px;
-  --colorInteractionBackground: #fbfbfb;
-  --colorInteractionBorder: #ebebeb;
 }
 
 * {

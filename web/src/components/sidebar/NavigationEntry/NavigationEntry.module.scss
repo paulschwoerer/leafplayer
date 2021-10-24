@@ -11,21 +11,14 @@
   cursor: pointer;
 
   &:hover {
+    // TODO: colors for dark mode
     background-color: rgba(#fff, 0.05);
   }
 
   &.active {
     position: relative;
 
-    &::after {
-      content: "";
-      position: absolute;
-      right: -8px;
-      background: #fff;
-      width: 16px;
-      height: 16px;
-      transform: rotate(-45deg);
-    }
+    @include active-dot();
   }
 
   .icon {

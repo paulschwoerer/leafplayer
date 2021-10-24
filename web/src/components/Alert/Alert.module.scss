@@ -14,13 +14,15 @@
   border-radius: 3px;
 
   &.error {
-    background: rgba($colorDanger, 0.8);
-    border-color: $colorDanger;
+    // TODO: fix opacity
+    background-color: rgba(var(--color-danger), 0.8);
+    border-color: var(--color-danger);
   }
 
   &.success {
-    background: rgba($colorAccent, 0.8);
-    border-color: $colorAccent;
+    // TODO: fix opacity
+    background-color: rgba(var(--color-success), 0.8);
+    border-color: var(--color-success);
   }
 
   @include shadow(low);

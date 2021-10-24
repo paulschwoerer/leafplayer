@@ -6,6 +6,6 @@
 
   > h2,
   > p {
-    color: $colorEmphasisLow;
+    color: var(--color-emphasis-low);
   }
 }

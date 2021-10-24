@@ -10,7 +10,7 @@
   .notification {
     position: relative;
     padding: 0.75rem 3rem 0.75rem 1.5rem;
-    background: #fff;
+    background-color: #fff;
     margin-bottom: 0.5rem;
     font-size: 0.9em;
     cursor: pointer;
@@ -18,7 +18,7 @@
     @include shadow(high);
 
     .title {
-      color: $colorEmphasisMedium;
+      color: var(--color-emphasis-medium);
       margin: 0;
     }
 
@@ -30,13 +30,13 @@
       position: absolute;
       top: 0.75rem;
       right: 0.75rem;
-      color: $colorEmphasisLow;
+      color: var(--color-emphasis-low);
       width: 16px;
       height: 16px;
     }
 
     &.error {
-      background: $colorDanger;
+      background-color: var(--color-danger);
       color: #fff;
 
       .title,

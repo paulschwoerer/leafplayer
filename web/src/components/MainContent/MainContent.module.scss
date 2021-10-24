@@ -2,7 +2,7 @@
 @import "scss/mixins";
 
 .root {
-  background: #fff;
+  background-color: var(--color-elevation-low);
   overflow: hidden;
 
   .inner {
