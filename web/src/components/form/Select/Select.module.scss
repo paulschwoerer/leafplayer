@@ -71,7 +71,7 @@
         background-color: var(--color-primary-shade);
         color: #fff;
       }
-      
+
       &.active {
         @include active-dot();
       }

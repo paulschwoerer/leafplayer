@@ -9,4 +9,3 @@ describe('ThemeSwitcher', () => {
     // do something usefull here
   });
 });
-
