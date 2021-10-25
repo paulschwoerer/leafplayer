@@ -1,8 +1,10 @@
-import DefaultAlbumImage from 'assets/album-default.jpg';
+import AlbumDefaultDay from 'assets/artworks/album-default-day.jpg';
+import AlbumDefaultNight from 'assets/artworks/album-default-night.jpg';
 import AppLink from 'components/layout/AppLink/AppLink';
 import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import TextPlaceholder from 'components/layout/TextPlaceholder/TextPlaceholder';
-import { useArtworkUrl } from 'modules/api';
+import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
+import { useThemedUrl } from 'modules/artworks';
 import { QueueItem } from 'modules/player/types';
 import React, { ReactElement } from 'react';
 import styles from './PlayerCurrent.module.scss';
@@ -12,17 +14,13 @@ type Props = {
 };
 
 function PlayerCurrent({ current }: Props): ReactElement {
-  const artworkUrl = useArtworkUrl({
-    type: 'album',
-    id: current ? current.song.album.id : 'invalid',
-    size: 96,
-  });
+  const fallbackUrl = useThemedUrl(AlbumDefaultDay, AlbumDefaultNight);
 
   if (!current) {
     return (
       <div className={styles.root}>
         <div className={styles.artwork}>
-          <img src={DefaultAlbumImage} />
+          <img src={fallbackUrl} />
         </div>
         <div className={styles.info}>
           <TextPlaceholder thickness={12} length={160} />
@@ -39,7 +37,7 @@ function PlayerCurrent({ current }: Props): ReactElement {
   return (
     <div className={styles.root}>
       <InvisibleLink className={styles.artwork} to={`/album/${album.id}`}>
-        <img src={artworkUrl} />
+        <ThemedAlbumArtwork id={album.id} size={96} />
       </InvisibleLink>
       <div className={styles.info}>
         <span className={styles.title} title={song.title}>

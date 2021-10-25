@@ -1,6 +1,5 @@
-import DefaultAlbumImage from 'assets/album-default.jpg';
-import LazyImage from 'components/media/LazyImage/LazyImage';
-import { useArtworkUrl } from 'modules/api';
+import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
+import { useArtworkUrl } from 'modules/artworks';
 import { QueueItem } from 'modules/player/types';
 import React, { ReactElement } from 'react';
 import styles from './QueueCurrent.module.scss';
@@ -14,7 +13,11 @@ function QueueCurrent({
     song: { album, artist, ...song },
   },
 }: Props): ReactElement {
-  const artworkUrl = useArtworkUrl({ type: 'album', id: album.id, size: 256 });
+  const artworkUrl = useArtworkUrl({
+    type: 'album',
+    id: album.id,
+    size: 256,
+  });
 
   return (
     <div className={styles.root}>
@@ -26,7 +29,7 @@ function QueueCurrent({
         <div className={styles.label}>Current Song</div>
         <div className={styles.info}>
           <div className={styles.artwork}>
-            <LazyImage url={artworkUrl} fallback={DefaultAlbumImage} />
+            <ThemedAlbumArtwork id={album.id} size={256} />
           </div>
           <div>
             <p title={song.title} className={styles.title}>

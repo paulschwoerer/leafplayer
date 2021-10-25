@@ -1,4 +1,3 @@
-@import "scss/vars";
 @import "scss/mixins";
 
 .root {
@@ -19,7 +18,7 @@
 
   .details {
     grid-area: details;
-    color: $colorEmphasisMedium;
+    color: var(--color-emphasis-medium);
     text-align: center;
     display: flex;
     flex-direction: column;

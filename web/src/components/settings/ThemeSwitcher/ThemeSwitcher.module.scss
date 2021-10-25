@@ -1,0 +1,80 @@
+@import "scss/mixins";
+
+$transition: 0.75s cubic-bezier(0.79, 0.14, 0.15, 0.86);
+
+.root {
+  border: 1px solid var(--color-interaction-border);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  overflow: hidden;
+  position: relative;
+
+  .solarSystem {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 4rem;
+    display: grid;
+    place-content: center;
+    color: var(--color-emphasis-high);
+
+    .earth {
+      width: 42px;
+      height: 42px;
+      transition: color $transition;
+    }
+
+    .disk {
+      position: absolute;
+      width: 8rem;
+      right: -2rem;
+      top: 0;
+      bottom: 0;
+      transition: transform $transition;
+
+      .sun,
+      .moon {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        transition: transform $transition, color $transition;
+        color: currentColor;
+      }
+
+      .sun {
+        left: 0;
+      }
+
+      .moon {
+        right: 0;
+      }
+    }
+
+    &.night .disk {
+      transform: rotate(180deg);
+
+      .sun {
+        transform: rotate(180deg);
+      }
+    }
+
+    &:not(.night) .disk {
+      .moon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  @media screen and (min-width: 450px) {
+    .solarSystem {
+      width: 6rem;
+
+      .disk {
+        width: 10rem;
+        right: -2rem;
+      }
+    }
+  }
+}

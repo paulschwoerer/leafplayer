@@ -1,12 +1,11 @@
-import DefaultArtistImage from 'assets/artist-default.jpg';
 import { ButtonOutlined } from 'components/form/Button/Button';
 import { PlayIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
 import { FullArtist } from 'leafplayer-common';
-import { useArtworkUrl } from 'modules/api';
+import { useArtworkUrl } from 'modules/artworks';
 import React, { ReactElement } from 'react';
 import ArtistCounts from '../ArtistCounts';
-import Artwork from '../Artwork/Artwork';
+import ThemedArtistArtwork from '../artworks/ThemedArtistArtwork';
 import styles from './ArtistHeader.module.scss';
 
 type Props = {
@@ -28,12 +27,7 @@ function ArtistHeader({ artist, onPlayClicked }: Props): ReactElement {
         style={{ backgroundImage: `url(${artworkUrl})` }}
       />
       <div className={styles.artwork}>
-        <Artwork
-          artworkUrl={artworkUrl}
-          fallbackUrl={DefaultArtistImage}
-          isRounded
-          noOverlay
-        />
+        <ThemedArtistArtwork id={artist.id} size={256} />
       </div>
       <div className={styles.content}>
         <ArtistCounts artist={artist} />

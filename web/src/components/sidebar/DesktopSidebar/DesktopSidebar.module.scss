@@ -1,7 +1,5 @@
-@import "scss/vars";
-
 .root {
-  background: $colorPrimaryShade;
+  background-color: var(--color-primary-shade);
   overflow-y: auto;
   overflow-x: hidden;
 

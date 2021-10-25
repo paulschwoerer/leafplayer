@@ -1,4 +1,3 @@
-@import "scss/vars";
 @import "scss/mixins";
 
 .navEntry {
@@ -17,15 +16,7 @@
   &.active {
     position: relative;
 
-    &::after {
-      content: "";
-      position: absolute;
-      right: -8px;
-      background: #fff;
-      width: 16px;
-      height: 16px;
-      transform: rotate(-45deg);
-    }
+    @include active-dot();
   }
 
   .icon {

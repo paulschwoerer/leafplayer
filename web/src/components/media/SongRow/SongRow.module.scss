@@ -1,4 +1,3 @@
-@import "scss/vars";
 @import "scss/mixins";
 
 .root {
@@ -58,7 +57,7 @@
   }
 
   .duration {
-    color: $colorEmphasisMedium;
+    color: var(--color-emphasis-medium);
     margin-left: auto;
   }
 
@@ -66,7 +65,7 @@
     transition: opacity 0.15s, visibility 0 0.15s;
     opacity: 0;
     visibility: hidden;
-    background: rgba(#000, 0.3);
+    background-color: rgba(#000, 0.3);
 
     @include coverParent();
   }
@@ -91,7 +90,7 @@
   }
 
   @include hover() {
-    background: rgba(#000, 0.05);
+    background-color: rgba(#000, 0.05);
     border-radius: 0.5rem;
 
     .overlay {

@@ -1,4 +1,3 @@
-@import "scss/vars";
 @import "scss/mixins";
 
 .wrapper {
@@ -7,7 +6,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(#000, 0.6);
+  background-color: rgba(#000, 0.6);
   display: grid;
   justify-content: stretch;
   align-content: center;
@@ -15,7 +14,7 @@
   z-index: 99;
 
   .modal {
-    background: #fff;
+    background-color: var(--color-elevation-medium);
     max-width: 600px;
     width: 100%;
     margin: auto;
@@ -33,7 +32,7 @@
     display: flex;
     align-items: center;
     padding-left: 1.5rem;
-    background: $colorPrimary;
+    background-color: var(--color-primary);
     color: #fff;
 
     > h1 {

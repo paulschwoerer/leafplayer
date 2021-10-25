@@ -3,12 +3,12 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import styles from './LazyImage.module.scss';
 
 type Props = {
-  fallback?: string;
+  fallbackUrl?: string;
   url: string;
   className?: string;
 };
 
-function LazyImage({ url, fallback, className }: Props): ReactElement {
+function LazyImage({ url, fallbackUrl, className }: Props): ReactElement {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const elementRef = useRef<HTMLDivElement>(null);
@@ -44,10 +44,10 @@ function LazyImage({ url, fallback, className }: Props): ReactElement {
         className={classNames(styles.image, { [styles.visible]: isLoaded })}
         style={isLoaded ? { backgroundImage: `url(${url})` } : {}}
       />
-      {fallback && (
+      {fallbackUrl && (
         <div
           className={classNames(styles.image, { [styles.visible]: !isLoaded })}
-          style={{ backgroundImage: `url(${fallback})` }}
+          style={{ backgroundImage: `url(${fallbackUrl})` }}
         />
       )}
     </div>

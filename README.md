@@ -31,6 +31,7 @@ These are some notable features, in no particularly order.
 * Multiple user accounts
 * Registration of accounts using invite codes
 * Fast search
+* Night mode
 
 ## Installation
 
@@ -147,4 +148,5 @@ node main.js library:scan
 
 ![Desktop 1](https://user-images.githubusercontent.com/22923578/115007273-17736700-9eaa-11eb-91bf-0d3b58c47213.jpg)
 ![Desktop 2](https://user-images.githubusercontent.com/22923578/115007279-180bfd80-9eaa-11eb-8cda-f963dd43810f.jpg)
+![Night Mode](https://user-images.githubusercontent.com/22923578/138750415-a94988b4-cc45-4d24-9543-a26c164c4cb6.jpg)
 ![Mobile](https://user-images.githubusercontent.com/22923578/137108444-ef15701c-0e1e-4177-a9c5-fba3216b9db0.jpg)

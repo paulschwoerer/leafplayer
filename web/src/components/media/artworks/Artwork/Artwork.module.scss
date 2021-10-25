@@ -1,0 +1,21 @@
+@import "scss/mixins";
+
+.root {
+  display: block;
+  position: relative;
+  height: 0;
+  padding-top: 100%;
+  overflow: hidden;
+  width: 100%;
+
+  &.isRounded {
+    border-radius: 100%;
+  }
+
+  .image {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

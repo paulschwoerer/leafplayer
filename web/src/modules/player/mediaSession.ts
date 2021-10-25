@@ -1,4 +1,4 @@
-import { buildArtworkUrl } from 'modules/api';
+import { buildArtworkUrl } from 'modules/artworks';
 import { PlaybackState } from './reducer';
 import { QueueItem } from './types';
 

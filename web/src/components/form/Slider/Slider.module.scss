@@ -1,5 +1,3 @@
-@import "scss/vars";
-
 .root {
   position: relative;
   width: 100%;
@@ -18,7 +16,7 @@
       position: relative;
       width: 100%;
       height: 3px;
-      background: rgba(#fff, 0.3);
+      background-color: rgba(#fff, 0.3);
       border-radius: 3px;
 
       .knob {
@@ -27,7 +25,7 @@
         width: 12px;
         height: 12px;
         transform: translate(-50%, -50%);
-        background: #fff;
+        background-color: #fff;
         border-radius: 100%;
         opacity: 0;
         transition: opacity 0.1s;
@@ -39,7 +37,7 @@
         left: 0;
         height: 100%;
         border-radius: inherit;
-        background: #fff;
+        background-color: #fff;
         transition: background-color 0.1s;
       }
     }
@@ -56,7 +54,7 @@
     }
 
     .trackValue {
-      background: $colorDanger;
+      background-color: var(--color-danger);
     }
   }
 }

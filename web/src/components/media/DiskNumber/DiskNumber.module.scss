@@ -1,10 +1,9 @@
-@import "scss/vars";
 @import "scss/mixins";
 
 .root {
   display: flex;
   align-items: center;
-  color: $colorEmphasisLow;
+  color: var(--color-emphasis-low);
 
   .icon {
     width: 48px;

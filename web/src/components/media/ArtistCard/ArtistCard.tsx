@@ -1,19 +1,17 @@
-import DefaultArtistImage from 'assets/artist-default.jpg';
-import RandomImage from 'assets/random.jpg';
 import AppLink from 'components/layout/AppLink/AppLink';
 import { FullArtist } from 'leafplayer-common';
-import { useArtworkUrl } from 'modules/api';
 import { PlayerContext } from 'modules/player/context';
 import React, { PropsWithChildren, ReactElement, useContext } from 'react';
 import InvisibleLink from '../../layout/InvisibleLink/InvisibleLink';
 import ArtistCounts from '../ArtistCounts';
-import Artwork from '../Artwork/Artwork';
+import ArtworkOverlay from '../artworks/ArtworkOverlay/ArtworkOverlay';
+import ThemedArtistArtwork from '../artworks/ThemedArtistArtwork';
+import ThemedSurpriseArtwork from '../artworks/ThemedSurpriseArtwork';
 import styles from './ArtistCard.module.scss';
 
 type BaseProps = {
-  artworkUrl: string;
-  fallbackUrl?: string;
-  artworkLink?: string;
+  artwork: ReactElement;
+  link?: string;
   isPlaying?: boolean;
   onTogglePlayPause?: () => void;
 };
@@ -28,24 +26,13 @@ type ArtistCardProps = {
 };
 
 function BaseArtistCard({
-  artworkUrl,
-  fallbackUrl,
-  artworkLink,
-  isPlaying,
-  onTogglePlayPause,
+  artwork,
+  link,
   children,
 }: PropsWithChildren<BaseProps>): ReactElement {
   return (
     <div className={styles.root}>
-      <InvisibleLink to={artworkLink || '#'}>
-        <Artwork
-          artworkUrl={artworkUrl}
-          fallbackUrl={fallbackUrl}
-          onTogglePlayPause={onTogglePlayPause}
-          isPlaying={isPlaying}
-          isRounded
-        />
-      </InvisibleLink>
+      <InvisibleLink to={link || '#'}>{artwork}</InvisibleLink>
       <div className={styles.info}>{children}</div>
     </div>
   );
@@ -56,7 +43,14 @@ export function FakeArtistCard({
   onPlay,
 }: FakeArtistCardProps): ReactElement {
   return (
-    <BaseArtistCard artworkUrl={RandomImage} onTogglePlayPause={onPlay}>
+    <BaseArtistCard
+      artwork={
+        <ThemedSurpriseArtwork
+          isRounded
+          overlay={<ArtworkOverlay onTogglePlayPause={onPlay} />}
+        />
+      }
+    >
       <span className={styles.name}>{label}</span>
     </BaseArtistCard>
   );
@@ -87,17 +81,22 @@ export function ArtistCard({ artist }: ArtistCardProps): ReactElement {
     isPlaying && !!current && current.song.artist.id === artist.id;
 
   const artistLink = `/artist/${artist.id}`;
-  const artworkUrl = useArtworkUrl({
-    type: 'artist',
-    id: artist.id,
-    size: 256,
-  });
 
   return (
     <BaseArtistCard
-      artworkUrl={artworkUrl}
-      artworkLink={artistLink}
-      fallbackUrl={DefaultArtistImage}
+      artwork={
+        <ThemedArtistArtwork
+          id={artist.id}
+          size={256}
+          overlay={
+            <ArtworkOverlay
+              isPlaying={isArtistPlaying}
+              onTogglePlayPause={togglePlayPause}
+            />
+          }
+        />
+      }
+      link={artistLink}
       isPlaying={isArtistPlaying}
       onTogglePlayPause={togglePlayPause}
     >

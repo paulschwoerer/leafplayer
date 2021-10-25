@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   height: $mobilePlayerBarHeight;
-  background: $colorPrimary;
+  background-color: var(--color-primary);
   z-index: 99;
   display: flex;
   color: #fff;

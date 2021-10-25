@@ -47,3 +47,20 @@ $desktop-width: 800px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@mixin active-dot {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    background-color: currentColor;
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+  }
+}

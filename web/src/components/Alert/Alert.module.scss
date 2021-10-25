@@ -1,4 +1,3 @@
-@import "scss/vars";
 @import "scss/mixins";
 
 .root {
@@ -9,18 +8,15 @@
   gap: 1rem;
   padding: 0.5rem 1rem;
   margin-bottom: 2rem;
-  color: #fff;
-  border: 1px solid;
+  color: #121212;
   border-radius: 3px;
 
   &.error {
-    background: rgba($colorDanger, 0.8);
-    border-color: $colorDanger;
+    background-color: var(--color-danger);
   }
 
   &.success {
-    background: rgba($colorAccent, 0.8);
-    border-color: $colorAccent;
+    background-color: var(--color-success);
   }
 
   @include shadow(low);

@@ -1,9 +1,6 @@
-@import "scss/vars";
 @import "scss/mixins";
 
 .root {
-  background: #fff;
-
   .info {
     display: grid;
     gap: 0.5rem;

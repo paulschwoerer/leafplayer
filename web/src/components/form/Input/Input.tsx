@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import Icon from 'components/icons/Icon/Icon';
 import React, { ChangeEvent, ReactElement, useEffect, useRef } from 'react';
 import styles from './Input.module.scss';
 
@@ -59,7 +60,7 @@ function Input({
         aria-describedby={`${name}-error`}
       />
 
-      {icon && <span className={styles.icon}>{icon}</span>}
+      {icon && <Icon className={styles.icon} icon={icon}></Icon>}
 
       {label && <label htmlFor={name}>{label}</label>}
 
