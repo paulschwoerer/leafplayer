@@ -1,5 +1,5 @@
-import RoundButton from 'components/form/RoundButton/RoundButton';
 import { ReloadIcon } from 'components/icons';
+import IconButton from 'components/icons/IconButton/IconButton';
 import ApiLoader from 'components/layout/ApiLoader';
 import Carousel from 'components/layout/Carousel/Carousel';
 import Spacer from 'components/layout/Spacer/Spacer';
@@ -52,7 +52,7 @@ function Landing(): ReactElement {
             <Carousel
               headline="Albums you might like"
               headerContent={
-                <RoundButton icon={<ReloadIcon />} onClick={reload} />
+                <IconButton icon={<ReloadIcon />} onClick={reload} />
               }
             >
               <FakeAlbumCard label="Surprise me" onPlay={playRandomAlbum} />
@@ -76,7 +76,7 @@ function Landing(): ReactElement {
             <Carousel
               headline="Artists you might like"
               headerContent={
-                <RoundButton icon={<ReloadIcon />} onClick={reload} />
+                <IconButton icon={<ReloadIcon />} onClick={reload} />
               }
             >
               <FakeArtistCard label="Surprise me" onPlay={playRandomArtist} />
