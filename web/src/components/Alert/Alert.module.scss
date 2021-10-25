@@ -8,20 +8,15 @@
   gap: 1rem;
   padding: 0.5rem 1rem;
   margin-bottom: 2rem;
-  color: #fff;
-  border: 1px solid;
+  color: #121212;
   border-radius: 3px;
 
   &.error {
-    // TODO: fix opacity
-    background-color: rgba(var(--color-danger), 0.8);
-    border-color: var(--color-danger);
+    background-color: var(--color-danger);
   }
 
   &.success {
-    // TODO: fix opacity
-    background-color: rgba(var(--color-success), 0.8);
-    border-color: var(--color-success);
+    background-color: var(--color-success);
   }
 
   @include shadow(low);
