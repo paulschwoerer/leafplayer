@@ -26,7 +26,9 @@ function MobilePlayerBar({ className, onClick }: Props): ReactElement | null {
 
   return (
     <div className={classNames(styles.root, className)}>
-      <ThemedAlbumArtwork id={current.song.album.id} size={96} />
+      <div className={styles.artwork}>
+        <ThemedAlbumArtwork id={current.song.album.id} size={96} />
+      </div>
       <div className={styles.details} onClick={onClick}>
         <span className={styles.title} title={title}>
           {title}
