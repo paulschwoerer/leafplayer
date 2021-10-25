@@ -6,7 +6,7 @@ import SectionHeader from 'components/layout/SectionHeader/SectionHeader';
 import { AlbumCard } from 'components/media/AlbumCard/AlbumCard';
 import { ArtistCard } from 'components/media/ArtistCard/ArtistCard';
 import { SongRowWithArtwork } from 'components/media/SongRow/SongRow';
-import OptionsDropdown from 'components/OptionsDropdown/OptionsDropdown';
+import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
 import {
   FullAlbum,
   FullArtist,
@@ -112,14 +112,14 @@ function Search(): ReactElement {
               })
             }
             options={
-              <OptionsDropdown align="left">
-                <OptionsDropdown.Option onClick={() => playNext([song])}>
+              <OptionsPopover align="left">
+                <OptionsPopover.Option onClick={() => playNext([song])}>
                   Play Next
-                </OptionsDropdown.Option>
-                <OptionsDropdown.Option onClick={() => addSongsToQueue([song])}>
+                </OptionsPopover.Option>
+                <OptionsPopover.Option onClick={() => addSongsToQueue([song])}>
                   Enqueue
-                </OptionsDropdown.Option>
-              </OptionsDropdown>
+                </OptionsPopover.Option>
+              </OptionsPopover>
             }
           />
         ))}

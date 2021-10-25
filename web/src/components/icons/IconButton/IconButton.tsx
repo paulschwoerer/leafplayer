@@ -10,23 +10,23 @@ type Props = {
   onClick?: () => void;
 };
 
-function IconButton({
-  ariaLabel,
-  icon,
-  mirrored,
-  disabled,
-  onClick,
-}: Props): ReactElement {
-  return (
-    <button
-      className={styles.root}
-      disabled={disabled}
-      onClick={onClick}
-      aria-label={ariaLabel}
-    >
-      <Icon icon={icon} mirrored={mirrored} />
-    </button>
-  );
-}
+const IconButton = React.forwardRef<HTMLButtonElement, Props>(
+  (
+    { ariaLabel, icon, mirrored, disabled, onClick }: Props,
+    ref,
+  ): ReactElement => {
+    return (
+      <button
+        className={styles.root}
+        disabled={disabled}
+        onClick={onClick}
+        aria-label={ariaLabel}
+        ref={ref}
+      >
+        <Icon icon={icon} mirrored={mirrored} />
+      </button>
+    );
+  },
+);
 
 export default IconButton;
