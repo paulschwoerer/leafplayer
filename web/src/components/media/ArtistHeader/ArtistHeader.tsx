@@ -5,7 +5,6 @@ import { FullArtist } from 'leafplayer-common';
 import { useArtworkUrl } from 'modules/artworks';
 import React, { ReactElement } from 'react';
 import ArtistCounts from '../ArtistCounts';
-import Artwork from '../artworks/Artwork/Artwork';
 import ThemedArtistArtwork from '../artworks/ThemedArtistArtwork';
 import styles from './ArtistHeader.module.scss';
 

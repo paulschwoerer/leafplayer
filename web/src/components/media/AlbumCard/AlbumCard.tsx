@@ -3,7 +3,6 @@ import { FullAlbum } from 'leafplayer-common';
 import React, { PropsWithChildren, ReactElement } from 'react';
 import AppLink from '../../layout/AppLink/AppLink';
 import InvisibleLink from '../../layout/InvisibleLink/InvisibleLink';
-import Artwork from '../artworks/Artwork/Artwork';
 import ArtworkOverlay from '../artworks/ArtworkOverlay/ArtworkOverlay';
 import ThemedAlbumArtwork from '../artworks/ThemedAlbumArtwork';
 import ThemedSurpriseArtwork from '../artworks/ThemedSurpriseArtwork';
