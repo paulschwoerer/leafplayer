@@ -1,0 +1,80 @@
+@import "scss/vars";
+@import "scss/mixins";
+
+.root {
+  position: relative;
+}
+
+.desktopWrapper {
+  position: absolute;
+  display: none;
+  z-index: 50;
+  border-radius: 0.5rem;
+
+  @include shadow(high);
+
+  &[data-show] {
+    display: block;
+  }
+
+  .arrow {
+    z-index: -1;
+
+    @include shadow(high);
+  }
+
+  .arrow,
+  .arrow::before {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+  }
+
+  .arrow::before {
+    content: '';
+    background: #fff;
+    transform: rotate(45deg);
+  }
+
+  &[data-popper-placement^='left'] .arrow {
+    right: -6px;
+  }
+
+  &[data-popper-placement^='right'] .arrow {
+    left: -6px;
+  }
+}
+
+.mobileWrapper {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  right: 0;
+  left: 0;
+  bottom: -10rem;
+  padding-bottom: 10rem;
+  background: #fff;
+  border-radius: 0.5rem 0.5rem 0 0;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0 -8px 24px rgba(#000, 0.3);
+}
+
+.options {
+  background: #fff;
+  padding: 0.5rem 0;
+
+  .option {
+    padding: 1rem 1.5rem;
+    transition: background-color 0.1s;
+    white-space: nowrap;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+    @include hover() {
+      cursor: pointer;
+      background: rgba(#000, 0.08);
+    }
+  }
+}

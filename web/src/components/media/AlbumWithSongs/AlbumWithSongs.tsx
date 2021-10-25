@@ -4,7 +4,7 @@ import { ButtonText } from 'components/form/Button/Button';
 import RoundButton from 'components/form/RoundButton/RoundButton';
 import { PauseIcon, PlayIcon } from 'components/icons';
 import If from 'components/If';
-import OptionsDropdown from 'components/OptionsDropdown/OptionsDropdown';
+import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
 import { useAlbumPlayState } from 'helpers/albumPlayState';
 import { durationToString } from 'helpers/time';
 import { FullAlbum, FullSong } from 'leafplayer-common';
@@ -73,11 +73,11 @@ function AlbumWithSongs({
           playerIsPlaying && !!current && current.song.id === song.id
         }
         options={
-          <OptionsDropdown align="left">
-            <OptionsDropdown.Option onClick={() => playNext([song])}>
+          <OptionsPopover align="left">
+            <OptionsPopover.Option onClick={() => playNext([song])}>
               Play Next
-            </OptionsDropdown.Option>
-            <OptionsDropdown.Option
+            </OptionsPopover.Option>
+            <OptionsPopover.Option
               onClick={() =>
                 addSongsToQueue([song], {
                   replaceQueue: false,
@@ -86,8 +86,8 @@ function AlbumWithSongs({
               }
             >
               Enqueue
-            </OptionsDropdown.Option>
-          </OptionsDropdown>
+            </OptionsPopover.Option>
+          </OptionsPopover>
         }
       />
     );
@@ -138,19 +138,21 @@ function AlbumWithSongs({
             icon={isCurrentlyPlayingAlbum ? <PauseIcon /> : <PlayIcon />}
             onClick={togglePlayPause}
           />
-          <OptionsDropdown className={styles.dropdownToggle}>
-            <OptionsDropdown.Option onClick={onPlayNextClicked}>
-              Play Next
-            </OptionsDropdown.Option>
-            <OptionsDropdown.Option onClick={onEnqueueClicked}>
-              Enqueue
-            </OptionsDropdown.Option>
-            <If condition={!hideArtist}>
-              <OptionsDropdown.Option to={`/artist/${artist.id}`}>
-                Open Artist Page
-              </OptionsDropdown.Option>
-            </If>
-          </OptionsDropdown>
+          <div className={styles.mobilePopover}>
+            <OptionsPopover>
+              <OptionsPopover.Option onClick={onPlayNextClicked}>
+                Play Next
+              </OptionsPopover.Option>
+              <OptionsPopover.Option onClick={onEnqueueClicked}>
+                Enqueue
+              </OptionsPopover.Option>
+              <If condition={!hideArtist}>
+                <OptionsPopover.Option to={`/artist/${artist.id}`}>
+                  Open Artist Page
+                </OptionsPopover.Option>
+              </If>
+            </OptionsPopover>
+          </div>
           <span className={styles.desktopButtons}>
             <ButtonText onClick={onPlayNextClicked}>Play Next</ButtonText>
             <ButtonText onClick={onEnqueueClicked}>Enqueue</ButtonText>
