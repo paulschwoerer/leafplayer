@@ -1,5 +1,7 @@
 @import "scss/mixins";
 
+$transition: 0.75s cubic-bezier(0.79, 0.14, 0.15, 0.86);
+
 .root {
   border: 1px solid var(--color-interaction-border);
   border-radius: 1rem;
@@ -20,7 +22,7 @@
     .earth {
       width: 42px;
       height: 42px;
-      transition: color 0.3s;
+      transition: color $transition;
     }
 
     .disk {
@@ -29,7 +31,7 @@
       right: -2rem;
       top: 0;
       bottom: 0;
-      transition: transform 0.3s;
+      transition: transform $transition;
 
       .sun,
       .moon {
@@ -37,7 +39,7 @@
         top: 0;
         bottom: 0;
         margin: auto 0;
-        transition: transform 0.3s, color 0.3s;
+        transition: transform $transition, color $transition;
         color: currentColor;
       }
 
