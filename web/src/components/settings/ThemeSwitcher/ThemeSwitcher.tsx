@@ -15,7 +15,7 @@ function ThemeSwitcher(): ReactElement {
         className={styles.toggle}
         onClick={() => setIsNightMode(!isNightMode)}
       >
-        {isNightMode ? 'Enable day mode' : 'Enable dark mode'}
+        {isNightMode ? 'Enable day mode' : 'Enable night mode'}
       </ButtonText>
       <div
         className={classNames(styles.solarSystem, {
