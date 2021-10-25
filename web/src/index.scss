@@ -22,8 +22,7 @@ body {
   --color-elevation-low: #fff;
   --color-elevation-medium: #fff;
   --color-elevation-high: #fff;
-
-  background-color: var(--color-primary);
+  --body-background: var(--color-primary);
 
   &[data-theme='night'] {
     --font-weight: 300;
@@ -46,8 +45,7 @@ body {
     --color-elevation-low: #161f27;
     --color-elevation-medium: var(--color-primary-shade);
     --color-elevation-high: #32475d;
-
-    background-color: var(--color-elevation-low);
+    --body-background: var(--color-elevation-low);
   }
 
   margin: 0;
@@ -59,6 +57,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-emphasis-high);
+  background-color: var(--body-background);
 
   &.no-scroll {
     overflow: hidden;
