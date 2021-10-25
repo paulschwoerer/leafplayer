@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/paulschwoerer/leafplayer/compare/v1.1.1...v1.2.0) (2021-10-25)
+
+
+### Features
+
+* add night mode ([039e0ca](https://github.com/paulschwoerer/leafplayer/commit/039e0ca1fc129512ad4700e080542966aaf9c891))
+* improve options dropdown ([4ed6ba9](https://github.com/paulschwoerer/leafplayer/commit/4ed6ba920d0f12b8b00fb0c352baa4ca4f67f1ea))
+
+
+### Bug Fixes
+
+* bump vulnerable fastify-static package ([c0ef71d](https://github.com/paulschwoerer/leafplayer/commit/c0ef71d6e4790d262aed91d7793b53f85ab2270a))
+
 ### [1.1.1](https://github.com/paulschwoerer/leafplayer/compare/v1.1.0...v1.1.1) (2021-10-21)
 
 
