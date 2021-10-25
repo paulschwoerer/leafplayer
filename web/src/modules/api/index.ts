@@ -1,6 +1,6 @@
 import { ApiError } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 export enum HttpMethod {
@@ -22,30 +22,6 @@ type UseApiOptions = {
 
 export function buildApiUrl(slug: string): string {
   return `/api/${slug}`;
-}
-
-type UseArtworkUrlProps = {
-  type: 'album' | 'artist';
-  id: string;
-  size: number;
-};
-
-export function buildArtworkUrl(
-  { type, id, size }: UseArtworkUrlProps,
-  authToken: string,
-): string {
-  return buildApiUrl(`artworks/${type}/${id}?size=${size}&token=${authToken}`);
-}
-
-export function useArtworkUrl(params: UseArtworkUrlProps): string {
-  const auth = useContext(AuthContext);
-
-  const artworkUrl = useMemo(
-    () => (auth.artworkToken ? buildArtworkUrl(params, auth.artworkToken) : ''),
-    [auth.artworkToken, params],
-  );
-
-  return artworkUrl;
 }
 
 export function isApiError(object: unknown): object is ApiError {

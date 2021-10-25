@@ -1,9 +1,7 @@
-import DefaultAlbumImage from 'assets/album-default.jpg';
 import classNames from 'classnames';
 import RoundButton from 'components/form/RoundButton/RoundButton';
 import { PauseIcon, PlayIcon } from 'components/icons';
-import LazyImage from 'components/media/LazyImage/LazyImage';
-import { useArtworkUrl } from 'modules/api';
+import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
 import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext } from 'react';
 import styles from './MobilePlayerBar.module.scss';
@@ -18,12 +16,6 @@ function MobilePlayerBar({ className, onClick }: Props): ReactElement | null {
     PlayerContext,
   );
 
-  const artworkUrl = useArtworkUrl({
-    id: current ? current.song.album.id : '',
-    type: 'album',
-    size: 96,
-  });
-
   if (!current) {
     return null;
   }
@@ -34,11 +26,7 @@ function MobilePlayerBar({ className, onClick }: Props): ReactElement | null {
 
   return (
     <div className={classNames(styles.root, className)}>
-      <LazyImage
-        className={styles.artwork}
-        fallback={DefaultAlbumImage}
-        url={artworkUrl}
-      />
+      <ThemedAlbumArtwork id={current.song.album.id} size={96} />
       <div className={styles.details} onClick={onClick}>
         <span className={styles.title} title={title}>
           {title}

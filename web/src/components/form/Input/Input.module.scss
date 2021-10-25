@@ -37,12 +37,6 @@
     transition: border-color 0.15s, padding-top 0.15s;
     font: var(--font);
 
-    &:-webkit-autofill ~ .root,
-    &:-webkit-autofill:hover ~ .root,
-    &:-webkit-autofill:focus ~ .root {
-      background-color: red;
-    }
-
     &:focus {
       border-color: var(--color-interaction-focus);
     }

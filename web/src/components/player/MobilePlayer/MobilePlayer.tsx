@@ -1,11 +1,9 @@
-import DefaultAlbumImage from 'assets/album-default.jpg';
 import { ExpandMoreIcon, QueueIcon } from 'components/icons';
 import IconButton from 'components/icons/IconButton/IconButton';
 import AspectRatioOneToOne from 'components/layout/AspectRatioOneToOne/AspectRatioOneToOne';
 import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
+import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
 import Duration from 'components/media/Duration/Duration';
-import LazyImage from 'components/media/LazyImage/LazyImage';
-import { useArtworkUrl } from 'modules/api';
 import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext, useState } from 'react';
 import PlayerControls from '../PlayerControls/PlayerControls';
@@ -39,12 +37,6 @@ function MobilePlayer({ onClose }: Props): ReactElement {
       setShuffle,
     },
   ] = useContext(PlayerContext);
-  const artworkUrl = useArtworkUrl({
-    type: 'album',
-    id: current ? current.song.album.id : '',
-    size: 512,
-  });
-
   const [isSeeking, setIsSeeking] = useState(false);
   const [userSeek, setUserSeek] = useState(0);
 
@@ -59,7 +51,7 @@ function MobilePlayer({ onClose }: Props): ReactElement {
       <section className={styles.artworkWrapper}>
         <div className={styles.artwork}>
           <AspectRatioOneToOne>
-            <LazyImage url={artworkUrl} fallback={DefaultAlbumImage} />
+            <ThemedAlbumArtwork id={current?.song.album.id || ''} size={512} />
           </AspectRatioOneToOne>
         </div>
       </section>

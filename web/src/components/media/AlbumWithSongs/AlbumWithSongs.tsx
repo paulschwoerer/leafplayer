@@ -1,4 +1,3 @@
-import DefaultAlbumImage from 'assets/album-default.jpg';
 import classNames from 'classnames';
 import { ButtonText } from 'components/form/Button/Button';
 import RoundButton from 'components/form/RoundButton/RoundButton';
@@ -8,11 +7,12 @@ import OptionsDropdown from 'components/OptionsDropdown/OptionsDropdown';
 import { useAlbumPlayState } from 'helpers/albumPlayState';
 import { durationToString } from 'helpers/time';
 import { FullAlbum, FullSong } from 'leafplayer-common';
-import { useArtworkUrl } from 'modules/api';
+import { useArtworkUrl } from 'modules/artworks';
 import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext } from 'react';
 import AppLink from '../../layout/AppLink/AppLink';
-import Artwork from '../Artwork/Artwork';
+import Artwork from '../artworks/Artwork/Artwork';
+import ThemedAlbumArtwork from '../artworks/ThemedAlbumArtwork';
 import { SongCount } from '../Counts';
 import DiskNumber from '../DiskNumber/DiskNumber';
 import { SongRow } from '../SongRow/SongRow';
@@ -102,7 +102,6 @@ function AlbumWithSongs({
     return entries;
   }
 
-  const artworkUrl = useArtworkUrl({ type: 'album', id, size: 256 });
   const totalDuration = songs
     .map(song => song.duration)
     .reduce((accumulator, currentValue) => accumulator + currentValue);
@@ -110,11 +109,7 @@ function AlbumWithSongs({
   return (
     <div className={classNames(styles.root, styles[artworkPosition])}>
       <div className={styles.artwork}>
-        <Artwork
-          artworkUrl={artworkUrl}
-          fallbackUrl={DefaultAlbumImage}
-          noOverlay
-        />
+        <ThemedAlbumArtwork id={id} size={256} />
       </div>
       <div className={styles.details}>
         <h2 title={name}>{name}</h2>

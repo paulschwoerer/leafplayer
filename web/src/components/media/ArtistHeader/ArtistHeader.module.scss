@@ -15,7 +15,7 @@
   .background {
     @include coverParent();
 
-    background-color: no-repeat center center rgba(#000, 0.025);
+    background: no-repeat center center rgba(#000, 0.025);
     background-size: cover;
     filter: blur(4px);
     transform: scale(1.1);
