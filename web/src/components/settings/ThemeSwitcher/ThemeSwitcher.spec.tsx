@@ -1,11 +1,27 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { ThemeContext } from 'modules/theming/ThemeContext';
 import React from 'react';
-import { render } from '@testing-library/react';
 import ThemeSwitcher from './ThemeSwitcher';
 
 describe('ThemeSwitcher', () => {
-  it('TODO', () => {
-    render(<ThemeSwitcher />);
+  it('calls funtion in ThemeContext', async () => {
+    const setIsNightMode = jest.fn();
 
-    // do something usefull here
+    render(
+      <ThemeContext.Provider
+        value={{
+          isNightMode: false,
+          setIsNightMode,
+        }}
+      >
+        <ThemeSwitcher />
+      </ThemeContext.Provider>,
+    );
+
+    const toggleButton = await screen.findByRole('button');
+
+    fireEvent.click(toggleButton);
+
+    await waitFor(() => expect(setIsNightMode).toHaveBeenCalledWith(true));
   });
 });
