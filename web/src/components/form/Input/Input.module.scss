@@ -33,7 +33,7 @@
     transform: translateY(0);
     color: var(--color-emphasis-high);
     transition: border-color 0.15s, padding-top 0.15s;
-    font: var(--font);
+    font: inherit;
 
     &:focus {
       border-color: var(--color-interaction-focus);

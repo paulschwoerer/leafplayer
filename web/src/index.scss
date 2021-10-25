@@ -1,5 +1,5 @@
 body {
-  --font: 1rem "FiraSans", sans-serif;
+  --font-weight: 400;
   --tap-target: 48px;
 
   // general colors
@@ -26,6 +26,8 @@ body {
   background-color: var(--color-primary);
 
   &[data-theme='night'] {
+    --font-weight: 300;
+
     // general colors
     --color-primary: #2b3d4f;
     --color-primary-shade: #1d2935;
@@ -53,6 +55,7 @@ body {
   font-family:
     "FiraSans",
     sans-serif;
+  font-weight: var(--font-weight);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-emphasis-high);
@@ -69,4 +72,11 @@ body {
 @font-face {
   font-family: 'FiraSans';
   src: local('FiraSans'), url(./assets/fonts/FiraSans-Regular.ttf) format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'FiraSans';
+  src: local('FiraSans'), url(./assets/fonts/FiraSans-Light.ttf) format('truetype');
+  font-weight: 300;
 }
