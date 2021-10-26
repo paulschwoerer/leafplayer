@@ -6,9 +6,11 @@ type Injects = {
   isValidJwtToken(token: string): boolean;
 };
 
+type TokenParams = { Querystring: { token?: string } };
+
 export function createTokenAuthMiddleware({
   isValidJwtToken,
-}: Injects): Middleware<{ Querystring: { token?: string } }> {
+}: Injects): Middleware<TokenParams> {
   return async function (request, reply) {
     const token = request.query.token;
 

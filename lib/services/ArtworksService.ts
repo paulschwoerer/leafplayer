@@ -32,7 +32,9 @@ export function createArtworksService({ config }: Injects): ArtworksService {
         `${prefix}-${id}-${size}.jpg`,
       );
 
-      if (!(await isReadable(artworkPath))) {
+      const canRead = await isReadable(artworkPath);
+
+      if (!canRead) {
         return Error(
           `artwork path does not exist or is not readable: ${artworkPath}`,
         );

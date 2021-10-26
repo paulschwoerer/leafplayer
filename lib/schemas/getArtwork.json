@@ -4,11 +4,7 @@
     "properties": {
       "size": {
         "enum": ["96", "128", "192", "256", "384", "512"]
-      },
-      "token": {
-        "type": "string"
       }
-    },
-    "required": ["token"]
+    }
   }
 }

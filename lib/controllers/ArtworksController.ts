@@ -1,23 +1,9 @@
-import { Stream } from 'stream';
-
 import { FastifyPluginAsync } from 'fastify';
 
 import { sendBadRequestError, sendNotFoundError } from '@/helpers/responses';
 import { isUuidV4 } from '@/helpers/uuid';
 import GetArtworkSchema from '@/schemas/getArtwork.json';
-
-type ArtworkStream = {
-  size: number;
-  stream: Stream;
-};
-
-interface ArtworksService {
-  createArtworkStream(
-    type: string,
-    id: string,
-    size: number,
-  ): Promise<ArtworkStream | Error>;
-}
+import { ArtworksService } from '@/services/ArtworksService';
 
 type Injects = {
   artworksService: ArtworksService;
@@ -32,7 +18,7 @@ function parseArtworkSize(stringSize: string | undefined): number {
 }
 
 export function ArtworksController({
-  artworksService: artworksStreamer,
+  artworksService,
 }: Injects): FastifyPluginAsync {
   return async function (router) {
     router.get<{
@@ -55,7 +41,7 @@ export function ArtworksController({
           return sendBadRequestError(reply, 'given ID seems to be invalid');
         }
 
-        const result = await artworksStreamer.createArtworkStream(
+        const result = await artworksService.createArtworkStream(
           type,
           id,
           parseArtworkSize(size),
