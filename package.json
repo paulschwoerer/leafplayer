@@ -16,6 +16,9 @@
     "make-migration": "knex migrate:make -x ts --migrations-directory=lib/database/migrations",
     "release": "npx standard-version"
   },
+  "engines": {
+    "node": ">14.0.0 <15"
+  },
   "ava": {
     "files": [
       "lib/**/*.test.ts",

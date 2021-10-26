@@ -30,6 +30,7 @@ async function makeReleasePackageJson() {
     main,
     author,
     license,
+    engines,
     dependencies,
   } = await readJsonFile('package.json');
 
@@ -40,6 +41,7 @@ async function makeReleasePackageJson() {
     main,
     author,
     license,
+    engines,
     dependencies,
   };
 
