@@ -17,9 +17,7 @@ type Injects = {
 };
 
 export interface SearchService {
-  search(
-    q: string,
-  ): Promise<{
+  search(q: string): Promise<{
     artists: FullArtist[];
     albums: FullAlbum[];
     songs: FullSong[];

@@ -144,11 +144,8 @@ test('Current user -> With an invalid session cookie, expect an error', async t 
 });
 
 test('Current user -> After logging in, when requesting the current user, expect the user', async t => {
-  const {
-    sessionToken,
-    server,
-    userId,
-  } = await createServerAndInsertTestUserAndLogin(t);
+  const { sessionToken, server, userId } =
+    await createServerAndInsertTestUserAndLogin(t);
 
   const response = await server.inject({
     method: 'GET',

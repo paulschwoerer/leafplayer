@@ -13,11 +13,8 @@ test.beforeEach(beforeEachHook);
 test.afterEach(afterEachHook);
 
 test('when requesting to revoke a valid session with an invalid password, expect an error response', async t => {
-  const {
-    server,
-    sessionToken,
-    userId,
-  } = await createServerAndInsertTestUserAndLogin(t);
+  const { server, sessionToken, userId } =
+    await createServerAndInsertTestUserAndLogin(t);
 
   const sessionIdToDelete = await insertValidSession(t, userId);
 
@@ -36,11 +33,8 @@ test('when requesting to revoke a valid session with an invalid password, expect
 });
 
 test('when requesting to revoke a valid session, expect a success response', async t => {
-  const {
-    server,
-    sessionToken,
-    userId,
-  } = await createServerAndInsertTestUserAndLogin(t);
+  const { server, sessionToken, userId } =
+    await createServerAndInsertTestUserAndLogin(t);
 
   const sessionIdToDelete = await insertValidSession(t, userId);
 

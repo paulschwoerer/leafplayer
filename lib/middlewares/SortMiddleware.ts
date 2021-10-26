@@ -15,9 +15,7 @@ type SortRequestParams = {
   };
 };
 
-export function useSortMiddleware(
-  allowedFields: string[],
-): {
+export function useSortMiddleware(allowedFields: string[]): {
   preHandler: Middleware<SortRequestParams>;
 } {
   return {

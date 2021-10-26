@@ -25,8 +25,7 @@ test('when supplying empty token, expect an error', async t => {
 
   const response = await server.inject({
     method: 'GET',
-    url:
-      '/api/artworks/album/a3347ad5-8374-4e18-8d94-257b3ca802bb?size=64&token=',
+    url: '/api/artworks/album/a3347ad5-8374-4e18-8d94-257b3ca802bb?size=64&token=',
   });
 
   t.is(response.statusCode, 400);

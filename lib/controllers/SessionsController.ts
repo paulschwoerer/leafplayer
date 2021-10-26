@@ -13,25 +13,22 @@ export function SessionsController({
   sessionsService: sessionsService,
 }: Injects): FastifyPluginAsync {
   return async function (router) {
-    router.get(
-      '/',
-      async (request): Promise<UserSessionsResponseDto> => {
-        const currentSessionId = request.auth.getSessionId();
-        const sessions = await sessionsService.findAllByUserId(
-          request.auth.getUserId(),
-        );
+    router.get('/', async (request): Promise<UserSessionsResponseDto> => {
+      const currentSessionId = request.auth.getSessionId();
+      const sessions = await sessionsService.findAllByUserId(
+        request.auth.getUserId(),
+      );
 
-        return {
-          sessions: sessions.map(({ id, os, browser, lastUsedAt }) => ({
-            id,
-            os,
-            browser,
-            lastUsedAt,
-          })),
-          currentSessionId,
-        };
-      },
-    );
+      return {
+        sessions: sessions.map(({ id, os, browser, lastUsedAt }) => ({
+          id,
+          os,
+          browser,
+          lastUsedAt,
+        })),
+        currentSessionId,
+      };
+    });
 
     router.delete<{ Params: { id: string }; Body: RevokeSessionRequestDto }>(
       '/:id',
