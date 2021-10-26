@@ -39,12 +39,10 @@ function createSortMiddleware(
       return undefined;
     }
 
-    let param: SortParam;
+    const param = parseSortParam(sort);
 
-    try {
-      param = parseSortParam(sort);
-    } catch (e) {
-      return sendBadRequestError(reply, e.message);
+    if (param instanceof Error) {
+      return sendBadRequestError(reply, param.message);
     }
 
     if (!allowedFields.includes(param.field)) {
@@ -58,23 +56,23 @@ function createSortMiddleware(
   };
 }
 
-function parseSortParam(param: string): SortParam {
+function parseSortParam(param: string): SortParam | Error {
   const matches = /^(desc|asc)\(([a-zA-Z]+)\)$/.exec(param);
 
   if (!matches) {
-    throw Error('cannot parse sort params');
+    return Error('cannot parse sort params');
   }
 
   const direction = matches[1];
 
   if (direction !== 'asc' && direction !== 'desc') {
-    throw Error('cannot parse sort params');
+    return Error('cannot parse sort params');
   }
 
   const field = matches[2];
 
   if (!field) {
-    throw Error('cannot parse sort params');
+    return Error('cannot parse sort params');
   }
 
   return {

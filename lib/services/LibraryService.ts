@@ -41,7 +41,7 @@ export interface LibraryService {
       lastModified?: number;
       filesize?: number;
     },
-  ): Promise<Error | undefined>;
+  ): Promise<void>;
   getAudioFileByPath(path: string): Promise<AudioFileRow | undefined>;
   getEnabledMediaDirectories(): Promise<string[]>;
   getAllMediaDirectories(): Promise<string[]>;
@@ -80,11 +80,7 @@ export function createLibraryService({ db, config }: Injects): LibraryService {
     },
 
     async updateAudioFile(id, params) {
-      try {
-        await db('audio_files').update(params).where({ id });
-      } catch (e) {
-        return e;
-      }
+      await db('audio_files').update(params).where({ id });
     },
 
     async getAudioFileByPath(path) {

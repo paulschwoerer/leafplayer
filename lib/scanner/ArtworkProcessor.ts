@@ -1,9 +1,10 @@
-import { mkdirSync } from 'fs';
+import { mkdir } from 'fs';
 import path, { join as joinPath } from 'path';
 
 import sharp from 'sharp';
 
 import { printError, printInfo } from '@/helpers/cli';
+import { getErrorMessage } from '@/helpers/errors';
 
 type ArtworkFileSource = {
   type: 'file';
@@ -17,14 +18,16 @@ type ArtworkMemorySource = {
 
 type ArtworkSource = ArtworkFileSource | ArtworkMemorySource;
 
-function ensureDirectoryExists(path: string): void {
-  try {
-    mkdirSync(path);
-  } catch (e) {
-    if (e.code !== 'EEXIST') {
-      throw e;
-    }
-  }
+function ensureDirectoryExists(path: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    mkdir(path, err => {
+      if (!err || err.code === 'EEXIST') {
+        resolve();
+      } else {
+        reject(err);
+      }
+    });
+  });
 }
 
 export default class ArtworkProcessor {
@@ -63,7 +66,7 @@ export default class ArtworkProcessor {
     const start = Date.now();
     this.isWorking = true;
 
-    ensureDirectoryExists(this.outputPath);
+    await ensureDirectoryExists(this.outputPath);
 
     for (const albumId in this.albumArtworks) {
       try {
@@ -71,7 +74,7 @@ export default class ArtworkProcessor {
         await this.saveArtwork('album', albumId, this.albumArtworks[albumId]);
       } catch (e) {
         printError(`Could not process artwork for album ${albumId}`);
-        printError(e.message);
+        printError(getErrorMessage(e));
       }
     }
 
@@ -85,7 +88,7 @@ export default class ArtworkProcessor {
         );
       } catch (e) {
         printError(`Could not process artwork for artist ${artistId}`);
-        printError(e.message);
+        printError(getErrorMessage(e));
       }
     }
 

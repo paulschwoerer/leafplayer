@@ -78,7 +78,8 @@ export default class MusicScanner {
 
     for (const path of paths) {
       if (this.isDirectory(path)) {
-        const tree = this.fileTreeBuilder.build(path);
+        // eslint-disable-next-line no-await-in-loop
+        const tree = await this.fileTreeBuilder.build(path);
         if (tree) {
           trees.push(tree);
         }

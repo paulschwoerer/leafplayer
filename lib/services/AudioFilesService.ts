@@ -6,7 +6,7 @@ export interface AudioFilesService {
   findById(id: string): Promise<AudioFileRow | undefined>;
   findAll(): Promise<AudioFileRow[]>;
   findBySongId(songId: string): Promise<AudioFileRow | undefined>;
-  deleteById(id: string): Promise<Error | undefined>;
+  deleteById(id: string): Promise<void>;
 }
 
 type Injects = {
@@ -40,11 +40,7 @@ export function createAudioFilesService({ db }: Injects): AudioFilesService {
     },
 
     async deleteById(id) {
-      try {
-        await db('audio_files').where({ id }).delete();
-      } catch (e) {
-        return e;
-      }
+      return db('audio_files').where({ id }).delete();
     },
   };
 }
