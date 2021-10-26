@@ -120,29 +120,14 @@ export function createArtistsService({
     },
 
     async getAlbumsArtistAppearsOn(artistId) {
-      const rows = await db('songs')
-        .select(
-          db.ref('id').withSchema('albums'),
-          db.ref('name').withSchema('albums'),
-          db.ref('year').withSchema('albums'),
-          db.ref('id').as('artistId').withSchema('artists'),
-          db.ref('name').as('artistName').withSchema('artists'),
-        )
-        .join('albums', 'songs.albumId', 'albums.id')
-        .join('artists', 'albums.artistId', 'artists.id')
+      const rows = await createAlbumsQuery(db)
+        .innerJoin('songs', 'albums.id', 'songs.albumId')
         .where('songs.artistId', artistId)
         .andWhereNot('albums.artistId', artistId)
         .orderBy('albums.year', 'desc')
         .groupBy('albums.id');
 
-      return rows.map(({ artistId, artistName, year, ...rest }) => ({
-        ...rest,
-        artist: {
-          id: artistId,
-          name: artistName,
-        },
-        year: year || undefined,
-      }));
+      return rows.map(toFullAlbum);
     },
 
     async findIdByName(name) {

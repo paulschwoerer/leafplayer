@@ -1,3 +1,8 @@
+type Timestamps = {
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type PartialSong = {
   id: string;
   title: string;
@@ -9,7 +14,7 @@ export type FullSong = PartialSong & {
   disk: number;
   artist: PartialArtist;
   album: PartialAlbum;
-};
+} & Timestamps;
 
 export type PartialArtist = {
   id: string;
@@ -19,7 +24,7 @@ export type PartialArtist = {
 export type FullArtist = PartialArtist & {
   albumCount: number;
   songCount: number;
-};
+} & Timestamps;
 
 export type PartialAlbum = {
   id: string;
@@ -29,7 +34,7 @@ export type PartialAlbum = {
 export type FullAlbum = PartialAlbum & {
   year?: number;
   artist: PartialArtist;
-};
+} & Timestamps;
 
 export type User = {
   id: string;
