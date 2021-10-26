@@ -1,7 +1,7 @@
 import { chmodSync, existsSync } from 'fs';
 import path from 'path';
 
-import Knex from 'knex';
+import { knex, Knex } from 'knex';
 
 import { unixCheckIfWorldReadable } from '@/helpers/filesystem';
 import { createPasswordHash } from '@/helpers/passwords';
@@ -13,7 +13,7 @@ type Config = {
 };
 
 export function initializeDatabase({ file, type }: Config): Knex {
-  const knex = Knex({
+  const db = knex({
     client: type,
     useNullAsDefault: true,
     connection: {
@@ -38,7 +38,7 @@ export function initializeDatabase({ file, type }: Config): Knex {
     chmodSync(file, 0o600);
   }
 
-  return knex;
+  return db;
 }
 
 export function runMigrations(db: Knex): Promise<unknown> {

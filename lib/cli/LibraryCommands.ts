@@ -1,5 +1,5 @@
 import commander from 'commander';
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { printError, printInfo, printSuccess } from '@/helpers/cli';
 import { MusicCleaner } from '@/scanner/MusicCleaner';

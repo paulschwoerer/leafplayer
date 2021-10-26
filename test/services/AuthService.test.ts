@@ -1,5 +1,5 @@
 import anyTest, { TestInterface } from 'ava';
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { createAuthService } from '@/services/AuthService';
 import { createSessionsService } from '@/services/SessionsService';

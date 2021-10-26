@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 import { LeafplayerConfig } from 'lib/config';
 
 import { InvitationRow } from '@/database/rows';

@@ -1,4 +1,4 @@
-import * as Knex from 'knex';
+import { Knex } from 'knex';
 
 function addTimestamps(knex: Knex, table: Knex.TableBuilder) {
   table.timestamp('createdAt').notNullable().defaultTo(knex.fn.now());

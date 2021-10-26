@@ -1,6 +1,6 @@
 import path from 'path';
 
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { FullSong } from '@/common';
 import { AudioFileRow } from '@/database/rows';

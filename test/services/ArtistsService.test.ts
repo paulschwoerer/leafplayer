@@ -1,5 +1,5 @@
 import anyTest, { TestInterface } from 'ava';
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { createAlbumsService } from '@/services/AlbumsService';
 import { createArtistsService } from '@/services/ArtistsService';

@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 import uid from 'uid-safe';
 
 import { UserSession } from '@/common';

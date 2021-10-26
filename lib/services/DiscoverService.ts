@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { FullAlbum, FullArtist } from '@/common';
 import { toFullAlbum } from '@/mappers/albums';

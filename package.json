@@ -41,7 +41,7 @@
     "fastify": "^3.10.1",
     "fastify-static": "^4.4.2",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.15",
+    "knex": "^0.95.11",
     "md5-file": "^5.0.0",
     "music-metadata": "^7.6.3",
     "sharp": "^0.27.1",

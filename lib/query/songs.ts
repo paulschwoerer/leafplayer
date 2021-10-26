@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 type SongsQueryBuilder = ReturnType<typeof query>;
 

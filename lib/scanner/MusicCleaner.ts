@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { AudioFileRow } from '@/database/rows';
 import { printError, printInfo } from '@/helpers/cli';

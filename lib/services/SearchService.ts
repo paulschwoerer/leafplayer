@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 import { AlbumRow } from 'lib/database/rows';
 
 import { FullArtist } from '@/common';

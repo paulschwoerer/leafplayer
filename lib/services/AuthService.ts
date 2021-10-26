@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { User } from '@/common';
 import { LeafplayerConfig } from '@/config';

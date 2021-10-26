@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { User } from '@/common';
 import { UserRow } from '@/database/rows';
