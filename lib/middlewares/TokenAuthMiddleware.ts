@@ -1,3 +1,5 @@
+import { sendBadRequestError } from '@/helpers/responses';
+
 import { Middleware } from './Middleware';
 
 type Injects = {
@@ -11,7 +13,7 @@ export function createTokenAuthMiddleware({
     const token = request.query.token;
 
     if (!token || !token.length) {
-      return reply.status(400).send('a token is required');
+      return sendBadRequestError(reply, 'a token is required');
     }
 
     if (!isValidJwtToken(token)) {

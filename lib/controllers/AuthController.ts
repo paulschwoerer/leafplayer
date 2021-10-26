@@ -134,7 +134,7 @@ export function AuthController({
         );
 
         if (result instanceof Error) {
-          return reply.status(400).send(result);
+          return sendBadRequestError(reply, result.message);
         }
 
         return reply.status(201).send();

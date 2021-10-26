@@ -2,7 +2,7 @@ import { Stream } from 'stream';
 
 import { FastifyPluginAsync } from 'fastify';
 
-import { sendNotFoundError } from '@/helpers/responses';
+import { sendBadRequestError, sendNotFoundError } from '@/helpers/responses';
 import { isUuidV4 } from '@/helpers/uuid';
 import GetArtworkSchema from '@/schemas/getArtwork.json';
 
@@ -52,7 +52,7 @@ export function ArtworksController({
         }
 
         if (!isUuidV4(id)) {
-          return reply.status(400).send('given ID seems to be invalid');
+          return sendBadRequestError(reply, 'given ID seems to be invalid');
         }
 
         const result = await artworksStreamer.createArtworkStream(
