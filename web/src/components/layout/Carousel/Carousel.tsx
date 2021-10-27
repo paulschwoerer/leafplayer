@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { ChevronLeftIcon } from 'components/icons';
 import IconButton from 'components/icons/IconButton/IconButton';
 import If from 'components/If';
@@ -164,8 +165,21 @@ function Carousel({
           </nav>
         </If>
       </header>
-      <div ref={viewportRef} onScroll={updateNav} className={styles.viewport}>
-        <div className={styles.track}>{children}</div>
+
+      <div className={styles.viewportWrapper}>
+        <div ref={viewportRef} onScroll={updateNav} className={styles.viewport}>
+          <div
+            className={classNames(styles.shadowLeft, {
+              [styles.shadowVisible]: hasPrevious,
+            })}
+          />
+          <div className={styles.track}>{children}</div>
+          <div
+            className={classNames(styles.shadowRight, {
+              [styles.shadowVisible]: hasNext,
+            })}
+          />
+        </div>
       </div>
     </div>
   );

@@ -66,6 +66,9 @@ body {
 
 * {
   box-sizing: border-box;
+  scrollbar-color:
+    var(--color-primary)
+    transparent;
 }
 
 @font-face {

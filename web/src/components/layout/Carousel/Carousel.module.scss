@@ -4,6 +4,37 @@
   --trackWidth: min-content;
   --padding: 2rem;
 
+  .viewportWrapper {
+    position: relative;
+
+    .shadowLeft,
+    .shadowRight {
+      display: block;
+      position: absolute;
+      width: 1rem;
+      top: 0;
+      bottom: 0;
+      opacity: 0;
+      z-index: 1;
+      background: red;
+      transition: opacity 0.15s;
+
+      &.shadowVisible {
+        opacity: 1;
+      }
+    }
+
+    .shadowLeft {
+      left: 0;
+      background: linear-gradient(-90deg, rgba(#000, 0) 0%, rgba(#000, 0.25) 100%);
+    }
+
+    .shadowRight {
+      right: 0;
+      background: linear-gradient(90deg, rgba(#000, 0) 0%, rgba(#000, 0.25) 100%);
+    }
+  }
+
   .viewport {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
