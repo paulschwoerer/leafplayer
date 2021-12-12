@@ -42,7 +42,7 @@ const DEFAULT_SORT: SortParam = {
   direction: 'asc',
 };
 
-export function createArtistsService({
+export default function createArtistsService({
   db,
   albumsService,
   songsService,

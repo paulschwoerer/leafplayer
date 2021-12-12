@@ -50,7 +50,10 @@ export interface LibraryService {
   wipeLibrary(): Promise<void>;
 }
 
-export function createLibraryService({ db, config }: Injects): LibraryService {
+export default function createLibraryService({
+  db,
+  config,
+}: Injects): LibraryService {
   return {
     async updateSongByFileId(fileId, params) {
       await db('songs')

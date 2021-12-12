@@ -4,9 +4,6 @@ import { LeafplayerConfig } from 'lib/config';
 import { InvitationRow } from '@/database/rows';
 import { getCurrentUnixTimestamp } from '@/helpers/time';
 
-import { AuthService } from './AuthService';
-import { UsersService } from './UsersService';
-
 export enum CreateInvitationResult {
   SUCCESS,
   INVITE_CODE_TOO_SHORT,
@@ -15,75 +12,26 @@ export enum CreateInvitationResult {
 type Injects = {
   db: Knex;
   config: LeafplayerConfig;
-  authService: AuthService;
-  usersService: UsersService;
 };
 
 export interface InvitationsService {
-  createUserUsingInviteCode(
-    code: string,
-    userDetails: { username: string; displayName?: string; password: string },
-  ): Promise<Error | undefined>;
   createInvitation(details: {
     code: string;
     comment?: string;
   }): Promise<Error | undefined>;
   getAllInvitations(): Promise<InvitationRow[]>;
   deleteInvitation(code: string): Promise<Error | undefined>;
-  getMinimumInviteCodeLength(): number;
+  isValidInviteCode(inviteCode: string): Promise<boolean>;
+  invalidateInvitation(inviteCode: string): Promise<void>;
 }
 
-export function createInvitationsService({
+export default function createInvitationsService({
   db,
   config: { security: securityConfig },
-  authService,
-  usersService,
 }: Injects): InvitationsService {
-  async function isValidInviteCode(code: string): Promise<boolean> {
-    const invitation = await db('invitations')
-      .where({ code, used: false })
-      .andWhere('expiresAt', '>', getCurrentUnixTimestamp())
-      .select('id')
-      .first();
-
-    return !!invitation;
-  }
-
-  async function invalidateInvitation(code: string): Promise<void> {
-    await db('invitations').update({ used: true }).where({ code, used: false });
-  }
-
   return {
-    async createUserUsingInviteCode(code, userDetails) {
-      const isValid = await isValidInviteCode(code);
-
-      if (!isValid) {
-        return Error('Invalid invite code');
-      }
-
-      const userExists = await usersService.doesUserExist(userDetails.username);
-
-      if (userExists) {
-        return Error('Username taken');
-      }
-
-      const pwResult = authService.validatePasswordSecurity(
-        userDetails.password,
-      );
-      if (pwResult instanceof Error) {
-        return pwResult;
-      }
-
-      // TODO: a transaction would be nice
-      await usersService.createUser({
-        ...userDetails,
-        displayName: userDetails.displayName || userDetails.username,
-      });
-      await invalidateInvitation(code);
-    },
-
     async createInvitation({ code, comment }) {
-      const minLength = this.getMinimumInviteCodeLength();
+      const minLength = securityConfig.minimumInviteCodeLength;
 
       if (code.length < minLength) {
         return new Error(
@@ -119,8 +67,20 @@ export function createInvitationsService({
       }
     },
 
-    getMinimumInviteCodeLength() {
-      return securityConfig.minimumInviteCodeLength;
+    async isValidInviteCode(code: string): Promise<boolean> {
+      const invitation = await db('invitations')
+        .where({ code, used: false })
+        .andWhere('expiresAt', '>', getCurrentUnixTimestamp())
+        .select('id')
+        .first();
+
+      return !!invitation;
+    },
+
+    async invalidateInvitation(code: string): Promise<void> {
+      await db('invitations')
+        .update({ used: true })
+        .where({ code, used: false });
     },
   };
 }

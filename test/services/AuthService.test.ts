@@ -1,118 +1,237 @@
-import anyTest, { TestInterface } from 'ava';
 import { Knex } from 'knex';
 
-import { createAuthService } from '@/services/AuthService';
-import { createSessionsService } from '@/services/SessionsService';
-import { createUsersService } from '@/services/UsersService';
+import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
+import { ValidationError } from '@/errors/ValidationError';
+import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
+import createAuthService, { AuthService } from '@/services/AuthService';
+import createPasswordService from '@/services/PasswordService';
+import createSessionsService from '@/services/SessionsService';
+import createUsersService from '@/services/UsersService';
 
-import { LeafplayerConfig } from '../../lib/config';
-import {
-  comparePasswords,
-  createPasswordHash,
-} from '../../lib/helpers/passwords';
-import { afterEachHook, beforeEachHook, TestContext } from '../testContext';
+import { MOCK_USER } from '../testdata/mocks';
+import { createLeafplayerConfig } from '../testHelpers';
+import test from '../setupTestDB';
 
-const test = anyTest as TestInterface<TestContext>;
+const MOCK_SESSIONS = [
+  {
+    id: 'd67f709d-b932-4ca9-a85c-9969d4599197',
+    token: 'supersecret1',
+    userId: MOCK_USER.id,
+    lastUsedAt: 0,
+    expiresAt: getCurrentUnixTimestamp() + 10000,
+    browser: 'Firefox',
+    os: 'Linux',
+  },
+  {
+    id: '91651965-e140-486a-9158-aa8fa17df111',
+    token: 'supersecret2',
+    userId: MOCK_USER.id,
+    lastUsedAt: 0,
+    expiresAt: getCurrentUnixTimestamp() + 10000,
+    browser: 'Chromium',
+    os: 'Linux',
+  },
+];
 
-test.beforeEach(beforeEachHook);
-test.afterEach(afterEachHook);
-
-function createServiceUnderTest({
-  db,
-  config,
-}: {
-  db: Knex;
-  config: LeafplayerConfig;
-}) {
-  const sessionsService = createSessionsService({
-    db,
-  });
-
-  const usersService = createUsersService({
-    db,
-  });
-
+function setupService(db: Knex): AuthService {
+  const config = createLeafplayerConfig();
   return createAuthService({
     config,
-    db,
-    sessionsService,
-    usersService,
+    usersService: createUsersService({ db }),
+    sessionsService: createSessionsService({ db }),
+    passwordService: createPasswordService({ db, config }),
   });
 }
 
-const TEST_USER = {
-  id: 'e7d6b934-a264-4661-a888-53f3363aefe8',
-  username: 'testuser',
-  displayName: 'Testuser',
-  password: createPasswordHash('supersecret'),
-};
-
-test('changeUserPassword -> it should change a users password', async ({
-  context: { config, db },
-  ...t
-}) => {
-  await db('users').insert([TEST_USER]);
-
-  const authService = createServiceUnderTest({ db, config });
-
-  await authService.changeUserPassword({
-    userId: TEST_USER.id,
-    newPassword: 'timeforachange',
-    activeSessionId: '',
+test('login() should throw when given invalid credentials', async t => {
+  const { db } = t.context;
+  await db('users').insert({
+    ...MOCK_USER,
+    password: createPasswordHash('supersecret'),
   });
 
-  const updatedUser = await db('users').where({ id: TEST_USER.id }).first();
+  const authService = setupService(db);
 
-  t.true(comparePasswords('timeforachange', updatedUser?.password || ''));
+  await Promise.all(
+    [
+      {
+        username: MOCK_USER.username,
+        password: 'notthepassword',
+      },
+      {
+        username: 'nottheuser',
+        password: 'supersecret',
+      },
+      {
+        username: 'admin',
+        password: 'admin',
+      },
+    ].map(c =>
+      t.throwsAsync(
+        () =>
+          authService.login(c, {
+            name: 'unknown',
+            os: 'unknown',
+          }),
+        { instanceOf: NotAuthorizedError },
+      ),
+    ),
+  );
 });
 
-test('changeUserPassword -> it should invalidate all sessions except the one issuing the request', async ({
-  context: { config, db },
-  ...t
-}) => {
-  await db('users').insert([TEST_USER]);
-  await db('sessions').insert([
-    {
-      id: 'd67f709d-b932-4ca9-a85c-9969d4599197',
-      token: 'supersecret1',
-      userId: TEST_USER.id,
-      lastUsedAt: 0,
-      expiresAt: 0,
-    },
-    {
-      id: '91651965-e140-486a-9158-aa8fa17df111',
-      token: 'supersecret2',
-      userId: TEST_USER.id,
-      lastUsedAt: 0,
-      expiresAt: 0,
-    },
-  ]);
-
-  const authService = createServiceUnderTest({ db, config });
-
-  await authService.changeUserPassword({
-    userId: TEST_USER.id,
-    newPassword: 'timeforachange',
-    activeSessionId: 'd67f709d-b932-4ca9-a85c-9969d4599197',
+test('login() should return user and session token when given valid credentials', async t => {
+  const { db } = t.context;
+  await db('users').insert({
+    ...MOCK_USER,
+    password: createPasswordHash('supersecret'),
   });
 
-  const sessions = await db('sessions').where(true);
+  const authService = setupService(db);
+
+  const result = await authService.login(
+    {
+      username: MOCK_USER.username,
+      password: 'supersecret',
+    },
+    {
+      name: 'unknown',
+      os: 'unknown',
+    },
+  );
+
+  const sessions = await db('sessions').where({
+    userId: MOCK_USER.id,
+  });
+
+  t.deepEqual(result.user, MOCK_USER);
+  t.true(typeof result.sessionToken === 'string');
+  t.is(sessions.length, 1);
+  t.is(result.sessionToken, sessions[0].token);
+});
+
+test('logout() should delete active session', async t => {
+  const { db } = t.context;
+  await db('users').insert({
+    ...MOCK_USER,
+    password: createPasswordHash('supersecret'),
+  });
+  await db('sessions').insert(MOCK_SESSIONS);
+
+  const authService = setupService(db);
+
+  await authService.logout(MOCK_SESSIONS[1].id);
+
+  const sessions = await db('sessions').where({
+    userId: MOCK_USER.id,
+  });
 
   t.is(sessions.length, 1);
-  t.is(sessions[0].id, 'd67f709d-b932-4ca9-a85c-9969d4599197');
+  t.is(sessions[0].id, MOCK_SESSIONS[0].id);
 });
 
-test('changeUserPassword -> it should reject an insecure password', async ({
-  context: { config, db },
-  ...t
-}) => {
-  const authService = createServiceUnderTest({ db, config });
-
-  const maybeError = await authService.changeUserPassword({
-    userId: TEST_USER.id,
-    newPassword: 'time',
-    activeSessionId: '',
+test('changePassword() should reject an incorrect current password', async t => {
+  const { db } = t.context;
+  await db('users').insert({
+    ...MOCK_USER,
+    password: createPasswordHash('supersecret'),
   });
 
-  t.true(maybeError instanceof Error);
+  const authService = setupService(db);
+
+  await t.throwsAsync(
+    () =>
+      authService.changePassword({
+        userId: MOCK_USER.id,
+        activeSessionId: 'notRelevant',
+        currentPassword: 'notthepassword',
+        newPassword: 'timeforachange',
+      }),
+    { instanceOf: NotAuthorizedError },
+  );
+});
+
+test('changePassword() should reject an insecure new password', async t => {
+  const { db } = t.context;
+  await db('users').insert({
+    ...MOCK_USER,
+    password: createPasswordHash('supersecret'),
+  });
+
+  const authService = setupService(db);
+
+  await t.throwsAsync(
+    () =>
+      authService.changePassword({
+        userId: MOCK_USER.id,
+        activeSessionId: 'notRelevant',
+        currentPassword: 'supersecret',
+        newPassword: 'pw',
+      }),
+    { instanceOf: ValidationError },
+  );
+});
+
+test('changePassword() should change the users password and invalidate non-active sessions', async t => {
+  const { db } = t.context;
+  await db('users').insert({
+    ...MOCK_USER,
+    password: createPasswordHash('supersecret'),
+  });
+  await db('sessions').insert(MOCK_SESSIONS);
+
+  const authService = setupService(db);
+
+  await authService.changePassword({
+    userId: MOCK_USER.id,
+    activeSessionId: MOCK_SESSIONS[1].id,
+    currentPassword: 'supersecret',
+    newPassword: 'timeforachange',
+  });
+
+  const updatedUser = await db('users').where({ id: MOCK_USER.id }).first();
+  const sessions = await db('sessions').where({
+    userId: MOCK_USER.id,
+  });
+  t.plan(3);
+  t.is(sessions.length, 1);
+  t.is(sessions[0].id, MOCK_SESSIONS[1].id);
+  if (updatedUser) {
+    t.true(comparePasswords('timeforachange', updatedUser.password));
+  }
+});
+
+test('authenticate() should throw when given invalid session token', async t => {
+  const { db } = t.context;
+  await db('users').insert({
+    ...MOCK_USER,
+    password: createPasswordHash('supersecret'),
+  });
+  await db('sessions').insert(MOCK_SESSIONS);
+
+  const authService = setupService(db);
+
+  await t.throwsAsync(() => authService.authenticate('notatoken'), {
+    instanceOf: NotAuthorizedError,
+  });
+});
+
+test('authenticate() should return session with user when given a valid token', async t => {
+  const { db } = t.context;
+  await db('users').insert({
+    ...MOCK_USER,
+    password: createPasswordHash('supersecret'),
+  });
+  await db('sessions').insert(MOCK_SESSIONS);
+
+  const authService = setupService(db);
+
+  const sessionWithUser = await authService.authenticate(
+    MOCK_SESSIONS[0].token,
+  );
+
+  t.deepEqual(sessionWithUser, {
+    id: MOCK_SESSIONS[0].id,
+    user: MOCK_USER,
+  });
 });

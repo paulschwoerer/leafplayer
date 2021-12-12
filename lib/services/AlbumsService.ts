@@ -33,7 +33,7 @@ const DEFAULT_SORT: SortParam = {
   direction: 'asc',
 };
 
-export function createAlbumsService({
+export default function createAlbumsService({
   db,
   songsService,
 }: Injects): AlbumsService {

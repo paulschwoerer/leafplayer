@@ -1,27 +1,20 @@
-import anyTest, { TestInterface } from 'ava';
 import { Knex } from 'knex';
 
-import { createAlbumsService } from '@/services/AlbumsService';
-import { createSongsService } from '@/services/SongsService';
+import createAlbumsService from '@/services/AlbumsService';
+import createSongsService from '@/services/SongsService';
 
-import { afterEachHook, beforeEachHook, TestContext } from '../testContext';
+import test from '../setupTestDB';
 
-const test = anyTest as TestInterface<TestContext>;
-
-test.beforeEach(beforeEachHook);
-test.afterEach(afterEachHook);
-
-function createServiceUnderTest(db: Knex) {
+function setupService(db: Knex) {
   return createAlbumsService({
     db,
     songsService: createSongsService({ db }),
   });
 }
 
-test('find -> it should find and sort albums', async ({
-  context: { db },
-  is,
-}) => {
+test('find -> it should find and sort albums', async t => {
+  const { db } = t.context;
+
   await db('artists').insert({
     id: 'e8b04958-37aa-4b4e-82ac-da2f639d1574',
     name: 'Artist',
@@ -47,7 +40,7 @@ test('find -> it should find and sort albums', async ({
     },
   ]);
 
-  const albumsService = createServiceUnderTest(db);
+  const albumsService = setupService(db);
 
   const albumsSortedByName = await albumsService.find();
   const albumsSortedByYear = await albumsService.find({
@@ -55,11 +48,11 @@ test('find -> it should find and sort albums', async ({
     field: 'year',
   });
 
-  is(albumsSortedByName[0].name, 'Best Album');
-  is(albumsSortedByName[1].name, 'Favourite Album');
-  is(albumsSortedByName[2].name, 'Least Favourite Album');
+  t.is(albumsSortedByName[0].name, 'Best Album');
+  t.is(albumsSortedByName[1].name, 'Favourite Album');
+  t.is(albumsSortedByName[2].name, 'Least Favourite Album');
 
-  is(albumsSortedByYear[0].name, 'Favourite Album');
-  is(albumsSortedByYear[1].name, 'Least Favourite Album');
-  is(albumsSortedByYear[2].name, 'Best Album');
+  t.is(albumsSortedByYear[0].name, 'Favourite Album');
+  t.is(albumsSortedByYear[1].name, 'Least Favourite Album');
+  t.is(albumsSortedByYear[2].name, 'Best Album');
 });

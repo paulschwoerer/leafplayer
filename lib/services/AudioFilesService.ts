@@ -13,7 +13,9 @@ type Injects = {
   db: Knex;
 };
 
-export function createAudioFilesService({ db }: Injects): AudioFilesService {
+export default function createAudioFilesService({
+  db,
+}: Injects): AudioFilesService {
   return {
     findById(id) {
       return db('audio_files').where({ id }).first();

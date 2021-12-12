@@ -1,26 +1,26 @@
-import { Command } from 'commander';
+import {
+  asFunction,
+  asValue,
+  createContainer,
+  InjectionMode,
+  Lifetime,
+} from 'awilix';
 import { FastifyInstance } from 'fastify';
 
-import { DBCommands } from '@/cli/DBCommands';
-import { InvitationsCommands } from '@/cli/InvitationsCommands';
-import { LibraryCommands } from '@/cli/LibraryCommands';
-import { UsersCommands } from '@/cli/UsersCommands';
-import { initConfig } from '@/config';
-import { initializeDatabase, runMigrations } from '@/database';
-import { createAlbumsService } from '@/services/AlbumsService';
-import { createArtistsService } from '@/services/ArtistsService';
-import { createArtworksService } from '@/services/ArtworksService';
-import { createAudioFilesService } from '@/services/AudioFilesService';
-import { createAuthService } from '@/services/AuthService';
-import { createDiscoverService } from '@/services/DiscoverService';
-import { createInvitationsService } from '@/services/InvitationsService';
-import { createLibraryService } from '@/services/LibraryService';
-import { createSearchService } from '@/services/SearchService';
-import { createSessionsService } from '@/services/SessionsService';
-import { createSongsService } from '@/services/SongsService';
-import { createUsersService } from '@/services/UsersService';
+import { version } from '../package.json';
 
-import { initServer } from './server';
+import { createCLI } from './cli/CLI';
+import { createDBCommandLoader } from './cli/commands/DBCommandLoader';
+import { createInvitationsCommandLoader } from './cli/commands/InvitationsCommandLoader';
+import { createLibraryCommandLoader } from './cli/commands/LibraryCommandLoader';
+import { createUsersCommandLoader } from './cli/commands/UserCommandLoader';
+import { initConfig } from './config';
+import { initializeDatabase, runMigrations } from './database';
+import { initServer } from './api/server';
+
+const container = createContainer({
+  injectionMode: InjectionMode.PROXY,
+});
 
 // --------------- Config initialization --------------- //
 const config = initConfig();
@@ -28,79 +28,53 @@ const config = initConfig();
 // ----------------- DB initialization ----------------- //
 const db = initializeDatabase(config.database);
 
-// --------------- Service initialization -------------- //
-const usersService = createUsersService({ db });
-const songsService = createSongsService({ db });
-const searchService = createSearchService({ db });
-const albumsService = createAlbumsService({ db, songsService });
-const artworksService = createArtworksService({ config });
-const sessionsService = createSessionsService({ db });
-const authService = createAuthService({
-  db,
-  config,
-  sessionsService,
-  usersService,
+// ----------------- DI initialization ----------------- //
+container.register({
+  config: asValue(config),
+  db: asValue(db),
 });
-const artistsService = createArtistsService({
-  db,
-  albumsService,
-  songsService,
+
+container.loadModules(['lib/services/*.ts'], {
+  resolverOptions: {
+    register: asFunction,
+    lifetime: Lifetime.SINGLETON,
+  },
+  formatName: 'camelCase',
 });
-const libraryService = createLibraryService({ db, config });
-const audioFilesService = createAudioFilesService({ db });
-const invitationsService = createInvitationsService({
-  db,
-  config,
-  authService,
-  usersService,
-});
-const discoverService = createDiscoverService({ db });
+
+// ---------------- Server initialization --------------- //
+let server: FastifyInstance;
 
 // ----------------- CLI initialization ----------------- //
-let server: FastifyInstance;
-const program = new Command();
-
-DBCommands(program, { db });
-LibraryCommands(program, {
-  config,
-  db,
-  audioFilesService,
-  albumsService,
-  artistsService,
-  libraryService,
+const cli = createCLI({
+  version,
 });
-InvitationsCommands(program, { invitationsService });
-UsersCommands(program, { usersService });
 
-program
-  .command('serve')
-  .description('launch leafplayer server')
-  .action(async () => {
-    const { host, port } = config;
+cli
+  .add(container.build(createDBCommandLoader))
+  .add(container.build(createUsersCommandLoader))
+  .add(container.build(createLibraryCommandLoader))
+  .add(container.build(createInvitationsCommandLoader))
+  .add(cli => {
+    cli
+      .command('serve')
+      .description('launch leafplayer server')
+      .action(async () => {
+        const { host, port } = config;
 
-    await runMigrations(db);
+        await runMigrations(db);
 
-    server = await initServer({
-      config,
-      albumsService,
-      artistsService,
-      searchService,
-      artworksService,
-      authService,
-      sessionsService,
-      invitationsService,
-      audioFilesService,
-      discoverService,
-    });
+        server = await initServer(container);
 
-    await server.listen(port, host);
+        await server.listen(port, host);
 
-    console.log(`🌱 Leafplayer server listening on port ${port}`);
+        console.log(`🌱 Leafplayer server listening on port ${port}`);
+      });
   });
 
 // -------------------- Main -------------------- //
 async function main() {
-  await program.parseAsync(process.argv);
+  await cli.parse();
 
   if (!server) {
     await shutdown();
@@ -123,6 +97,7 @@ async function shutdown(err?: Error) {
   }
 
   await db.destroy();
+  await container.dispose();
 
   process.exit(1);
 }
