@@ -83,7 +83,7 @@ test('revoke session endpoint should call SessionsService service when invoked c
     method: 'DELETE',
     url: `/${MOCK_SESSION_ID}`,
     payload: {
-      password: 'validPassword',
+      currentPassword: 'validPassword',
     },
   });
 

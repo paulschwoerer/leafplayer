@@ -15,6 +15,7 @@ import {
 } from '../../testdata/mocks';
 import test from '../setupTestServer';
 import { mockAuth } from '../mockAuth';
+import { mockVerifyPassword } from '../mockVerifyPassword';
 
 const MOCK_JWT_TOKEN =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
@@ -27,6 +28,7 @@ async function setup(server: FastifyInstance): Promise<{
   const jwtService = td.object<JwtService>();
 
   await server.register(mockAuth(MOCK_SESSION_ID, MOCK_USER));
+  await server.register(mockVerifyPassword());
   await server.register(
     createAuthController({
       authService,
@@ -159,7 +161,6 @@ test('password endpoint should call service', async t => {
       authService.changePassword({
         userId: MOCK_USER.id,
         activeSessionId: MOCK_SESSION_ID,
-        currentPassword: 'supersecret',
         newPassword: 'timeforachange',
       }),
     );

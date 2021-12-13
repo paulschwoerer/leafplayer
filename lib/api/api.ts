@@ -45,7 +45,7 @@ export function initApi(container: AwilixContainer): FastifyPluginAsync {
     await server.register(authController, { prefix: 'auth' });
     await server.register(registrationController, { prefix: 'auth' });
     await server.register(sessionsController, { prefix: 'sessions' });
-    await server.register(artworksController, { prefix: 'stream' });
+    await server.register(artworksController, { prefix: 'artworks' });
     await server.register(albumsController, { prefix: 'albums' });
     await server.register(artistsController, { prefix: 'artists' });
     await server.register(discoverController, { prefix: 'discover' });

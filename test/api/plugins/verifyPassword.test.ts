@@ -45,7 +45,7 @@ test('it should reject request with incorrect password', async t => {
     method: 'POST',
     url: '/',
     payload: {
-      password: 'notthepassword',
+      currentPassword: 'notthepassword',
     },
   });
 
@@ -66,7 +66,7 @@ test('it should accept request with correct password', async t => {
     method: 'POST',
     url: '/',
     payload: {
-      password: 'thepassword',
+      currentPassword: 'thepassword',
     },
   });
 

@@ -16,7 +16,6 @@ type Credentials = {
 type ChangePasswordParams = {
   userId: string;
   activeSessionId: string;
-  currentPassword: string;
   newPassword: string;
 };
 
@@ -103,21 +102,7 @@ export default function createAuthService({
       };
     },
 
-    async changePassword({
-      userId,
-      activeSessionId,
-      currentPassword,
-      newPassword,
-    }) {
-      const isCorrect = await usersService.isCorrectPassword({
-        userId,
-        password: currentPassword,
-      });
-
-      if (!isCorrect) {
-        throw new NotAuthorizedError('incorrect current password given');
-      }
-
+    async changePassword({ userId, activeSessionId, newPassword }) {
       await passwordService.setUserPasswordAndRevokeSessions(
         userId,
         newPassword,

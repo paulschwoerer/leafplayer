@@ -5,7 +5,11 @@ import Icon from 'components/icons/Icon/Icon';
 import ApiLoader from 'components/layout/ApiLoader';
 import Modal from 'components/modals/Modal/Modal';
 import { dateFromUnixTimestamp } from 'helpers/time';
-import { UserSession, UserSessionsResponseDto } from 'leafplayer-common';
+import {
+  RevokeSessionRequestDto,
+  UserSession,
+  UserSessionsResponseDto,
+} from 'leafplayer-common';
 import { isApiError, makeApiDeleteRequest } from 'modules/api';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
@@ -86,7 +90,7 @@ function sessionSort(a: UserSession, b: UserSession, currentSessionId: string) {
 
 function UserSessions(): ReactElement {
   const [sessionToRevoke, setSessionToRevoke] = useState<string | null>(null);
-  const [password, setPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
 
   const { logout } = useContext(AuthContext);
   const { showNotification } = useContext(NotificationContext);
@@ -94,9 +98,12 @@ function UserSessions(): ReactElement {
   async function revokeSession() {
     closeModal();
 
-    const response = await makeApiDeleteRequest(`sessions/${sessionToRevoke}`, {
-      password,
-    });
+    const response = await makeApiDeleteRequest<RevokeSessionRequestDto>(
+      `sessions/${sessionToRevoke}`,
+      {
+        currentPassword,
+      },
+    );
 
     if (isApiError(response)) {
       showNotification({
@@ -114,7 +121,7 @@ function UserSessions(): ReactElement {
 
   function closeModal(): void {
     setSessionToRevoke(null);
-    setPassword('');
+    setCurrentPassword('');
   }
 
   return (
@@ -157,8 +164,8 @@ function UserSessions(): ReactElement {
                     label="Password"
                     name="password"
                     type="password"
-                    value={password}
-                    onInput={ev => setPassword(ev.currentTarget.value)}
+                    value={currentPassword}
+                    onInput={ev => setCurrentPassword(ev.currentTarget.value)}
                   />
 
                   <ButtonPrimary type="submit">Revoke</ButtonPrimary>

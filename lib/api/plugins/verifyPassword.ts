@@ -23,11 +23,11 @@ export function createVerifyPasswordPlugin({
       'verifyPassword',
       async ({
         currentUser,
-        body: { password },
-      }: FastifyRequest<{ Body: { password: string } }>) => {
+        body: { currentPassword },
+      }: FastifyRequest<{ Body: { currentPassword: string } }>) => {
         const isCorrect = await usersService.isCorrectPassword({
           userId: currentUser.id,
-          password,
+          password: currentPassword,
         });
 
         if (!isCorrect) {

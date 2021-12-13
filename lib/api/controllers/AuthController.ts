@@ -68,21 +68,18 @@ export function createAuthController({
     server.post<{ Body: ChangePasswordRequestDto }>(
       '/password',
       {
-        preHandler: server.auth([server.verifyAuth]),
+        preHandler: server.auth([server.verifyAuth, server.verifyPassword], {
+          relation: 'and',
+        }),
         schema: ChangePasswordSchema,
       },
       async (
-        {
-          currentUser,
-          currentSessionId,
-          body: { currentPassword, newPassword },
-        },
+        { currentUser, currentSessionId, body: { newPassword } },
         reply,
       ) => {
         await authService.changePassword({
           userId: currentUser.id,
           activeSessionId: currentSessionId,
-          currentPassword,
           newPassword,
         });
 

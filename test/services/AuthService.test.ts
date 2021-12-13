@@ -130,27 +130,6 @@ test('logout() should delete active session', async t => {
   t.is(sessions[0].id, MOCK_SESSIONS[0].id);
 });
 
-test('changePassword() should reject an incorrect current password', async t => {
-  const { db } = t.context;
-  await db('users').insert({
-    ...MOCK_USER,
-    password: createPasswordHash('supersecret'),
-  });
-
-  const authService = setupService(db);
-
-  await t.throwsAsync(
-    () =>
-      authService.changePassword({
-        userId: MOCK_USER.id,
-        activeSessionId: 'notRelevant',
-        currentPassword: 'notthepassword',
-        newPassword: 'timeforachange',
-      }),
-    { instanceOf: NotAuthorizedError },
-  );
-});
-
 test('changePassword() should reject an insecure new password', async t => {
   const { db } = t.context;
   await db('users').insert({
@@ -165,7 +144,6 @@ test('changePassword() should reject an insecure new password', async t => {
       authService.changePassword({
         userId: MOCK_USER.id,
         activeSessionId: 'notRelevant',
-        currentPassword: 'supersecret',
         newPassword: 'pw',
       }),
     { instanceOf: ValidationError },
@@ -185,7 +163,6 @@ test('changePassword() should change the users password and invalidate non-activ
   await authService.changePassword({
     userId: MOCK_USER.id,
     activeSessionId: MOCK_SESSIONS[1].id,
-    currentPassword: 'supersecret',
     newPassword: 'timeforachange',
   });
 

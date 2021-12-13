@@ -18,12 +18,14 @@ const server = setupServer(
         sessions: [
           {
             id: '1',
+            userId: 'user1',
             browser: 'Firefox',
             os: 'Windows',
             lastUsedAt: Date.now(),
           },
           {
             id: '2',
+            userId: 'user1',
             browser: 'Firefox',
             os: 'Linux',
             lastUsedAt: 1621442580,
@@ -34,7 +36,7 @@ const server = setupServer(
     );
   }),
   rest.delete<RevokeSessionRequestDto>('/api/sessions/2', (req, res, ctx) => {
-    if (req.body.password !== 'supersecret') {
+    if (req.body.currentPassword !== 'supersecret') {
       return res(ctx.status(401));
     }
 

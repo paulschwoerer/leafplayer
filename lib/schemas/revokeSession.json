@@ -2,10 +2,10 @@
   "body": {
     "type": "object",
     "properties": {
-      "password": {
+      "currentPassword": {
         "type": "string"
       }
     },
-    "required": ["password"]
+    "required": ["currentPassword"]
   }
 }
