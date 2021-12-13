@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 
 import { isUuidV4 } from '@/helpers/uuid';
-import GetArtworkSchema from '@/schemas/getArtwork.json';
+import GetArtworkSchema from '@/api/schemas/getArtwork.json';
 import { ArtworksService } from '@/services/ArtworksService';
 import { ValidationError } from '@/errors/ValidationError';
 import { NotFoundError } from '@/errors/NotFoundError';

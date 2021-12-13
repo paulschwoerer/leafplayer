@@ -1,8 +1,8 @@
 import { FastifyPluginAsync } from 'fastify';
 import UAParser from 'ua-parser-js';
 
-import ChangePasswordSchema from '@/schemas/changePassword.json';
-import LoginSchema from '@/schemas/login.json';
+import ChangePasswordSchema from '@/api/schemas/changePassword.json';
+import LoginSchema from '@/api/schemas/login.json';
 import {
   AuthRequestDto,
   ChangePasswordRequestDto,

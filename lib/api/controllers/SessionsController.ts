@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 
 import { RevokeSessionRequestDto, UserSessionsResponseDto } from '@/common';
-import RevokeSessionSchema from '@/schemas/revokeSession.json';
+import RevokeSessionSchema from '@/api/schemas/revokeSession.json';
 import { SessionsService } from '@/services/SessionsService';
 
 type Injects = {

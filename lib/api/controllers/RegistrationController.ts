@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 
 import { RegisterRequestDto } from '@/common';
-import RegisterSchema from '@/schemas/register.json';
+import RegisterSchema from '@/api/schemas/register.json';
 import { RegistrationService } from '@/services/RegistrationService';
 
 type Injects = {
