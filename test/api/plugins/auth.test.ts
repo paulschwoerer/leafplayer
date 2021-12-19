@@ -1,8 +1,7 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
-import fastifyAuth from 'fastify-auth';
 
-import { createAuthPlugin } from '@/api/plugins/auth';
+import { createSessionAuthPlugin } from '@/api/plugins/sessionAuth';
 import { AuthService } from '@/services/AuthService';
 
 import {
@@ -17,9 +16,8 @@ async function setup(server: FastifyInstance): Promise<{
 }> {
   const authService = td.object<AuthService>();
 
-  await server.register(fastifyAuth);
   await server.register(
-    createAuthPlugin({
+    createSessionAuthPlugin({
       authService,
     }),
   );
@@ -33,7 +31,7 @@ test('auth endpoint should reject a request without session token', async t => {
 
   server.get(
     '/auth',
-    { preHandler: server.auth([server.verifyAuth]) },
+    { preHandler: server.auth([server.verifySession]) },
     async (_, reply) => {
       return reply.send('hello world');
     },
@@ -53,7 +51,7 @@ test('auth endpoint should reject a request with an invalid session token', asyn
 
   server.get(
     '/auth',
-    { preHandler: server.auth([server.verifyAuth]) },
+    { preHandler: server.auth([server.verifySession]) },
     async (_, reply) => {
       return reply.send('hello world');
     },
@@ -83,7 +81,7 @@ test('auth endpoint should register user when authenticated', async t => {
 
   server.get(
     '/auth',
-    { preHandler: server.auth([server.verifyAuth]) },
+    { preHandler: server.auth([server.verifySession]) },
     async (request, reply) => {
       t.is(request.currentSessionId, MOCK_SESSION_ID);
       t.deepEqual(request.currentUser, MOCK_USER);

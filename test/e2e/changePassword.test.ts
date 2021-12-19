@@ -1,12 +1,11 @@
 import { LightMyRequestResponse } from 'fastify';
 
-import { UserResponseDto, UserSessionsResponseDto } from '@/common';
 import { createPasswordHash } from '@/helpers/passwords';
 import { generateUuid } from '@/helpers/uuid';
 
 import test from './setupE2ETest';
 
-test('Login and logout process should work', async t => {
+test('password changing process should work', async t => {
   const { server, db } = t.context;
 
   await db('users').insert({
@@ -21,7 +20,21 @@ test('Login and logout process should work', async t => {
     url: '/api/auth/login',
     payload: {
       username: 'admin',
-      password: 'invalidPa$$word',
+      password: 'validPa$$word',
+    },
+  });
+
+  const sessionToken = extractSessionTokenFromResponse(response);
+
+  response = await server.inject({
+    method: 'POST',
+    url: '/api/auth/password',
+    payload: {
+      currentPassword: 'invalidPa$$word',
+      newPassword: 'supersecret',
+    },
+    cookies: {
+      id: sessionToken || '',
     },
   });
 
@@ -29,47 +42,25 @@ test('Login and logout process should work', async t => {
 
   response = await server.inject({
     method: 'POST',
-    url: '/api/auth/login',
+    url: '/api/auth/password',
     payload: {
-      username: 'admin',
-      password: 'validPa$$word',
+      currentPassword: 'validPa$$word',
+      newPassword: 'short',
     },
-  });
-
-  t.is(response.statusCode, 200);
-
-  const sessionToken = extractSessionTokenFromResponse(response);
-  response = await server.inject({
-    method: 'GET',
-    url: '/api/auth/user',
     cookies: {
       id: sessionToken || '',
     },
   });
 
-  const { user } = response.json<UserResponseDto>();
-  t.is(response.statusCode, 200);
-  t.is(user.username, 'admin');
-
-  response = await server.inject({
-    method: 'GET',
-    url: '/api/auth/sessions',
-    cookies: {
-      id: sessionToken || '',
-    },
-  });
-
-  t.is(response.statusCode, 200);
-
-  const { sessions, currentSessionId } =
-    response.json<UserSessionsResponseDto>();
-
-  t.is(sessions.length, 1);
-  t.is(sessions[0].id, currentSessionId);
+  t.is(response.statusCode, 400);
 
   response = await server.inject({
     method: 'POST',
-    url: '/api/auth/logout',
+    url: '/api/auth/password',
+    payload: {
+      currentPassword: 'validPa$$word',
+      newPassword: 'supersecret',
+    },
     cookies: {
       id: sessionToken || '',
     },
@@ -78,14 +69,15 @@ test('Login and logout process should work', async t => {
   t.is(response.statusCode, 204);
 
   response = await server.inject({
-    method: 'GET',
-    url: '/api/auth/user',
-    cookies: {
-      id: sessionToken || '',
+    method: 'POST',
+    url: '/api/auth/login',
+    payload: {
+      username: 'admin',
+      password: 'supersecret',
     },
   });
 
-  t.is(response.statusCode, 401);
+  t.is(response.statusCode, 200);
 });
 
 function extractSessionTokenFromResponse(

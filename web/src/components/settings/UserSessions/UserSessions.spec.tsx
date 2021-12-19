@@ -12,7 +12,7 @@ import React from 'react';
 import UserSessions from './UserSessions';
 
 const server = setupServer(
-  rest.get('/api/sessions', (req, res, ctx) => {
+  rest.get('/api/auth/sessions', (req, res, ctx) => {
     return res(
       ctx.json<UserSessionsResponseDto>({
         sessions: [
@@ -35,13 +35,16 @@ const server = setupServer(
       }),
     );
   }),
-  rest.delete<RevokeSessionRequestDto>('/api/sessions/2', (req, res, ctx) => {
-    if (req.body.currentPassword !== 'supersecret') {
-      return res(ctx.status(401));
-    }
+  rest.delete<RevokeSessionRequestDto>(
+    '/api/auth/sessions/2',
+    (req, res, ctx) => {
+      if (req.body.currentPassword !== 'supersecret') {
+        return res(ctx.status(401));
+      }
 
-    return res(ctx.status(204));
-  }),
+      return res(ctx.status(204));
+    },
+  ),
 );
 
 beforeAll(() => server.listen());

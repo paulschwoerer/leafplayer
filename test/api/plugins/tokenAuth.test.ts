@@ -1,6 +1,5 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
-import fastifyAuth from 'fastify-auth';
 
 import { createTokenAuthPlugin } from '@/api/plugins/tokenAuth';
 import { JwtService } from '@/services/JwtService';
@@ -12,7 +11,6 @@ async function setup(server: FastifyInstance): Promise<{
 }> {
   const jwtService = td.object<JwtService>();
 
-  await server.register(fastifyAuth);
   await server.register(
     createTokenAuthPlugin({
       jwtService,
@@ -21,7 +19,7 @@ async function setup(server: FastifyInstance): Promise<{
 
   server.get(
     '/',
-    { preHandler: server.auth([server.verifyTokenAuth]) },
+    { preHandler: server.auth([server.verifyToken]) },
     async (request, reply) => {
       return reply.send('hello world');
     },

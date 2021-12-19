@@ -5,7 +5,7 @@ import { createVerifyPasswordPlugin } from '@/api/plugins/verifyPassword';
 import { UsersService } from '@/services/UsersService';
 
 import test from '../setupTestServer';
-import { mockAuth } from '../mockAuth';
+import { mockSession } from '../mockSession';
 import { MOCK_SESSION_ID, MOCK_USER } from '../../testdata/mocks';
 
 async function setup(
@@ -13,13 +13,13 @@ async function setup(
 ): Promise<{ usersService: UsersService }> {
   const usersService = td.object<UsersService>();
 
-  await server.register(mockAuth(MOCK_SESSION_ID, MOCK_USER));
+  await server.register(mockSession(MOCK_SESSION_ID, MOCK_USER));
   await server.register(createVerifyPasswordPlugin({ usersService }));
 
   server.post(
     '/',
     {
-      preHandler: server.auth([server.verifyAuth, server.verifyPassword], {
+      preHandler: server.auth([server.verifySession, server.verifyPassword], {
         relation: 'and',
       }),
     },

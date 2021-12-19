@@ -2,36 +2,37 @@ import { AwilixContainer } from 'awilix';
 import { FastifyPluginAsync } from 'fastify';
 import fastifyAuth from 'fastify-auth';
 
-import { createAlbumsController } from './controllers/AlbumsController';
-import { createArtistsController } from './controllers/ArtistsController';
-import { createArtworksController } from './controllers/ArtworksController';
-import { createAuthController } from './controllers/AuthController';
-import { createDiscoverController } from './controllers/DiscoverController';
-import { createRegistrationController } from './controllers/RegistrationController';
-import { createSearchController } from './controllers/SearchController';
-import { createSessionsController } from './controllers/SessionsController';
-import { createStreamController } from './controllers/StreamController';
 import { errorHandler } from './errorHandler';
-import { createAuthPlugin } from './plugins/auth';
+import { createSessionAuthPlugin } from './plugins/sessionAuth';
 import { sortPlugin } from './plugins/sort';
 import { createTokenAuthPlugin } from './plugins/tokenAuth';
 import { createVerifyPasswordPlugin } from './plugins/verifyPassword';
+import { changePassword } from './routes/auth/changePassword';
+import { findAlbums } from './routes/albums/findAlbums';
+import { getAlbum } from './routes/albums/getAlbum';
+import { logout } from './routes/auth/logout';
+import { getAlbumSongs } from './routes/albums/getAlbumSongs';
+import { currentUser } from './routes/auth/currentUser';
+import { login } from './routes/auth/login';
+import { getArtist } from './routes/artists/getArtist';
+import { findArtists } from './routes/artists/findArtists';
+import { getArtistSongs } from './routes/artists/getArtistSongs';
+import { getArtwork } from './routes/getArtwork';
+import { getAudioStream } from './routes/getAudioStream';
+import { search } from './routes/search';
+import { register } from './routes/auth/register';
+import { getSessions } from './routes/auth/getSessions';
+import { revokeSession } from './routes/auth/revokeSession';
+import { getRecentAlbums } from './routes/discover/getRecentAlbums';
+import { getRandomAlbums } from './routes/discover/getRandomAlbums';
+import { getRandomArtists } from './routes/discover/getRandomArtists';
+import { getRandomArtist } from './routes/discover/getRandomArtist';
+import { getRandomAlbum } from './routes/discover/getRandomAlbum';
 
 export function initApi(container: AwilixContainer): FastifyPluginAsync {
-  const authPlugin = container.build(createAuthPlugin);
+  const authPlugin = container.build(createSessionAuthPlugin);
   const tokenAuthPlugin = container.build(createTokenAuthPlugin);
   const verifyPasswordPlugin = container.build(createVerifyPasswordPlugin);
-
-  const authController = container.build(createAuthController);
-  const registrationController = container.build(createRegistrationController);
-  const sessionsController = container.build(createSessionsController);
-  const albumsController = container.build(createAlbumsController);
-  const artistsController = container.build(createArtistsController);
-  const discoverController = container.build(createDiscoverController);
-  const searchController = container.build(createSearchController);
-  const streamController = container.build(createStreamController);
-
-  const artworksController = container.build(createArtworksController);
 
   return async server => {
     await server.register(fastifyAuth);
@@ -42,14 +43,31 @@ export function initApi(container: AwilixContainer): FastifyPluginAsync {
 
     server.setErrorHandler(errorHandler);
 
-    await server.register(authController, { prefix: 'auth' });
-    await server.register(registrationController, { prefix: 'auth' });
-    await server.register(sessionsController, { prefix: 'sessions' });
-    await server.register(artworksController, { prefix: 'artworks' });
-    await server.register(albumsController, { prefix: 'albums' });
-    await server.register(artistsController, { prefix: 'artists' });
-    await server.register(discoverController, { prefix: 'discover' });
-    await server.register(searchController, { prefix: 'search' });
-    await server.register(streamController, { prefix: 'stream' });
+    await server.register(container.build(register));
+    await server.register(container.build(login));
+    await server.register(container.build(changePassword));
+    await server.register(container.build(currentUser));
+    await server.register(container.build(logout));
+    await server.register(container.build(getSessions));
+    await server.register(container.build(revokeSession));
+
+    await server.register(container.build(getRecentAlbums));
+    await server.register(container.build(getRandomAlbums));
+    await server.register(container.build(getRandomArtists));
+    await server.register(container.build(getRandomArtist));
+    await server.register(container.build(getRandomAlbum));
+
+    await server.register(container.build(getArtist));
+    await server.register(container.build(findArtists));
+    await server.register(container.build(getArtistSongs));
+
+    await server.register(container.build(getAlbum));
+    await server.register(container.build(findAlbums));
+    await server.register(container.build(getAlbumSongs));
+
+    await server.register(container.build(search));
+
+    await server.register(container.build(getArtwork));
+    await server.register(container.build(getAudioStream));
   };
 }

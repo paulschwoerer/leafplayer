@@ -1,5 +1,6 @@
 import fastify, { FastifyInstance } from 'fastify';
 import anyTest, { TestInterface } from 'ava';
+import fastifyAuth from 'fastify-auth';
 
 import { errorHandler } from '@/api/errorHandler';
 
@@ -7,17 +8,19 @@ const test = anyTest as TestInterface<{
   server: FastifyInstance;
 }>;
 
-test.beforeEach(t => {
-  t.context.server = createTestServer();
+test.beforeEach(async t => {
+  t.context.server = await createTestServer();
 });
 test.afterEach(async t => {
   await t.context.server.close();
 });
 
-function createTestServer(): FastifyInstance {
+async function createTestServer(): Promise<FastifyInstance> {
   const server = fastify({ logger: process.env.TEST_DEBUG === 'true' });
 
   server.setErrorHandler(errorHandler);
+
+  await server.register(fastifyAuth);
 
   return server;
 }

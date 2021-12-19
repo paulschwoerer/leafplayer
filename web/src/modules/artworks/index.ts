@@ -13,7 +13,7 @@ export function buildArtworkUrl(
   { type, id, size }: UseArtworkUrlProps,
   authToken: string,
 ): string {
-  return buildApiUrl(`artworks/${type}/${id}?size=${size}&token=${authToken}`);
+  return buildApiUrl(`artwork/${type}/${id}?size=${size}&token=${authToken}`);
 }
 
 export function useThemedUrl(dayUrl: string, nightUrl: string): string {

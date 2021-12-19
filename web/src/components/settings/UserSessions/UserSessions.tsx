@@ -99,7 +99,7 @@ function UserSessions(): ReactElement {
     closeModal();
 
     const response = await makeApiDeleteRequest<RevokeSessionRequestDto>(
-      `sessions/${sessionToRevoke}`,
+      `auth/sessions/${sessionToRevoke}`,
       {
         currentPassword,
       },
@@ -127,7 +127,7 @@ function UserSessions(): ReactElement {
   return (
     <div className={styles.root}>
       <ApiLoader<UserSessionsResponseDto>
-        slug="sessions"
+        slug="auth/sessions"
         renderContent={({ sessions, currentSessionId }, reloadSessions) => {
           const sorted = sessions.sort((a, b) =>
             sessionSort(a, b, currentSessionId),

@@ -8,7 +8,7 @@ import { JwtService } from '@/services/JwtService';
 
 declare module 'fastify' {
   interface FastifyInstance {
-    verifyTokenAuth: FastifyAuthFunction;
+    verifyToken: FastifyAuthFunction;
   }
 }
 
@@ -23,7 +23,7 @@ export function createTokenAuthPlugin({
 }: Injects): FastifyPluginAsync {
   return fp(async function (server) {
     server.decorate(
-      'verifyTokenAuth',
+      'verifyToken',
       async (request: FastifyRequest<TokenParams>) => {
         const token = request.query.token;
 

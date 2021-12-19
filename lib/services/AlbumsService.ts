@@ -5,6 +5,7 @@ import { toFullAlbum } from '@/mappers/albums';
 import { createAlbumsQuery, orderBy } from '@/query/albums';
 import { SortParam } from '@/typings/SortParam';
 import { generateUuid } from '@/helpers/uuid';
+import { NotFoundError } from '@/errors/NotFoundError';
 
 import { SongsService } from './SongsService';
 
@@ -14,7 +15,7 @@ export interface AlbumsService {
     artistId: string;
     year?: number;
   }): Promise<string>;
-  findById(id: string): Promise<FullAlbum | undefined>;
+  findById(id: string): Promise<FullAlbum>;
   find(sort?: SortParam): Promise<FullAlbum[]>;
   findSongsOfAlbum(albumId: string): Promise<FullSong[]>;
   findIdByNameAndArtistId(params: {
@@ -54,7 +55,7 @@ export default function createAlbumsService({
       const row = await createAlbumsQuery(db).where('albums.id', id).first();
 
       if (!row) {
-        return undefined;
+        throw new NotFoundError();
       }
 
       return toFullAlbum(row);
