@@ -85,3 +85,45 @@ test('login endpoint should send the user and tokens when providing valid creden
   t.deepEqual(body.user, MOCK_USER);
   t.is(body.artworkToken, MOCK_JWT_TOKEN);
 });
+
+test('login endpoint should set the session cookie correctly when asking to stay logged in', async t => {
+  const config = td.object<LeafplayerConfig>();
+  const authService = td.object<AuthService>();
+  const jwtService = td.object<JwtService>();
+  config.security.sessionMaxAge = 3600;
+  td.when(
+    authService.login(
+      {
+        username: 'testuser',
+        password: 'supersecret',
+      },
+      td.matchers.anything(),
+    ),
+  ).thenResolve({
+    user: MOCK_USER,
+    sessionToken: MOCK_SESSION_TOKEN,
+  });
+  td.when(jwtService.makeJwtToken()).thenReturn(MOCK_JWT_TOKEN);
+
+  const { server } = t.context;
+  await server.register(login({ config, authService, jwtService }));
+
+  const response = await server.inject({
+    method: 'POST',
+    path: '/auth/login',
+    payload: {
+      username: 'testuser',
+      password: 'supersecret',
+      stayLoggedIn: true,
+    },
+  });
+
+  const body = response.json();
+  t.is(response.statusCode, 200);
+  t.is(
+    response.headers['set-cookie'],
+    `id=${MOCK_SESSION_TOKEN}; SameSite=Lax; HttpOnly; Path=/api; Max-Age=3600`,
+  );
+  t.deepEqual(body.user, MOCK_USER);
+  t.is(body.artworkToken, MOCK_JWT_TOKEN);
+});
