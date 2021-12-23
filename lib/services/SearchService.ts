@@ -24,7 +24,7 @@ export interface SearchService {
   }>;
 }
 
-export function createSearchService({ db }: Injects): SearchService {
+export default function createSearchService({ db }: Injects): SearchService {
   const artistCount = 5;
   const albumCount = 5;
   const songCount = 10;

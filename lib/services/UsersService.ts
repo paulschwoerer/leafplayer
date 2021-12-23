@@ -2,32 +2,44 @@ import { Knex } from 'knex';
 
 import { User } from '@/common';
 import { UserRow } from '@/database/rows';
-import { createPasswordHash } from '@/helpers/passwords';
+import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
 import { generateUuid } from '@/helpers/uuid';
+import { NotFoundError } from '@/errors/NotFoundError';
 
-type CreateUserParams = {
+type CreationParams = {
   username: string;
   displayName: string;
   password: string;
 };
+
 export interface UsersService {
-  createUser({
-    username,
-    displayName,
-    password,
-  }: CreateUserParams): Promise<string>;
-  getAllUsers(): Promise<User[]>;
-  doesUserExist(username: string): Promise<boolean>;
-  findByUsername(username: string): Promise<UserRow | undefined>;
+  getById(id: string): Promise<User | undefined>;
+  create(params: CreationParams): Promise<string>;
+  findAll(): Promise<User[]>;
+  exists(username: string): Promise<boolean>;
+  findWithPasswordByUsername(username: string): Promise<UserRow | undefined>;
+  isCorrectPassword(params: {
+    userId: string;
+    password: string;
+  }): Promise<boolean>;
 }
 
 type Injects = {
   db: Knex;
 };
 
-export function createUsersService({ db }: Injects): UsersService {
+export default function createUsersService({ db }: Injects): UsersService {
   return {
-    async createUser({ username, displayName, password }) {
+    async getById(id: string) {
+      return db('users')
+        .select('id', 'username', 'displayName')
+        .where({
+          id,
+        })
+        .first();
+    },
+
+    async create({ username, displayName, password }) {
       const id = generateUuid();
 
       await db('users').insert({
@@ -40,7 +52,7 @@ export function createUsersService({ db }: Injects): UsersService {
       return id;
     },
 
-    async doesUserExist(username) {
+    async exists(username) {
       const row = await db('users')
         .select('id')
         .where({ username: username.toLocaleLowerCase() })
@@ -49,7 +61,7 @@ export function createUsersService({ db }: Injects): UsersService {
       return !!row;
     },
 
-    async getAllUsers() {
+    async findAll() {
       const rows = await db('users')
         .select('id', 'username', 'displayName')
         .where(true);
@@ -57,10 +69,22 @@ export function createUsersService({ db }: Injects): UsersService {
       return rows;
     },
 
-    async findByUsername(username) {
+    async findWithPasswordByUsername(username) {
       return db('users')
         .where({ username: username.toLocaleLowerCase() })
         .first();
+    },
+
+    async isCorrectPassword({ userId, password }) {
+      const row = await db('users').where({ id: userId }).first();
+
+      if (!row) {
+        throw new NotFoundError(
+          `cannot find user while checking password [id=${userId}]`,
+        );
+      }
+
+      return comparePasswords(password, row.password);
     },
   };
 }

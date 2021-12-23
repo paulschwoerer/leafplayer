@@ -14,7 +14,7 @@ export interface SongsService {
   findAllWhere(params: Partial<SongRow>): Promise<FullSong[]>;
 }
 
-export function createSongsService({ db }: Injects): SongsService {
+export default function createSongsService({ db }: Injects): SongsService {
   return {
     async findAllWhere(params) {
       const orderedByDiskAndTrack = orderByDiscAndTrack();

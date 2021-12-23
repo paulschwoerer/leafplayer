@@ -17,7 +17,9 @@ type Injects = {
   db: Knex;
 };
 
-export function createDiscoverService({ db }: Injects): DiscoverService {
+export default function createDiscoverService({
+  db,
+}: Injects): DiscoverService {
   return {
     async findRandomArtists(count) {
       const randomIds = await findRandomIdsOfTable(db, 'artists', count);

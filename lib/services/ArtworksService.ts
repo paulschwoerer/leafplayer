@@ -23,7 +23,9 @@ type Injects = {
   };
 };
 
-export function createArtworksService({ config }: Injects): ArtworksService {
+export default function createArtworksService({
+  config,
+}: Injects): ArtworksService {
   return {
     async createArtworkStream(prefix, id, size) {
       const artworkPath = path.join(

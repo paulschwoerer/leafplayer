@@ -17,6 +17,7 @@
     "no-await-in-loop": "warn",
     "@typescript-eslint/no-floating-promises": "error",
     "import/no-unresolved": "off",
+    "import/named": "off",
     "import/order": [
       "error",
       {

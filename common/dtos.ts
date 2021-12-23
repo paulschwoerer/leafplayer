@@ -71,5 +71,5 @@ export type SearchResponseDto = {
 };
 
 export type RevokeSessionRequestDto = {
-  password: string;
+  currentPassword: string;
 };

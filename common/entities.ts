@@ -44,6 +44,7 @@ export type User = {
 
 export type UserSession = {
   id: string;
+  userId: string;
   browser: string;
   os: string;
   lastUsedAt: number;

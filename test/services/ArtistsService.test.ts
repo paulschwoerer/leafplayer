@@ -1,31 +1,24 @@
-import anyTest, { TestInterface } from 'ava';
 import { Knex } from 'knex';
 
-import { createAlbumsService } from '@/services/AlbumsService';
-import { createArtistsService } from '@/services/ArtistsService';
-import { createSongsService } from '@/services/SongsService';
+import createAlbumsService from '@/services/AlbumsService';
+import createArtistsService from '@/services/ArtistsService';
+import createSongsService from '@/services/SongsService';
+import { FileFormat } from '@/scanner/types';
 
-import { FileFormat } from '../../lib/scanner/types';
-import { afterEachHook, beforeEachHook, TestContext } from '../testContext';
+import test from '../setupTestDB';
 
-const test = anyTest as TestInterface<TestContext>;
-
-test.beforeEach(beforeEachHook);
-test.afterEach(afterEachHook);
-
-function createServiceUnderTest(db: Knex) {
+function setupService(db: Knex) {
   const songsService = createSongsService({ db });
   return createArtistsService({
-    db,
     albumsService: createAlbumsService({ db, songsService }),
+    db,
     songsService,
   });
 }
 
-test('find -> it should find and sort artists', async ({
-  context: { db },
-  is,
-}) => {
+test('find -> it should find and sort artists', async t => {
+  const { db } = t.context;
+
   await db('artists').insert([
     {
       id: 'e7d6b934-a264-4661-a888-53f3e63aefe8',
@@ -41,7 +34,7 @@ test('find -> it should find and sort artists', async ({
     },
   ]);
 
-  const artistsService = createServiceUnderTest(db);
+  const artistsService = setupService(db);
 
   const artistsAsc = await artistsService.find();
   const artistsDesc = await artistsService.find({
@@ -49,56 +42,53 @@ test('find -> it should find and sort artists', async ({
     field: 'name',
   });
 
-  is(artistsAsc[0].name, 'Best Artist');
-  is(artistsAsc[1].name, 'Favourite Artist');
-  is(artistsAsc[2].name, 'Least Favourite Artist');
+  t.is(artistsAsc[0].name, 'Best Artist');
+  t.is(artistsAsc[1].name, 'Favourite Artist');
+  t.is(artistsAsc[2].name, 'Least Favourite Artist');
 
-  is(artistsDesc[0].name, 'Least Favourite Artist');
-  is(artistsDesc[1].name, 'Favourite Artist');
-  is(artistsDesc[2].name, 'Best Artist');
+  t.is(artistsDesc[0].name, 'Least Favourite Artist');
+  t.is(artistsDesc[1].name, 'Favourite Artist');
+  t.is(artistsDesc[2].name, 'Best Artist');
 });
 
-test('findById -> it should return an artist', async ({
-  context: { db },
-  is,
-}) => {
+test('findById -> it should return an artist', async t => {
+  const { db } = t.context;
+
   await db('artists').insert({
     id: '5e6195d4-62e8-4a8a-a2c8-9918d4b6a76b',
     name: 'Artist',
   });
 
-  const artistsService = createServiceUnderTest(db);
+  const artistsService = setupService(db);
 
   const artist = await artistsService.findById(
     '5e6195d4-62e8-4a8a-a2c8-9918d4b6a76b',
   );
 
-  is(artist?.name, 'Artist');
+  t.is(artist?.name, 'Artist');
 });
 
-test('findById -> it should return an artist with album and song count of zero', async ({
-  context: { db },
-  is,
-}) => {
+test('findById -> it should return an artist with album and song count of zero', async t => {
+  const { db } = t.context;
+
   await db('artists').insert({
     id: 'af92c305-bcd5-462a-90f5-6d148e265e7a',
     name: 'Musicless Artist',
   });
 
-  const artistsService = createServiceUnderTest(db);
+  const artistsService = setupService(db);
 
   const artist = await artistsService.findById(
     'af92c305-bcd5-462a-90f5-6d148e265e7a',
   );
 
-  is(artist?.albumCount, 0);
-  is(artist?.songCount, 0);
+  t.is(artist?.albumCount, 0);
+  t.is(artist?.songCount, 0);
 });
 
-test('findById -> it should return an artist with album count of two', async ({
-  context: { db },
-  is,
-}) => {
+test('findById -> it should return an artist with album count of two', async t => {
+  const { db } = t.context;
+
   await db('artists').insert({
     id: 'a91b6ad5-a145-4633-8789-f7db2c48c1f9',
     name: 'Artist',
@@ -117,19 +107,18 @@ test('findById -> it should return an artist with album count of two', async ({
     },
   ]);
 
-  const artistsService = createServiceUnderTest(db);
+  const artistsService = setupService(db);
 
   const artist = await artistsService.findById(
     'a91b6ad5-a145-4633-8789-f7db2c48c1f9',
   );
 
-  is(artist?.albumCount, 2);
+  t.is(artist?.albumCount, 2);
 });
 
-test('findById -> it should return an artist with song count of two', async ({
-  context: { db },
-  is,
-}) => {
+test('findById -> it should return an artist with song count of two', async t => {
+  const { db } = t.context;
+
   await db('artists').insert({
     id: 'a1e3377a-d1fe-470f-9311-c8d4999ec55b',
     name: 'Artist',
@@ -170,11 +159,11 @@ test('findById -> it should return an artist with song count of two', async ({
     },
   ]);
 
-  const artistsService = createServiceUnderTest(db);
+  const artistsService = setupService(db);
 
   const artist = await artistsService.findById(
     'a1e3377a-d1fe-470f-9311-c8d4999ec55b',
   );
 
-  is(artist?.songCount, 2);
+  t.is(artist?.songCount, 2);
 });

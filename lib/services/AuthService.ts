@@ -1,11 +1,10 @@
-import jwt from 'jsonwebtoken';
-import { Knex } from 'knex';
-
 import { User } from '@/common';
 import { LeafplayerConfig } from '@/config';
-import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
+import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
+import { comparePasswords } from '@/helpers/passwords';
 import { getCurrentUnixTimestamp } from '@/helpers/time';
 
+import { PasswordService } from './PasswordService';
 import { SessionsService } from './SessionsService';
 import { UsersService } from './UsersService';
 
@@ -14,64 +13,57 @@ type Credentials = {
   password: string;
 };
 
+type ChangePasswordParams = {
+  userId: string;
+  activeSessionId: string;
+  newPassword: string;
+};
+
 type Browser = {
   name: string;
   os: string;
 };
 
+type SessionWithUser = {
+  id: string;
+  user: User;
+};
+
 type Injects = {
-  db: Knex;
   config: LeafplayerConfig;
-  sessionsService: SessionsService;
   usersService: UsersService;
+  sessionsService: SessionsService;
+  passwordService: PasswordService;
 };
 
 export interface AuthService {
-  authenticate(
+  login(
     credentials: Credentials,
     browser: Browser,
-  ): Promise<{ user: User; sessionToken: string } | Error>;
+  ): Promise<{ user: User; sessionToken: string }>;
+  authenticate(sessionToken: string): Promise<SessionWithUser>;
+  changePassword(params: ChangePasswordParams): Promise<void>;
   logout(sessionId: string): Promise<void>;
-  changeUserPassword(params: {
-    userId: string;
-    newPassword: string;
-    activeSessionId: string;
-  }): Promise<Error | void>;
-  makeJwtToken(): string;
-  isValidJwtToken(token: string): boolean;
-  validatePasswordSecurity(password: string): Error | void;
 }
 
-export function createAuthService({
-  db,
-  config: { security: securityConfig },
-  sessionsService,
+export default function createAuthService({
+  config,
   usersService,
+  sessionsService,
+  passwordService,
 }: Injects): AuthService {
-  function generateSessionExpireTimestamp(from: number): number {
-    return from + securityConfig.sessionMaxAge;
-  }
-
-  function validatePasswordSecurity(password: string): Error | void {
-    if (password.length < securityConfig.minimumPasswordLength) {
-      return Error(
-        `Password needs at least ${securityConfig.minimumPasswordLength} characters`,
-      );
-    }
-  }
-
   return {
-    async authenticate({ username, password }, browser) {
-      const user = await usersService.findByUsername(username);
+    async login({ username, password }, browser) {
+      const user = await usersService.findWithPasswordByUsername(username);
 
       if (!user || !comparePasswords(password, user.password)) {
-        return Error('Invalid credentials');
+        throw new NotAuthorizedError('Invalid credentials');
       }
 
       const sessionToken = await sessionsService.create({
         userId: user.id,
         browser,
-        maxAge: securityConfig.sessionMaxAge,
+        maxAge: config.security.sessionMaxAge,
       });
 
       return {
@@ -84,55 +76,44 @@ export function createAuthService({
       };
     },
 
-    logout(sessionId) {
-      return sessionsService.deleteById(sessionId);
-    },
+    async authenticate(token) {
+      const session = await sessionsService.get({
+        token,
+      });
 
-    async changeUserPassword({ userId, newPassword, activeSessionId }) {
-      const pwResult = validatePasswordSecurity(newPassword);
-      if (pwResult instanceof Error) {
-        return pwResult;
+      if (!session) {
+        throw new NotAuthorizedError('Invalid or expired session');
       }
 
-      await db.transaction(async trx => {
-        await trx('users')
-          .update({
-            password: createPasswordHash(newPassword),
-          })
-          .where({
-            id: userId,
-          });
+      const user = await usersService.getById(session.userId);
 
-        await trx('sessions')
-          .delete()
-          .where({
-            userId,
-          })
-          .whereNot({
-            id: activeSessionId,
-          });
+      if (!user) {
+        console.log('found session without user when authenticating');
+        throw new NotAuthorizedError('Invalid or expired session');
+      }
+
+      await sessionsService.update(session.id, {
+        lastUsedAt: getCurrentUnixTimestamp(),
       });
+
+      return {
+        id: session.id,
+        user,
+      };
     },
 
-    makeJwtToken() {
-      return jwt.sign(
+    async changePassword({ userId, activeSessionId, newPassword }) {
+      await passwordService.setUserPasswordAndRevokeSessions(
+        userId,
+        newPassword,
         {
-          exp: generateSessionExpireTimestamp(getCurrentUnixTimestamp()),
+          excludedSessionId: activeSessionId,
         },
-        securityConfig.secret,
       );
     },
 
-    isValidJwtToken(token) {
-      try {
-        jwt.verify(token, securityConfig.secret);
-
-        return true;
-      } catch (e) {
-        return false;
-      }
+    async logout(sessionId) {
+      await sessionsService.deleteById(sessionId);
     },
-
-    validatePasswordSecurity,
   };
 }
