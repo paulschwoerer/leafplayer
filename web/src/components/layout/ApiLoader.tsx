@@ -14,7 +14,7 @@ function ApiLoader<TData>({
   renderContent,
   useCachedData,
 }: Props<TData>): ReactElement {
-  const [{ data, error, isLoading }, reload] = useApiData<TData>(slug);
+  const [{ data, error, isLoading }, { reload }] = useApiData<TData>(slug);
 
   const cacheAvailable = !!data;
   const useCache = useCachedData && cacheAvailable;

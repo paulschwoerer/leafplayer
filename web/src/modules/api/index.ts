@@ -16,6 +16,11 @@ type UseApiState<T> = {
   error?: ApiError;
 };
 
+type UseApiActions<T> = {
+  reload: () => void;
+  setData: (data: T) => void;
+};
+
 export function buildApiUrl(slug: string): string {
   return `/api/${slug}`;
 }
@@ -99,7 +104,7 @@ export function makeApiDeleteRequest<TBody = unknown>(
 
 export function useApiData<TResponse = unknown>(
   slug: string,
-): [UseApiState<TResponse>, () => void] {
+): [UseApiState<TResponse>, UseApiActions<TResponse>] {
   const [data, setData] = useState<TResponse | undefined>(undefined);
   const [error, setError] = useState<ApiError | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
@@ -136,6 +141,9 @@ export function useApiData<TResponse = unknown>(
       isLoading,
       error,
     },
-    execute,
+    {
+      reload: execute,
+      setData,
+    },
   ];
 }
