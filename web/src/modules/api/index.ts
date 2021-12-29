@@ -16,10 +16,6 @@ type UseApiState<T> = {
   error?: ApiError;
 };
 
-type UseApiOptions = {
-  manual?: boolean;
-};
-
 export function buildApiUrl(slug: string): string {
   return `/api/${slug}`;
 }
@@ -103,13 +99,10 @@ export function makeApiDeleteRequest<TBody = unknown>(
 
 export function useApiData<TResponse = unknown>(
   slug: string,
-  options: UseApiOptions = {
-    manual: false,
-  },
 ): [UseApiState<TResponse>, () => void] {
   const [data, setData] = useState<TResponse | undefined>(undefined);
   const [error, setError] = useState<ApiError | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(!options.manual);
+  const [isLoading, setIsLoading] = useState(true);
   const { storeUser } = useContext(AuthContext);
   const history = useHistory();
 
@@ -134,10 +127,8 @@ export function useApiData<TResponse = unknown>(
   }, [slug, history, storeUser]);
 
   useEffect(() => {
-    if (!options?.manual) {
-      execute().catch(console.error);
-    }
-  }, [execute, options?.manual]);
+    execute().catch(console.error);
+  }, [execute]);
 
   return [
     {
