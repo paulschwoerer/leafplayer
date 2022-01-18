@@ -69,6 +69,20 @@ body {
   scrollbar-color:
     var(--color-primary)
     transparent;
+
+  &:focus {
+    outline: 1px solid currentColor;
+  }
+  
+  @supports #{'\selector(*:focus-visible)'}  {
+    &:focus {
+      outline: 0;
+    }
+
+    &:focus-visible {
+      outline: 1px solid currentColor;
+    }
+  }
 }
 
 @font-face {
