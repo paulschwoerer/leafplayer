@@ -53,7 +53,7 @@ You should now see the Leafplayer web interface by navigating to [localhost:3000
 
 ### Without Docker (Linux only)
 
-You need to have a working install of [NodeJS](https://nodejs.org/en/download/) v14.x.x.
+You need to have a working install of [NodeJS](https://nodejs.org/en/download/) >= v14.17.
 
 ```sh
 # check your node version

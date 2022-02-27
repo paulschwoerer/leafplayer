@@ -1,4 +1,4 @@
-ARG IMAGE_VERSION=14.16-alpine
+ARG IMAGE_VERSION=14.17-alpine
 
 # --------------------------
 # BUILD
