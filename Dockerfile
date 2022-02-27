@@ -34,8 +34,6 @@ ENV NODE_ENV=production
 ENV HOST 0.0.0.0
 ENV PORT 3000
 
-RUN npm install --global ts-patch
-
 RUN mkdir -p /var/lib/leafplayer && \
   chown -R node:node /var/lib/leafplayer
 
@@ -44,10 +42,12 @@ RUN chown node:node /app
 
 USER node
 
-COPY --chown=node:node package*.json ./
+COPY --from=builder /app/build .
+COPY --chown=node:node package-lock.json .
+
 RUN npm ci --quiet --only=production
 
-COPY --from=builder /app/build .
+RUN rm package-lock.json
 
 VOLUME /var/lib/leafplayer
 
