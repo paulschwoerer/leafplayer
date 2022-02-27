@@ -47,7 +47,7 @@ function Landing(): ReactElement {
       <ApiLoader<AlbumsResponseDto>
         slug="discover/albums"
         useCachedData
-        renderContent={({ albums }, reload) =>
+        renderContent={({ albums }, { reload }) =>
           albums.length ? (
             <Carousel
               headline="Albums you might like"
@@ -71,7 +71,7 @@ function Landing(): ReactElement {
       <ApiLoader<ArtistsResponseDto>
         slug="discover/artists"
         useCachedData
-        renderContent={({ artists }, reload) =>
+        renderContent={({ artists }, { reload }) =>
           artists.length ? (
             <Carousel
               headline="Artists you might like"

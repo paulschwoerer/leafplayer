@@ -7,6 +7,7 @@ import { createAlbumsQuery, orderByYearDesc } from '@/query/albums';
 import { createArtistQuery, orderBy } from '@/query/artists';
 import { SortParam } from '@/typings/SortParam';
 import { generateUuid } from '@/helpers/uuid';
+import { NotFoundError } from '@/errors/NotFoundError';
 
 import { AlbumsService } from './AlbumsService';
 import { SongsService } from './SongsService';
@@ -22,11 +23,11 @@ type ArtistWithAlbums = {
 
 export interface ArtistsService {
   find(sort?: SortParam): Promise<FullArtist[]>;
-  findById(id: string): Promise<FullArtist | undefined>;
+  findById(id: string): Promise<FullArtist>;
   create(params: { name: string }): Promise<string>;
   findIdByName(name: string): Promise<string | undefined>;
   findAllSongsByArtist(id: string): Promise<FullSong[]>;
-  findByIdWithAlbums(id: string): Promise<ArtistWithAlbums | undefined>;
+  findByIdWithAlbums(id: string): Promise<ArtistWithAlbums>;
   getAlbumsOfArtist(artistId: string): Promise<FullAlbum[]>;
   getAlbumsArtistAppearsOn(artistId: string): Promise<FullAlbum[]>;
 }
@@ -59,7 +60,7 @@ export default function createArtistsService({
       const row = await createArtistQuery(db).where('artists.id', id).first();
 
       if (!row) {
-        return undefined;
+        throw new NotFoundError(`artist with id '${id}' does not exist`);
       }
 
       return toFullArtist(row);
@@ -82,10 +83,6 @@ export default function createArtistsService({
 
     async findByIdWithAlbums(id) {
       const artist = await this.findById(id);
-
-      if (!artist) {
-        return undefined;
-      }
 
       const [albums, appearsOn] = await Promise.all([
         this.getAlbumsOfArtist(id),

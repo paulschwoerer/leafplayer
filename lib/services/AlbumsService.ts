@@ -55,7 +55,7 @@ export default function createAlbumsService({
       const row = await createAlbumsQuery(db).where('albums.id', id).first();
 
       if (!row) {
-        throw new NotFoundError();
+        throw new NotFoundError(`album with id '${id}' does not exist`);
       }
 
       return toFullAlbum(row);

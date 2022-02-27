@@ -3,9 +3,14 @@ import React, { ReactElement } from 'react';
 import FullPageErrorIndicator from './FullPageErrorIndicator/FullPageErrorIndicator';
 import FullPageLoadingIndicator from './FullPageLoadingIndicator/FullPageLoadingIndicator';
 
+type Actions<TData> = {
+  reload: () => void;
+  setData: (data: TData) => void;
+};
+
 type Props<TData> = {
   slug: string;
-  renderContent: (data: TData, reload: () => void) => ReactElement;
+  renderContent: (data: TData, actions: Actions<TData>) => ReactElement;
   useCachedData?: boolean;
 };
 
@@ -14,7 +19,7 @@ function ApiLoader<TData>({
   renderContent,
   useCachedData,
 }: Props<TData>): ReactElement {
-  const [{ data, error, isLoading }, { reload }] = useApiData<TData>(slug);
+  const [{ data, error, isLoading }, actions] = useApiData<TData>(slug);
 
   const cacheAvailable = !!data;
   const useCache = useCachedData && cacheAvailable;
@@ -27,7 +32,7 @@ function ApiLoader<TData>({
     return <FullPageErrorIndicator message={error?.error || 'Unknown error'} />;
   }
 
-  return renderContent(data, reload);
+  return renderContent(data, actions);
 }
 
 export default ApiLoader;

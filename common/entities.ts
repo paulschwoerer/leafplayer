@@ -49,3 +49,32 @@ export type UserSession = {
   os: string;
   lastUsedAt: number;
 };
+
+export type SearchResults = {
+  albums: FullAlbum[];
+  artists: FullArtist[];
+  songs: FullSong[];
+};
+
+export type SearchHistoryEntry =
+  | ArtistSearchHistoryEntry
+  | AlbumSearchHistoryEntry
+  | SongSearchHistoryEntry;
+
+export type ArtistSearchHistoryEntry = {
+  id: string;
+  type: 'artist';
+  artist: FullArtist;
+};
+
+export type AlbumSearchHistoryEntry = {
+  id: string;
+  type: 'album';
+  album: FullAlbum;
+};
+
+export type SongSearchHistoryEntry = {
+  id: string;
+  type: 'song';
+  song: FullSong;
+};

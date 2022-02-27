@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 import { AlbumRow } from 'lib/database/rows';
 
-import { FullArtist } from '@/common';
+import { FullArtist, FullAlbum, FullSong } from '@/common';
 import { toFullAlbum } from '@/mappers/albums';
 import { toFullArtist } from '@/mappers/artists';
 import { toFullSong } from '@/mappers/songs';
@@ -9,8 +9,6 @@ import { createAlbumsQuery } from '@/query/albums';
 import { createArtistQuery } from '@/query/artists';
 import { createSongsQuery } from '@/query/songs';
 import { weighStringsUsingSearchTerm } from '@/helpers/search';
-
-import { FullAlbum, FullSong } from './../../common/entities';
 
 type Injects = {
   db: Knex;

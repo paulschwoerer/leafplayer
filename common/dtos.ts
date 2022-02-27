@@ -1,4 +1,12 @@
-import { FullAlbum, FullSong, FullArtist, User, UserSession } from './entities';
+import {
+  FullAlbum,
+  FullSong,
+  FullArtist,
+  User,
+  UserSession,
+  SearchHistoryEntry,
+  SearchResults,
+} from './entities';
 
 export type AlbumResponseDto = {
   album: FullAlbum;
@@ -63,13 +71,22 @@ export type UserSessionsResponseDto = {
 };
 
 export type SearchResponseDto = {
-  results: {
-    artists: FullArtist[];
-    albums: FullAlbum[];
-    songs: FullSong[];
-  };
+  results: SearchResults;
 };
 
 export type RevokeSessionRequestDto = {
   currentPassword: string;
+};
+
+export type CreateSearchHistoryEntryRequestDto = {
+  forType: 'album' | 'artist' | 'song';
+  forId: string;
+};
+
+export type CreateSearchHistoryEntryResponseDto = {
+  entry: SearchHistoryEntry;
+};
+
+export type FindSearchHistoryEntriesResponseDto = {
+  entries: SearchHistoryEntry[];
 };

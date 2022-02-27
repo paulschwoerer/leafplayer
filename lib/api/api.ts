@@ -19,7 +19,7 @@ import { findArtists } from './routes/artists/findArtists';
 import { getArtistSongs } from './routes/artists/getArtistSongs';
 import { getArtwork } from './routes/getArtwork';
 import { getAudioStream } from './routes/getAudioStream';
-import { search } from './routes/search';
+import { search } from './routes/search/search';
 import { register } from './routes/auth/register';
 import { getSessions } from './routes/auth/getSessions';
 import { revokeSession } from './routes/auth/revokeSession';
@@ -28,6 +28,9 @@ import { getRandomAlbums } from './routes/discover/getRandomAlbums';
 import { getRandomArtists } from './routes/discover/getRandomArtists';
 import { getRandomArtist } from './routes/discover/getRandomArtist';
 import { getRandomAlbum } from './routes/discover/getRandomAlbum';
+import { createSearchHistoryEntry } from './routes/search/createHistoryEntry';
+import { findSearchHistoryEntries } from './routes/search/findHistoryEntries';
+import { deleteSearchHistoryEntry } from './routes/search/deleteHistoryEntry';
 
 export function initApi(container: AwilixContainer): FastifyPluginAsync {
   const authPlugin = container.build(createSessionAuthPlugin);
@@ -66,6 +69,9 @@ export function initApi(container: AwilixContainer): FastifyPluginAsync {
     await server.register(container.build(getAlbumSongs));
 
     await server.register(container.build(search));
+    await server.register(container.build(findSearchHistoryEntries));
+    await server.register(container.build(createSearchHistoryEntry));
+    await server.register(container.build(deleteSearchHistoryEntry));
 
     await server.register(container.build(getArtwork));
     await server.register(container.build(getAudioStream));

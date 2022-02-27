@@ -36,7 +36,7 @@ function Base({
   }
 
   return (
-    <div
+    <section
       className={classnames(styles.root, {
         [styles.isPlaying]: isCurrentlyPlaying,
       })}
@@ -62,7 +62,7 @@ function Base({
         <span>{durationToString(song.duration)}</span>
       </div>
       <div className={styles.options}>{options}</div>
-    </div>
+    </section>
   );
 }
 
@@ -96,7 +96,10 @@ function renderPlayControl({
   return (
     <div className={styles.playControl}>
       <div className={styles.hoverContent} onClick={onPlay}>
-        <IconButton icon={isCurrentlyPlaying ? <PauseIcon /> : <PlayIcon />} />
+        <IconButton
+          ariaLabel={isCurrentlyPlaying ? 'Pause Song' : 'Play Song'}
+          icon={isCurrentlyPlaying ? <PauseIcon /> : <PlayIcon />}
+        />
       </div>
       <div className={styles.notHoverContent}>
         {isCurrentlyPlaying ? <PlayingIndicator /> : <span>{song.track}</span>}

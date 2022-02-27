@@ -130,7 +130,7 @@ function UserSessions(): ReactElement {
   return (
     <ApiLoader<UserSessionsResponseDto>
       slug="auth/sessions"
-      renderContent={({ sessions, currentSessionId }, reloadSessions) => {
+      renderContent={({ sessions, currentSessionId }, { reload }) => {
         const sorted = sessions.sort((a, b) =>
           sessionSort(a, b, currentSessionId),
         );
@@ -157,7 +157,7 @@ function UserSessions(): ReactElement {
               hideModal={closeModal}
             >
               <form
-                onSubmit={() => revokeSession().then(reloadSessions)}
+                onSubmit={() => revokeSession().then(reload)}
                 className={styles.revokeForm}
               >
                 <b>Enter your password to proceed</b>
