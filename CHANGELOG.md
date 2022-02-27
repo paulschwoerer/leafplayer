@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/paulschwoerer/leafplayer/compare/v1.2.1...v1.3.0) (2022-02-27)
+
+
+### Features
+
+* search history ([85fa12b](https://github.com/paulschwoerer/leafplayer/commit/85fa12b9606a5804969a208689c444c3fc9f6bd7))
+* carousel track shadows/ themed scrollbars ([e184054](https://github.com/paulschwoerer/leafplayer/commit/e184054a384c3e8f2d3c83959c2ce83f1cbc4aca))
+* focus styles for all elements ([85c3566](https://github.com/paulschwoerer/leafplayer/commit/85c3566f7a276924a1df29025a39fb6147c5cd37))
+
+
+### Bug Fixes
+
+* fix services not loading in compiled code ([0ddcc8f](https://github.com/paulschwoerer/leafplayer/commit/0ddcc8f40f122c173de60625c634c9bf77b72afd))
+
 ### [1.2.1](https://github.com/paulschwoerer/leafplayer/compare/v1.2.0...v1.2.1) (2021-10-25)
 
 
