@@ -34,7 +34,7 @@ container.register({
   db: asValue(db),
 });
 
-container.loadModules(['lib/services/*.ts'], {
+container.loadModules(['lib/services/*.{js,ts}'], {
   resolverOptions: {
     register: asFunction,
     lifetime: Lifetime.SINGLETON,
