@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { MouseEventHandler, ReactElement } from 'react';
 import Icon from '../Icon/Icon';
 import styles from './IconButton.module.scss';
 
@@ -7,7 +7,7 @@ type Props = {
   icon: ReactElement;
   mirrored?: boolean;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: MouseEventHandler;
 };
 
 const IconButton = React.forwardRef<HTMLButtonElement, Props>(

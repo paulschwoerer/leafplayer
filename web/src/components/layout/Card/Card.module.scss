@@ -1,0 +1,23 @@
+@import "scss/mixins";
+
+.root {
+  position: relative;
+  display: block;
+  border-radius: 4px;
+  background-color: var(--color-elevation-medium);
+  transition: transform 0.15s;
+
+  @include shadow(low);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: transparent;
+    transition: background-color 0.15s;
+    pointer-events: none;
+  }
+}

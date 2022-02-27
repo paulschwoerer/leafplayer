@@ -3,6 +3,7 @@ import Input from 'components/form/Input/Input';
 import { ComputerIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
 import ApiLoader from 'components/layout/ApiLoader';
+import Card from 'components/layout/Card/Card';
 import Modal from 'components/modals/Modal/Modal';
 import { dateFromUnixTimestamp } from 'helpers/time';
 import {
@@ -32,11 +33,13 @@ type CurrentSessionProps = {
 
 function BaseSession({ action, details }: BaseSessionProps) {
   return (
-    <div className={styles.card}>
-      <Icon icon={<ComputerIcon />} className={styles.icon} />
-      <div className={styles.details}>{details}</div>
-      {action}
-    </div>
+    <Card>
+      <section className={styles.session}>
+        <Icon icon={<ComputerIcon />} className={styles.icon} />
+        <div className={styles.details}>{details}</div>
+        {action}
+      </section>
+    </Card>
   );
 }
 
@@ -125,58 +128,56 @@ function UserSessions(): ReactElement {
   }
 
   return (
-    <div className={styles.root}>
-      <ApiLoader<UserSessionsResponseDto>
-        slug="auth/sessions"
-        renderContent={({ sessions, currentSessionId }, reloadSessions) => {
-          const sorted = sessions.sort((a, b) =>
-            sessionSort(a, b, currentSessionId),
-          );
+    <ApiLoader<UserSessionsResponseDto>
+      slug="auth/sessions"
+      renderContent={({ sessions, currentSessionId }, { reload }) => {
+        const sorted = sessions.sort((a, b) =>
+          sessionSort(a, b, currentSessionId),
+        );
 
-          return (
-            <>
-              <CurrentSession onLogout={logout} />
-              {sorted.slice(1).map(session => (
-                <Session
-                  key={session.id}
-                  session={session}
-                  onRevoke={() => setSessionToRevoke(session.id)}
-                />
-              ))}
+        return (
+          <>
+            <CurrentSession onLogout={logout} />
+            {sorted.slice(1).map(session => (
+              <Session
+                key={session.id}
+                session={session}
+                onRevoke={() => setSessionToRevoke(session.id)}
+              />
+            ))}
 
-              <small>
-                If you notice anything suspicious in this list, please inform
-                the administrator of your server
-              </small>
+            <small>
+              If you notice anything suspicious in this list, please inform the
+              administrator of your server
+            </small>
 
-              <Modal
-                isVisible={sessionToRevoke !== null}
-                title="Revoking Session"
-                hideModal={closeModal}
+            <Modal
+              isVisible={sessionToRevoke !== null}
+              title="Revoking Session"
+              hideModal={closeModal}
+            >
+              <form
+                onSubmit={() => revokeSession().then(reload)}
+                className={styles.revokeForm}
               >
-                <form
-                  onSubmit={() => revokeSession().then(reloadSessions)}
-                  className={styles.revokeForm}
-                >
-                  <b>Enter your password to proceed</b>
+                <b>Enter your password to proceed</b>
 
-                  <Input
-                    label="Password"
-                    name="password"
-                    type="password"
-                    value={currentPassword}
-                    onInput={ev => setCurrentPassword(ev.currentTarget.value)}
-                  />
+                <Input
+                  label="Password"
+                  name="password"
+                  type="password"
+                  value={currentPassword}
+                  onInput={ev => setCurrentPassword(ev.currentTarget.value)}
+                />
 
-                  <ButtonPrimary type="submit">Revoke</ButtonPrimary>
-                  <ButtonText onClick={closeModal}>Cancel</ButtonText>
-                </form>
-              </Modal>
-            </>
-          );
-        }}
-      />
-    </div>
+                <ButtonPrimary type="submit">Revoke</ButtonPrimary>
+                <ButtonText onClick={closeModal}>Cancel</ButtonText>
+              </form>
+            </Modal>
+          </>
+        );
+      }}
+    />
   );
 }
 

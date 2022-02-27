@@ -69,6 +69,14 @@ export type SessionRow = {
   expiresAt: number;
 };
 
+export type SearchHistoryRow = {
+  id: string;
+  userId: string;
+  artistId: string | null;
+  albumId: string | null;
+  songId: string | null;
+};
+
 type DefaultTInsert<T extends Record<string, unknown>> = Pick<T, 'id'> &
   Partial<Omit<T, 'createdAt' | 'updatedAt'>>;
 type DefaultTUpdate<T> = Partial<Omit<T, 'id' | 'createdAt'>>;
@@ -103,7 +111,11 @@ declare module 'knex/types/tables' {
     >;
     songs: Knex.CompositeTableType<
       SongRow,
-      DefaultTInsert<SongRow>,
+      Pick<
+        SongRow,
+        'id' | 'albumId' | 'artistId' | 'fileId' | 'title' | 'duration'
+      > &
+        Partial<SongRow>,
       DefaultTUpdate<SongRow>
     >;
     media_folders: Knex.CompositeTableType<
@@ -113,6 +125,10 @@ declare module 'knex/types/tables' {
       Partial<Omit<MediaFolderRow, 'id'>>
     >;
     sessions: SessionRow;
+    search_history: Knex.CompositeTableType<
+      SearchHistoryRow,
+      Pick<SearchHistoryRow, 'id' | 'userId'> & Partial<SearchHistoryRow>
+    >;
   }
 }
 

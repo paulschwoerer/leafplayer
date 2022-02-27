@@ -1,0 +1,60 @@
+@import "scss/mixins";
+
+:root {
+  --search-history-entry-padding: 0.5rem;
+  --search-history-entry-width: 1fr;
+  --search-history-entry-artwork-size: 64px;
+  --search-history-entry-align-items: center;
+
+  @media screen and (min-width: 550px) {
+    --search-history-entry-artwork-size: 96px;
+    --search-history-entry-padding: 1rem;
+    --search-history-entry-width: minmax(340px, 1fr);
+    --search-history-entry-align-items: flex-start;
+  }
+}
+
+.entriesGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, var(--search-history-entry-width));
+}
+
+.entry {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: var(--search-history-entry-artwork-size) 1fr auto;
+  align-items: var(--search-history-entry-align-items);
+  padding: var(--search-history-entry-padding);
+}
+
+.entryContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  min-width: 0;
+
+  > h1,
+  > h2 {
+    font-size: 1rem;
+    margin: calc(var(--search-history-entry-padding) / 2) 0;
+
+    @include text-ellipsis();
+  }
+
+  > h2 {
+    font-weight: normal;
+    opacity: 0.8;
+  }
+}
+
+.exit {
+  transform: scale(1);
+}
+
+.exitActive {
+  transform: scale(0);
+  transition: transform 2000ms ease-in;
+}

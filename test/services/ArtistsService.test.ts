@@ -65,7 +65,7 @@ test('findById -> it should return an artist', async t => {
     '5e6195d4-62e8-4a8a-a2c8-9918d4b6a76b',
   );
 
-  t.is(artist?.name, 'Artist');
+  t.is(artist.name, 'Artist');
 });
 
 test('findById -> it should return an artist with album and song count of zero', async t => {
@@ -82,8 +82,8 @@ test('findById -> it should return an artist with album and song count of zero',
     'af92c305-bcd5-462a-90f5-6d148e265e7a',
   );
 
-  t.is(artist?.albumCount, 0);
-  t.is(artist?.songCount, 0);
+  t.is(artist.albumCount, 0);
+  t.is(artist.songCount, 0);
 });
 
 test('findById -> it should return an artist with album count of two', async t => {
@@ -113,7 +113,7 @@ test('findById -> it should return an artist with album count of two', async t =
     'a91b6ad5-a145-4633-8789-f7db2c48c1f9',
   );
 
-  t.is(artist?.albumCount, 2);
+  t.is(artist.albumCount, 2);
 });
 
 test('findById -> it should return an artist with song count of two', async t => {
@@ -165,5 +165,5 @@ test('findById -> it should return an artist with song count of two', async t =>
     'a1e3377a-d1fe-470f-9311-c8d4999ec55b',
   );
 
-  t.is(artist?.songCount, 2);
+  t.is(artist.songCount, 2);
 });

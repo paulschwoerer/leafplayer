@@ -1,28 +1,16 @@
 import Input from 'components/form/Input/Input';
 import { SearchIcon } from 'components/icons';
-import If from 'components/If';
-import Carousel from 'components/layout/Carousel/Carousel';
-import SectionHeader from 'components/layout/SectionHeader/SectionHeader';
-import { AlbumCard } from 'components/media/AlbumCard/AlbumCard';
-import { ArtistCard } from 'components/media/ArtistCard/ArtistCard';
-import { SongRowWithArtwork } from 'components/media/SongRow/SongRow';
-import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
+import SearchHistory from 'components/search/SearchHistory/SearchHistory';
+import SearchResultList from 'components/search/SearchResultList/SearchResultList';
 import {
-  FullAlbum,
-  FullArtist,
-  FullSong,
+  CreateSearchHistoryEntryRequestDto,
+  CreateSearchHistoryEntryResponseDto,
   SearchResponseDto,
+  SearchResults,
 } from 'leafplayer-common';
-import { isApiError, makeApiGetRequest } from 'modules/api';
-import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import { isApiError, makeApiGetRequest, makeApiPostRequest } from 'modules/api';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
-
-type Results = {
-  albums: FullAlbum[];
-  artists: FullArtist[];
-  songs: FullSong[];
-};
 
 const emptyResults = {
   albums: [],
@@ -52,8 +40,20 @@ export function useSearchQuery(): [string, (query: string) => void] {
 
 function Search(): ReactElement {
   const [searchQuery, setSearchQuery] = useSearchQuery();
-  const [results, setResults] = useState<Results>(emptyResults);
-  const [, { addSongsToQueue, playNext }] = useContext(PlayerContext);
+  const [results, setResults] = useState<SearchResults>(emptyResults);
+
+  async function storeHistoryEntry(
+    forType: 'artist' | 'album' | 'song',
+    forId: string,
+  ) {
+    await makeApiPostRequest<
+      CreateSearchHistoryEntryResponseDto,
+      CreateSearchHistoryEntryRequestDto
+    >('search/history', {
+      forType,
+      forId,
+    });
+  }
 
   useEffect(() => {
     if (searchQuery.length === 0) {
@@ -83,47 +83,17 @@ function Search(): ReactElement {
         autoFocus
         onInput={ev => setSearchQuery(ev.currentTarget.value)}
       />
-      <If condition={results.artists.length > 0}>
-        <Carousel headline="Artists">
-          {results.artists.map(artist => (
-            <ArtistCard artist={artist} key={artist.id} />
-          ))}
-        </Carousel>
-      </If>
 
-      <If condition={results.albums.length > 0}>
-        <Carousel headline="Albums">
-          {results.albums.map(album => (
-            <AlbumCard album={album} key={album.id} />
-          ))}
-        </Carousel>
-      </If>
-
-      <If condition={results.songs.length > 0}>
-        <SectionHeader headline="Songs" />
-        {results.songs.map(song => (
-          <SongRowWithArtwork
-            key={song.id}
-            song={song}
-            onPlay={() =>
-              addSongsToQueue([song], {
-                replaceQueue: true,
-                startPlaying: true,
-              })
-            }
-            options={
-              <OptionsPopover align="left">
-                <OptionsPopover.Option onClick={() => playNext([song])}>
-                  Play Next
-                </OptionsPopover.Option>
-                <OptionsPopover.Option onClick={() => addSongsToQueue([song])}>
-                  Enqueue
-                </OptionsPopover.Option>
-              </OptionsPopover>
-            }
-          />
-        ))}
-      </If>
+      {searchQuery ? (
+        <SearchResultList
+          results={results}
+          onArtistClicked={artist => storeHistoryEntry('artist', artist.id)}
+          onAlbumClicked={album => storeHistoryEntry('album', album.id)}
+          onSongPlayed={song => storeHistoryEntry('song', song.id)}
+        />
+      ) : (
+        <SearchHistory />
+      )}
     </>
   );
 }

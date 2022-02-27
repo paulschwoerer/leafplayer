@@ -2,7 +2,6 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import { ArtistWithAlbumsResponseDto } from 'common/dtos';
 
-import { NotFoundError } from '@/errors/NotFoundError';
 import { ArtistsService } from '@/services/ArtistsService';
 
 type Injects = {
@@ -17,13 +16,7 @@ export function getArtist({ artistsService }: Injects): FastifyPluginAsync {
       async (request): Promise<ArtistWithAlbumsResponseDto> => {
         const { artistId } = request.params;
 
-        const data = await artistsService.findByIdWithAlbums(artistId);
-
-        if (!data) {
-          throw new NotFoundError();
-        }
-
-        return data;
+        return artistsService.findByIdWithAlbums(artistId);
       },
     );
   });
