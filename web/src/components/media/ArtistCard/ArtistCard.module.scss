@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   .info {
@@ -10,7 +10,7 @@
     .name {
       font-weight: bold;
 
-      @include text-ellipsis();
+      @include text-ellipsis;
 
       &:hover {
         text-decoration: underline;

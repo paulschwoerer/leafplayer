@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   letter-spacing: 3px;
@@ -9,6 +9,6 @@
 
   @include desktop {
     font-size: 2em;
-    margin: 2.5rem 0 1.5rem 0;
+    margin: 2.5rem 0 1.5rem;
   }
 }

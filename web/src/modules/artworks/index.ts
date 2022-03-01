@@ -19,11 +19,10 @@ export function buildArtworkUrl(
 export function useThemedUrl(dayUrl: string, nightUrl: string): string {
   const { isNightMode } = useContext(ThemeContext);
 
-  const url = useMemo(() => (isNightMode ? nightUrl : dayUrl), [
-    isNightMode,
-    dayUrl,
-    nightUrl,
-  ]);
+  const url = useMemo(
+    () => (isNightMode ? nightUrl : dayUrl),
+    [isNightMode, dayUrl, nightUrl],
+  );
 
   return url;
 }

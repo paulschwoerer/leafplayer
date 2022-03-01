@@ -32,7 +32,7 @@ function Sidebar({ nav, className, onClick }: Props): ReactElement {
             to={entry.to}
             label={entry.label}
             icon={entry.icon}
-            exact={entry.exact}
+            end={entry.exact}
           />
         ))}
       </nav>

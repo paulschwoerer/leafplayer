@@ -1,6 +1,7 @@
 {
-  "extends": "stylelint-config-standard",
+  "extends": "stylelint-config-standard-scss",
   "rules": {
-    "at-rule-no-unknown": null
+    "selector-class-pattern": null,
+    "declaration-block-no-redundant-longhand-properties": null
   }
 }

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import Icon from 'components/icons/Icon/Icon';
 import React, { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -7,16 +8,17 @@ type Props = {
   to: string;
   label: string;
   icon: ReactElement;
-  exact?: boolean;
+  end?: boolean;
 };
 
-function NavEntry({ to, icon, label, exact }: Props): ReactElement {
+function NavEntry({ to, icon, label, end }: Props): ReactElement {
   return (
     <NavLink
       to={to}
-      className={styles.navEntry}
-      activeClassName={styles.active}
-      exact={exact || false}
+      className={({ isActive }) =>
+        isActive ? classNames(styles.navEntry, styles.active) : styles.navEntry
+      }
+      end={end || false}
     >
       <Icon icon={icon} className={styles.icon} />
       <span className={styles.label}>{label}</span>

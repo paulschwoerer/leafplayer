@@ -12,9 +12,8 @@ type Props = {
 };
 
 function MobilePlayerBar({ className, onClick }: Props): ReactElement | null {
-  const [{ current, isPlaying }, { togglePlayPause }] = useContext(
-    PlayerContext,
-  );
+  const [{ current, isPlaying }, { togglePlayPause }] =
+    useContext(PlayerContext);
 
   if (!current) {
     return null;

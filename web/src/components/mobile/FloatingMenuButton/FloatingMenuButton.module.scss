@@ -1,5 +1,5 @@
-@import "scss/vars";
-@import "scss/mixins";
+@import "src/scss/vars";
+@import "src/scss/mixins";
 
 .root {
   position: fixed;
@@ -10,7 +10,7 @@
   @include shadow(high);
 
   &.shifted {
-    bottom: calc(#{$mobilePlayerBarHeight} + 1rem);
+    bottom: calc(#{$mobile-player-bar-height} + 1rem);
   }
 
   &.showCloseIcon {

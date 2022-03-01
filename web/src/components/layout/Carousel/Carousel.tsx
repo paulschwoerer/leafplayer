@@ -101,10 +101,10 @@ function Carousel({
         itemsPerPage,
         trackWidth,
       });
-      rootEl.style.setProperty('--itemWidth', `${itemWidth}px`);
+      rootEl.style.setProperty('--item-width', `${itemWidth}px`);
       rootEl.style.setProperty('--gap', `${gap}px`);
       rootEl.style.setProperty('--padding', `${teaserWidth}px`);
-      rootEl.style.setProperty('--trackWidth', `${trackWidth}px`);
+      rootEl.style.setProperty('--track-width', `${trackWidth}px`);
     }
   }, [rootElRef, gap, minItemWidth, teaserWidth, children]);
 

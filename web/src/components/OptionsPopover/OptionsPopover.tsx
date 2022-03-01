@@ -33,18 +33,18 @@ function DesktopPopover({
   const popperRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
 
-  const { styles: popperStyles, attributes, update } = usePopper(
-    referenceRef.current,
-    popperRef.current,
-    {
-      modifiers: [
-        { name: 'offset', options: { offset: [0, 10] } },
-        { name: 'arrow', options: { element: arrowRef.current } },
-      ],
-      placement: align,
-      strategy: 'absolute',
-    },
-  );
+  const {
+    styles: popperStyles,
+    attributes,
+    update,
+  } = usePopper(referenceRef.current, popperRef.current, {
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 10] } },
+      { name: 'arrow', options: { element: arrowRef.current } },
+    ],
+    placement: align,
+    strategy: 'absolute',
+  });
 
   useEffect(() => {
     if (!popperRef.current) {

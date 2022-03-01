@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 $transition: 0.75s cubic-bezier(0.79, 0.14, 0.15, 0.86);
 
@@ -40,7 +40,7 @@ $transition: 0.75s cubic-bezier(0.79, 0.14, 0.15, 0.86);
         bottom: 0;
         margin: auto 0;
         transition: transform $transition, color $transition;
-        color: currentColor;
+        color: currentcolor;
       }
 
       .sun {

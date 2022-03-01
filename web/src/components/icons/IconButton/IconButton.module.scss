@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 $size: 44px;
 
@@ -15,7 +15,7 @@ $size: 44px;
   color: inherit;
   border-radius: 4px;
 
-  @include hover() {
+  @include hover {
     cursor: pointer;
   }
 

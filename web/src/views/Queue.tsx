@@ -5,9 +5,8 @@ import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext } from 'react';
 
 function Queue(): ReactElement {
-  const [{ queue, current }, { goToQueueIndex, removeQueueItem }] = useContext(
-    PlayerContext,
-  );
+  const [{ queue, current }, { goToQueueIndex, removeQueueItem }] =
+    useContext(PlayerContext);
 
   if (current === null) {
     return <QueueEmpty />;

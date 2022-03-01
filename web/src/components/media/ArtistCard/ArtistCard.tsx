@@ -57,10 +57,8 @@ export function FakeArtistCard({
 }
 
 export function ArtistCard({ artist }: ArtistCardProps): ReactElement {
-  const [
-    { current, isPlaying },
-    { play, pause, addArtistToQueue },
-  ] = useContext(PlayerContext);
+  const [{ current, isPlaying }, { play, pause, addArtistToQueue }] =
+    useContext(PlayerContext);
 
   async function togglePlayPause() {
     if (current && current.song.artist.id === artist.id) {

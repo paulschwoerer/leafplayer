@@ -10,7 +10,7 @@ import {
 } from 'leafplayer-common';
 import { isApiError, makeApiGetRequest, makeApiPostRequest } from 'modules/api';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 const emptyResults = {
   albums: [],
@@ -20,14 +20,14 @@ const emptyResults = {
 
 export function useSearchQuery(): [string, (query: string) => void] {
   const { pathname } = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const pathParts = pathname.split('/');
 
   function setSearchQuery(query: string) {
     if (pathname.split('/')[1] === 'search') {
-      history.replace(`/search/${query}`);
+      navigate(`/search/${query}`, { replace: true });
     } else {
-      history.push(`/search/${query}`);
+      navigate(`/search/${query}`);
     }
   }
 

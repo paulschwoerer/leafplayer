@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   position: relative;
@@ -8,7 +8,7 @@
   border-radius: 4px;
 
   .background {
-    @include coverParent();
+    @include cover-parent;
 
     filter: blur(4px);
     transform: scale(1.1);
@@ -16,7 +16,7 @@
     background-size: cover;
 
     &::after {
-      @include coverParent();
+      @include cover-parent;
 
       content: "";
       background-color: rgba(#000, 0.25);

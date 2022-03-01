@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   display: inline-flex;
@@ -35,7 +35,7 @@
     @include shadow(low);
   }
 
-  @include canHover {
+  @include can-hover {
     &:hover:not(:disabled) {
       cursor: pointer;
 

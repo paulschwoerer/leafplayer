@@ -24,7 +24,7 @@ body {
   --color-elevation-high: #fff;
   --body-background: var(--color-primary);
 
-  &[data-theme='night'] {
+  &[data-theme="night"] {
     --font-weight: 300;
 
     // general colors
@@ -34,7 +34,7 @@ body {
     // interaction element colors
     --color-interaction-background: var(--color-primary);
     --color-interaction-border: #243342;
-    --color-interaction-focus: #e2e2e2; //#61f3d5;
+    --color-interaction-focus: #e2e2e2;
 
     // text colors
     --color-emphasis-high: #fff;
@@ -51,7 +51,7 @@ body {
   margin: 0;
   font-size: 15px;
   font-family:
-    "FiraSans",
+    FiraSans,
     sans-serif;
   font-weight: var(--font-weight);
   -webkit-font-smoothing: antialiased;
@@ -71,28 +71,28 @@ body {
     transparent;
 
   &:focus {
-    outline: 1px solid currentColor;
+    outline: 1px solid currentcolor;
   }
 
-  @supports #{'\selector(*:focus-visible)'} {
+  @supports #{"\selector(*:focus-visible)"} {
     &:focus {
       outline: 0;
     }
 
     &:focus-visible {
-      outline: 1px solid currentColor;
+      outline: 1px solid currentcolor;
     }
   }
 }
 
 @font-face {
-  font-family: 'FiraSans';
-  src: local('FiraSans'), url(./assets/fonts/FiraSans-Regular.ttf) format('truetype');
+  font-family: FiraSans;
+  src: local("FiraSans"), url("./assets/fonts/FiraSans-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 
 @font-face {
-  font-family: 'FiraSans';
-  src: local('FiraSans'), url(./assets/fonts/FiraSans-Light.ttf) format('truetype');
+  font-family: FiraSans;
+  src: local("FiraSans"), url("./assets/fonts/FiraSans-Light.ttf") format("truetype");
   font-weight: 300;
 }

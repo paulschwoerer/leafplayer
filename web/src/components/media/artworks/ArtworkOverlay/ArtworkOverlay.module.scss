@@ -1,9 +1,9 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   display: none;
 
-  @include canHover {
+  @include can-hover {
     display: flex;
     position: absolute;
     top: 0;

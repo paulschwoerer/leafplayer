@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   --height: var(--tap-target);
@@ -25,7 +25,7 @@
   }
 
   .current {
-    @include text-ellipsis();
+    @include text-ellipsis;
   }
 
   .arrow {
@@ -63,7 +63,7 @@
       text-align: left;
       transition: color 0.15s, background-color 0.15s;
 
-      @include text-ellipsis();
+      @include text-ellipsis;
 
       &:hover,
       &.selected {
@@ -72,7 +72,7 @@
       }
 
       &.active {
-        @include active-dot();
+        @include active-dot;
       }
 
       &:not(:last-child) {

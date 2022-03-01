@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   display: flex;
@@ -52,7 +52,7 @@
       margin: 0.3rem 0;
       min-width: 0;
 
-      @include text-ellipsis();
+      @include text-ellipsis;
     }
   }
 
@@ -67,7 +67,7 @@
     visibility: hidden;
     background-color: rgba(#000, 0.3);
 
-    @include coverParent();
+    @include cover-parent;
   }
 
   &.isPlaying .overlay {
@@ -84,12 +84,12 @@
     visibility: hidden;
   }
 
-  @include canHover {
+  @include can-hover {
     transition: background 0.1s;
     padding: 0.5rem;
   }
 
-  @include hover() {
+  @include hover {
     background-color: rgba(#000, 0.05);
     border-radius: 0.5rem;
 
