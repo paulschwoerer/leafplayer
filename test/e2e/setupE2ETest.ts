@@ -1,4 +1,4 @@
-import anyTest, { TestInterface } from 'ava';
+import anyTest, { TestFn } from 'ava';
 import {
   asFunction,
   asValue,
@@ -13,7 +13,7 @@ import { initServer } from '@/api/server';
 
 import { createLeafplayerConfig, setupInMemorySQLiteDB } from '../testHelpers';
 
-const test = anyTest as TestInterface<{
+const test = anyTest as TestFn<{
   db: Knex;
   server: FastifyInstance;
   container: AwilixContainer;
