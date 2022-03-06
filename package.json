@@ -17,7 +17,7 @@
     "release": "npx standard-version"
   },
   "engines": {
-    "node": ">14.0.0 <15"
+    "node": ">14.0.0 <17"
   },
   "ava": {
     "files": [
@@ -57,7 +57,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/gulp": "^4.0.8",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/node": "^14.14.20",
+    "@types/node": "^16.11.7",
     "@types/sharp": "^0.27.1",
     "@types/ua-parser-js": "^0.7.35",
     "@types/uid-safe": "^2.1.2",
