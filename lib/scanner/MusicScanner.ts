@@ -3,16 +3,16 @@ import { basename, extname } from 'path';
 
 import { IAudioMetadata, parseFile } from 'music-metadata';
 
-import ArtworkExtractor from './ArtworkExtractor';
-import ArtworkProcessor from './ArtworkProcessor';
-import { DirNode, FileNode, FileTreeBuilder } from './FileTreeBuilder';
-import { FileFormat, FileType } from './types';
-
 import { printInfo } from '~/helpers/cli';
 import { AlbumsService } from '~/services/AlbumsService';
 import { ArtistsService } from '~/services/ArtistsService';
 import { LibraryService } from '~/services/LibraryService';
 import { AudioFileRow } from '~/database/rows';
+
+import { FileFormat, FileType } from './types';
+import { DirNode, FileNode, FileTreeBuilder } from './FileTreeBuilder';
+import ArtworkProcessor from './ArtworkProcessor';
+import ArtworkExtractor from './ArtworkExtractor';
 
 const UNKNOWN_ARTIST_NAME = '[Unknown Artist]';
 const UNKNOWN_ALBUM_NAME = '[Unknown Album]';

@@ -1,9 +1,9 @@
-import { performLogin } from './performLogin';
-import test from './setupE2ETest';
-
 import { UserSessionsResponseDto } from '~/common';
 import { createPasswordHash } from '~/helpers/passwords';
 import { generateUuid } from '~/helpers/uuid';
+
+import test from './setupE2ETest';
+import { performLogin } from './performLogin';
 
 test('revoke session flow', async t => {
   const { server, db } = t.context;

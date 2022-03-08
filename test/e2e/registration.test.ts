@@ -1,8 +1,8 @@
-import { performLogin } from './performLogin';
-import test from './setupE2ETest';
-
 import { UserResponseDto } from '~/common';
 import { getCurrentUnixTimestamp } from '~/helpers/time';
+
+import { performLogin } from './performLogin';
+import test from './setupE2ETest';
 
 test('Login and logout flow', async t => {
   const { server, db } = t.context;

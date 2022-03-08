@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify';
 
-import test from '../setupTestServer';
-
 import { sortPlugin } from '~/api/plugins/sort';
 import { SortParam } from '~/typings/SortParam';
+
+import test from '../setupTestServer';
 
 async function setup(server: FastifyInstance): Promise<void> {
   await server.register(sortPlugin);

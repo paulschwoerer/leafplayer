@@ -1,8 +1,5 @@
 import { Knex } from 'knex';
 
-import { createLeafplayerConfig } from '../testHelpers';
-import test from '../setupTestDB';
-
 import { generateUuid } from '~/helpers/uuid';
 import createInvitationsService from '~/services/InvitationsService';
 import createPasswordService from '~/services/PasswordService';
@@ -14,6 +11,9 @@ import { getCurrentUnixTimestamp } from '~/helpers/time';
 import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
 import { ValidationError } from '~/errors/ValidationError';
 import { createPasswordHash } from '~/helpers/passwords';
+
+import test from '../setupTestDB';
+import { createLeafplayerConfig } from '../testHelpers';
 
 function setupService(db: Knex): RegistrationService {
   const config = createLeafplayerConfig();

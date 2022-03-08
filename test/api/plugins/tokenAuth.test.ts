@@ -1,10 +1,10 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
 
-import test from '../setupTestServer';
-
 import { createTokenAuthPlugin } from '~/api/plugins/tokenAuth';
 import { JwtService } from '~/services/JwtService';
+
+import test from '../setupTestServer';
 
 async function setup(server: FastifyInstance): Promise<{
   jwtService: JwtService;

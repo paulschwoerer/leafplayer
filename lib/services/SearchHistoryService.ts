@@ -1,9 +1,5 @@
 import { Knex } from 'knex';
 
-import { AlbumsService } from './AlbumsService';
-import { ArtistsService } from './ArtistsService';
-import { SongsService } from './SongsService';
-
 import {
   SearchHistoryEntry,
   AlbumSearchHistoryEntry,
@@ -12,6 +8,10 @@ import {
 } from '~/common';
 import { generateUuid } from '~/helpers/uuid';
 import { SearchHistoryRow } from '~/database/rows';
+
+import { AlbumsService } from './AlbumsService';
+import { ArtistsService } from './ArtistsService';
+import { SongsService } from './SongsService';
 
 type Injects = {
   db: Knex;

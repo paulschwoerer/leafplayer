@@ -1,13 +1,13 @@
 import { Knex } from 'knex';
 
-import { SongsService } from './SongsService';
-
 import { FullAlbum, FullSong } from '~/common';
 import { toFullAlbum } from '~/mappers/albums';
 import { createAlbumsQuery, orderBy } from '~/query/albums';
 import { SortParam } from '~/typings/SortParam';
 import { generateUuid } from '~/helpers/uuid';
 import { NotFoundError } from '~/errors/NotFoundError';
+
+import { SongsService } from './SongsService';
 
 export interface AlbumsService {
   createAlbum(params: {

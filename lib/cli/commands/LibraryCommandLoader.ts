@@ -1,7 +1,5 @@
 import { Knex } from 'knex';
 
-import { CommandLoader } from '../CommandLoader';
-
 import { printError, printInfo, printSuccess } from '~/helpers/cli';
 import { MusicCleaner } from '~/scanner/MusicCleaner';
 import MusicScanner from '~/scanner/MusicScanner';
@@ -9,6 +7,8 @@ import { AlbumsService } from '~/services/AlbumsService';
 import { ArtistsService } from '~/services/ArtistsService';
 import { AudioFilesService } from '~/services/AudioFilesService';
 import { LibraryService } from '~/services/LibraryService';
+
+import { CommandLoader } from '../CommandLoader';
 
 type Config = {
   storageDir: string;

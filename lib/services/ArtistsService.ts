@@ -1,8 +1,5 @@
 import { Knex } from 'knex';
 
-import { AlbumsService } from './AlbumsService';
-import { SongsService } from './SongsService';
-
 import { FullAlbum, FullArtist, FullSong } from '~/common';
 import { toFullAlbum } from '~/mappers/albums';
 import { toFullArtist } from '~/mappers/artists';
@@ -11,6 +8,9 @@ import { createArtistQuery, orderBy } from '~/query/artists';
 import { SortParam } from '~/typings/SortParam';
 import { generateUuid } from '~/helpers/uuid';
 import { NotFoundError } from '~/errors/NotFoundError';
+
+import { SongsService } from './SongsService';
+import { AlbumsService } from './AlbumsService';
 
 type ArtistWithAlbums = {
   artist: FullArtist;

@@ -1,14 +1,14 @@
 import { Knex } from 'knex';
 
-import { MOCK_USER } from '../testdata/mocks';
-import test from '../setupTestDB';
-
 import { generateUuid } from '~/helpers/uuid';
 import createAlbumsService from '~/services/AlbumsService';
 import createArtistsService from '~/services/ArtistsService';
 import createSongsService from '~/services/SongsService';
 import createSearchHistoryService from '~/services/SearchHistoryService';
 import { NotFoundError } from '~/errors/NotFoundError';
+
+import test from '../setupTestDB';
+import { MOCK_USER } from '../testdata/mocks';
 
 function setupService(db: Knex) {
   const songsService = createSongsService({ db });

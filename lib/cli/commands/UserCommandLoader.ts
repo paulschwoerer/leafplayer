@@ -1,7 +1,7 @@
-import { CommandLoader } from './../CommandLoader';
-
 import { printError, printSuccess } from '~/helpers/cli';
 import { UsersService } from '~/services/UsersService';
+
+import { CommandLoader } from './../CommandLoader';
 
 type Injects = {
   usersService: UsersService;

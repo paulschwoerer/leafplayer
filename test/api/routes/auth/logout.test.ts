@@ -1,5 +1,8 @@
 import td from 'testdouble';
 
+import { AuthService } from '~/services/AuthService';
+import { logout } from '~/api/routes/auth/logout';
+
 import { mockSession } from '../../mockSession';
 import {
   MOCK_SESSION_ID,
@@ -7,9 +10,6 @@ import {
   MOCK_USER,
 } from '../../../testdata/mocks';
 import test from '../../setupTestServer';
-
-import { AuthService } from '~/services/AuthService';
-import { logout } from '~/api/routes/auth/logout';
 
 test('logout endpoint should set logout cookie', async t => {
   const authService = td.object<AuthService>();
