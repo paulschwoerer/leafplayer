@@ -8,7 +8,7 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
-    "module": "ESNext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
