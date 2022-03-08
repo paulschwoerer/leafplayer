@@ -1,12 +1,12 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
 
-import { createVerifyPasswordPlugin } from '@/api/plugins/verifyPassword';
-import { UsersService } from '@/services/UsersService';
-
 import test from '../setupTestServer';
 import { mockSession } from '../mockSession';
 import { MOCK_SESSION_ID, MOCK_USER } from '../../testdata/mocks';
+
+import { UsersService } from '~/services/UsersService';
+import { createVerifyPasswordPlugin } from '~/api/plugins/verifyPassword';
 
 async function setup(
   server: FastifyInstance,

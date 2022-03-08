@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { weighStringsUsingSearchTerm } from '@/helpers/search';
+import { weighStringsUsingSearchTerm } from '~/helpers/search';
 
 test('it should weigh items correctly 01', t => {
   const items = ['aribo', 'Bob Marley', 'bananobo', 'bonobo', 'Bonanza'];

@@ -1,17 +1,17 @@
 import { Knex } from 'knex';
 
+import { AlbumsService } from './AlbumsService';
+import { ArtistsService } from './ArtistsService';
+import { SongsService } from './SongsService';
+
 import {
   SearchHistoryEntry,
   AlbumSearchHistoryEntry,
   ArtistSearchHistoryEntry,
   SongSearchHistoryEntry,
-} from '@/common';
-import { generateUuid } from '@/helpers/uuid';
-import { SearchHistoryRow } from '@/database/rows';
-
-import { AlbumsService } from './AlbumsService';
-import { ArtistsService } from './ArtistsService';
-import { SongsService } from './SongsService';
+} from '~/common';
+import { generateUuid } from '~/helpers/uuid';
+import { SearchHistoryRow } from '~/database/rows';
 
 type Injects = {
   db: Knex;

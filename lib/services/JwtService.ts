@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
-import { LeafplayerConfig } from '@/config';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
+import { LeafplayerConfig } from '~/config';
+import { getCurrentUnixTimestamp } from '~/helpers/time';
 
 type Injects = {
   config: LeafplayerConfig;

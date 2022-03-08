@@ -1,8 +1,8 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { ChangePasswordRequestDto } from '@/common';
-import { AuthService } from '@/services/AuthService';
+import { ChangePasswordRequestDto } from '~/common';
+import { AuthService } from '~/services/AuthService';
 
 type Injects = {
   authService: AuthService;

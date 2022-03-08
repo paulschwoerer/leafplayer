@@ -1,15 +1,15 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
 
-import { createSessionAuthPlugin } from '@/api/plugins/sessionAuth';
-import { AuthService } from '@/services/AuthService';
-
 import {
   MOCK_USER,
   MOCK_SESSION_ID,
   MOCK_SESSION_TOKEN,
 } from '../../testdata/mocks';
 import test from '../setupTestServer';
+
+import { createSessionAuthPlugin } from '~/api/plugins/sessionAuth';
+import { AuthService } from '~/services/AuthService';
 
 async function setup(server: FastifyInstance): Promise<{
   authService: AuthService;

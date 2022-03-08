@@ -1,8 +1,8 @@
 import { FastifyError, FastifyRequest, FastifyReply } from 'fastify';
 
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { ValidationError } from '@/errors/ValidationError';
+import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
+import { NotFoundError } from '~/errors/NotFoundError';
+import { ValidationError } from '~/errors/ValidationError';
 
 export async function errorHandler(
   error: FastifyError,

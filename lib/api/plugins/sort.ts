@@ -1,8 +1,8 @@
 import { RouteHandler } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { ValidationError } from '@/errors/ValidationError';
-import { SortParam } from '@/typings/SortParam';
+import { ValidationError } from '~/errors/ValidationError';
+import { SortParam } from '~/typings/SortParam';
 
 type SortParamDecorator = (allowedFields: string[]) => RouteHandler<{
   Querystring: {

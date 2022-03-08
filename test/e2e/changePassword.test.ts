@@ -1,8 +1,8 @@
-import { createPasswordHash } from '@/helpers/passwords';
-import { generateUuid } from '@/helpers/uuid';
-
 import { performLogin } from './performLogin';
 import test from './setupE2ETest';
+
+import { createPasswordHash } from '~/helpers/passwords';
+import { generateUuid } from '~/helpers/uuid';
 
 test('password changing flow', async t => {
   const { server, db } = t.context;

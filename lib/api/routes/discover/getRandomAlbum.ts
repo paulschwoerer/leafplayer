@@ -1,9 +1,9 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { AlbumResponseDto } from '@/common';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { DiscoverService } from '@/services/DiscoverService';
+import { AlbumResponseDto } from '~/common';
+import { NotFoundError } from '~/errors/NotFoundError';
+import { DiscoverService } from '~/services/DiscoverService';
 
 type Injects = {
   discoverService: DiscoverService;

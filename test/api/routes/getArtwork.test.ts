@@ -3,11 +3,11 @@ import { Readable } from 'stream';
 import { FastifyInstance } from 'fastify';
 import td from 'testdouble';
 
-import { getArtwork } from '@/api/routes/getArtwork';
-import { ArtworksService } from '@/services/ArtworksService';
-
 import { mockToken } from '../mockToken';
 import test from '../setupTestServer';
+
+import { getArtwork } from '~/api/routes/getArtwork';
+import { ArtworksService } from '~/services/ArtworksService';
 
 async function setup(server: FastifyInstance): Promise<ArtworksService> {
   const artworksService = td.object<ArtworksService>();

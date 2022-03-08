@@ -42,7 +42,7 @@
   "proxy": "http://localhost:3000",
   "scripts": {
     "start": "PORT=8080 react-scripts start",
-    "build": "react-scripts build",
+    "build": "BUILD_PATH='../dist/public' react-scripts build",
     "test": "react-scripts test",
     "lint": "npm run lint:ts && npm run lint:style",
     "lint:ts": "eslint './src/**/*.{ts,tsx}'",

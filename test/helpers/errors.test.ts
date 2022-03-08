@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { getErrorMessage } from '@/helpers/errors';
+import { getErrorMessage } from '~/helpers/errors';
 
 test('getErrorMessage() should return the error message when an error is given', t => {
   const actual = getErrorMessage(Error('error message'));

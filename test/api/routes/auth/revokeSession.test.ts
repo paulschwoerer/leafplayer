@@ -1,12 +1,12 @@
 import td from 'testdouble';
 
-import { SessionsService } from '@/services/SessionsService';
-import { revokeSession } from '@/api/routes/auth/revokeSession';
-
 import { mockVerifyPassword } from '../../mockVerifyPassword';
 import { MOCK_SESSION_ID, MOCK_USER } from '../../../testdata/mocks';
 import { mockSession } from '../../mockSession';
 import test from '../../setupTestServer';
+
+import { revokeSession } from '~/api/routes/auth/revokeSession';
+import { SessionsService } from '~/services/SessionsService';
 
 test('revoke session endpoint should call SessionsService service when invoked correctly', async t => {
   const sessionsService = td.object<SessionsService>();

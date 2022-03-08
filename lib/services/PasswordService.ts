@@ -1,9 +1,10 @@
 import { Knex } from 'knex';
 
-import { createPasswordHash } from '@/helpers/passwords';
-import { ValidationError } from '@/errors/ValidationError';
-
 import { LeafplayerConfig } from '../config/index';
+
+import { createPasswordHash } from '~/helpers/passwords';
+import { ValidationError } from '~/errors/ValidationError';
+
 export interface PasswordService {
   validatePasswordSecurity(password: string): Error | void;
   setUserPasswordAndRevokeSessions(

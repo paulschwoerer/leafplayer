@@ -1,17 +1,17 @@
 import { Knex } from 'knex';
 
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-import { ValidationError } from '@/errors/ValidationError';
-import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
-import createAuthService, { AuthService } from '@/services/AuthService';
-import createPasswordService from '@/services/PasswordService';
-import createSessionsService from '@/services/SessionsService';
-import createUsersService from '@/services/UsersService';
-
 import { MOCK_USER } from '../testdata/mocks';
 import { createLeafplayerConfig } from '../testHelpers';
 import test from '../setupTestDB';
+
+import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
+import { ValidationError } from '~/errors/ValidationError';
+import { comparePasswords, createPasswordHash } from '~/helpers/passwords';
+import { getCurrentUnixTimestamp } from '~/helpers/time';
+import createAuthService, { AuthService } from '~/services/AuthService';
+import createPasswordService from '~/services/PasswordService';
+import createSessionsService from '~/services/SessionsService';
+import createUsersService from '~/services/UsersService';
 
 const MOCK_SESSIONS = [
   {

@@ -1,5 +1,5 @@
-import { FullAlbum } from '@/common';
-import { AlbumRow } from '@/database/rows';
+import { FullAlbum } from '~/common';
+import { AlbumRow } from '~/database/rows';
 
 export function toFullAlbum({
   artistId,

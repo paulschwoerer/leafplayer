@@ -1,7 +1,7 @@
-import { printError, printInfo, printSuccess } from '@/helpers/cli';
-import { InvitationsService } from '@/services/InvitationsService';
-
 import { CommandLoader } from '../CommandLoader';
+
+import { printError, printInfo, printSuccess } from '~/helpers/cli';
+import { InvitationsService } from '~/services/InvitationsService';
 
 type Injects = {
   invitationsService: InvitationsService;

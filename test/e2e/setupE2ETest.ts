@@ -9,9 +9,9 @@ import {
 import { FastifyInstance } from 'fastify';
 import { Knex } from 'knex';
 
-import { initServer } from '@/api/server';
-
 import { createLeafplayerConfig, setupInMemorySQLiteDB } from '../testHelpers';
+
+import { initServer } from '~/api/server';
 
 const test = anyTest as TestFn<{
   db: Knex;

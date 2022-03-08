@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { SearchHistoryService } from '@/services/SearchHistoryService';
+import { SearchHistoryService } from '~/services/SearchHistoryService';
 
 type Injects = {
   searchHistoryService: SearchHistoryService;

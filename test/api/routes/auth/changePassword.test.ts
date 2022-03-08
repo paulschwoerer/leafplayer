@@ -1,12 +1,12 @@
 import td from 'testdouble';
 
-import { changePassword } from '@/api/routes/auth/changePassword';
-import { AuthService } from '@/services/AuthService';
-
 import { mockVerifyPassword } from '../../mockVerifyPassword';
 import { MOCK_SESSION_ID, MOCK_USER } from '../../../testdata/mocks';
 import { mockSession } from '../../mockSession';
 import test from '../../setupTestServer';
+
+import { AuthService } from '~/services/AuthService';
+import { changePassword } from '~/api/routes/auth/changePassword';
 
 test('password endpoint should call service', async t => {
   const authService = td.object<AuthService>();

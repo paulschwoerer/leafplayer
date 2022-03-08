@@ -3,9 +3,9 @@ import path from 'path';
 
 import { knex, Knex } from 'knex';
 
-import { unixCheckIfWorldReadable } from '@/helpers/filesystem';
-import { createPasswordHash } from '@/helpers/passwords';
-import { generateUuid } from '@/helpers/uuid';
+import { unixCheckIfWorldReadable } from '~/helpers/filesystem';
+import { createPasswordHash } from '~/helpers/passwords';
+import { generateUuid } from '~/helpers/uuid';
 
 type Config = {
   file: string;

@@ -1,9 +1,9 @@
 import { Knex } from 'knex';
 
-import createAlbumsService from '@/services/AlbumsService';
-import createSongsService from '@/services/SongsService';
-
 import test from '../setupTestDB';
+
+import createAlbumsService from '~/services/AlbumsService';
+import createSongsService from '~/services/SongsService';
 
 function setupService(db: Knex) {
   return createAlbumsService({

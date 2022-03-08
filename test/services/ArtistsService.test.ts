@@ -1,11 +1,11 @@
 import { Knex } from 'knex';
 
-import createAlbumsService from '@/services/AlbumsService';
-import createArtistsService from '@/services/ArtistsService';
-import createSongsService from '@/services/SongsService';
-import { FileFormat } from '@/scanner/types';
-
 import test from '../setupTestDB';
+
+import createAlbumsService from '~/services/AlbumsService';
+import createArtistsService from '~/services/ArtistsService';
+import createSongsService from '~/services/SongsService';
+import { FileFormat } from '~/scanner/types';
 
 function setupService(db: Knex) {
   const songsService = createSongsService({ db });

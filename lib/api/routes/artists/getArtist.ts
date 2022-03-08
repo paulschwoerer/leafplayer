@@ -2,7 +2,7 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import { ArtistWithAlbumsResponseDto } from 'common/dtos';
 
-import { ArtistsService } from '@/services/ArtistsService';
+import { ArtistsService } from '~/services/ArtistsService';
 
 type Injects = {
   artistsService: ArtistsService;

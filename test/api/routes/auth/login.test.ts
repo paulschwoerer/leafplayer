@@ -1,13 +1,13 @@
 import td from 'testdouble';
 
-import { login } from '@/api/routes/auth/login';
-import { LeafplayerConfig } from '@/config';
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-import { AuthService } from '@/services/AuthService';
-import { JwtService } from '@/services/JwtService';
-
 import { MOCK_SESSION_TOKEN, MOCK_USER } from '../../../testdata/mocks';
 import test from '../../setupTestServer';
+
+import { login } from '~/api/routes/auth/login';
+import { LeafplayerConfig } from '~/config';
+import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
+import { AuthService } from '~/services/AuthService';
+import { JwtService } from '~/services/JwtService';
 
 const MOCK_JWT_TOKEN =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';

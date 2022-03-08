@@ -1,8 +1,8 @@
-import createUsersService from '@/services/UsersService';
-import { createPasswordHash } from '@/helpers/passwords';
-
 import { MOCK_USER } from '../testdata/mocks';
 import test from '../setupTestDB';
+
+import createUsersService from '~/services/UsersService';
+import { createPasswordHash } from '~/helpers/passwords';
 
 const USER = {
   ...MOCK_USER,

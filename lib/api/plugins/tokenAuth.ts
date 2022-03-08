@@ -2,9 +2,9 @@ import { FastifyPluginAsync, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import { FastifyAuthFunction } from 'fastify-auth';
 
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-import { ValidationError } from '@/errors/ValidationError';
-import { JwtService } from '@/services/JwtService';
+import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
+import { ValidationError } from '~/errors/ValidationError';
+import { JwtService } from '~/services/JwtService';
 
 declare module 'fastify' {
   interface FastifyInstance {

@@ -1,9 +1,9 @@
 import td from 'testdouble';
 
-import { register } from '@/api/routes/auth/register';
-import { RegistrationService } from '@/services/RegistrationService';
-
 import test from '../../setupTestServer';
+
+import { register } from '~/api/routes/auth/register';
+import { RegistrationService } from '~/services/RegistrationService';
 
 test('endpoint should call service', async t => {
   const registrationService = td.object<RegistrationService>();
