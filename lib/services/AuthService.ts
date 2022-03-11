@@ -4,9 +4,9 @@ import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { comparePasswords } from '@/helpers/passwords';
 import { getCurrentUnixTimestamp } from '@/helpers/time';
 
-import { UsersService } from './UsersService';
-import { SessionsService } from './SessionsService';
 import { PasswordService } from './PasswordService';
+import { SessionsService } from './SessionsService';
+import { UsersService } from './UsersService';
 
 type Credentials = {
   username: string;

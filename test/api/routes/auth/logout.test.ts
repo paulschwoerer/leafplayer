@@ -1,7 +1,7 @@
 import td from 'testdouble';
 
-import { AuthService } from '@/services/AuthService';
 import { logout } from '@/api/routes/auth/logout';
+import { AuthService } from '@/services/AuthService';
 
 import { mockSession } from '../../mockSession';
 import {

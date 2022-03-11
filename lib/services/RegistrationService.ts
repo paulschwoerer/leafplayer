@@ -2,8 +2,8 @@ import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { ValidationError } from '@/errors/ValidationError';
 import { InvitationsService } from '@/services/InvitationsService';
 
-import { UsersService } from './UsersService';
 import { PasswordService } from './PasswordService';
+import { UsersService } from './UsersService';
 
 type UserDetails = {
   username: string;

@@ -23,7 +23,7 @@
         "groups": ["builtin", "external", "internal", "parent", "sibling"],
         "pathGroups": [
           {
-            "pattern": "~/**",
+            "pattern": "@/**",
             "group": "internal"
           }
         ],

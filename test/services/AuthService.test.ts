@@ -9,9 +9,9 @@ import createPasswordService from '@/services/PasswordService';
 import createSessionsService from '@/services/SessionsService';
 import createUsersService from '@/services/UsersService';
 
-import test from '../setupTestDB';
-import { createLeafplayerConfig } from '../testHelpers';
 import { MOCK_USER } from '../testdata/mocks';
+import { createLeafplayerConfig } from '../testHelpers';
+import test from '../setupTestDB';
 
 const MOCK_SESSIONS = [
   {

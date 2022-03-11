@@ -9,8 +9,8 @@ import { SortParam } from '@/typings/SortParam';
 import { generateUuid } from '@/helpers/uuid';
 import { NotFoundError } from '@/errors/NotFoundError';
 
-import { SongsService } from './SongsService';
 import { AlbumsService } from './AlbumsService';
+import { SongsService } from './SongsService';
 
 type ArtistWithAlbums = {
   artist: FullArtist;

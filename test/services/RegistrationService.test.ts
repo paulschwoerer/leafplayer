@@ -12,8 +12,8 @@ import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { ValidationError } from '@/errors/ValidationError';
 import { createPasswordHash } from '@/helpers/passwords';
 
-import test from '../setupTestDB';
 import { createLeafplayerConfig } from '../testHelpers';
+import test from '../setupTestDB';
 
 function setupService(db: Knex): RegistrationService {
   const config = createLeafplayerConfig();
