@@ -1,5 +1,5 @@
-@import "scss/vars";
-@import "scss/mixins";
+@import "src/scss/vars";
+@import "src/scss/mixins";
 
 .root {
   display: flex;
@@ -9,8 +9,8 @@
   width: 100%;
 
   .artwork {
-    width: $mobilePlayerBarHeight;
-    height: $mobilePlayerBarHeight;
+    width: $mobile-player-bar-height;
+    height: $mobile-player-bar-height;
     flex-shrink: 0;
 
     > img {
@@ -31,7 +31,7 @@
       display: block;
       color: #fff;
 
-      @include text-ellipsis();
+      @include text-ellipsis;
     }
 
     .title {

@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   position: relative;
@@ -30,16 +30,16 @@
   }
 
   .arrow::before {
-    content: '';
+    content: "";
     background: var(--color-elevation-high);
     transform: rotate(45deg);
   }
 
-  &[data-popper-placement^='left'] .arrow {
+  &[data-popper-placement^="left"] .arrow {
     right: -6px;
   }
 
-  &[data-popper-placement^='right'] .arrow {
+  &[data-popper-placement^="right"] .arrow {
     left: -6px;
   }
 }
@@ -71,7 +71,7 @@
     text-decoration: none;
     color: inherit;
 
-    @include hover() {
+    @include hover {
       cursor: pointer;
       background: rgba(#000, 0.08);
     }

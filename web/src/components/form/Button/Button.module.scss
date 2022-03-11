@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   --height: var(--tap-target);
@@ -21,7 +21,7 @@
   text-decoration: none;
   font: inherit;
 
-  @include desktop() {
+  @include desktop {
     padding: 0 2rem;
   }
 
@@ -57,17 +57,17 @@
   }
 
   &.outlined {
-    color: currentColor;
-    border-color: currentColor;
+    color: currentcolor;
+    border-color: currentcolor;
     background-color: transparent;
 
     @include hover {
       &::after {
         content: "";
         opacity: 0.15;
-        background-color: currentColor;
+        background-color: currentcolor;
 
-        @include coverParent;
+        @include cover-parent;
       }
     }
   }

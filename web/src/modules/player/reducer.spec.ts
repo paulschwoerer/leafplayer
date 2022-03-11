@@ -8,6 +8,9 @@ function qi(id: string): QueueItem {
       title: 'Test song',
       duration: 42,
       track: 0,
+      disk: 1,
+      createdAt: '2000-12-24 17:00:00',
+      updatedAt: '2000-12-24 17:00:00',
       album: {
         id: 'albumId',
         name: 'Album Name',

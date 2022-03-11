@@ -11,7 +11,7 @@ import MobilePlayer from 'components/player/MobilePlayer/MobilePlayer';
 import MobilePlayerBar from 'components/player/MobilePlayerBar/MobilePlayerBar';
 import { PlayerProvider } from 'modules/player/PlayerProvider';
 import React, { ReactElement, useState } from 'react';
-import MainContent from '../MainContent/MainContent';
+import { Outlet } from 'react-router';
 import DesktopPlayerBar from '../player/DesktopPlayerBar/DesktopPlayerBar';
 import DesktopSidebar from '../sidebar/DesktopSidebar/DesktopSidebar';
 import styles from './Wrapper.module.scss';
@@ -74,7 +74,11 @@ function Wrapper(): ReactElement {
             className={styles.desktopSidebar}
             onClick={() => setIsSidebarExpanded(false)}
           />
-          <MainContent className={styles.main} />
+          <main className={styles.main}>
+            <div className={styles.content}>
+              <Outlet />
+            </div>
+          </main>
           <DesktopPlayerBar className={styles.desktopPlayerBar} />
         </div>
       </PlayerProvider>

@@ -1,12 +1,12 @@
-@import "scss/vars";
-@import "scss/mixins";
+@import "src/scss/vars";
+@import "src/scss/mixins";
 
 .root {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: $mobilePlayerBarHeight;
+  height: $mobile-player-bar-height;
   background-color: var(--color-primary);
   z-index: 99;
   display: flex;
@@ -16,8 +16,8 @@
   @include shadow(high);
 
   .artwork {
-    height: $mobilePlayerBarHeight;
-    width: $mobilePlayerBarHeight;
+    height: $mobile-player-bar-height;
+    width: $mobile-player-bar-height;
     flex-shrink: 0;
   }
 
@@ -33,7 +33,7 @@
       margin: 0.125rem 0;
       min-width: 0;
 
-      @include text-ellipsis();
+      @include text-ellipsis;
     }
 
     .title {

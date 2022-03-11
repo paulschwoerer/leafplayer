@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "ESNext",
     "lib": [
       "es2017",
       "esnext.asynciterable"
@@ -8,17 +8,11 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": false,
-    "emitDecoratorMetadata": false,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
     "module": "commonjs",
-    "pretty": true,
-    "sourceMap": true,
-    "outDir": "./build",
-    "allowJs": true,
-    "noEmit": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true,
@@ -30,10 +24,7 @@
       "@/*": [
         "./lib/*"
       ]
-    },
-    "plugins": [
-      { "transform": "typescript-transform-paths" },
-    ]
+    }
   },
   "include": [
     "./lib/**/*",
@@ -44,4 +35,9 @@
   "exclude": [
     "node_modules"
   ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
 }

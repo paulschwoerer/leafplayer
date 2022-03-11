@@ -7,9 +7,10 @@ import { AuthRequestDto, AuthResponseDto } from 'leafplayer-common';
 import { isApiError, makeApiPostRequest } from 'modules/api';
 import { AuthContext } from 'modules/auth';
 import React, { ReactElement, useContext, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function Login({ history }: RouteComponentProps): ReactElement {
+function Login(): ReactElement {
+  const navigate = useNavigate();
   const authContext = useContext(AuthContext);
 
   const [error, setError] = useState('');
@@ -38,7 +39,7 @@ function Login({ history }: RouteComponentProps): ReactElement {
       } else {
         authContext.storeUser(result.user);
         authContext.storeArtworkToken(result.artworkToken);
-        history.replace('/');
+        navigate('/', { replace: true });
       }
     },
   });

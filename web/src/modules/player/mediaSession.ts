@@ -16,9 +16,8 @@ export function updateMediaSessionPlayState(
   playbackState: PlaybackState,
 ): void {
   if (navigator.mediaSession) {
-    navigator.mediaSession.playbackState = getMediaSessionStateForPlaybackState(
-      playbackState,
-    );
+    navigator.mediaSession.playbackState =
+      getMediaSessionStateForPlaybackState(playbackState);
   }
 }
 
@@ -71,9 +70,11 @@ export function addMediaSessionListeners({
     navigator.mediaSession.setActionHandler('pause', pause);
     navigator.mediaSession.setActionHandler('nexttrack', skipNext);
     navigator.mediaSession.setActionHandler('previoustrack', skipPrevious);
-    navigator.mediaSession.setActionHandler('seekto', ({ seekTime }) =>
-      seekTo(seekTime),
-    );
+    navigator.mediaSession.setActionHandler('seekto', ({ seekTime }) => {
+      if (seekTime) {
+        seekTo(seekTime);
+      }
+    });
   }
 }
 

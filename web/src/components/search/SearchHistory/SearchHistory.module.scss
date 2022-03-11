@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 :root {
   --search-history-entry-padding: 0.5rem;
@@ -41,7 +41,7 @@
     font-size: 1rem;
     margin: calc(var(--search-history-entry-padding) / 2) 0;
 
-    @include text-ellipsis();
+    @include text-ellipsis;
   }
 
   > h2 {

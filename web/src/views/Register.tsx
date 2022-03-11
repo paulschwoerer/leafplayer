@@ -5,10 +5,10 @@ import { useFormik } from 'formik';
 import { RegisterRequestDto } from 'leafplayer-common';
 import { isApiError, makeApiPostRequest } from 'modules/api';
 import React, { ReactElement, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Register(): ReactElement {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [error, setError] = useState('');
 
@@ -64,7 +64,7 @@ function Register(): ReactElement {
       if (isApiError(result)) {
         setError(result.message);
       } else {
-        history.push('/login');
+        navigate('/login');
       }
     },
   });

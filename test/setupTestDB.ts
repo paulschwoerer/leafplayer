@@ -1,9 +1,9 @@
-import anyTest, { TestInterface } from 'ava';
+import anyTest, { TestFn } from 'ava';
 import { Knex } from 'knex';
 
 import { setupInMemorySQLiteDB } from './testHelpers';
 
-const test = anyTest as TestInterface<{
+const test = anyTest as TestFn<{
   db: Knex;
 }>;
 

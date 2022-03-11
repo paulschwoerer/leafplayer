@@ -1,5 +1,5 @@
-@import "scss/vars";
-@import "scss/mixins";
+@import "src/scss/vars";
+@import "src/scss/mixins";
 
 .root {
   .layout {
@@ -15,6 +15,14 @@
 
     .main {
       grid-area: main;
+      background-color: var(--color-elevation-low);
+      overflow: hidden;
+
+      .content {
+        padding: 1rem 1rem calc(#{$mobile-player-bar-height} + 48px + 2rem) 1rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
     }
 
     .desktopPlayerBar {
@@ -32,7 +40,7 @@
     }
 
     .layout {
-      grid-template-columns: $desktopSidebarWidth 1fr;
+      grid-template-columns: $desktop-sidebar-width 1fr;
       grid-template-rows: 1fr 80px;
       grid-template-areas:
         "sidebar main"
@@ -42,6 +50,14 @@
       .desktopSidebar {
         display: block;
         grid-area: sidebar;
+      }
+
+      .main {
+        overflow-y: auto;
+
+        .inner {
+          padding: 2rem;
+        }
       }
 
       .desktopPlayerBar {

@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   display: flex;
@@ -14,7 +14,7 @@
     font-weight: bold;
   }
 
-  @include canHover {
+  @include can-hover {
     padding: 0.5rem;
   }
 }

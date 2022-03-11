@@ -1,4 +1,4 @@
-@import "scss/vars";
+@import "src/scss/vars";
 
 .root {
   .menu {
@@ -21,7 +21,7 @@
     align-items: flex-end;
 
     &.shifted {
-      padding: 1rem 1rem calc(#{$mobilePlayerBarHeight} + 1rem + 48px + 1rem) 1rem;
+      padding: 1rem 1rem calc(#{$mobile-player-bar-height} + 1rem + 48px + 1rem) 1rem;
     }
 
     .navItem {

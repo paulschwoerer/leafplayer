@@ -1,7 +1,7 @@
 .root {
   --gap: 1rem;
-  --itemWidth: 100px;
-  --trackWidth: min-content;
+  --item-width: 100px;
+  --track-width: min-content;
   --padding: 2rem;
 
   .viewportWrapper {
@@ -43,10 +43,10 @@
     .track {
       display: flex;
       gap: var(--gap);
-      width: var(--trackWidth);
+      width: var(--track-width);
 
       > * {
-        flex: 0 0 var(--itemWidth);
+        flex: 0 0 var(--item-width);
         scroll-snap-align: start;
       }
     }

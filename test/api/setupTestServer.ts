@@ -1,10 +1,10 @@
 import fastify, { FastifyInstance } from 'fastify';
-import anyTest, { TestInterface } from 'ava';
+import anyTest, { TestFn } from 'ava';
 import fastifyAuth from 'fastify-auth';
 
 import { errorHandler } from '@/api/errorHandler';
 
-const test = anyTest as TestInterface<{
+const test = anyTest as TestFn<{
   server: FastifyInstance;
 }>;
 

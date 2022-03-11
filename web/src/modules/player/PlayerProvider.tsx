@@ -1,3 +1,4 @@
+import { getErrorMessage } from 'helpers/errors';
 import { FullSong } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
@@ -78,7 +79,7 @@ export function PlayerProvider({
         dispatch({ type: 'playbackError' });
         showNotification({
           title: 'Cannot play song',
-          message: e.message,
+          message: getErrorMessage(e),
           type: 'error',
         });
       });
@@ -142,7 +143,7 @@ export function PlayerProvider({
     } catch (e) {
       showNotification({
         title: 'Cannot add album to queue',
-        message: e.message,
+        message: getErrorMessage(e),
         type: 'error',
       });
     }
@@ -159,7 +160,7 @@ export function PlayerProvider({
     } catch (e) {
       showNotification({
         title: 'Cannot add artist to queue',
-        message: e.message,
+        message: getErrorMessage(e),
         type: 'error',
       });
     }
@@ -280,9 +281,10 @@ export function PlayerProvider({
     };
   }, []);
 
-  useEffect(() => console.debug(`[Player] STATE: ${playbackState}`), [
-    playbackState,
-  ]);
+  useEffect(
+    () => console.debug(`[Player] STATE: ${playbackState}`),
+    [playbackState],
+  );
 
   useEffect(() => {
     if (playbackState !== PlaybackState.READY) {

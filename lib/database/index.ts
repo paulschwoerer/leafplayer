@@ -12,9 +12,18 @@ type Config = {
   type: string;
 };
 
+const clients = new Map<string, string>([['sqlite3', 'better-sqlite3']]);
+
 export function initializeDatabase({ file, type }: Config): Knex {
-  const db = knex({
-    client: type,
+  const client = clients.get(type);
+
+  if (!client) {
+    throw Error(`cannot find client for database type ${type}`);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const db = knex<any, Record<string, any>[]>({
+    client,
     useNullAsDefault: true,
     connection: {
       filename: file,
@@ -24,9 +33,12 @@ export function initializeDatabase({ file, type }: Config): Knex {
     },
     pool: {
       afterCreate: (
-        connection: { run(q: string, cb: () => void): void },
+        connection: { pragma(q: string): void },
         cb: () => void,
-      ) => connection.run('PRAGMA foreign_keys = ON', cb),
+      ) => {
+        connection.pragma('foreign_keys = ON');
+        cb();
+      },
     },
   });
 

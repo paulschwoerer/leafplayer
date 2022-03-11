@@ -1,4 +1,4 @@
-@import "scss/vars";
+@import "src/scss/vars";
 
 @keyframes bar1 {
   0% { height: 92%; }
@@ -63,7 +63,7 @@
     align-items: center;
 
     .bar {
-      background-color: currentColor;
+      background-color: currentcolor;
       min-height: 25%;
       height: 100%;
       border-radius: 2px;

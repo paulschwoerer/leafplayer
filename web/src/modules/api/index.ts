@@ -1,7 +1,6 @@
 import { ApiError } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 export enum HttpMethod {
   GET = 'GET',
@@ -78,7 +77,7 @@ async function makeApiRequest<TResponse, TBody = unknown>(
   try {
     return JSON.parse(bodyContent) as TResponse;
   } catch (e) {
-    return (bodyContent as unknown) as TResponse;
+    return bodyContent as unknown as TResponse;
   }
 }
 
@@ -109,7 +108,6 @@ export function useApiData<TResponse = unknown>(
   const [error, setError] = useState<ApiError | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const { storeUser } = useContext(AuthContext);
-  const history = useHistory();
 
   const execute = useCallback(async () => {
     setError(undefined);
@@ -122,14 +120,13 @@ export function useApiData<TResponse = unknown>(
     if (isApiError(result)) {
       if (result.statusCode === 401) {
         storeUser(null);
-        history.push('/login');
       } else {
         setError(result);
       }
     } else {
       setData(result);
     }
-  }, [slug, history, storeUser]);
+  }, [slug, storeUser]);
 
   useEffect(() => {
     execute().catch(console.error);

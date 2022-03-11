@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   display: grid;
@@ -13,7 +13,7 @@
   color: #fff;
 
   .background {
-    @include coverParent();
+    @include cover-parent;
 
     background: no-repeat center center rgba(#000, 0.025);
     background-size: cover;
@@ -21,7 +21,7 @@
     transform: scale(1.1);
 
     &::after {
-      @include coverParent();
+      @include cover-parent;
 
       content: "";
       background-color: rgba(#000, 0.25);
@@ -43,7 +43,7 @@
 
     .name h1 {
       font-size: 2rem;
-      margin: 0 0 1.5rem 0;
+      margin: 0 0 1.5rem;
     }
   }
 

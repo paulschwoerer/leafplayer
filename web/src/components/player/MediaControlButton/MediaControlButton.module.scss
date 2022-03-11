@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   position: relative;
@@ -17,7 +17,7 @@
     height: 20px;
   }
 
-  @include canHover {
+  @include can-hover {
     &::before {
       content: "";
       position: absolute;

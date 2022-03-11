@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .navEntry {
   display: flex;
@@ -16,7 +16,7 @@
   &.active {
     position: relative;
 
-    @include active-dot();
+    @include active-dot;
   }
 
   .icon {
@@ -26,6 +26,6 @@
   }
 
   .label {
-    @include text-ellipsis();
+    @include text-ellipsis;
   }
 }

@@ -1,4 +1,4 @@
-ARG IMAGE_VERSION=14.17-alpine
+ARG IMAGE_VERSION=16.14-alpine
 
 # --------------------------
 # BUILD
@@ -6,8 +6,6 @@ ARG IMAGE_VERSION=14.17-alpine
 FROM node:${IMAGE_VERSION} as builder
 
 ENV SASS_PATH=node_modules:src
-
-RUN npm install --global gulp-cli ts-patch
 
 COPY --chown=node:node . /app
 
@@ -21,7 +19,7 @@ WORKDIR /app
 
 RUN npm ci --quiet
 
-RUN gulp build
+RUN npm run build
 
 # --------------------------
 # PRODUCTION IMAGE
@@ -42,7 +40,7 @@ RUN chown node:node /app
 
 USER node
 
-COPY --from=builder /app/build .
+COPY --from=builder /app/dist .
 COPY --chown=node:node package-lock.json .
 
 RUN npm ci --quiet --only=production

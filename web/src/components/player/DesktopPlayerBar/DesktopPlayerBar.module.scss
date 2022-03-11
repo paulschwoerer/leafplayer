@@ -1,5 +1,5 @@
-@import "scss/vars";
-@import "scss/mixins";
+@import "src/scss/vars";
+@import "src/scss/mixins";
 
 $padding: 0.75rem;
 
@@ -17,7 +17,13 @@ $padding: 0.75rem;
   .layout {
     height: 100%;
     display: grid;
-    grid-template-columns: calc(#{$desktopSidebarWidth} - #{$padding * 2}) calc(1rem + var(--gap)) 1fr 1fr var(--gap) min-content;
+    grid-template-columns:
+      calc(#{$desktop-sidebar-width} - #{$padding * 2})
+      calc(1rem + var(--gap))
+      1fr
+      1fr
+      var(--gap)
+      min-content;
     grid-template-rows: 1fr 22px;
     grid-template-areas:
       "current . main-controls side-controls . queue"

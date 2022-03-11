@@ -112,7 +112,7 @@ function ArtistEntry({
   onRemove: () => void;
 }) {
   return (
-    <BaseEntry to={`artist/${artist.id}`} onRemove={onRemove}>
+    <BaseEntry to={`/artist/${artist.id}`} onRemove={onRemove}>
       <ThemedArtistArtwork id={artist.id} size={96} />
       <EntryContent>
         <h1 title={artist.name}>{artist.name}</h1>
@@ -130,7 +130,7 @@ function AlbumEntry({
   onRemove: () => void;
 }) {
   return (
-    <BaseEntry to={`album/${album.id}`} onRemove={onRemove}>
+    <BaseEntry to={`/album/${album.id}`} onRemove={onRemove}>
       <ThemedAlbumArtwork id={album.id} size={96} />
       <EntryContent>
         <h1 title={album.name}>{album.name}</h1>
@@ -148,7 +148,7 @@ function SongEntry({
   onRemove: () => void;
 }) {
   return (
-    <BaseEntry to={`album/${song.album.id}`} onRemove={onRemove}>
+    <BaseEntry to={`/album/${song.album.id}`} onRemove={onRemove}>
       <ThemedAlbumArtwork id={song.album.id} size={96} />
       <EntryContent>
         <h1 title={song.title}>{song.title}</h1>

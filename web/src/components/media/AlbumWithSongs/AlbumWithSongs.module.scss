@@ -1,4 +1,4 @@
-@import "scss/mixins";
+@import "src/scss/mixins";
 
 .root {
   display: grid;
@@ -32,7 +32,7 @@
       margin: 0;
       font-size: 2rem;
 
-      @include text-ellipsis();
+      @include text-ellipsis;
     }
 
     .misc {
