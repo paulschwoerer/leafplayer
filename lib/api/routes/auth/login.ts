@@ -2,10 +2,10 @@ import UAParser from 'ua-parser-js';
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { AuthRequestDto } from '~/common';
-import { AuthService } from '~/services/AuthService';
-import { LeafplayerConfig } from '~/config';
-import { JwtService } from '~/services/JwtService';
+import { AuthRequestDto } from '@/common';
+import { AuthService } from '@/services/AuthService';
+import { LeafplayerConfig } from '@/config';
+import { JwtService } from '@/services/JwtService';
 
 type Injects = {
   config: LeafplayerConfig;

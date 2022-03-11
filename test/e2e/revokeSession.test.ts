@@ -1,6 +1,6 @@
-import { UserSessionsResponseDto } from '~/common';
-import { createPasswordHash } from '~/helpers/passwords';
-import { generateUuid } from '~/helpers/uuid';
+import { UserSessionsResponseDto } from '@/common';
+import { createPasswordHash } from '@/helpers/passwords';
+import { generateUuid } from '@/helpers/uuid';
 
 import test from './setupE2ETest';
 import { performLogin } from './performLogin';

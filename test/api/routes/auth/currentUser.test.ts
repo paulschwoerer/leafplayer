@@ -1,8 +1,8 @@
 import td from 'testdouble';
 import { UserResponseDto } from 'common/dtos';
 
-import { JwtService } from '~/services/JwtService';
-import { currentUser } from '~/api/routes/auth/currentUser';
+import { JwtService } from '@/services/JwtService';
+import { currentUser } from '@/api/routes/auth/currentUser';
 
 import {
   MOCK_SESSION_ID,

@@ -1,7 +1,7 @@
 import td from 'testdouble';
 
-import { register } from '~/api/routes/auth/register';
-import { RegistrationService } from '~/services/RegistrationService';
+import { register } from '@/api/routes/auth/register';
+import { RegistrationService } from '@/services/RegistrationService';
 
 import test from '../../setupTestServer';
 

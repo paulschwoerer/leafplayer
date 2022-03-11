@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
-import createAlbumsService from '~/services/AlbumsService';
-import createSongsService from '~/services/SongsService';
+import createAlbumsService from '@/services/AlbumsService';
+import createSongsService from '@/services/SongsService';
 
 import test from '../setupTestDB';
 

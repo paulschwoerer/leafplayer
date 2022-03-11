@@ -1,6 +1,6 @@
-import { getCurrentUnixTimestamp } from '~/helpers/time';
-import createSessionsService from '~/services/SessionsService';
-import { createPasswordHash } from '~/helpers/passwords';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
+import createSessionsService from '@/services/SessionsService';
+import { createPasswordHash } from '@/helpers/passwords';
 
 import test from '../setupTestDB';
 import { MOCK_USER, MOCK_SESSION_ID } from '../testdata/mocks';

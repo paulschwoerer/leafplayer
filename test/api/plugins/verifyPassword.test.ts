@@ -1,8 +1,8 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
 
-import { UsersService } from '~/services/UsersService';
-import { createVerifyPasswordPlugin } from '~/api/plugins/verifyPassword';
+import { UsersService } from '@/services/UsersService';
+import { createVerifyPasswordPlugin } from '@/api/plugins/verifyPassword';
 
 import test from '../setupTestServer';
 import { mockSession } from '../mockSession';

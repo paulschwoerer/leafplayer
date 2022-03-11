@@ -1,7 +1,7 @@
 import td from 'testdouble';
 
-import { revokeSession } from '~/api/routes/auth/revokeSession';
-import { SessionsService } from '~/services/SessionsService';
+import { revokeSession } from '@/api/routes/auth/revokeSession';
+import { SessionsService } from '@/services/SessionsService';
 
 import { mockVerifyPassword } from '../../mockVerifyPassword';
 import { MOCK_SESSION_ID, MOCK_USER } from '../../../testdata/mocks';

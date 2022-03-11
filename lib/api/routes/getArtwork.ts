@@ -1,10 +1,10 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { ArtworksService } from '~/services/ArtworksService';
-import { NotFoundError } from '~/errors/NotFoundError';
-import { ValidationError } from '~/errors/ValidationError';
-import { isUuidV4 } from '~/helpers/uuid';
+import { ArtworksService } from '@/services/ArtworksService';
+import { NotFoundError } from '@/errors/NotFoundError';
+import { ValidationError } from '@/errors/ValidationError';
+import { isUuidV4 } from '@/helpers/uuid';
 
 type Injects = {
   artworksService: ArtworksService;

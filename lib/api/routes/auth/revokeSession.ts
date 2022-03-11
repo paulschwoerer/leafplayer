@@ -1,8 +1,8 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { SessionsService } from '~/services/SessionsService';
-import { RevokeSessionRequestDto } from '~/common';
+import { SessionsService } from '@/services/SessionsService';
+import { RevokeSessionRequestDto } from '@/common';
 
 type Injects = {
   sessionsService: SessionsService;

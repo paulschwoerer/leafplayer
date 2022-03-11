@@ -18,10 +18,10 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "~/common": [
+      "@/common": [
         "./common"
       ],
-      "~/*": [
+      "@/*": [
         "./lib/*"
       ]
     }

@@ -1,5 +1,5 @@
-import { UserSession } from '~/common';
-import { SessionRow } from '~/database/rows';
+import { UserSession } from '@/common';
+import { SessionRow } from '@/database/rows';
 
 export function toUserSession({
   id,

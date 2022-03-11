@@ -1,7 +1,7 @@
 import td from 'testdouble';
 
-import { AuthService } from '~/services/AuthService';
-import { changePassword } from '~/api/routes/auth/changePassword';
+import { AuthService } from '@/services/AuthService';
+import { changePassword } from '@/api/routes/auth/changePassword';
 
 import { mockVerifyPassword } from '../../mockVerifyPassword';
 import { MOCK_SESSION_ID, MOCK_USER } from '../../../testdata/mocks';

@@ -1,8 +1,8 @@
 import td from 'testdouble';
 
-import { UserSession, UserSessionsResponseDto } from '~/common';
-import { SessionsService } from '~/services/SessionsService';
-import { getSessions } from '~/api/routes/auth/getSessions';
+import { UserSession, UserSessionsResponseDto } from '@/common';
+import { SessionsService } from '@/services/SessionsService';
+import { getSessions } from '@/api/routes/auth/getSessions';
 
 import { MOCK_SESSION_ID, MOCK_USER } from '../../../testdata/mocks';
 import { mockSession } from '../../mockSession';

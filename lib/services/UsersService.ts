@@ -1,10 +1,10 @@
 import { Knex } from 'knex';
 
-import { User } from '~/common';
-import { UserRow } from '~/database/rows';
-import { comparePasswords, createPasswordHash } from '~/helpers/passwords';
-import { generateUuid } from '~/helpers/uuid';
-import { NotFoundError } from '~/errors/NotFoundError';
+import { User } from '@/common';
+import { UserRow } from '@/database/rows';
+import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
+import { generateUuid } from '@/helpers/uuid';
+import { NotFoundError } from '@/errors/NotFoundError';
 
 type CreationParams = {
   username: string;

@@ -2,9 +2,9 @@ import { FastifyPluginAsync, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import { FastifyAuthFunction } from 'fastify-auth';
 
-import { AuthService } from '~/services/AuthService';
-import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
-import { User } from '~/common';
+import { AuthService } from '@/services/AuthService';
+import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
+import { User } from '@/common';
 
 declare module 'fastify' {
   interface FastifyInstance {

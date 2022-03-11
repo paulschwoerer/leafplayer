@@ -1,11 +1,11 @@
 import { Knex } from 'knex';
 import uid from 'uid-safe';
 
-import { UserSession } from '~/common';
-import { getCurrentUnixTimestamp } from '~/helpers/time';
-import { generateUuid } from '~/helpers/uuid';
-import { toUserSession } from '~/mappers/sessions';
-import { NotFoundError } from '~/errors/NotFoundError';
+import { UserSession } from '@/common';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
+import { generateUuid } from '@/helpers/uuid';
+import { toUserSession } from '@/mappers/sessions';
+import { NotFoundError } from '@/errors/NotFoundError';
 
 type Browser = {
   os: string;

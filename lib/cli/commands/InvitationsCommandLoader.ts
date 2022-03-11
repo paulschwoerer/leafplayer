@@ -1,5 +1,5 @@
-import { printError, printInfo, printSuccess } from '~/helpers/cli';
-import { InvitationsService } from '~/services/InvitationsService';
+import { printError, printInfo, printSuccess } from '@/helpers/cli';
+import { InvitationsService } from '@/services/InvitationsService';
 
 import { CommandLoader } from '../CommandLoader';
 

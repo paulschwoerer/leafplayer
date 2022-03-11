@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 
-import { SortParam } from '~/typings/SortParam';
+import { SortParam } from '@/typings/SortParam';
 
 type AlbumsQueryBuilder = ReturnType<typeof query>;
 

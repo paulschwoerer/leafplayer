@@ -9,7 +9,7 @@ import {
 import { FastifyInstance } from 'fastify';
 import { Knex } from 'knex';
 
-import { initServer } from '~/api/server';
+import { initServer } from '@/api/server';
 
 import { createLeafplayerConfig, setupInMemorySQLiteDB } from '../testHelpers';
 

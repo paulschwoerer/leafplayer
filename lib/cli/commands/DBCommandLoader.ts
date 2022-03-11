@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
-import { runMigrations, seedDevDatabase } from '~/database';
-import { printInfo, printSuccess } from '~/helpers/cli';
+import { runMigrations, seedDevDatabase } from '@/database';
+import { printInfo, printSuccess } from '@/helpers/cli';
 
 import { CommandLoader } from '../CommandLoader';
 

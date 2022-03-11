@@ -1,13 +1,13 @@
 import { Knex } from 'knex';
 
-import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
-import { ValidationError } from '~/errors/ValidationError';
-import { comparePasswords, createPasswordHash } from '~/helpers/passwords';
-import { getCurrentUnixTimestamp } from '~/helpers/time';
-import createAuthService, { AuthService } from '~/services/AuthService';
-import createPasswordService from '~/services/PasswordService';
-import createSessionsService from '~/services/SessionsService';
-import createUsersService from '~/services/UsersService';
+import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
+import { ValidationError } from '@/errors/ValidationError';
+import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
+import createAuthService, { AuthService } from '@/services/AuthService';
+import createPasswordService from '@/services/PasswordService';
+import createSessionsService from '@/services/SessionsService';
+import createUsersService from '@/services/UsersService';
 
 import test from '../setupTestDB';
 import { createLeafplayerConfig } from '../testHelpers';

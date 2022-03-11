@@ -1,10 +1,10 @@
 import td from 'testdouble';
 
-import { login } from '~/api/routes/auth/login';
-import { LeafplayerConfig } from '~/config';
-import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
-import { AuthService } from '~/services/AuthService';
-import { JwtService } from '~/services/JwtService';
+import { login } from '@/api/routes/auth/login';
+import { LeafplayerConfig } from '@/config';
+import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
+import { AuthService } from '@/services/AuthService';
+import { JwtService } from '@/services/JwtService';
 
 import test from '../../setupTestServer';
 import { MOCK_SESSION_TOKEN, MOCK_USER } from '../../../testdata/mocks';

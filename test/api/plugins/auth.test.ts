@@ -1,8 +1,8 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
 
-import { createSessionAuthPlugin } from '~/api/plugins/sessionAuth';
-import { AuthService } from '~/services/AuthService';
+import { createSessionAuthPlugin } from '@/api/plugins/sessionAuth';
+import { AuthService } from '@/services/AuthService';
 
 import {
   MOCK_USER,

@@ -2,10 +2,10 @@ import path from 'path';
 
 import { Knex } from 'knex';
 
-import { FullSong } from '~/common';
-import { AudioFileRow } from '~/database/rows';
-import { isReadable, removeDir } from '~/helpers/filesystem';
-import { generateUuid } from '~/helpers/uuid';
+import { FullSong } from '@/common';
+import { AudioFileRow } from '@/database/rows';
+import { isReadable, removeDir } from '@/helpers/filesystem';
+import { generateUuid } from '@/helpers/uuid';
 
 export type SavedSong = FullSong & { fileLastModified: number };
 

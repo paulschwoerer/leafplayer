@@ -1,8 +1,8 @@
-import { User } from '~/common';
-import { LeafplayerConfig } from '~/config';
-import { NotAuthorizedError } from '~/errors/NotAuthorizedError';
-import { comparePasswords } from '~/helpers/passwords';
-import { getCurrentUnixTimestamp } from '~/helpers/time';
+import { User } from '@/common';
+import { LeafplayerConfig } from '@/config';
+import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
+import { comparePasswords } from '@/helpers/passwords';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
 
 import { UsersService } from './UsersService';
 import { SessionsService } from './SessionsService';

@@ -2,7 +2,7 @@ import { FastifyAuthFunction } from 'fastify-auth';
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { User } from '~/common';
+import { User } from '@/common';
 
 declare module 'fastify' {
   interface FastifyInstance {

@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
-import { sortPlugin } from '~/api/plugins/sort';
-import { SortParam } from '~/typings/SortParam';
+import { sortPlugin } from '@/api/plugins/sort';
+import { SortParam } from '@/typings/SortParam';
 
 import test from '../setupTestServer';
 

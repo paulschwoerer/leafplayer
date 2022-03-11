@@ -1,11 +1,11 @@
 import { Knex } from 'knex';
 
-import { FullAlbum, FullArtist } from '~/common';
-import { toFullAlbum } from '~/mappers/albums';
-import { toFullArtist } from '~/mappers/artists';
-import { createAlbumsQuery } from '~/query/albums';
-import { createArtistQuery } from '~/query/artists';
-import { getRandomArrayElements } from '~/helpers/random';
+import { FullAlbum, FullArtist } from '@/common';
+import { toFullAlbum } from '@/mappers/albums';
+import { toFullArtist } from '@/mappers/artists';
+import { createAlbumsQuery } from '@/query/albums';
+import { createArtistQuery } from '@/query/artists';
+import { getRandomArrayElements } from '@/helpers/random';
 
 export interface DiscoverService {
   findRandomArtists(count: number): Promise<FullArtist[]>;

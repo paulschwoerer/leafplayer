@@ -5,9 +5,9 @@ import {
   AlbumSearchHistoryEntry,
   ArtistSearchHistoryEntry,
   SongSearchHistoryEntry,
-} from '~/common';
-import { generateUuid } from '~/helpers/uuid';
-import { SearchHistoryRow } from '~/database/rows';
+} from '@/common';
+import { generateUuid } from '@/helpers/uuid';
+import { SearchHistoryRow } from '@/database/rows';
 
 import { AlbumsService } from './AlbumsService';
 import { ArtistsService } from './ArtistsService';

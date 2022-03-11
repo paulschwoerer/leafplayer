@@ -1,5 +1,5 @@
-import { FullSong } from '~/common';
-import { SongRow } from '~/database/rows';
+import { FullSong } from '@/common';
+import { SongRow } from '@/database/rows';
 
 type Row = Omit<SongRow, 'fileId'> & {
   artistName: string;

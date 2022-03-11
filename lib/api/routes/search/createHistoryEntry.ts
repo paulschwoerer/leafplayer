@@ -4,8 +4,8 @@ import fp from 'fastify-plugin';
 import {
   CreateSearchHistoryEntryRequestDto,
   CreateSearchHistoryEntryResponseDto,
-} from '~/common';
-import { SearchHistoryService } from '~/services/SearchHistoryService';
+} from '@/common';
+import { SearchHistoryService } from '@/services/SearchHistoryService';
 
 type Injects = {
   searchHistoryService: SearchHistoryService;

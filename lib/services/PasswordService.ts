@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
-import { createPasswordHash } from '~/helpers/passwords';
-import { ValidationError } from '~/errors/ValidationError';
+import { createPasswordHash } from '@/helpers/passwords';
+import { ValidationError } from '@/errors/ValidationError';
 
 import { LeafplayerConfig } from '../config/index';
 

@@ -9,7 +9,7 @@
     ["module-resolver", {
       "root": ["./"],
       "alias": {
-        "~": "./lib"
+        "@": "./lib"
       }
     }]
   ]

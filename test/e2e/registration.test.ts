@@ -1,5 +1,5 @@
-import { UserResponseDto } from '~/common';
-import { getCurrentUnixTimestamp } from '~/helpers/time';
+import { UserResponseDto } from '@/common';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
 
 import { performLogin } from './performLogin';
 import test from './setupE2ETest';

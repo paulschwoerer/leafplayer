@@ -1,8 +1,8 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
 
-import { createTokenAuthPlugin } from '~/api/plugins/tokenAuth';
-import { JwtService } from '~/services/JwtService';
+import { createTokenAuthPlugin } from '@/api/plugins/tokenAuth';
+import { JwtService } from '@/services/JwtService';
 
 import test from '../setupTestServer';
 
