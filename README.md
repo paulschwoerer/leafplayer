@@ -23,7 +23,7 @@ Leafplayer is a minimalistic music streaming server with a focus on performance 
 
 ## Features
 
-These are some notable features, in no particularl order.
+These are some notable features, in no particular order.
 
 * Modern, mobile-friendly interface
 * Native media controls
