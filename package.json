@@ -55,7 +55,7 @@
     "md5-file": "^5.0.0",
     "music-metadata": "^7.12.2",
     "sharp": "^0.30.2",
-    "ua-parser-js": "^1.0.2",
+    "ua-parser-js": "^1.0.33",
     "uid-safe": "^2.1.5",
     "uuid": "^8.3.2"
   },
