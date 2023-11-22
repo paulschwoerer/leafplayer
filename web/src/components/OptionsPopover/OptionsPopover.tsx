@@ -174,9 +174,9 @@ function Option({
   }
 
   return (
-    <div className={styles.option} onClick={onClick}>
+    <button className={styles.option} onClick={onClick}>
       {children}
-    </div>
+    </button>
   );
 }
 

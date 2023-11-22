@@ -56,12 +56,12 @@
   border-radius: 0.5rem 0.5rem 0 0;
   overflow: hidden;
   z-index: 100;
-  box-shadow: 0 -8px 24px rgba(#000, 0.3);
+  box-shadow: 0 -0.5rem 1rem rgba(#000, 0.3);
 }
 
 .options {
   background-color: var(--color-elevation-high);
-  padding: 0.5rem 0;
+  border-radius: 0.5rem;
 
   .option {
     padding: 1rem 1.5rem;
@@ -70,6 +70,8 @@
     display: block;
     text-decoration: none;
     color: inherit;
+    border: 0;
+    background: transparent;
 
     @include hover {
       cursor: pointer;
