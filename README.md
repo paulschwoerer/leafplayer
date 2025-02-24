@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/paulschwoerer/leafplayer/build">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/paulschwoerer/leafplayer/build.yml?branch=main">
   <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/paulschwoerer/leafplayer">
   <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/paulschwoerer/leafplayer">
 </p>
