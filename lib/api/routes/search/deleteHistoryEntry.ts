@@ -20,7 +20,7 @@ export function deleteSearchHistoryEntry({
           id: params.entryId,
         });
 
-        return reply.send(204);
+        return reply.status(204).send();
       },
     );
   });
