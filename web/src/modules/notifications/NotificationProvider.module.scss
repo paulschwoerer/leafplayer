@@ -5,6 +5,7 @@
   top: 0;
   right: 0;
   padding: 0.5rem;
+  z-index: 101; // display over popovers
 
   .notification {
     position: relative;
