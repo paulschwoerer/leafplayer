@@ -21,6 +21,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, Props>(
         disabled={disabled}
         onClick={onClick}
         aria-label={ariaLabel}
+        title={ariaLabel}
         ref={ref}
       >
         <Icon icon={icon} mirrored={mirrored} />
