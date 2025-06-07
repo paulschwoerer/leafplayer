@@ -7,10 +7,10 @@ export function setupMatchMediaMock(): void {
       function () {
         return {
           matches: false,
-          addListener: function () {
+          addEventListener: function () {
             //
           },
-          removeListener: function () {
+          removeEventListener: function () {
             //
           },
         };
