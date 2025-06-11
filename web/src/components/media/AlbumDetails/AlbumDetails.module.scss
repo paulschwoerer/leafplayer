@@ -1,0 +1,30 @@
+@import "src/scss/mixins";
+
+.root {
+    > p,
+    > h2 {
+      margin: .5rem 0;
+    }
+
+    > h2 {
+      margin: 0;
+      font-size: 2rem;
+
+      @include text-ellipsis;
+    }
+
+    .misc {
+      opacity: 0.65;
+
+      > span {
+        display: inline-flex;
+        align-items: center;
+
+        &:not(:last-of-type)::after {
+          content: "•";
+          display: inline-block;
+          margin: 0 0.5rem;
+        }
+      }
+    }
+}
