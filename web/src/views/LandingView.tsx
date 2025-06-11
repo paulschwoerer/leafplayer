@@ -20,7 +20,7 @@ import { isApiError, makeApiGetRequest } from 'modules/api';
 import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext } from 'react';
 
-function Landing(): ReactElement {
+function LandingView(): ReactElement {
   const [, { addAlbumToQueue, addArtistToQueue }] = useContext(PlayerContext);
 
   return (
@@ -123,4 +123,4 @@ function Landing(): ReactElement {
   }
 }
 
-export default Landing;
+export default LandingView;

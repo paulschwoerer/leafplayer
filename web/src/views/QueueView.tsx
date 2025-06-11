@@ -4,7 +4,7 @@ import QueueNextUp from 'components/queue/QueueNextUp';
 import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext } from 'react';
 
-function Queue(): ReactElement {
+function QueueView(): ReactElement {
   const [{ queue, current }, { goToQueueIndex, removeQueueItem }] =
     useContext(PlayerContext);
 
@@ -25,4 +25,4 @@ function Queue(): ReactElement {
   );
 }
 
-export default Queue;
+export default QueueView;

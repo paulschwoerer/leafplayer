@@ -4,9 +4,9 @@ import PasswordChanging from 'components/settings/PasswordChanging/PasswordChang
 import ThemeSwitcher from 'components/settings/ThemeSwitcher/ThemeSwitcher';
 import UserSessions from 'components/settings/UserSessions/UserSessions';
 import React, { ReactElement } from 'react';
-import styles from './UserSettings.module.scss';
+import styles from './UserSettingsView.module.scss';
 
-function UserSettings(): ReactElement {
+function UserSettingsView(): ReactElement {
   return (
     <>
       <ViewHeader headline="Settings" />
@@ -28,4 +28,4 @@ function UserSettings(): ReactElement {
   );
 }
 
-export default UserSettings;
+export default UserSettingsView;
