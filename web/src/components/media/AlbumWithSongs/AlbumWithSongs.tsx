@@ -5,13 +5,11 @@ import { PauseIcon, PlayIcon } from 'components/icons';
 import If from 'components/If';
 import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
 import { useAlbumPlayState } from 'helpers/albumPlayState';
-import { durationToString } from 'helpers/time';
 import { FullAlbum, FullSong } from 'leafplayer-common';
 import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext } from 'react';
-import AppLink from '../../layout/AppLink/AppLink';
+import AlbumDetails from '../AlbumDetails/AlbumDetails';
 import ThemedAlbumArtwork from '../artworks/ThemedAlbumArtwork';
-import { SongCount } from '../Counts';
 import DiskNumber from '../DiskNumber/DiskNumber';
 import { SongRow } from '../SongRow/SongRow';
 import styles from './AlbumWithSongs.module.scss';
@@ -24,7 +22,7 @@ type Props = {
 };
 
 function AlbumWithSongs({
-  album: { id, name, year, artist },
+  album,
   songs,
   hideArtist,
   artworkPosition = 'above',
@@ -33,7 +31,9 @@ function AlbumWithSongs({
     { current, isPlaying: playerIsPlaying },
     { play, pause, addSongsToQueue, playNext },
   ] = useContext(PlayerContext);
-  const [isCurrentlyPlayingAlbum, togglePlayPause] = useAlbumPlayState(id);
+  const [isCurrentlyPlayingAlbum, togglePlayPause] = useAlbumPlayState(
+    album.id,
+  );
 
   const disks = transformSongsToDisks(songs);
   const hasMultipleDisks = disks.size > 1;
@@ -100,31 +100,13 @@ function AlbumWithSongs({
     return entries;
   }
 
-  const totalDuration = songs
-    .map(song => song.duration)
-    .reduce((accumulator, currentValue) => accumulator + currentValue);
-
   return (
     <div className={classNames(styles.root, styles[artworkPosition])}>
       <div className={styles.artwork}>
-        <ThemedAlbumArtwork id={id} size={256} />
+        <ThemedAlbumArtwork id={album.id} size={256} />
       </div>
-      <div className={styles.details}>
-        <h2 title={name}>{name}</h2>
-        {!hideArtist && (
-          <p>
-            <AppLink to={`/artist/${artist.id}`} title={artist.name}>
-              {artist.name}
-            </AppLink>
-          </p>
-        )}
-        <p className={styles.misc}>
-          <span>{year || 'Unknown year'}</span>
-          <span>
-            <SongCount count={songs.length} />
-          </span>
-          <span>{durationToString(totalDuration, false, false)}</span>
-        </p>
+      <div className={styles.content}>
+        <AlbumDetails album={album} songs={songs} hideArtist={hideArtist} />
         <div className={styles.actions}>
           <RoundButton
             primary
@@ -140,7 +122,7 @@ function AlbumWithSongs({
                 Enqueue
               </OptionsPopover.Option>
               <If condition={!hideArtist}>
-                <OptionsPopover.Option to={`/artist/${artist.id}`}>
+                <OptionsPopover.Option to={`/artist/${album.artist.id}`}>
                   Open Artist Page
                 </OptionsPopover.Option>
               </If>

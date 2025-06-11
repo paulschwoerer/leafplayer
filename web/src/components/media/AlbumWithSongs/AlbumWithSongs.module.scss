@@ -6,7 +6,7 @@
   grid-template-rows: auto auto 1fr;
   grid-template-areas:
     ". artwork ."
-    "details details details"
+    "content content content"
     "list list list";
   gap: 2rem;
 
@@ -16,39 +16,12 @@
     @include shadow(low);
   }
 
-  .details {
-    grid-area: details;
-    color: var(--color-emphasis-medium);
-    text-align: center;
+  .content {
+    grid-area: content;
     display: flex;
     flex-direction: column;
-
-    > p,
-    > h2 {
-      margin: 0.5rem 0;
-    }
-
-    > h2 {
-      margin: 0;
-      font-size: 2rem;
-
-      @include text-ellipsis;
-    }
-
-    .misc {
-      opacity: 0.65;
-
-      > span {
-        display: inline-flex;
-        align-items: center;
-
-        &:not(:last-of-type)::after {
-          content: "•";
-          display: inline-block;
-          margin: 0 0.5rem;
-        }
-      }
-    }
+    color: var(--color-emphasis-medium);
+    text-align: center;
 
     .actions {
       display: flex;
@@ -72,7 +45,7 @@
     grid-template-columns: 240px 1fr;
     grid-template-rows: 240px 1fr;
 
-    .details {
+    .content {
       text-align: left;
 
       .actions {
@@ -80,7 +53,7 @@
       }
     }
 
-    &:not(.aside) .details {
+    &:not(.aside) .content {
       padding: 0.5rem 0;
 
       .actions {
@@ -91,18 +64,18 @@
     &.aside {
       grid-template-areas:
         "artwork list"
-        "details list";
+        "content list";
     }
 
     &.above {
       grid-template-areas:
-        "artwork details"
+        "artwork content"
         "list list";
     }
   }
 
   @media screen and (min-width: 900px) {
-    &:not(.aside) .details .actions {
+    &:not(.aside) .content .actions {
       .desktopButtons {
         display: block;
       }
