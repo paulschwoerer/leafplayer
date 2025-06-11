@@ -4,7 +4,7 @@ import { AlbumWithSongsResponseDto } from 'leafplayer-common';
 import React, { ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
 
-function AlbumDetails(): ReactElement {
+function AlbumView(): ReactElement {
   const { id } = useParams<{ id: string }>();
 
   return (
@@ -17,4 +17,4 @@ function AlbumDetails(): ReactElement {
   );
 }
 
-export default AlbumDetails;
+export default AlbumView;

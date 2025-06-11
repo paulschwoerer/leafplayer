@@ -9,7 +9,7 @@ import { AuthContext } from 'modules/auth';
 import React, { ReactElement, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login(): ReactElement {
+function LoginView(): ReactElement {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
 
@@ -95,4 +95,4 @@ function Login(): ReactElement {
   );
 }
 
-export default Login;
+export default LoginView;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import UserSettings from './UserSettings';
+import UserSettingsView from './UserSettingsView';
 
-describe('UserSettings', () => {
+describe('UserSettingsView', () => {
   it('renders password changing form', async () => {
-    render(<UserSettings />);
+    render(<UserSettingsView />);
 
     await waitFor(() => {
       expect(screen.getByText(/change your password/i)).toBeInTheDocument();
@@ -12,7 +12,7 @@ describe('UserSettings', () => {
   });
 
   it('renders user sessions', async () => {
-    render(<UserSettings />);
+    render(<UserSettingsView />);
 
     await waitFor(() => {
       expect(screen.getByText(/your sessions/i)).toBeInTheDocument();

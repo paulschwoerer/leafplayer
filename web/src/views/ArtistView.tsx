@@ -7,7 +7,7 @@ import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
-function ArtistDetails(): ReactElement {
+function ArtistView(): ReactElement {
   const { id } = useParams<{ id: string }>();
 
   const [, { addSongsToQueue }] = useContext(PlayerContext);
@@ -36,4 +36,4 @@ function ArtistDetails(): ReactElement {
   );
 }
 
-export default ArtistDetails;
+export default ArtistView;

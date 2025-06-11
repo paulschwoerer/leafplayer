@@ -38,7 +38,7 @@ export function useSearchQuery(): [string, (query: string) => void] {
   return ['', setSearchQuery];
 }
 
-function Search(): ReactElement {
+function SearchView(): ReactElement {
   const [searchQuery, setSearchQuery] = useSearchQuery();
   const [results, setResults] = useState<SearchResults>(emptyResults);
 
@@ -98,4 +98,4 @@ function Search(): ReactElement {
   );
 }
 
-export default Search;
+export default SearchView;

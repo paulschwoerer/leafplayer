@@ -5,33 +5,31 @@ import ApiLoader from 'components/layout/ApiLoader';
 import FilterSearchWrapper from 'components/layout/FilterSearchWrapper/FilterSearchWrapper';
 import ViewHeader from 'components/layout/ViewHeader/ViewHeader';
 import WaterfallLayout from 'components/layout/WaterfallLayout/WaterfallLayout';
-import { AlbumCard } from 'components/media/AlbumCard/AlbumCard';
+import { ArtistCard } from 'components/media/ArtistCard/ArtistCard';
 import EmptyLibrary from 'components/media/EmptyLibrary/EmptyLibrary';
-import { AlbumsResponseDto } from 'leafplayer-common';
+import { ArtistsResponseDto } from 'leafplayer-common';
 import React, { ReactElement, useState } from 'react';
 
 const sortByOptions = [
   { label: 'Alphabetical', value: 'asc(name)' },
   { label: 'Recently Added', value: 'desc(createdAt)' },
-  { label: 'Newest First', value: 'desc(year)' },
-  { label: 'Oldest First', value: 'asc(year)' },
 ];
 
-function AllAlbums(): ReactElement {
+function AllArtistsView(): ReactElement {
   const [filter, setFilter] = useState('');
   const [sortBy, setSortBy] = useState(sortByOptions[0]);
 
-  const slug = `albums?sort=${sortBy.value}`;
+  const slug = `artists?sort=${sortBy.value}`;
 
   return (
     <>
-      <ViewHeader headline="Albums" />
+      <ViewHeader headline="Artists" />
 
       <FilterSearchWrapper>
         <Input
           name="search"
           icon={<SearchIcon />}
-          placeholder="Search Albums"
+          placeholder="Search Artists"
           value={filter}
           onInput={ev => setFilter(ev.currentTarget.value)}
         />
@@ -39,21 +37,25 @@ function AllAlbums(): ReactElement {
         <Select value={sortBy} options={sortByOptions} onChange={setSortBy} />
       </FilterSearchWrapper>
 
-      <ApiLoader<AlbumsResponseDto>
+      <ApiLoader<ArtistsResponseDto>
         slug={slug}
-        renderContent={({ albums }) => {
-          if (albums.length === 0) {
+        renderContent={({ artists }) => {
+          if (artists.length === 0) {
             return <EmptyLibrary />;
           }
 
-          const filtered = albums.filter(album =>
-            album.name.toLowerCase().includes(filter.toLowerCase()),
-          );
+          const filteredArtists = artists.filter(artist => {
+            if (filter.length < 2) {
+              return artist;
+            }
+
+            return artist.name.toLowerCase().includes(filter.toLowerCase());
+          });
 
           return (
             <WaterfallLayout>
-              {filtered.map(album => (
-                <AlbumCard key={album.id} album={album} />
+              {filteredArtists.map(artist => (
+                <ArtistCard key={artist.id} artist={artist} />
               ))}
             </WaterfallLayout>
           );
@@ -63,4 +65,4 @@ function AllAlbums(): ReactElement {
   );
 }
 
-export default AllAlbums;
+export default AllArtistsView;

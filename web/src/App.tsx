@@ -3,18 +3,18 @@ import { ThemeProvider } from 'modules/theming/ThemeProvider';
 import React, { ReactElement, useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AlbumDetails from 'views/AlbumDetails';
-import AllAlbums from 'views/AllAlbums';
-import AllArtists from 'views/AllArtists';
-import ArtistDetails from 'views/ArtistDetails';
-import Landing from 'views/Landing';
-import Queue from 'views/Queue';
-import Search from 'views/Search';
-import UserSettings from 'views/UserSettings/UserSettings';
+import AlbumView from 'views/AlbumView';
+import AllAlbumsView from 'views/AllAlbumsView';
+import AllArtistsView from 'views/AllArtistsView';
+import ArtistView from 'views/ArtistView';
+import LandingView from 'views/LandingView';
+import QueueView from 'views/QueueView';
+import SearchView from 'views/SearchView';
+import UserSettingsView from 'views/UserSettingsView/UserSettingsView';
 import Wrapper from './components/Wrapper/Wrapper';
 import { AuthContext, AuthProvider } from './modules/auth';
-import Login from './views/Login';
-import Register from './views/Register';
+import LoginView from './views/LoginView';
+import RegisterView from './views/RegisterView';
 
 function AuthenticatedWrapper() {
   const authContext = useContext(AuthContext);
@@ -40,21 +40,21 @@ function App(): ReactElement {
               {/* authenticated routes */}
               <Route element={<AuthenticatedWrapper />}>
                 <Route element={<Wrapper />}>
-                  <Route index element={<Landing />} />
-                  <Route path="/search/*" element={<Search />} />
-                  <Route path="/artists" element={<AllArtists />} />
-                  <Route path="/artist/:id" element={<ArtistDetails />} />
-                  <Route path="/albums" element={<AllAlbums />} />
-                  <Route path="/album/:id" element={<AlbumDetails />} />
-                  <Route path="/queue" element={<Queue />} />
-                  <Route path="/settings" element={<UserSettings />} />
+                  <Route index element={<LandingView />} />
+                  <Route path="/search/*" element={<SearchView />} />
+                  <Route path="/artists" element={<AllArtistsView />} />
+                  <Route path="/artist/:id" element={<ArtistView />} />
+                  <Route path="/albums" element={<AllAlbumsView />} />
+                  <Route path="/album/:id" element={<AlbumView />} />
+                  <Route path="/queue" element={<QueueView />} />
+                  <Route path="/settings" element={<UserSettingsView />} />
                 </Route>
               </Route>
 
               {/* unauthenticated routes */}
               <Route element={<UnauthenticatedWrapper />}>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<LoginView />} />
+                <Route path="/register" element={<RegisterView />} />
               </Route>
 
               <Route path="*" element={<span>404 Not found</span>} />

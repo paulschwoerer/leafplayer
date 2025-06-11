@@ -7,7 +7,7 @@ import { isApiError, makeApiPostRequest } from 'modules/api';
 import React, { ReactElement, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Register(): ReactElement {
+function RegisterView(): ReactElement {
   const navigate = useNavigate();
 
   const [error, setError] = useState('');
@@ -141,4 +141,4 @@ function Register(): ReactElement {
   );
 }
 
-export default Register;
+export default RegisterView;
