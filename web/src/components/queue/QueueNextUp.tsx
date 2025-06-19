@@ -1,6 +1,7 @@
 import If from 'components/If';
 import { SongRowWithArtwork } from 'components/media/SongRow/SongRow';
-import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
+import OptionsList from 'components/OptionsList/OptionsList';
+import Popover from 'components/Popover/Popover';
 import { QueueItem } from 'modules/player/types';
 import React, { ReactElement } from 'react';
 
@@ -23,14 +24,16 @@ function QueueNextUp({ queue, onPlay, onRemove }: Props): ReactElement {
             song={item.song}
             onPlay={() => onPlay && onPlay(i)}
             options={
-              <OptionsPopover align="left">
-                <OptionsPopover.Option onClick={() => onRemove && onRemove(i)}>
-                  Remove from Queue
-                </OptionsPopover.Option>
-                <OptionsPopover.Option to={`/artist/${item.song.artist.id}`}>
-                  Open Artist Page
-                </OptionsPopover.Option>
-              </OptionsPopover>
+              <Popover align="left" closeOnClick>
+                <OptionsList>
+                  <OptionsList.Option onClick={() => onRemove && onRemove(i)}>
+                    Remove from Queue
+                  </OptionsList.Option>
+                  <OptionsList.Option to={`/artist/${item.song.artist.id}`}>
+                    Open Artist Page
+                  </OptionsList.Option>
+                </OptionsList>
+              </Popover>
             }
           />
         ))}

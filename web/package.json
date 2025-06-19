@@ -40,7 +40,8 @@
   },
   "proxy": "http://localhost:3000",
   "scripts": {
-    "start": "PORT=8080 react-scripts start",
+    "start:app": "REACT_APP_BUILD_TARGET=APP PORT=8080 react-scripts start",
+    "start:public_share": "REACT_APP_BUILD_TARGET=PUBLIC_SHARE PORT=8081 react-scripts start",
     "build": "BUILD_PATH='../dist/public' react-scripts build",
     "test": "react-scripts test",
     "lint": "npm run lint:ts && npm run lint:style",

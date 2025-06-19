@@ -35,5 +35,6 @@ export function createLeafplayerConfig(): LeafplayerConfig {
       minimumPasswordLength: 8,
       invitationMaxAge: 5,
     },
+    shareLinkValidityDays: 30,
   };
 }

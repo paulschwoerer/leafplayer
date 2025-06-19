@@ -1,0 +1,19 @@
+@import "src/scss/mixins";
+
+.options {
+  .option {
+    padding: 1rem 1.5rem;
+    transition: background-color 0.1s;
+    white-space: nowrap;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 0;
+    background: transparent;
+
+    @include hover {
+      cursor: pointer;
+      background: rgba(#000, 0.08);
+    }
+  }
+}

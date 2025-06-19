@@ -1,5 +1,6 @@
 import { ExpandMoreIcon, QueueIcon } from 'components/icons';
 import IconButton from 'components/icons/IconButton/IconButton';
+import If from 'components/If';
 import AspectRatioOneToOne from 'components/layout/AspectRatioOneToOne/AspectRatioOneToOne';
 import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
@@ -13,10 +14,11 @@ import PlayerShuffleButton from '../PlayerShuffleButton';
 import styles from './MobilePlayer.module.scss';
 
 type Props = {
+  disableLinks?: boolean;
   onClose?: () => void;
 };
 
-function MobilePlayer({ onClose }: Props): ReactElement {
+function MobilePlayer({ disableLinks, onClose }: Props): ReactElement {
   const [
     {
       current,
@@ -44,9 +46,11 @@ function MobilePlayer({ onClose }: Props): ReactElement {
     <div className={styles.root}>
       <header>
         <IconButton icon={<ExpandMoreIcon />} onClick={onClose} />
-        <InvisibleLink to={`/queue`}>
-          <IconButton icon={<QueueIcon />} onClick={onClose} />
-        </InvisibleLink>
+        <If condition={!disableLinks}>
+          <InvisibleLink to={`/queue`}>
+            <IconButton icon={<QueueIcon />} onClick={onClose} />
+          </InvisibleLink>
+        </If>
       </header>
       <section className={styles.artworkWrapper}>
         <div className={styles.artwork}>

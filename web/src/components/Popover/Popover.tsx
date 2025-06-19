@@ -8,14 +8,16 @@ import React, {
   useEffect,
   useRef,
   useState,
+  MouseEvent as ReactMouseEvent,
 } from 'react';
 import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
-import { Link } from 'react-router-dom';
-import styles from './OptionsPopover.module.scss';
+import styles from './Popover.module.scss';
 
 type PopoverProps = {
   align?: 'left' | 'right';
+  icon?: ReactElement;
+  closeOnClick?: boolean;
 };
 
 type DesktopPopoverProps = {
@@ -95,8 +97,10 @@ function MobilePopover({
   );
 }
 
-function OptionsPopover({
+function Popover({
   align = 'right',
+  icon = <OptionsIcon />,
+  closeOnClick,
   children,
 }: PropsWithChildren<PopoverProps>): ReactElement {
   const [isVisible, setIsVisible] = useState(false);
@@ -127,16 +131,24 @@ function OptionsPopover({
     return () => document.removeEventListener('click', onDocumentClick);
   }, [isVisible]);
 
+  function onClick(ev: ReactMouseEvent) {
+    ev.stopPropagation();
+
+    if (closeOnClick) {
+      setIsVisible(false);
+    }
+  }
+
   return (
     <div className={styles.root} ref={rootRef}>
       <IconButton
-        icon={<OptionsIcon />}
+        icon={icon}
         onClick={() => setIsVisible(!isVisible)}
         ref={buttonRef}
       />
       {isMobile ? (
         <MobilePopover isVisible={isVisible}>
-          <div className={styles.options} onClick={() => setIsVisible(false)}>
+          <div className={styles.content} onClick={onClick}>
             {children}
           </div>
         </MobilePopover>
@@ -146,7 +158,7 @@ function OptionsPopover({
           referenceRef={buttonRef}
           align={align}
         >
-          <div className={styles.options} onClick={() => setIsVisible(false)}>
+          <div className={styles.content} onClick={onClick}>
             {children}
           </div>
         </DesktopPopover>
@@ -155,31 +167,4 @@ function OptionsPopover({
   );
 }
 
-type OptionProps = {
-  onClick?: () => void;
-  to?: string;
-};
-
-function Option({
-  to,
-  onClick,
-  children,
-}: PropsWithChildren<OptionProps>): ReactElement {
-  if (to) {
-    return (
-      <Link to={to} className={styles.option} onClick={onClick}>
-        {children}
-      </Link>
-    );
-  }
-
-  return (
-    <button className={styles.option} onClick={onClick}>
-      {children}
-    </button>
-  );
-}
-
-OptionsPopover.Option = Option;
-
-export default OptionsPopover;
+export default Popover;

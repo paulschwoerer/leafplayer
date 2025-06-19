@@ -77,6 +77,16 @@ export type SearchHistoryRow = {
   songId: string | null;
 };
 
+export type ShareRow = {
+  id: string;
+  userId: string;
+  artistId: string | null;
+  albumId: string | null;
+  songId: string | null;
+  note: string;
+  createdAt: string;
+};
+
 type DefaultTInsert<T extends Record<string, unknown>> = Pick<T, 'id'> &
   Partial<Omit<T, 'createdAt' | 'updatedAt'>>;
 type DefaultTUpdate<T> = Partial<Omit<T, 'id' | 'createdAt'>>;
@@ -128,6 +138,10 @@ declare module 'knex/types/tables' {
     search_history: Knex.CompositeTableType<
       SearchHistoryRow,
       Pick<SearchHistoryRow, 'id' | 'userId'> & Partial<SearchHistoryRow>
+    >;
+    shares: Knex.CompositeTableType<
+      ShareRow,
+      Pick<ShareRow, 'id' | 'userId'> & Partial<ShareRow>
     >;
   }
 }

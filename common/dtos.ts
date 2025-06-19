@@ -6,6 +6,7 @@ import {
   UserSession,
   SearchHistoryEntry,
   SearchResults,
+  Share,
 } from './entities';
 
 export type AlbumResponseDto = {
@@ -89,4 +90,18 @@ export type CreateSearchHistoryEntryResponseDto = {
 
 export type FindSearchHistoryEntriesResponseDto = {
   entries: SearchHistoryEntry[];
+};
+
+export type CreateShareRequestDto = {
+  forType: 'album' | 'artist' | 'song';
+  forId: string;
+  note: string;
+};
+
+export type CreateShareResponseDto = {
+  share: Share;
+};
+
+export type FindSharesResponseDto = {
+  shares: Share[];
 };

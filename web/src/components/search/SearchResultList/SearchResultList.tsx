@@ -4,7 +4,8 @@ import SectionHeader from 'components/layout/SectionHeader/SectionHeader';
 import { AlbumCard } from 'components/media/AlbumCard/AlbumCard';
 import { ArtistCard } from 'components/media/ArtistCard/ArtistCard';
 import { SongRowWithArtwork } from 'components/media/SongRow/SongRow';
-import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
+import OptionsList from 'components/OptionsList/OptionsList';
+import Popover from 'components/Popover/Popover';
 import {
   FullAlbum,
   FullArtist,
@@ -72,14 +73,16 @@ function SearchResultList({
               onSongPlayed(song);
             }}
             options={
-              <OptionsPopover align="left">
-                <OptionsPopover.Option onClick={() => playNext([song])}>
-                  Play Next
-                </OptionsPopover.Option>
-                <OptionsPopover.Option onClick={() => addSongsToQueue([song])}>
-                  Enqueue
-                </OptionsPopover.Option>
-              </OptionsPopover>
+              <Popover align="left" closeOnClick>
+                <OptionsList>
+                  <OptionsList.Option onClick={() => playNext([song])}>
+                    Play Next
+                  </OptionsList.Option>
+                  <OptionsList.Option onClick={() => addSongsToQueue([song])}>
+                    Enqueue
+                  </OptionsList.Option>
+                </OptionsList>
+              </Popover>
             }
           />
         ))}

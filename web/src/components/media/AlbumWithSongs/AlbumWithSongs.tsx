@@ -1,17 +1,19 @@
 import classNames from 'classnames';
 import { ButtonText } from 'components/form/Button/Button';
 import RoundButton from 'components/form/RoundButton/RoundButton';
-import { PauseIcon, PlayIcon } from 'components/icons';
+import { PauseIcon, PlayIcon, ShareIcon } from 'components/icons';
 import If from 'components/If';
-import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
+import AppLink from 'components/layout/AppLink/AppLink';
+import OptionsList from 'components/OptionsList/OptionsList';
+import Popover from 'components/Popover/Popover';
+import { SharingDialog } from 'components/sharing/SharingDialog/SharingDialog';
 import { useAlbumPlayState } from 'helpers/albumPlayState';
 import { FullAlbum, FullSong } from 'leafplayer-common';
 import { PlayerContext } from 'modules/player/context';
 import React, { ReactElement, useContext } from 'react';
 import AlbumDetails from '../AlbumDetails/AlbumDetails';
+import AlbumSongList from '../AlbumSongList';
 import ThemedAlbumArtwork from '../artworks/ThemedAlbumArtwork';
-import DiskNumber from '../DiskNumber/DiskNumber';
-import { SongRow } from '../SongRow/SongRow';
 import styles from './AlbumWithSongs.module.scss';
 
 type Props = {
@@ -27,31 +29,10 @@ function AlbumWithSongs({
   hideArtist,
   artworkPosition = 'above',
 }: Props): ReactElement {
-  const [
-    { current, isPlaying: playerIsPlaying },
-    { play, pause, addSongsToQueue, playNext },
-  ] = useContext(PlayerContext);
+  const [, { addSongsToQueue, playNext }] = useContext(PlayerContext);
   const [isCurrentlyPlayingAlbum, togglePlayPause] = useAlbumPlayState(
     album.id,
   );
-
-  const disks = transformSongsToDisks(songs);
-  const hasMultipleDisks = disks.size > 1;
-
-  function onSongClicked(songId: string) {
-    if (current && current.song.id === songId) {
-      playerIsPlaying ? pause() : play();
-    } else {
-      const songsSelection = songs.slice(
-        songs.findIndex(song => song.id === songId),
-      );
-
-      addSongsToQueue(songsSelection, {
-        replaceQueue: true,
-        startPlaying: true,
-      });
-    }
-  }
 
   function onPlayNextClicked() {
     playNext(songs);
@@ -61,44 +42,11 @@ function AlbumWithSongs({
     addSongsToQueue(songs, { replaceQueue: false, startPlaying: false });
   }
 
-  function renderSong(song: FullSong) {
-    return (
-      <SongRow
-        key={song.id}
-        song={song}
-        onPlay={() => onSongClicked(song.id)}
-        isCurrentlyPlaying={
-          playerIsPlaying && !!current && current.song.id === song.id
-        }
-        options={
-          <OptionsPopover align="left">
-            <OptionsPopover.Option onClick={() => playNext([song])}>
-              Play Next
-            </OptionsPopover.Option>
-            <OptionsPopover.Option
-              onClick={() =>
-                addSongsToQueue([song], {
-                  replaceQueue: false,
-                  startPlaying: false,
-                })
-              }
-            >
-              Enqueue
-            </OptionsPopover.Option>
-          </OptionsPopover>
-        }
-      />
-    );
-  }
-
-  function renderDisks(disks: Map<number, FullSong[]>) {
-    const entries: ReactElement[] = [];
-    disks.forEach((songs, disk) => {
-      entries.push(<DiskNumber key={disk} disk={disk} />);
-      entries.push(...songs.map(renderSong));
-    });
-    return entries;
-  }
+  const artistName = hideArtist ? null : (
+    <AppLink to={`/artist/${album.artist.id}`} title={album.artist.name}>
+      {album.artist.name}
+    </AppLink>
+  );
 
   return (
     <div className={classNames(styles.root, styles[artworkPosition])}>
@@ -106,27 +54,32 @@ function AlbumWithSongs({
         <ThemedAlbumArtwork id={album.id} size={256} />
       </div>
       <div className={styles.content}>
-        <AlbumDetails album={album} songs={songs} hideArtist={hideArtist} />
+        <AlbumDetails album={album} songs={songs} artistName={artistName} />
         <div className={styles.actions}>
           <RoundButton
             primary
             icon={isCurrentlyPlayingAlbum ? <PauseIcon /> : <PlayIcon />}
             onClick={togglePlayPause}
           />
+          <Popover icon={<ShareIcon />}>
+            <SharingDialog forType="album" forId={album.id} />
+          </Popover>
           <div className={styles.mobilePopover}>
-            <OptionsPopover>
-              <OptionsPopover.Option onClick={onPlayNextClicked}>
-                Play Next
-              </OptionsPopover.Option>
-              <OptionsPopover.Option onClick={onEnqueueClicked}>
-                Enqueue
-              </OptionsPopover.Option>
-              <If condition={!hideArtist}>
-                <OptionsPopover.Option to={`/artist/${album.artist.id}`}>
-                  Open Artist Page
-                </OptionsPopover.Option>
-              </If>
-            </OptionsPopover>
+            <Popover closeOnClick>
+              <OptionsList>
+                <OptionsList.Option onClick={onPlayNextClicked}>
+                  Play Next
+                </OptionsList.Option>
+                <OptionsList.Option onClick={onEnqueueClicked}>
+                  Enqueue
+                </OptionsList.Option>
+                <If condition={!hideArtist}>
+                  <OptionsList.Option to={`/artist/${album.artist.id}`}>
+                    Open Artist Page
+                  </OptionsList.Option>
+                </If>
+              </OptionsList>
+            </Popover>
           </div>
           <span className={styles.desktopButtons}>
             <ButtonText onClick={onPlayNextClicked}>Play Next</ButtonText>
@@ -135,21 +88,31 @@ function AlbumWithSongs({
         </div>
       </div>
       <div className={styles.list}>
-        <If condition={hasMultipleDisks}>{renderDisks(disks)}</If>
-        <If condition={!hasMultipleDisks}>{songs.map(renderSong)}</If>
+        <AlbumSongList
+          songs={songs}
+          songOptions={song => (
+            <Popover align="left" closeOnClick>
+              <OptionsList>
+                <OptionsList.Option onClick={() => playNext([song])}>
+                  Play Next
+                </OptionsList.Option>
+                <OptionsList.Option
+                  onClick={() =>
+                    addSongsToQueue([song], {
+                      replaceQueue: false,
+                      startPlaying: false,
+                    })
+                  }
+                >
+                  Enqueue
+                </OptionsList.Option>
+              </OptionsList>
+            </Popover>
+          )}
+        />
       </div>
     </div>
   );
 }
 
 export default AlbumWithSongs;
-
-function transformSongsToDisks(songs: FullSong[]): Map<number, FullSong[]> {
-  const disks = new Map<number, FullSong[]>();
-
-  for (const song of songs) {
-    disks.set(song.disk, [...(disks.get(song.disk) || []), song]);
-  }
-
-  return disks;
-}

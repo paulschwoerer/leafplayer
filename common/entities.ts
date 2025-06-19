@@ -78,3 +78,29 @@ export type SongSearchHistoryEntry = {
   type: 'song';
   song: FullSong;
 };
+
+export type Share = ArtistShare | AlbumShare | SongShare;
+
+export type ArtistShare = {
+  id: string;
+  type: 'artist';
+  artist: FullArtist;
+  note: string;
+  createdAt: string;
+};
+
+export type AlbumShare = {
+  id: string;
+  type: 'album';
+  album: FullAlbum;
+  note: string;
+  createdAt: string;
+};
+
+export type SongShare = {
+  id: string;
+  type: 'song';
+  song: FullSong;
+  note: string;
+  createdAt: string;
+};

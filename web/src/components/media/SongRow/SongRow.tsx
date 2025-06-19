@@ -15,6 +15,7 @@ type Props = {
   song: FullSong;
   isCurrentlyPlaying?: boolean;
   hideArtist?: boolean;
+  disableLinks?: boolean;
   options: ReactElement;
   onPlay?: () => void;
 };
@@ -22,6 +23,7 @@ type Props = {
 function Base({
   song,
   hideArtist,
+  disableLinks,
   isCurrentlyPlaying,
   onPlay,
   pre,
@@ -49,7 +51,7 @@ function Base({
       <div className={styles.main} onClick={onPlayMobile}>
         <p className={styles.title}>{song.title}</p>
         <If condition={!hideArtist}>
-          {isMobile ? (
+          {disableLinks ? (
             <p className={styles.artist}>{song.artist.name}</p>
           ) : (
             <AppLink to={`/artist/${song.artist.id}`} className={styles.artist}>

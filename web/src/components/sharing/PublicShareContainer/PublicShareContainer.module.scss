@@ -1,0 +1,61 @@
+@import "src/scss/vars";
+@import "src/scss/mixins";
+
+.root {
+    .layout {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
+        grid-template-areas: "main";
+        min-height: 100vh;
+
+        .main {
+            grid-area: main;
+            background: var(--color-elevation-low);
+            overflow: hidden;
+
+            .content {
+                padding: 1rem 1rem calc(#{$mobile-player-bar-height} + 48px + 2rem) 1rem;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+        }
+
+        .desktopPlayerBar {
+          display: none;
+        }
+    }
+
+    @include desktop {
+        .mobilePlayerBar {
+          display: none;
+        }
+
+        .layout {
+          grid-template-columns: $desktop-sidebar-width 1fr;
+          grid-template-rows: 1fr 80px;
+          grid-template-areas:
+            "main main"
+            "player player";
+          height: 100vh;
+
+          .desktopSidebar {
+            display: block;
+            grid-area: sidebar;
+          }
+
+          .main {
+            overflow-y: auto;
+
+            .inner {
+              padding: 2rem;
+            }
+          }
+
+          .desktopPlayerBar {
+            display: block;
+            grid-area: player;
+          }
+        }
+    }
+}

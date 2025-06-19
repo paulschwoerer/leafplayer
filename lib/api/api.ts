@@ -31,6 +31,10 @@ import { getRandomAlbum } from './routes/discover/getRandomAlbum';
 import { createSearchHistoryEntry } from './routes/search/createHistoryEntry';
 import { findSearchHistoryEntries } from './routes/search/findHistoryEntries';
 import { deleteSearchHistoryEntry } from './routes/search/deleteHistoryEntry';
+import { createShare } from './routes/shares/createShare';
+import { findShares } from './routes/shares/findShares';
+import { findSharesForTypeAndId } from './routes/shares/findSharesForTypeAndId';
+import { deleteShare } from './routes/shares/deleteShare';
 
 export function initApi(container: AwilixContainer): FastifyPluginAsync {
   const authPlugin = container.build(createSessionAuthPlugin);
@@ -72,6 +76,11 @@ export function initApi(container: AwilixContainer): FastifyPluginAsync {
     await server.register(container.build(findSearchHistoryEntries));
     await server.register(container.build(createSearchHistoryEntry));
     await server.register(container.build(deleteSearchHistoryEntry));
+
+    await server.register(container.build(createShare));
+    await server.register(container.build(findShares));
+    await server.register(container.build(findSharesForTypeAndId));
+    await server.register(container.build(deleteShare));
 
     await server.register(container.build(getArtwork));
     await server.register(container.build(getAudioStream));

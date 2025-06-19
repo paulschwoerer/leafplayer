@@ -11,9 +11,10 @@ import styles from './PlayerCurrent.module.scss';
 
 type Props = {
   current: QueueItem | null;
+  disableLinks?: boolean;
 };
 
-function PlayerCurrent({ current }: Props): ReactElement {
+function PlayerCurrent({ current, disableLinks }: Props): ReactElement {
   const fallbackUrl = useThemedUrl(AlbumDefaultDay, AlbumDefaultNight);
 
   if (!current) {
@@ -36,20 +37,30 @@ function PlayerCurrent({ current }: Props): ReactElement {
 
   return (
     <div className={styles.root}>
-      <InvisibleLink className={styles.artwork} to={`/album/${album.id}`}>
-        <ThemedAlbumArtwork id={album.id} size={96} />
-      </InvisibleLink>
+      {disableLinks ? (
+        <div className={styles.artwork}>
+          <ThemedAlbumArtwork id={album.id} size={96} />
+        </div>
+      ) : (
+        <InvisibleLink className={styles.artwork} to={`/album/${album.id}`}>
+          <ThemedAlbumArtwork id={album.id} size={96} />
+        </InvisibleLink>
+      )}
       <div className={styles.info}>
         <span className={styles.title} title={song.title}>
           {song.title}
         </span>
-        <AppLink
-          to={`/artist/${artist.id}`}
-          title={artist.name}
-          className={styles.artist}
-        >
-          {artist.name}
-        </AppLink>
+        {disableLinks ? (
+          artist.name
+        ) : (
+          <AppLink
+            to={`/artist/${artist.id}`}
+            title={artist.name}
+            className={styles.artist}
+          >
+            {artist.name}
+          </AppLink>
+        )}
       </div>
     </div>
   );

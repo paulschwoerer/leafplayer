@@ -3,6 +3,7 @@ import { ButtonText } from 'components/form/Button/Button';
 import { QueueIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
 import IconButton from 'components/icons/IconButton/IconButton';
+import If from 'components/If';
 import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import Duration from 'components/media/Duration/Duration';
 import { useMediaQuery } from 'helpers/mediaQuery';
@@ -18,9 +19,10 @@ import styles from './DesktopPlayerBar.module.scss';
 
 type Props = {
   className: string;
+  disableLinks?: boolean;
 };
 
-function DesktopPlayerBar({ className }: Props): ReactElement {
+function DesktopPlayerBar({ className, disableLinks }: Props): ReactElement {
   const [
     {
       isPlaying,
@@ -101,18 +103,20 @@ function DesktopPlayerBar({ className }: Props): ReactElement {
           />
         </div>
         <div className={styles.current}>
-          <PlayerCurrent current={current} />
+          <PlayerCurrent current={current} disableLinks={disableLinks} />
         </div>
-        <InvisibleLink to="/queue" className={styles.queueButton}>
-          {useSmallQueueButton ? (
-            <IconButton icon={<QueueIcon />} />
-          ) : (
-            <ButtonText>
-              Queue
-              <Icon icon={<QueueIcon />} />
-            </ButtonText>
-          )}
-        </InvisibleLink>
+        <If condition={!disableLinks}>
+          <InvisibleLink to="/queue" className={styles.queueButton}>
+            {useSmallQueueButton ? (
+              <IconButton icon={<QueueIcon />} />
+            ) : (
+              <ButtonText>
+                Queue
+                <Icon icon={<QueueIcon />} />
+              </ButtonText>
+            )}
+          </InvisibleLink>
+        </If>
       </div>
     </div>
   );

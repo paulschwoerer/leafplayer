@@ -20,6 +20,7 @@ export type LeafplayerConfig = {
   database: DatabaseConfig;
   storageDir: string;
   security: SecurityConfig;
+  shareLinkValidityDays: number;
 };
 
 function parsePort(port?: string): number {
@@ -64,6 +65,7 @@ export function initConfig(): LeafplayerConfig {
       minimumPasswordLength: 8,
       invitationMaxAge: 48 * 60 * 60,
     },
+    shareLinkValidityDays: 30
   };
 
   return config;
