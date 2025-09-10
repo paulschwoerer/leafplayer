@@ -8,7 +8,7 @@ import { JwtService } from '@/services/JwtService';
 
 declare module 'fastify' {
   interface FastifyInstance {
-    verifyToken: FastifyAuthFunction;
+    verifyArtworkToken: FastifyAuthFunction;
   }
 }
 
@@ -18,21 +18,21 @@ type Injects = {
 
 type TokenParams = { Querystring: { token?: string } };
 
-export function createTokenAuthPlugin({
+export function createArtworkTokenAuthPlugin({
   jwtService,
 }: Injects): FastifyPluginAsync {
   return fp(async function (server) {
     server.decorate(
-      'verifyToken',
+      'verifyArtworkToken',
       async (request: FastifyRequest<TokenParams>) => {
         const token = request.query.token;
 
         if (!token || !token.length) {
-          throw new ValidationError('a token is required');
+          throw new ValidationError('an artwork token is required');
         }
 
         if (!jwtService.isValidJwtToken(token)) {
-          throw new NotAuthorizedError('token seems to be invalid');
+          throw new NotAuthorizedError('artwork token seems to be invalid');
         }
       },
     );

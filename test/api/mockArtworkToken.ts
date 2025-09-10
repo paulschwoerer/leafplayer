@@ -4,14 +4,14 @@ import fp from 'fastify-plugin';
 
 declare module 'fastify' {
   interface FastifyInstance {
-    verifyToken: FastifyAuthFunction;
+    verifyArtworkToken: FastifyAuthFunction;
   }
 }
 
-export function mockToken(): FastifyPluginAsync {
+export function mockArtworkToken(): FastifyPluginAsync {
   return fp(async function (server) {
     server.decorate<FastifyAuthFunction>(
-      'verifyToken',
+      'verifyArtworkToken',
       (request, reply, done) => {
         done();
       },

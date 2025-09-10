@@ -6,13 +6,13 @@ import td from 'testdouble';
 import { getArtwork } from '@/api/routes/getArtwork';
 import { ArtworksService } from '@/services/ArtworksService';
 
-import { mockToken } from '../mockToken';
+import { mockArtworkToken } from '../mockArtworkToken';
 import test from '../setupTestServer';
 
 async function setup(server: FastifyInstance): Promise<ArtworksService> {
   const artworksService = td.object<ArtworksService>();
 
-  await server.register(mockToken());
+  await server.register(mockArtworkToken());
   await server.register(getArtwork({ artworksService }));
 
   return artworksService;

@@ -1,7 +1,7 @@
 import td from 'testdouble';
 import { FastifyInstance } from 'fastify';
 
-import { createTokenAuthPlugin } from '@/api/plugins/tokenAuth';
+import { createArtworkTokenAuthPlugin } from '@/api/plugins/artworkTokenAuth';
 import { JwtService } from '@/services/JwtService';
 
 import test from '../setupTestServer';
@@ -12,14 +12,14 @@ async function setup(server: FastifyInstance): Promise<{
   const jwtService = td.object<JwtService>();
 
   await server.register(
-    createTokenAuthPlugin({
+    createArtworkTokenAuthPlugin({
       jwtService,
     }),
   );
 
   server.get(
     '/',
-    { preHandler: server.auth([server.verifyToken]) },
+    { preHandler: server.auth([server.verifyArtworkToken]) },
     async (request, reply) => {
       return reply.send('hello world');
     },

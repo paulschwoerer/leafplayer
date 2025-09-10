@@ -5,7 +5,7 @@ import fastifyAuth from 'fastify-auth';
 import { errorHandler } from './errorHandler';
 import { createSessionAuthPlugin } from './plugins/sessionAuth';
 import { sortPlugin } from './plugins/sort';
-import { createTokenAuthPlugin } from './plugins/tokenAuth';
+import { createArtworkTokenAuthPlugin } from './plugins/artworkTokenAuth';
 import { createVerifyPasswordPlugin } from './plugins/verifyPassword';
 import { changePassword } from './routes/auth/changePassword';
 import { findAlbums } from './routes/albums/findAlbums';
@@ -34,13 +34,13 @@ import { deleteSearchHistoryEntry } from './routes/search/deleteHistoryEntry';
 
 export function initApi(container: AwilixContainer): FastifyPluginAsync {
   const authPlugin = container.build(createSessionAuthPlugin);
-  const tokenAuthPlugin = container.build(createTokenAuthPlugin);
+  const artworkTokenAuthPlugin = container.build(createArtworkTokenAuthPlugin);
   const verifyPasswordPlugin = container.build(createVerifyPasswordPlugin);
 
   return async server => {
     await server.register(fastifyAuth);
     await server.register(authPlugin);
-    await server.register(tokenAuthPlugin);
+    await server.register(artworkTokenAuthPlugin);
     await server.register(sortPlugin);
     await server.register(verifyPasswordPlugin);
 
