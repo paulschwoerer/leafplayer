@@ -25,5 +25,5 @@ export function logout({ authService }: Injects): FastifyPluginAsync {
 }
 
 function bakeLogoutCookie(): string {
-  return `id=; Expires=01 Jan 1970`;
+  return `id=; Path=/api; Expires=01 Jan 1970`;
 }

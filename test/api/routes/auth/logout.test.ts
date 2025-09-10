@@ -27,7 +27,7 @@ test('logout endpoint should set logout cookie', async t => {
   });
 
   t.is(response.statusCode, 204);
-  t.is(response.headers['set-cookie'], 'id=; Expires=01 Jan 1970');
+  t.is(response.headers['set-cookie'], 'id=; Path=/api; Expires=01 Jan 1970');
   t.notThrows(() => {
     td.verify(authService.logout(MOCK_SESSION_ID));
   });
