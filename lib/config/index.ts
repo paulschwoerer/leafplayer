@@ -41,7 +41,7 @@ export function initConfig(): LeafplayerConfig {
 
   const port = parsePort(PORT);
 
-  if (port === NaN) {
+  if (Number.isNaN(port)) {
     throw new Error('PORT environment variable needs to be a valid integer');
   }
 
