@@ -52,7 +52,6 @@
     "fastify-static": "^4.5.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^3.2.10",
-    "md5-file": "^5.0.0",
     "music-metadata": "^7.14.0",
     "sharp": "^0.32.6",
     "ua-parser-js": "^1.0.2",
