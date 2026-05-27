@@ -1,9 +1,10 @@
-ARG IMAGE_VERSION=16.14-alpine
+# 22.22.3-alpine3.23
+ARG IMAGE=node@sha256:968df39aedcea65eeb078fb336ed7191baf48f972b4479711397108be0966920
 
 # --------------------------
 # BUILD
 # --------------------------
-FROM node:${IMAGE_VERSION} as builder
+FROM ${IMAGE} as builder
 
 ENV SASS_PATH=node_modules:src
 
@@ -24,7 +25,7 @@ RUN npm run build
 # --------------------------
 # PRODUCTION IMAGE
 # --------------------------
-FROM node:${IMAGE_VERSION}
+FROM ${IMAGE}
 
 LABEL maintainer="hello@paulschwoerer.de"
 
