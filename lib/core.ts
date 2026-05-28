@@ -62,7 +62,7 @@ cli
 
         server = await initServer(container);
 
-        await server.listen(port, host);
+        await server.listen({ port, host });
 
         console.log(`🌱 Leafplayer server listening on port ${port}`);
       });

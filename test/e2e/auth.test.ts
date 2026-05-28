@@ -6,15 +6,6 @@ import createUsersService from '@/services/UsersService';
 import { performLogin } from './performLogin';
 import test from './setupE2ETest';
 
-type Cookie = {
-  name: string;
-  value: string;
-  sameSite?: string;
-  httpOnly?: boolean;
-  path?: string;
-  maxAge?: number;
-  expires?: Date;
-};
 
 test('Login and logout flow', async t => {
   const { config, server, db } = t.context;
@@ -76,7 +67,7 @@ test('Login and logout flow', async t => {
   });
 
   t.is(response.statusCode, 204);
-  const authCookie = (response.cookies as Cookie[]).find(c => c.name === 'id');
+  const authCookie = response.cookies.find(c => c.name === 'id');
   t.is(authCookie?.expires?.getFullYear(), 1970);
 
   response = await server.inject({
@@ -111,7 +102,7 @@ test('login should set session cookie correctly including maxAge when asking to 
 
   t.is(response.statusCode, 200);
 
-  const authCookie = (response.cookies as Cookie[]).find(c => c.name === 'id');
+  const authCookie = response.cookies.find(c => c.name === 'id');
   t.is(authCookie?.sameSite, 'Lax');
   t.is(authCookie?.httpOnly, true);
   t.is(authCookie?.path, '/api');

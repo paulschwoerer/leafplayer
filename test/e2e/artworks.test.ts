@@ -155,6 +155,7 @@ test('return an artwork', async t => {
 
   t.is(response.statusCode, 200);
   t.is(response.headers['content-type'], 'image/jpeg');
-  t.is(response.headers['content-length'], fakeImageData.length);
+  // this should be a number, but all headers seem to be converted to string
+  t.is(response.headers['content-length'], `${fakeImageData.length}`);
   t.is(response.body, new TextDecoder().decode(fakeImageData));
 });

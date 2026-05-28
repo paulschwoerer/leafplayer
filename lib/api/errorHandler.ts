@@ -15,7 +15,7 @@ export async function errorHandler(
     error.statusCode = 404;
   } else if (error instanceof NotAuthorizedError) {
     error.statusCode = 401;
-  } else {
+  } else if (error.statusCode === undefined) {
     error.statusCode = reply.statusCode;
   }
 

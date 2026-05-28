@@ -1,9 +1,5 @@
 import { FastifyInstance } from 'fastify';
 
-type Cookie = {
-  name: string;
-  value: string;
-};
 
 export async function performLogin(
   server: FastifyInstance,
@@ -23,9 +19,7 @@ export async function performLogin(
     throw new Error('unauthorized');
   }
 
-  const sessionToken = (response.cookies as Cookie[]).find(
-    c => c.name === 'id',
-  )?.value;
+  const sessionToken = response.cookies.find(c => c.name === 'id')?.value;
 
   if (sessionToken === undefined) {
     throw new Error('cannot find session token in login response');
