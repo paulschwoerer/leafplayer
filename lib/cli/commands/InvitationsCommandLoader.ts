@@ -33,9 +33,8 @@ export function createInvitationsCommandLoader({
     cli
       .command('invitations:create')
       .description('create an invitation')
-      .option('-c, --code <code>', 'specify an invitation code')
+      .requiredOption('-c, --code <code>', 'specify an invitation code')
       .option('--comment <comment>', 'specify a comment')
-      .requiredOption('code')
       .action(({ code, comment }: { code: string; comment?: string }) => {
         const result = invitationsService.createInvitation({
           code,
