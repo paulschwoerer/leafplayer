@@ -74,10 +74,6 @@ export type SearchResponseDto = {
   results: SearchResults;
 };
 
-export type RevokeSessionRequestDto = {
-  currentPassword: string;
-};
-
 export type CreateSearchHistoryEntryRequestDto = {
   forType: 'album' | 'artist' | 'song';
   forId: string;

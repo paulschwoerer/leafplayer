@@ -29,22 +29,6 @@ test('revoke session flow', async t => {
   response = await server.inject({
     method: 'DELETE',
     url: `/api/auth/sessions/${sessionId2}`,
-    payload: {
-      currentPassword: 'nothepassword',
-    },
-    cookies: {
-      id: sessionToken1 || '',
-    },
-  });
-
-  t.is(response.statusCode, 401);
-
-  response = await server.inject({
-    method: 'DELETE',
-    url: `/api/auth/sessions/${sessionId2}`,
-    payload: {
-      currentPassword: 'supersecret',
-    },
     cookies: {
       id: sessionToken1 || '',
     },

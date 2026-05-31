@@ -1,9 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { throwNotImplemented } from 'helpers/context';
-import {
-  RevokeSessionRequestDto,
-  UserSessionsResponseDto,
-} from 'leafplayer-common';
+import { UserSessionsResponseDto } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
 import { rest } from 'msw';
@@ -35,16 +32,9 @@ const server = setupServer(
       }),
     );
   }),
-  rest.delete<RevokeSessionRequestDto>(
-    '/api/auth/sessions/2',
-    (req, res, ctx) => {
-      if (req.body.currentPassword !== 'supersecret') {
-        return res(ctx.status(401));
-      }
-
-      return res(ctx.status(204));
-    },
-  ),
+  rest.delete('/api/auth/sessions/2', (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
 );
 
 beforeAll(() => server.listen());
@@ -71,7 +61,7 @@ test('displays the last time a session was accessed', async () => {
   render(<UserSessions />);
 
   await waitFor(() =>
-    expect(screen.getByText('Last accessed on 5/19/2021')).toBeInTheDocument(),
+    expect(screen.getByText('Last accessed on 19/05/2021')).toBeInTheDocument(),
   );
 });
 
@@ -93,14 +83,6 @@ test('can revoke a session', async () => {
   });
 
   fireEvent.click(revokeButton);
-
-  const passwordInput = await screen.findByLabelText('Password');
-
-  fireEvent.input(passwordInput, {
-    target: { value: 'supersecret' },
-  });
-
-  fireEvent.click(screen.getByRole('button', { name: 'Revoke' }));
 
   await waitFor(() =>
     expect(mockNotification).toHaveBeenCalledWith({

@@ -1,20 +1,14 @@
-import { ButtonPrimary, ButtonText } from 'components/form/Button/Button';
-import Input from 'components/form/Input/Input';
+import { ButtonText } from 'components/form/Button/Button';
 import { ComputerIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
 import ApiLoader from 'components/layout/ApiLoader';
 import Card from 'components/layout/Card/Card';
-import Modal from 'components/modals/Modal/Modal';
 import { dateFromUnixTimestamp } from 'helpers/time';
-import {
-  RevokeSessionRequestDto,
-  UserSession,
-  UserSessionsResponseDto,
-} from 'leafplayer-common';
+import { UserSession, UserSessionsResponseDto } from 'leafplayer-common';
 import { isApiError, makeApiDeleteRequest } from 'modules/api';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
-import React, { ReactElement, ReactNode, useContext, useState } from 'react';
+import React, { ReactElement, ReactNode, useContext } from 'react';
 import styles from './UserSessions.module.scss';
 
 type BaseSessionProps = {
@@ -92,21 +86,11 @@ function sessionSort(a: UserSession, b: UserSession, currentSessionId: string) {
 }
 
 function UserSessions(): ReactElement {
-  const [sessionToRevoke, setSessionToRevoke] = useState<string | null>(null);
-  const [currentPassword, setCurrentPassword] = useState('');
-
   const { logout } = useContext(AuthContext);
   const { showNotification } = useContext(NotificationContext);
 
-  async function revokeSession() {
-    closeModal();
-
-    const response = await makeApiDeleteRequest<RevokeSessionRequestDto>(
-      `auth/sessions/${sessionToRevoke}`,
-      {
-        currentPassword,
-      },
-    );
+  async function revokeSession(sessionId: string) {
+    const response = await makeApiDeleteRequest(`auth/sessions/${sessionId}`);
 
     if (isApiError(response)) {
       showNotification({
@@ -120,11 +104,6 @@ function UserSessions(): ReactElement {
         message: 'The session was successfully revoked',
       });
     }
-  }
-
-  function closeModal(): void {
-    setSessionToRevoke(null);
-    setCurrentPassword('');
   }
 
   return (
@@ -142,7 +121,7 @@ function UserSessions(): ReactElement {
               <Session
                 key={session.id}
                 session={session}
-                onRevoke={() => setSessionToRevoke(session.id)}
+                onRevoke={() => revokeSession(session.id).then(reload)}
               />
             ))}
 
@@ -150,30 +129,6 @@ function UserSessions(): ReactElement {
               If you notice anything suspicious in this list, please inform the
               administrator of your server
             </small>
-
-            <Modal
-              isVisible={sessionToRevoke !== null}
-              title="Revoking Session"
-              hideModal={closeModal}
-            >
-              <form
-                onSubmit={() => revokeSession().then(reload)}
-                className={styles.revokeForm}
-              >
-                <b>Enter your password to proceed</b>
-
-                <Input
-                  label="Password"
-                  name="password"
-                  type="password"
-                  value={currentPassword}
-                  onInput={ev => setCurrentPassword(ev.currentTarget.value)}
-                />
-
-                <ButtonPrimary type="submit">Revoke</ButtonPrimary>
-                <ButtonText onClick={closeModal}>Cancel</ButtonText>
-              </form>
-            </Modal>
           </>
         );
       }}

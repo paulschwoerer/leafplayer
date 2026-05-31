@@ -2,35 +2,19 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { SessionsService } from '@/services/SessionsService';
-import { RevokeSessionRequestDto } from '@/common';
 
 type Injects = {
   sessionsService: SessionsService;
-};
-
-const schema = {
-  body: {
-    type: 'object',
-    properties: {
-      currentPassword: {
-        type: 'string',
-      },
-    },
-    required: ['currentPassword'],
-  },
 };
 
 export function revokeSession({
   sessionsService,
 }: Injects): FastifyPluginAsync {
   return fp(async server => {
-    server.delete<{ Params: { id: string }; Body: RevokeSessionRequestDto }>(
+    server.delete<{ Params: { id: string } }>(
       '/auth/sessions/:id',
       {
-        schema,
-        preHandler: server.auth([server.verifySession, server.verifyPassword], {
-          relation: 'and',
-        }),
+        preHandler: server.auth([server.verifySession]),
       },
       async ({ params: { id } }, reply) => {
         sessionsService.deleteById(id);
