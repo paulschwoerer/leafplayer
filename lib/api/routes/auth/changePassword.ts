@@ -2,10 +2,13 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { ChangePasswordRequestDto } from '@/common';
+import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { AuthService } from '@/services/AuthService';
+import { UsersService } from '@/services/UsersService';
 
 type Injects = {
   authService: AuthService;
+  usersService: UsersService;
 };
 
 const schema = {
@@ -23,20 +26,34 @@ const schema = {
   },
 };
 
-export function changePassword({ authService }: Injects): FastifyPluginAsync {
+export function changePassword({
+  authService,
+  usersService,
+}: Injects): FastifyPluginAsync {
   return fp(async server => {
     server.post<{ Body: ChangePasswordRequestDto }>(
       '/auth/password',
       {
-        preHandler: server.auth([server.verifySession, server.verifyPassword], {
-          relation: 'and',
-        }),
+        preHandler: server.auth([server.verifySession]),
         schema,
       },
       async (
-        { currentUser, currentSessionId, body: { newPassword } },
+        {
+          currentUser,
+          currentSessionId,
+          body: { currentPassword, newPassword },
+        },
         reply,
       ) => {
+        const isCurrentPasswordCorrect = usersService.isCorrectPassword({
+          userId: currentUser.id,
+          password: currentPassword,
+        });
+
+        if (!isCurrentPasswordCorrect) {
+          throw new NotAuthorizedError('Invalid password given');
+        }
+
         authService.changePassword({
           userId: currentUser.id,
           activeSessionId: currentSessionId,
