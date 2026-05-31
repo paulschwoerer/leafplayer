@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import anyTest, { TestFn } from 'ava';
 import {
   asFunction,
@@ -10,11 +12,13 @@ import { FastifyInstance } from 'fastify';
 
 import { initServer } from '@/api/server';
 import { DB } from '@/database';
+import { LeafplayerConfig } from '@/config';
 
 import { createLeafplayerConfig, setupInMemorySQLiteDB } from '../testHelpers';
 
 const test = anyTest as TestFn<{
   db: DB;
+  config: LeafplayerConfig;
   server: FastifyInstance;
   container: AwilixContainer;
 }>;
@@ -23,6 +27,8 @@ test.beforeEach(async t => {
   const config = createLeafplayerConfig();
   const db = await setupInMemorySQLiteDB();
   const container = createContainer();
+
+  fs.mkdirSync(config.storageDir);
 
   container.register({
     config: asValue(config),
@@ -40,6 +46,7 @@ test.beforeEach(async t => {
   const server = await initServer(container);
 
   t.context = {
+    config,
     db,
     server,
     container,

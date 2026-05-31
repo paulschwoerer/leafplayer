@@ -3,7 +3,6 @@ import { FastifyPluginAsync } from 'fastify';
 
 import { errorHandler } from './errorHandler';
 import { createSessionAuthPlugin } from './plugins/sessionAuth';
-import { createArtworkTokenAuthPlugin } from './plugins/artworkTokenAuth';
 import { changePassword } from './routes/auth/changePassword';
 import { findAlbums } from './routes/albums/findAlbums';
 import { getAlbum } from './routes/albums/getAlbum';
@@ -31,11 +30,9 @@ import { deleteSearchHistoryEntry } from './routes/search/deleteHistoryEntry';
 
 export function initApi(container: AwilixContainer): FastifyPluginAsync {
   const authPlugin = container.build(createSessionAuthPlugin);
-  const artworkTokenAuthPlugin = container.build(createArtworkTokenAuthPlugin);
 
   return async server => {
     await server.register(authPlugin);
-    await server.register(artworkTokenAuthPlugin);
 
     server.setErrorHandler(errorHandler);
 

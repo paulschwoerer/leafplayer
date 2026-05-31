@@ -5,9 +5,12 @@ import { ArtworksService } from '@/services/ArtworksService';
 import { NotFoundError } from '@/errors/NotFoundError';
 import { ValidationError } from '@/errors/ValidationError';
 import { isUuidV4 } from '@/helpers/uuid';
+import { JwtService } from '@/services/JwtService';
+import { verifyArtworkToken } from '@/api/artworkTokenAuth';
 
 type Injects = {
   artworksService: ArtworksService;
+  jwtService: JwtService;
 };
 
 const schema = {
@@ -21,7 +24,10 @@ const schema = {
   },
 };
 
-export function getArtwork({ artworksService }: Injects): FastifyPluginAsync {
+export function getArtwork({
+  artworksService,
+  jwtService,
+}: Injects): FastifyPluginAsync {
   return fp(async server => {
     server.get<{
       Params: { id: string; type: string };
@@ -30,7 +36,7 @@ export function getArtwork({ artworksService }: Injects): FastifyPluginAsync {
       '/artwork/:type/:id',
       {
         schema,
-        preHandler: server.verifyArtworkToken,
+        preHandler: verifyArtworkToken(jwtService),
       },
       async (request, reply) => {
         const { type, id } = request.params;
