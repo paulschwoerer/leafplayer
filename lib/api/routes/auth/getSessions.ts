@@ -12,7 +12,7 @@ export function getSessions({ sessionsService }: Injects): FastifyPluginAsync {
   return fp(async server => {
     server.get(
       '/auth/sessions',
-      { preHandler: server.auth([server.verifySession]) },
+      { preHandler: server.verifySession },
       async ({
         currentUser,
         currentSessionId,

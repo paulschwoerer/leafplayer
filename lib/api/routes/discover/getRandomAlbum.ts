@@ -15,7 +15,7 @@ export function getRandomAlbum({
   return fp(async server => {
     server.get(
       '/discover/album',
-      { preHandler: server.auth([server.verifySession]) },
+      { preHandler: server.verifySession },
       async (): Promise<AlbumResponseDto> => {
         const [album] = discoverService.findRandomAlbums(1);
 

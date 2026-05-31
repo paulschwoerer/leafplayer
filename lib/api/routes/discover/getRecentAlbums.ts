@@ -14,7 +14,7 @@ export function getRecentAlbums({
   return fp(async server => {
     server.get(
       '/discover/recent',
-      { preHandler: server.auth([server.verifySession]) },
+      { preHandler: server.verifySession },
       async (): Promise<AlbumsResponseDto> => {
         const albums = discoverService.findRecentlyAddedAlbums(8);
 

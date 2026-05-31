@@ -13,7 +13,7 @@ export function currentUser({ jwtService }: Injects): FastifyPluginAsync {
     server.get(
       '/auth/user',
       {
-        preHandler: server.auth([server.verifySession]),
+        preHandler: server.verifySession,
       },
       async ({ currentUser }): Promise<UserResponseDto> => {
         const artworkToken = jwtService.makeJwtToken();

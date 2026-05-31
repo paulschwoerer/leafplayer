@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify';
 
 import { createSessionAuthPlugin } from '@/api/plugins/sessionAuth';
 import { AuthService } from '@/services/AuthService';
+import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 
 import {
   MOCK_USER,
@@ -31,7 +32,7 @@ test('auth endpoint should reject a request without session token', async t => {
 
   server.get(
     '/auth',
-    { preHandler: server.auth([server.verifySession]) },
+    { preHandler: server.verifySession },
     async (_, reply) => {
       return reply.send('hello world');
     },
@@ -47,11 +48,15 @@ test('auth endpoint should reject a request without session token', async t => {
 
 test('auth endpoint should reject a request with an invalid session token', async t => {
   const { server } = t.context;
-  await setup(server);
+  const { authService } = await setup(server);
+
+  td.when(authService.authenticate('notASessionToken')).thenThrow(
+    new NotAuthorizedError(),
+  );
 
   server.get(
     '/auth',
-    { preHandler: server.auth([server.verifySession]) },
+    { preHandler: server.verifySession },
     async (_, reply) => {
       return reply.send('hello world');
     },
@@ -81,7 +86,7 @@ test('auth endpoint should register user when authenticated', async t => {
 
   server.get(
     '/auth',
-    { preHandler: server.auth([server.verifySession]) },
+    { preHandler: server.verifySession },
     async (request, reply) => {
       t.is(request.currentSessionId, MOCK_SESSION_ID);
       t.deepEqual(request.currentUser, MOCK_USER);

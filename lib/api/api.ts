@@ -1,6 +1,5 @@
 import { AwilixContainer } from 'awilix';
 import { FastifyPluginAsync } from 'fastify';
-import fastifyAuth from 'fastify-auth';
 
 import { errorHandler } from './errorHandler';
 import { createSessionAuthPlugin } from './plugins/sessionAuth';
@@ -35,7 +34,6 @@ export function initApi(container: AwilixContainer): FastifyPluginAsync {
   const artworkTokenAuthPlugin = container.build(createArtworkTokenAuthPlugin);
 
   return async server => {
-    await server.register(fastifyAuth);
     await server.register(authPlugin);
     await server.register(artworkTokenAuthPlugin);
 

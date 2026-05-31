@@ -19,7 +19,7 @@ async function setup(server: FastifyInstance): Promise<{
 
   server.get(
     '/',
-    { preHandler: server.auth([server.verifyArtworkToken]) },
+    { preHandler: server.verifyArtworkToken },
     async (request, reply) => {
       return reply.send('hello world');
     },

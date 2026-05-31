@@ -12,7 +12,7 @@ export function getArtist({ artistsService }: Injects): FastifyPluginAsync {
   return fp(async server => {
     server.get<{ Params: { artistId: string } }>(
       '/artists/:artistId',
-      { preHandler: server.auth([server.verifySession]) },
+      { preHandler: server.verifySession },
       async (request): Promise<ArtistWithAlbumsResponseDto> => {
         const { artistId } = request.params;
 

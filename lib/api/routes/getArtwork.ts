@@ -25,12 +25,12 @@ export function getArtwork({ artworksService }: Injects): FastifyPluginAsync {
   return fp(async server => {
     server.get<{
       Params: { id: string; type: string };
-      Querystring: { size: string };
+      Querystring: { size: string; token?: string };
     }>(
       '/artwork/:type/:id',
       {
         schema,
-        preHandler: server.auth([server.verifyArtworkToken]),
+        preHandler: server.verifyArtworkToken,
       },
       async (request, reply) => {
         const { type, id } = request.params;

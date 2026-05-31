@@ -34,7 +34,7 @@ export function changePassword({
     server.post<{ Body: ChangePasswordRequestDto }>(
       '/auth/password',
       {
-        preHandler: server.auth([server.verifySession]),
+        preHandler: server.verifySession,
         schema,
       },
       async (

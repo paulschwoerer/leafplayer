@@ -1,20 +1,30 @@
-import { FastifyPluginAsync } from 'fastify';
-import { FastifyAuthFunction } from 'fastify-auth';
+import {
+  preHandlerAsyncHookHandler,
+  RawServerDefault,
+  RawRequestDefaultExpression,
+  RawReplyDefaultExpression,
+  FastifyPluginAsync,
+} from 'fastify';
 import fp from 'fastify-plugin';
 
 declare module 'fastify' {
   interface FastifyInstance {
-    verifyArtworkToken: FastifyAuthFunction;
+    verifyArtworkToken: preHandlerAsyncHookHandler<
+      RawServerDefault,
+      RawRequestDefaultExpression,
+      RawReplyDefaultExpression,
+      {
+        Querystring: {
+          token?: string;
+        };
+      }
+    >;
   }
 }
 
 export function mockArtworkToken(): FastifyPluginAsync {
   return fp(async function (server) {
-    server.decorate<FastifyAuthFunction>(
-      'verifyArtworkToken',
-      (request, reply, done) => {
-        done();
-      },
-    );
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    server.decorate('verifyArtworkToken', async () => {});
   });
 }

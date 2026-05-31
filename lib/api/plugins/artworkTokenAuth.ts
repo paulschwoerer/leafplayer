@@ -1,6 +1,12 @@
-import { FastifyPluginAsync, FastifyRequest } from 'fastify';
+import {
+  FastifyPluginAsync,
+  FastifyRequest,
+  preHandlerAsyncHookHandler,
+  RawServerDefault,
+  RawRequestDefaultExpression,
+  RawReplyDefaultExpression,
+} from 'fastify';
 import fp from 'fastify-plugin';
-import { FastifyAuthFunction } from 'fastify-auth';
 
 import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { ValidationError } from '@/errors/ValidationError';
@@ -8,7 +14,16 @@ import { JwtService } from '@/services/JwtService';
 
 declare module 'fastify' {
   interface FastifyInstance {
-    verifyArtworkToken: FastifyAuthFunction;
+    verifyArtworkToken: preHandlerAsyncHookHandler<
+      RawServerDefault,
+      RawRequestDefaultExpression,
+      RawReplyDefaultExpression,
+      {
+        Querystring: {
+          token?: string;
+        };
+      }
+    >;
   }
 }
 

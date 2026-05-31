@@ -14,7 +14,7 @@ export function findSearchHistoryEntries({
   return fp(async server => {
     server.get(
       '/search/history',
-      { preHandler: server.auth([server.verifySession]) },
+      { preHandler: server.verifySession },
       async ({ currentUser }): Promise<FindSearchHistoryEntriesResponseDto> => {
         const entries = searchHistoryService.findEntries(currentUser.id);
 

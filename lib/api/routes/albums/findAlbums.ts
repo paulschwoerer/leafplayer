@@ -26,7 +26,7 @@ export function findAlbums({ albumsService }: Injects): FastifyPluginAsync {
       '/albums',
       {
         schema,
-        preHandler: [server.auth([server.verifySession])],
+        preHandler: server.verifySession,
       },
       async request => {
         const sort = getSortParam(
