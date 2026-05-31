@@ -3,6 +3,7 @@ import fp from 'fastify-plugin';
 import { ArtistsResponseDto } from 'common/dtos';
 
 import { ArtistsService } from '@/services/ArtistsService';
+import { getSortParam } from '@/api/sort';
 import { withTimestamps } from '@/helpers/sort';
 
 type Injects = {
@@ -26,13 +27,11 @@ export function findArtists({ artistsService }: Injects): FastifyPluginAsync {
       '/artists',
       {
         schema,
-        preHandler: [
-          server.auth([server.verifySession]),
-          server.sortParam(withTimestamps('name')),
-        ],
+        preHandler: [server.auth([server.verifySession])],
       },
       async (request): Promise<ArtistsResponseDto> => {
-        const artists = artistsService.find(request.sort);
+        const sort = getSortParam(request.query, withTimestamps('name'));
+        const artists = artistsService.find(sort);
 
         return { artists };
       },

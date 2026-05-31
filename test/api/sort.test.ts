@@ -1,20 +1,17 @@
 import { FastifyInstance } from 'fastify';
 
-import { sortPlugin } from '@/api/plugins/sort';
+import { getSortParam } from '@/api/sort';
 import { SortParam } from '@/typings/SortParam';
 
-import test from '../setupTestServer';
+import test from './setupTestServer';
 
 async function setup(server: FastifyInstance): Promise<void> {
-  await server.register(sortPlugin);
-
-  server.get(
+  server.get<{ Querystring: { sort?: string } }>(
     '/',
-    {
-      preHandler: server.sortParam(['name', 'createdAt']),
-    },
     async (request, reply) => {
-      return reply.send(request.sort);
+      const sort = getSortParam(request.query, ['name', 'createdAt']);
+
+      return reply.send(sort);
     },
   );
 }

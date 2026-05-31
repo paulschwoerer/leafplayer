@@ -3,6 +3,7 @@ import fp from 'fastify-plugin';
 
 import { withTimestamps } from '@/helpers/sort';
 import { AlbumsService } from '@/services/AlbumsService';
+import { getSortParam } from '@/api/sort';
 
 type Injects = {
   albumsService: AlbumsService;
@@ -25,13 +26,14 @@ export function findAlbums({ albumsService }: Injects): FastifyPluginAsync {
       '/albums',
       {
         schema,
-        preHandler: [
-          server.auth([server.verifySession]),
-          server.sortParam(withTimestamps('name', 'year')),
-        ],
+        preHandler: [server.auth([server.verifySession])],
       },
       async request => {
-        const albums = albumsService.find(request.sort);
+        const sort = getSortParam(
+          request.query,
+          withTimestamps('name', 'year'),
+        );
+        const albums = albumsService.find(sort);
 
         return { albums };
       },

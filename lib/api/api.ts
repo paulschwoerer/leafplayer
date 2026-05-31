@@ -4,7 +4,6 @@ import fastifyAuth from 'fastify-auth';
 
 import { errorHandler } from './errorHandler';
 import { createSessionAuthPlugin } from './plugins/sessionAuth';
-import { sortPlugin } from './plugins/sort';
 import { createArtworkTokenAuthPlugin } from './plugins/artworkTokenAuth';
 import { createVerifyPasswordPlugin } from './plugins/verifyPassword';
 import { changePassword } from './routes/auth/changePassword';
@@ -41,7 +40,6 @@ export function initApi(container: AwilixContainer): FastifyPluginAsync {
     await server.register(fastifyAuth);
     await server.register(authPlugin);
     await server.register(artworkTokenAuthPlugin);
-    await server.register(sortPlugin);
     await server.register(verifyPasswordPlugin);
 
     server.setErrorHandler(errorHandler);
