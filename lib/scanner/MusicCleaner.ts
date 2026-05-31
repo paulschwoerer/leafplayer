@@ -75,11 +75,14 @@ export class MusicCleaner {
     if (this.options.removeMissing) {
       printInfo(`[MusicCleaner] removing file: ${file.path}`);
 
-      const error = this.audioFilesService.deleteById(file.id);
-
-      if (error instanceof Error) {
-        printError(`could not remove song for file ${file.id}`);
-        printInfo(error.message);
+      try {
+        await this.audioFilesService.deleteById(file.id);
+      } catch (err) {
+        printError(
+          `could not remove song for file ${file.id}: ${
+            err instanceof Error ? err.message : 'unknown error'
+          }`,
+        );
       }
     }
   }

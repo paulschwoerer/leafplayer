@@ -41,7 +41,7 @@ export default function createAudioFilesService({
       return db('audio_files').where(true);
     },
 
-    async deleteById(id) {
+    deleteById(id) {
       return db('audio_files').where({ id }).delete();
     },
   };
