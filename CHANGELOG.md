@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/paulschwoerer/leafplayer/compare/v1.3.0...v1.4.0) (2026-06-03)
+
+
+### Features
+
+* make options in song dropdown focusable ([3ac9b7b](https://github.com/paulschwoerer/leafplayer/commit/3ac9b7bd259bf5adfc34ac81d46d4baba398dc23))
+
+
+### Bug Fixes
+
+* display aria label as title for icon buttons ([c1b20db](https://github.com/paulschwoerer/leafplayer/commit/c1b20db3b1c3574853167d0bb79d30b91afa4385))
+* expiration of session cookie on logout ([5729bcf](https://github.com/paulschwoerer/leafplayer/commit/5729bcf136c9eb4b33287391fb64c2670c33b431))
+* prevent hiding of notifications by popovers ([403b978](https://github.com/paulschwoerer/leafplayer/commit/403b978470d82f06becddcd2fec25e57da83071b))
+* remove illegal sort param 'year' in find artists route ([dfa8974](https://github.com/paulschwoerer/leafplayer/commit/dfa8974764141dfb847235495031f32162c91089))
+* send 204 return code in delete endpoint ([00077e9](https://github.com/paulschwoerer/leafplayer/commit/00077e9acecf0e7d3595162ef392f91ba0a6343f))
+* use correct NaN comparison ([b9f838a](https://github.com/paulschwoerer/leafplayer/commit/b9f838a97a1962af5c613097807d84d3d7330324))
+* wait for execution and handle error when removing song ([d1fc020](https://github.com/paulschwoerer/leafplayer/commit/d1fc0208b33de35dbf85bbe19627155ac3a405bf))
+
 ## [1.3.0](https://github.com/paulschwoerer/leafplayer/compare/v1.2.1...v1.3.0) (2022-02-27)
 
 
