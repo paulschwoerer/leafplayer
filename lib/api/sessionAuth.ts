@@ -1,46 +1,31 @@
-import {
-  preHandlerAsyncHookHandler,
-  FastifyPluginAsync,
-  FastifyRequest,
-} from 'fastify';
-import fp from 'fastify-plugin';
+import { preHandlerAsyncHookHandler, FastifyRequest } from 'fastify';
 
 import { AuthService } from '@/services/AuthService';
 import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { User } from '@/common';
 
 declare module 'fastify' {
-  interface FastifyInstance {
-    verifySession: preHandlerAsyncHookHandler;
-  }
-
   interface FastifyRequest {
     currentSessionId: string;
     currentUser: User;
   }
 }
 
-type Injects = {
-  authService: AuthService;
-};
+export function verifySession(
+  authService: AuthService,
+): preHandlerAsyncHookHandler {
+  return async request => {
+    const sessionToken = extractSessionTokenFromRequest(request);
 
-export function createSessionAuthPlugin({
-  authService,
-}: Injects): FastifyPluginAsync {
-  return fp(async server => {
-    server.decorate('verifySession', async (request: FastifyRequest) => {
-      const sessionToken = extractSessionTokenFromRequest(request);
+    if (!sessionToken) {
+      throw new NotAuthorizedError('No session token given');
+    }
 
-      if (!sessionToken) {
-        throw new NotAuthorizedError('No session token given');
-      }
+    const sessionWithUser = authService.authenticate(sessionToken);
 
-      const sessionWithUser = authService.authenticate(sessionToken);
-
-      request.currentSessionId = sessionWithUser.id;
-      request.currentUser = sessionWithUser.user;
-    });
-  });
+    request.currentSessionId = sessionWithUser.id;
+    request.currentUser = sessionWithUser.user;
+  };
 }
 
 function extractSessionTokenFromRequest(

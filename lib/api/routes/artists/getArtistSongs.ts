@@ -14,7 +14,6 @@ export function getArtistSongs({
   return fp(async server => {
     server.get<{ Params: { artistId: string } }>(
       '/artists/:artistId/songs',
-      { preHandler: server.verifySession },
       async (request): Promise<SongsResponseDto> => {
         const { artistId } = request.params;
 

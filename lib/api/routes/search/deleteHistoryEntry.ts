@@ -13,7 +13,6 @@ export function deleteSearchHistoryEntry({
   return fp(async server => {
     server.delete<{ Params: { entryId: string } }>(
       '/search/history/:entryId',
-      { preHandler: server.verifySession },
       async ({ params, currentUser }, reply): Promise<void> => {
         searchHistoryService.deleteEntry({
           userId: currentUser.id,

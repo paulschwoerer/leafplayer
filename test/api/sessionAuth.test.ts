@@ -1,7 +1,6 @@
 import td from 'testdouble';
-import { FastifyInstance } from 'fastify';
 
-import { createSessionAuthPlugin } from '@/api/plugins/sessionAuth';
+import { verifySession } from '@/api/sessionAuth';
 import { AuthService } from '@/services/AuthService';
 import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 
@@ -9,30 +8,17 @@ import {
   MOCK_USER,
   MOCK_SESSION_ID,
   MOCK_SESSION_TOKEN,
-} from '../../testdata/mocks';
-import test from '../setupTestServer';
+} from '../testdata/mocks';
 
-async function setup(server: FastifyInstance): Promise<{
-  authService: AuthService;
-}> {
-  const authService = td.object<AuthService>();
-
-  await server.register(
-    createSessionAuthPlugin({
-      authService,
-    }),
-  );
-
-  return { authService };
-}
+import test from './setupTestServer';
 
 test('auth endpoint should reject a request without session token', async t => {
   const { server } = t.context;
-  await setup(server);
+  const authService = td.object<AuthService>();
 
   server.get(
     '/auth',
-    { preHandler: server.verifySession },
+    { preHandler: verifySession(authService) },
     async (_, reply) => {
       return reply.send('hello world');
     },
@@ -48,7 +34,7 @@ test('auth endpoint should reject a request without session token', async t => {
 
 test('auth endpoint should reject a request with an invalid session token', async t => {
   const { server } = t.context;
-  const { authService } = await setup(server);
+  const authService = td.object<AuthService>();
 
   td.when(authService.authenticate('notASessionToken')).thenThrow(
     new NotAuthorizedError(),
@@ -56,7 +42,7 @@ test('auth endpoint should reject a request with an invalid session token', asyn
 
   server.get(
     '/auth',
-    { preHandler: server.verifySession },
+    { preHandler: verifySession(authService) },
     async (_, reply) => {
       return reply.send('hello world');
     },
@@ -75,7 +61,7 @@ test('auth endpoint should reject a request with an invalid session token', asyn
 
 test('auth endpoint should register user when authenticated', async t => {
   const { server } = t.context;
-  const { authService } = await setup(server);
+  const authService = td.object<AuthService>();
 
   td.when(authService.authenticate(MOCK_SESSION_TOKEN)).thenReturn({
     id: MOCK_SESSION_ID,
@@ -86,7 +72,7 @@ test('auth endpoint should register user when authenticated', async t => {
 
   server.get(
     '/auth',
-    { preHandler: server.verifySession },
+    { preHandler: verifySession(authService) },
     async (request, reply) => {
       t.is(request.currentSessionId, MOCK_SESSION_ID);
       t.deepEqual(request.currentUser, MOCK_USER);
@@ -109,7 +95,6 @@ test('auth endpoint should register user when authenticated', async t => {
 
 test('no-auth endpoint should accept an unauthenticated request', async t => {
   const { server } = t.context;
-  await setup(server);
 
   server.get('/no-auth', async (_, reply) => {
     return reply.send('hello world');

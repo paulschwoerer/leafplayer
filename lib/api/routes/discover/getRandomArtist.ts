@@ -13,20 +13,16 @@ export function getRandomArtist({
   discoverService,
 }: Injects): FastifyPluginAsync {
   return fp(async server => {
-    server.get(
-      '/discover/artist',
-      { preHandler: server.verifySession },
-      async (): Promise<ArtistResponseDto> => {
-        const [artist] = discoverService.findRandomArtists(1);
+    server.get('/discover/artist', async (): Promise<ArtistResponseDto> => {
+      const [artist] = discoverService.findRandomArtists(1);
 
-        if (!artist) {
-          throw new NotFoundError('The library seems to be empty');
-        }
+      if (!artist) {
+        throw new NotFoundError('The library seems to be empty');
+      }
 
-        return {
-          artist,
-        };
-      },
-    );
+      return {
+        artist,
+      };
+    });
   });
 }

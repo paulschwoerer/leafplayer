@@ -13,20 +13,16 @@ export function getRandomAlbum({
   discoverService,
 }: Injects): FastifyPluginAsync {
   return fp(async server => {
-    server.get(
-      '/discover/album',
-      { preHandler: server.verifySession },
-      async (): Promise<AlbumResponseDto> => {
-        const [album] = discoverService.findRandomAlbums(1);
+    server.get('/discover/album', async (): Promise<AlbumResponseDto> => {
+      const [album] = discoverService.findRandomAlbums(1);
 
-        if (!album) {
-          throw new NotFoundError('The library seems to be empty');
-        }
+      if (!album) {
+        throw new NotFoundError('The library seems to be empty');
+      }
 
-        return {
-          album,
-        };
-      },
-    );
+      return {
+        album,
+      };
+    });
   });
 }

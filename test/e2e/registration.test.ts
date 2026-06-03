@@ -4,7 +4,7 @@ import { getCurrentUnixTimestamp } from '@/helpers/time';
 import { performLogin } from './performLogin';
 import test from './setupE2ETest';
 
-test('Login and logout flow', async t => {
+test('registration flow', async t => {
   const { server, db } = t.context;
 
   const invitationInsert = db.prepare<{ code: string; expiresAt: number }>(

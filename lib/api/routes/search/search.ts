@@ -24,7 +24,7 @@ export function search({ searchService }: Injects): FastifyPluginAsync {
   return fp(async server => {
     server.get<{ Querystring: { q: string } }>(
       '/search',
-      { schema, preHandler: server.verifySession },
+      { schema },
       async (request): Promise<SearchResponseDto> => {
         const { q } = request.query;
 

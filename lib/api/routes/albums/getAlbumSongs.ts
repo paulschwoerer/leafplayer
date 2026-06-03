@@ -12,7 +12,6 @@ export function getAlbumSongs({ albumsService }: Injects): FastifyPluginAsync {
   return fp(async server => {
     server.get<{ Params: { albumId: string } }>(
       '/albums/:albumId/songs',
-      { preHandler: server.verifySession },
       async (request): Promise<SongsResponseDto> => {
         const { albumId } = request.params;
 

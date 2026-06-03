@@ -1,4 +1,9 @@
-import { FastifyInstance, LightMyRequestResponse } from 'fastify';
+import { FastifyInstance } from 'fastify';
+
+type Cookie = {
+  name: string;
+  value: string;
+};
 
 export async function performLogin(
   server: FastifyInstance,
@@ -18,26 +23,13 @@ export async function performLogin(
     throw new Error('unauthorized');
   }
 
-  const sessionToken = extractSessionTokenFromResponse(response);
+  const sessionToken = (response.cookies as Cookie[]).find(
+    c => c.name === 'id',
+  )?.value;
 
-  if (sessionToken === null) {
+  if (sessionToken === undefined) {
     throw new Error('cannot find session token in login response');
   }
 
   return sessionToken;
-}
-
-function extractSessionTokenFromResponse(
-  response: LightMyRequestResponse,
-): string | null {
-  type Cookie = {
-    name: string;
-    value: string;
-  };
-
-  const cookies = response.cookies as Cookie[];
-
-  const sessionCookie = cookies.find(cookie => cookie.name === 'id');
-
-  return sessionCookie?.value || null;
 }

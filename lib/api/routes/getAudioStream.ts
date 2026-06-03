@@ -24,7 +24,6 @@ export function getAudioStream({
   return fp(async server => {
     server.get<{ Params: { songId: string } }>(
       '/stream/song/:songId',
-      { preHandler: server.verifySession },
       async (request, reply) => {
         const { songId } = request.params;
 

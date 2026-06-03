@@ -32,7 +32,7 @@ export function createSearchHistoryEntry({
   return fp(async server => {
     server.post<{ Body: CreateSearchHistoryEntryRequestDto }>(
       '/search/history',
-      { schema, preHandler: server.verifySession },
+      { schema },
       async ({
         body,
         currentUser,

@@ -33,10 +33,7 @@ export function changePassword({
   return fp(async server => {
     server.post<{ Body: ChangePasswordRequestDto }>(
       '/auth/password',
-      {
-        preHandler: server.verifySession,
-        schema,
-      },
+      { schema },
       async (
         {
           currentUser,

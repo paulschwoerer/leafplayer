@@ -12,16 +12,12 @@ export function getRandomAlbums({
   discoverService,
 }: Injects): FastifyPluginAsync {
   return fp(async server => {
-    server.get(
-      '/discover/albums',
-      { preHandler: server.verifySession },
-      async (): Promise<AlbumsResponseDto> => {
-        const albums = discoverService.findRandomAlbums(7);
+    server.get('/discover/albums', async (): Promise<AlbumsResponseDto> => {
+      const albums = discoverService.findRandomAlbums(7);
 
-        return {
-          albums,
-        };
-      },
-    );
+      return {
+        albums,
+      };
+    });
   });
 }

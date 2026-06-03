@@ -13,9 +13,6 @@ export function revokeSession({
   return fp(async server => {
     server.delete<{ Params: { id: string } }>(
       '/auth/sessions/:id',
-      {
-        preHandler: server.verifySession,
-      },
       async ({ params: { id } }, reply) => {
         sessionsService.deleteById(id);
 

@@ -9,18 +9,11 @@ type Injects = {
 
 export function logout({ authService }: Injects): FastifyPluginAsync {
   return fp(async server => {
-    server.post(
-      '/auth/logout',
-      { preHandler: server.verifySession },
-      async ({ currentSessionId }, reply) => {
-        authService.logout(currentSessionId);
+    server.post('/auth/logout', async ({ currentSessionId }, reply) => {
+      authService.logout(currentSessionId);
 
-        return reply
-          .status(204)
-          .header('Set-Cookie', bakeLogoutCookie())
-          .send();
-      },
-    );
+      return reply.status(204).header('Set-Cookie', bakeLogoutCookie()).send();
+    });
   });
 }
 

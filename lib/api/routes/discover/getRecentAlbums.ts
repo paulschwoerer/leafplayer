@@ -12,16 +12,12 @@ export function getRecentAlbums({
   discoverService,
 }: Injects): FastifyPluginAsync {
   return fp(async server => {
-    server.get(
-      '/discover/recent',
-      { preHandler: server.verifySession },
-      async (): Promise<AlbumsResponseDto> => {
-        const albums = discoverService.findRecentlyAddedAlbums(8);
+    server.get('/discover/recent', async (): Promise<AlbumsResponseDto> => {
+      const albums = discoverService.findRecentlyAddedAlbums(8);
 
-        return {
-          albums,
-        };
-      },
-    );
+      return {
+        albums,
+      };
+    });
   });
 }

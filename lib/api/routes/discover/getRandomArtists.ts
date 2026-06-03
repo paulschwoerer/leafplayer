@@ -12,16 +12,12 @@ export function getRandomArtists({
   discoverService,
 }: Injects): FastifyPluginAsync {
   return fp(async server => {
-    server.get(
-      '/discover/artists',
-      { preHandler: server.verifySession },
-      async (): Promise<ArtistsResponseDto> => {
-        const artists = discoverService.findRandomArtists(7);
+    server.get('/discover/artists', async (): Promise<ArtistsResponseDto> => {
+      const artists = discoverService.findRandomArtists(7);
 
-        return {
-          artists,
-        };
-      },
-    );
+      return {
+        artists,
+      };
+    });
   });
 }

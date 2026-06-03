@@ -1,8 +1,10 @@
 import { AwilixContainer } from 'awilix';
 import { FastifyPluginAsync } from 'fastify';
 
+import { AuthService } from '@/services/AuthService';
+
 import { errorHandler } from './errorHandler';
-import { createSessionAuthPlugin } from './plugins/sessionAuth';
+import { verifySession } from './sessionAuth';
 import { changePassword } from './routes/auth/changePassword';
 import { findAlbums } from './routes/albums/findAlbums';
 import { getAlbum } from './routes/albums/getAlbum';
@@ -29,41 +31,46 @@ import { findSearchHistoryEntries } from './routes/search/findHistoryEntries';
 import { deleteSearchHistoryEntry } from './routes/search/deleteHistoryEntry';
 
 export function initApi(container: AwilixContainer): FastifyPluginAsync {
-  const authPlugin = container.build(createSessionAuthPlugin);
+  const authService = container.resolve<AuthService>('authService');
 
   return async server => {
-    await server.register(authPlugin);
-
     server.setErrorHandler(errorHandler);
 
     await server.register(container.build(register));
     await server.register(container.build(login));
-    await server.register(container.build(changePassword));
-    await server.register(container.build(currentUser));
-    await server.register(container.build(logout));
-    await server.register(container.build(getSessions));
-    await server.register(container.build(revokeSession));
 
-    await server.register(container.build(getRecentAlbums));
-    await server.register(container.build(getRandomAlbums));
-    await server.register(container.build(getRandomArtists));
-    await server.register(container.build(getRandomArtist));
-    await server.register(container.build(getRandomAlbum));
-
-    await server.register(container.build(getArtist));
-    await server.register(container.build(findArtists));
-    await server.register(container.build(getArtistSongs));
-
-    await server.register(container.build(getAlbum));
-    await server.register(container.build(findAlbums));
-    await server.register(container.build(getAlbumSongs));
-
-    await server.register(container.build(search));
-    await server.register(container.build(findSearchHistoryEntries));
-    await server.register(container.build(createSearchHistoryEntry));
-    await server.register(container.build(deleteSearchHistoryEntry));
-
+    // uses token auth mechanism
     await server.register(container.build(getArtwork));
-    await server.register(container.build(getAudioStream));
+
+    await server.register(async authenticated => {
+      authenticated.addHook('preHandler', verifySession(authService));
+
+      await authenticated.register(container.build(changePassword));
+      await authenticated.register(container.build(currentUser));
+      await authenticated.register(container.build(logout));
+      await authenticated.register(container.build(getSessions));
+      await authenticated.register(container.build(revokeSession));
+
+      await authenticated.register(container.build(getRecentAlbums));
+      await authenticated.register(container.build(getRandomAlbums));
+      await authenticated.register(container.build(getRandomArtists));
+      await authenticated.register(container.build(getRandomArtist));
+      await authenticated.register(container.build(getRandomAlbum));
+
+      await authenticated.register(container.build(getArtist));
+      await authenticated.register(container.build(findArtists));
+      await authenticated.register(container.build(getArtistSongs));
+
+      await authenticated.register(container.build(getAlbum));
+      await authenticated.register(container.build(findAlbums));
+      await authenticated.register(container.build(getAlbumSongs));
+
+      await authenticated.register(container.build(search));
+      await authenticated.register(container.build(findSearchHistoryEntries));
+      await authenticated.register(container.build(createSearchHistoryEntry));
+      await authenticated.register(container.build(deleteSearchHistoryEntry));
+
+      await authenticated.register(container.build(getAudioStream));
+    });
   };
 }

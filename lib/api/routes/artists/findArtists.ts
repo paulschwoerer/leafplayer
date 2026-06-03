@@ -25,10 +25,7 @@ export function findArtists({ artistsService }: Injects): FastifyPluginAsync {
   return fp(async server => {
     server.get<{ Querystring: { sort?: string } }>(
       '/artists',
-      {
-        schema,
-        preHandler: server.verifySession,
-      },
+      { schema },
       async (request): Promise<ArtistsResponseDto> => {
         const sort = getSortParam(request.query, withTimestamps('name'));
         const artists = artistsService.find(sort);
