@@ -10,7 +10,6 @@ import { FastifyInstance } from 'fastify';
 import { version } from '../package.json';
 
 import { createCLI } from './cli/CLI';
-import { createDBCommandLoader } from './cli/commands/DBCommandLoader';
 import { createInvitationsCommandLoader } from './cli/commands/InvitationsCommandLoader';
 import { createLibraryCommandLoader } from './cli/commands/LibraryCommandLoader';
 import { createUsersCommandLoader } from './cli/commands/UserCommandLoader';
@@ -51,7 +50,6 @@ const cli = createCLI({
 });
 
 cli
-  .add(container.build(createDBCommandLoader))
   .add(container.build(createUsersCommandLoader))
   .add(container.build(createLibraryCommandLoader))
   .add(container.build(createInvitationsCommandLoader))
