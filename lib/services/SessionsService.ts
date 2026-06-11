@@ -22,18 +22,12 @@ type CreationParams = {
   maxAge: number;
 };
 
-type RetrievalParams = {
-  id?: string;
-  userId?: string;
-  token?: string;
-};
-
 type UpdateParams = {
   lastUsedAt?: number;
 };
 
 export interface SessionsService {
-  get(params: RetrievalParams): Promise<UserSession | undefined>;
+  getByToken(token: string): Promise<UserSession | undefined>;
   findByUserId(userId: string): Promise<UserSession[]>;
   create(params: CreationParams): Promise<string>;
   update(id: string, params: UpdateParams): Promise<void>;
@@ -44,9 +38,9 @@ export default function createSessionsService({
   db,
 }: Injects): SessionsService {
   return {
-    async get(params) {
+    async getByToken(token) {
       const session = await db('sessions')
-        .where(params)
+        .where({ token })
         .andWhere('sessions.expiresAt', '>=', getCurrentUnixTimestamp())
         .first();
 

@@ -77,9 +77,7 @@ export default function createAuthService({
     },
 
     async authenticate(token) {
-      const session = await sessionsService.get({
-        token,
-      });
+      const session = await sessionsService.getByToken(token);
 
       if (!session) {
         throw new NotAuthorizedError('Invalid or expired session');

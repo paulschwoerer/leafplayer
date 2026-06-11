@@ -25,10 +25,7 @@ test('get -> it should not return expired session', async ({
 
   const sessionsService = createSessionsService({ db });
 
-  const session = await sessionsService.get({
-    id: MOCK_SESSION_ID,
-    userId: MOCK_USER.id,
-  });
+  const session = await sessionsService.getByToken('supersecret');
 
   t.is(session, undefined);
 });
@@ -48,10 +45,7 @@ test('get -> it should not return session token', async ({
 
   const sessionsService = createSessionsService({ db });
 
-  const session = await sessionsService.get({
-    id: MOCK_SESSION_ID,
-    userId: MOCK_USER.id,
-  });
+  const session = await sessionsService.getByToken('supersecret');
 
   t.false(JSON.stringify(session).includes('supersecret'));
 });
