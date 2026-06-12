@@ -40,7 +40,7 @@
   "dependencies": {
     "awilix": "^6.1.0",
     "bcrypt": "^5.0.1",
-    "better-sqlite3": "^8.3.0",
+    "better-sqlite3": "^12.10.0",
     "chalk": "^4.1.2",
     "commander": "^9.0.0",
     "dotenv": "^16.0.0",
