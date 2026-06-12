@@ -28,7 +28,7 @@ export function search({ searchService }: Injects): FastifyPluginAsync {
       async (request): Promise<SearchResponseDto> => {
         const { q } = request.query;
 
-        const results = await searchService.search(q);
+        const results = searchService.search(q);
 
         return {
           results,

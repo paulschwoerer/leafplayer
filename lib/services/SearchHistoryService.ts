@@ -1,5 +1,3 @@
-import { Knex } from 'knex';
-
 import {
   SearchHistoryEntry,
   AlbumSearchHistoryEntry,
@@ -8,13 +6,14 @@ import {
 } from '@/common';
 import { generateUuid } from '@/helpers/uuid';
 import { SearchHistoryRow } from '@/database/rows';
+import { DB } from '@/database';
 
 import { AlbumsService } from './AlbumsService';
 import { ArtistsService } from './ArtistsService';
 import { SongsService } from './SongsService';
 
 type Injects = {
-  db: Knex;
+  db: DB;
   artistsService: ArtistsService;
   albumsService: AlbumsService;
   songsService: SongsService;
@@ -23,16 +22,18 @@ type Injects = {
 type SearchHistoryEntryFactory = (
   id: string,
   forId: string,
-) => Promise<SearchHistoryEntry>;
+) => SearchHistoryEntry;
+
+type DeleteParams = { userId: string; id: string };
 
 export interface SearchHistoryService {
   createEntry(params: {
     userId: string;
     forType: 'artist' | 'album' | 'song';
     forId: string;
-  }): Promise<SearchHistoryEntry>;
-  findEntries(userId: string): Promise<SearchHistoryEntry[]>;
-  deleteEntry(params: { userId: string; id: string }): Promise<void>;
+  }): SearchHistoryEntry;
+  findEntries(userId: string): SearchHistoryEntry[];
+  deleteEntry(params: DeleteParams): void;
 }
 
 export default function createSearchHistoryService({
@@ -41,11 +42,11 @@ export default function createSearchHistoryService({
   albumsService,
   songsService,
 }: Injects): SearchHistoryService {
-  async function createArtistEntry(
+  function createArtistEntry(
     id: string,
     artistId: string,
-  ): Promise<ArtistSearchHistoryEntry> {
-    const artist = await artistsService.findById(artistId);
+  ): ArtistSearchHistoryEntry {
+    const artist = artistsService.findById(artistId);
     return {
       id,
       type: 'artist',
@@ -53,11 +54,11 @@ export default function createSearchHistoryService({
     };
   }
 
-  async function createAlbumEntry(
+  function createAlbumEntry(
     id: string,
     albumId: string,
-  ): Promise<AlbumSearchHistoryEntry> {
-    const album = await albumsService.findById(albumId);
+  ): AlbumSearchHistoryEntry {
+    const album = albumsService.findById(albumId);
     return {
       id,
       type: 'album',
@@ -65,11 +66,8 @@ export default function createSearchHistoryService({
     };
   }
 
-  async function createSongEntry(
-    id: string,
-    songId: string,
-  ): Promise<SongSearchHistoryEntry> {
-    const song = await songsService.findById(songId);
+  function createSongEntry(id: string, songId: string): SongSearchHistoryEntry {
+    const song = songsService.findById(songId);
     return {
       id,
       type: 'song',
@@ -83,10 +81,10 @@ export default function createSearchHistoryService({
     ['song', createSongEntry],
   ]);
 
-  async function createEntryOrFail(
+  function createEntryOrFail(
     forType: string,
     forId: string,
-  ): Promise<SearchHistoryEntry> {
+  ): SearchHistoryEntry {
     const factory = entryFactories.get(forType);
 
     if (factory) {
@@ -99,8 +97,8 @@ export default function createSearchHistoryService({
   }
 
   return {
-    async createEntry({ userId, forType, forId }) {
-      const entry = await createEntryOrFail(forType, forId);
+    createEntry({ userId, forType, forId }) {
+      const entry = createEntryOrFail(forType, forId);
 
       const ids = {
         artistId: forType === 'artist' ? forId : null,
@@ -108,14 +106,23 @@ export default function createSearchHistoryService({
         songId: forType === 'song' ? forId : null,
       };
 
-      await db('search_history')
-        .delete()
-        .where({
-          userId,
-          ...ids,
-        });
+      db.prepare(
+        `DELETE FROM search_history
+         WHERE userId = :userId
+          AND artistId = :artistId
+          AND albumId = :albumId
+          AND songId = :songId`,
+      ).run({
+        userId,
+        ...ids,
+      });
 
-      await db('search_history').insert({
+      db.prepare<SearchHistoryRow>(
+        `INSERT INTO search_history
+            (id, userId, artistId, albumId, songId)
+          VALUES
+            (:id, :userId, :artistId, :albumId, :songId)`,
+      ).run({
         id: entry.id,
         userId,
         ...ids,
@@ -124,18 +131,19 @@ export default function createSearchHistoryService({
       return entry;
     },
 
-    async findEntries(userId) {
-      const rows = await db('search_history')
-        .where({ userId })
-        .orderBy('search_history.createdAt', 'desc')
-        .limit(10);
+    findEntries(userId) {
+      const rows = db
+        .prepare<string, SearchHistoryRow>(
+          'SELECT * FROM search_history WHERE userId = ? ORDER BY createdAt DESC LIMIT 10',
+        )
+        .all(userId);
 
-      async function populateEntry({
+      function populateEntry({
         id,
         artistId,
         albumId,
         songId,
-      }: SearchHistoryRow): Promise<SearchHistoryEntry> {
+      }: SearchHistoryRow): SearchHistoryEntry {
         if (artistId) {
           return createArtistEntry(id, artistId);
         }
@@ -153,11 +161,13 @@ export default function createSearchHistoryService({
         );
       }
 
-      return Promise.all(rows.map(populateEntry));
+      return rows.map(populateEntry);
     },
 
-    async deleteEntry(params) {
-      await db('search_history').delete().where(params);
+    deleteEntry(params) {
+      db.prepare<DeleteParams>(
+        'DELETE FROM search_history WHERE id = :id AND userId = :userId',
+      ).run(params);
     },
   };
 }

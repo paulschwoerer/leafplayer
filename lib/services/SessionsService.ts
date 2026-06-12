@@ -1,4 +1,3 @@
-import { Knex } from 'knex';
 import uid from 'uid-safe';
 
 import { UserSession } from '@/common';
@@ -6,6 +5,8 @@ import { getCurrentUnixTimestamp } from '@/helpers/time';
 import { generateUuid } from '@/helpers/uuid';
 import { toUserSession } from '@/mappers/sessions';
 import { NotFoundError } from '@/errors/NotFoundError';
+import { DB } from '@/database';
+import { SessionRow } from '@/database/rows';
 
 type Browser = {
   os: string;
@@ -13,7 +14,7 @@ type Browser = {
 };
 
 type Injects = {
-  db: Knex;
+  db: DB;
 };
 
 type CreationParams = {
@@ -27,22 +28,26 @@ type UpdateParams = {
 };
 
 export interface SessionsService {
-  getByToken(token: string): Promise<UserSession | undefined>;
-  findByUserId(userId: string): Promise<UserSession[]>;
-  create(params: CreationParams): Promise<string>;
-  update(id: string, params: UpdateParams): Promise<void>;
-  deleteById(id: string): Promise<void>;
+  getByToken(token: string): UserSession | undefined;
+  findByUserId(userId: string): UserSession[];
+  create(params: CreationParams): string;
+  update(id: string, params: UpdateParams): void;
+  deleteById(id: string): void;
 }
 
 export default function createSessionsService({
   db,
 }: Injects): SessionsService {
   return {
-    async getByToken(token) {
-      const session = await db('sessions')
-        .where({ token })
-        .andWhere('sessions.expiresAt', '>=', getCurrentUnixTimestamp())
-        .first();
+    getByToken(token) {
+      const session = db
+        .prepare<{ token: string; expiresAt: number }, SessionRow>(
+          'SELECT * FROM sessions WHERE token = :token AND expiresAt >= :expiresAt',
+        )
+        .first({
+          token,
+          expiresAt: getCurrentUnixTimestamp(),
+        });
 
       if (!session) {
         return undefined;
@@ -51,22 +56,30 @@ export default function createSessionsService({
       return toUserSession(session);
     },
 
-    async findByUserId(userId) {
-      const sessions = await db('sessions')
-        .where({
+    findByUserId(userId) {
+      const sessions = db
+        .prepare<{ userId: string; expiresAt: number }, SessionRow>(
+          'SELECT * FROM sessions WHERE userId = :userId AND expiresAt >= :expiresAt',
+        )
+        .all({
           userId,
-        })
-        .andWhere('sessions.expiresAt', '>=', getCurrentUnixTimestamp());
+          expiresAt: getCurrentUnixTimestamp(),
+        });
 
       return sessions.map(toUserSession);
     },
 
-    async create({ userId, browser, maxAge }) {
+    create({ userId, browser, maxAge }) {
       const token = uid.sync(24);
 
       const timestamp = getCurrentUnixTimestamp();
 
-      await db('sessions').insert({
+      db.prepare<SessionRow>(
+        `INSERT INTO sessions
+        (id, userId, token, lastUsedAt, expiresAt, browser, os)
+        VALUES
+        (:id, :userId, :token, :lastUsedAt, :expiresAt, :browser, :os)`,
+      ).run({
         id: generateUuid(),
         userId,
         token,
@@ -79,12 +92,16 @@ export default function createSessionsService({
       return token;
     },
 
-    async update(id, params) {
-      await db('sessions').where({ id }).update(params);
+    update(id, { lastUsedAt }) {
+      db.prepare<UpdateParams & { id: string }>(
+        'UPDATE sessions SET lastUsedAt = :lastUsedAt WHERE id = :id',
+      ).run({ id, lastUsedAt });
     },
 
     async deleteById(id) {
-      const rowsAffected = await db('sessions').where({ id }).delete();
+      const rowsAffected = db
+        .prepare<string>('DELETE FROM sessions WHERE id = ?')
+        .run(id);
 
       if (rowsAffected === 0) {
         throw new NotFoundError('cannot find session to revoke');

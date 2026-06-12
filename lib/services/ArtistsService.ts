@@ -1,16 +1,16 @@
-import { Knex } from 'knex';
-
 import { FullAlbum, FullArtist, FullSong } from '@/common';
 import { toFullAlbum } from '@/mappers/albums';
 import { toFullArtist } from '@/mappers/artists';
-import { createAlbumsQuery, orderByYearDesc } from '@/query/albums';
-import { createArtistQuery, orderBy } from '@/query/artists';
+import { prepareAlbumsQuery } from '@/query/albums';
+import { prepareArtistsQuery } from '@/query/artists';
 import { SortParam } from '@/typings/SortParam';
 import { generateUuid } from '@/helpers/uuid';
 import { NotFoundError } from '@/errors/NotFoundError';
+import { DB } from '@/database';
+import { prepareSongsQuery } from '@/query/songs';
+import { toFullSong } from '@/mappers/songs';
 
 import { AlbumsService } from './AlbumsService';
-import { SongsService } from './SongsService';
 
 type ArtistWithAlbums = {
   artist: FullArtist;
@@ -22,20 +22,19 @@ type ArtistWithAlbums = {
 };
 
 export interface ArtistsService {
-  find(sort?: SortParam): Promise<FullArtist[]>;
-  findById(id: string): Promise<FullArtist>;
-  create(params: { name: string }): Promise<string>;
-  findIdByName(name: string): Promise<string | undefined>;
-  findAllSongsByArtist(id: string): Promise<FullSong[]>;
-  findByIdWithAlbums(id: string): Promise<ArtistWithAlbums>;
-  getAlbumsOfArtist(artistId: string): Promise<FullAlbum[]>;
-  getAlbumsArtistAppearsOn(artistId: string): Promise<FullAlbum[]>;
+  find(sort?: SortParam): FullArtist[];
+  findById(id: string): FullArtist;
+  create(params: { name: string }): string;
+  findIdByName(name: string): string | undefined;
+  findAllSongsByArtist(id: string): FullSong[];
+  findByIdWithAlbums(id: string): ArtistWithAlbums;
+  getAlbumsOfArtist(artistId: string): FullAlbum[];
+  getAlbumsArtistAppearsOn(artistId: string): FullAlbum[];
 }
 
 type Injects = {
-  db: Knex;
+  db: DB;
   albumsService: AlbumsService;
-  songsService: SongsService;
 };
 
 const DEFAULT_SORT: SortParam = {
@@ -46,18 +45,20 @@ const DEFAULT_SORT: SortParam = {
 export default function createArtistsService({
   db,
   albumsService,
-  songsService,
 }: Injects): ArtistsService {
   return {
-    async find(sort) {
-      const ordered = orderBy(sort || DEFAULT_SORT);
+    find(sort) {
+      const { field, direction } = sort || DEFAULT_SORT;
 
-      const rows = await ordered(createArtistQuery(db)).groupBy('artists.id');
+      const rows = prepareArtistsQuery(
+        db,
+        `GROUP BY artists.id ORDER BY artists.${field} ${direction}`,
+      ).all();
       return rows.map(toFullArtist);
     },
 
-    async findById(id) {
-      const row = await createArtistQuery(db).where('artists.id', id).first();
+    findById(id) {
+      const row = prepareArtistsQuery(db, 'WHERE artists.id = ?').first(id);
 
       if (!row) {
         throw new NotFoundError(`artist with id '${id}' does not exist`);
@@ -66,10 +67,10 @@ export default function createArtistsService({
       return toFullArtist(row);
     },
 
-    async create(params) {
+    create(params) {
       const id = generateUuid();
 
-      await db('artists').insert({
+      db.prepare('INSERT INTO artists (id, name) VALUES (:id, :name)').run({
         ...params,
         id,
       });
@@ -77,28 +78,28 @@ export default function createArtistsService({
       return id;
     },
 
-    async findAllSongsByArtist(id) {
-      return songsService.findAllWhere({ artistId: id });
+    findAllSongsByArtist(id) {
+      const rows = prepareSongsQuery<string>(
+        db,
+        `WHERE artistId = ? ORDER BY songs.disk ASC, songs.track ASC`,
+      ).all(id);
+
+      return rows.map(toFullSong);
     },
 
-    async findByIdWithAlbums(id) {
-      const artist = await this.findById(id);
+    findByIdWithAlbums(id) {
+      const artist = this.findById(id);
+      const albums = this.getAlbumsOfArtist(id);
+      const appearsOn = this.getAlbumsArtistAppearsOn(id);
 
-      const [albums, appearsOn] = await Promise.all([
-        this.getAlbumsOfArtist(id),
-        this.getAlbumsArtistAppearsOn(id),
-      ]);
+      const albumsWithSongs = albums.map(album => {
+        const songs = albumsService.findSongsOfAlbum(album.id);
 
-      const albumsWithSongs = await Promise.all(
-        albums.map(async album => {
-          const songs = await albumsService.findSongsOfAlbum(album.id);
-
-          return {
-            album,
-            songs,
-          };
-        }),
-      );
+        return {
+          album,
+          songs,
+        };
+      });
 
       return {
         artist,
@@ -107,28 +108,37 @@ export default function createArtistsService({
       };
     },
 
-    async getAlbumsOfArtist(artistId) {
-      const orderedByYearDesc = orderByYearDesc();
-      const rows = await orderedByYearDesc(
-        createAlbumsQuery(db).where('albums.artistId', artistId),
-      );
+    getAlbumsOfArtist(artistId) {
+      const rows = prepareAlbumsQuery(
+        db,
+        'WHERE albums.artistId = ? ORDER BY albums.year DESC',
+      ).all(artistId);
 
       return rows.map(toFullAlbum);
     },
 
-    async getAlbumsArtistAppearsOn(artistId) {
-      const rows = await createAlbumsQuery(db)
-        .innerJoin('songs', 'albums.id', 'songs.albumId')
-        .where('songs.artistId', artistId)
-        .andWhereNot('albums.artistId', artistId)
-        .orderBy('albums.year', 'desc')
-        .groupBy('albums.id');
+    getAlbumsArtistAppearsOn(artistId) {
+      const rows = prepareAlbumsQuery<{ artistId: string }>(
+        db,
+        `
+        INNER JOIN songs
+          ON albums.id = songs.albumId
+        WHERE songs.artistId = :artistId
+          AND albums.artistId != :artistId
+        GROUP BY albums.id
+        ORDER BY albums.year DESC
+      `,
+      ).all({ artistId });
 
       return rows.map(toFullAlbum);
     },
 
-    async findIdByName(name) {
-      const row = await db('artists').select('id').where({ name }).first();
+    findIdByName(name) {
+      const row = db
+        .prepare<string, { id: string }>(
+          'SELECT id FROM artists WHERE name = ?',
+        )
+        .first(name);
 
       if (!row) {
         return undefined;

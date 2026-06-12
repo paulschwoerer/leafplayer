@@ -14,8 +14,8 @@ export function createInvitationsCommandLoader({
     cli
       .command('invitations:list')
       .description('list all invitations')
-      .action(async () => {
-        const invitations = await invitationsService.getAllInvitations();
+      .action(() => {
+        const invitations = invitationsService.getAllInvitations();
 
         if (invitations.length === 0) {
           return printInfo('No invitations to show');
@@ -36,8 +36,8 @@ export function createInvitationsCommandLoader({
       .option('-c, --code <code>', 'specify an invitation code')
       .option('--comment <comment>', 'specify a comment')
       .requiredOption('code')
-      .action(async ({ code, comment }: { code: string; comment?: string }) => {
-        const result = await invitationsService.createInvitation({
+      .action(({ code, comment }: { code: string; comment?: string }) => {
+        const result = invitationsService.createInvitation({
           code,
           comment: comment || 'Inserted from CLI',
         });
@@ -52,8 +52,8 @@ export function createInvitationsCommandLoader({
     cli
       .command('invitations:revoke <code>')
       .description('revoke an invitation')
-      .action(async (code: string) => {
-        const result = await invitationsService.deleteInvitation(code);
+      .action((code: string) => {
+        const result = invitationsService.deleteInvitation(code);
 
         if (result instanceof Error) {
           printError(result.message);

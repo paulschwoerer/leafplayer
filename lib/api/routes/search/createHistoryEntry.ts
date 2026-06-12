@@ -39,7 +39,7 @@ export function createSearchHistoryEntry({
       }): Promise<CreateSearchHistoryEntryResponseDto> => {
         const { forType, forId } = body;
 
-        const entry = await searchHistoryService.createEntry({
+        const entry = searchHistoryService.createEntry({
           forType,
           forId,
           userId: currentUser.id,

@@ -31,7 +31,7 @@ export function findAlbums({ albumsService }: Injects): FastifyPluginAsync {
         ],
       },
       async request => {
-        const albums = await albumsService.find(request.sort);
+        const albums = albumsService.find(request.sort);
 
         return { albums };
       },

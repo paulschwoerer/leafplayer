@@ -7,14 +7,14 @@ import {
   Lifetime,
 } from 'awilix';
 import { FastifyInstance } from 'fastify';
-import { Knex } from 'knex';
 
 import { initServer } from '@/api/server';
+import { DB } from '@/database';
 
 import { createLeafplayerConfig, setupInMemorySQLiteDB } from '../testHelpers';
 
 const test = anyTest as TestFn<{
-  db: Knex;
+  db: DB;
   server: FastifyInstance;
   container: AwilixContainer;
 }>;
@@ -49,7 +49,7 @@ test.beforeEach(async t => {
 test.afterEach(async t => {
   const { db, server, container } = t.context;
 
-  await db.destroy();
+  db.close();
   await server.close();
   await container.dispose();
 });

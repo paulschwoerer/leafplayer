@@ -72,7 +72,7 @@ test('auth endpoint should register user when authenticated', async t => {
   const { server } = t.context;
   const { authService } = await setup(server);
 
-  td.when(authService.authenticate(MOCK_SESSION_TOKEN)).thenResolve({
+  td.when(authService.authenticate(MOCK_SESSION_TOKEN)).thenReturn({
     id: MOCK_SESSION_ID,
     user: MOCK_USER,
   });

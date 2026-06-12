@@ -1,6 +1,5 @@
 import { UserSessionsResponseDto } from '@/common';
-import { createPasswordHash } from '@/helpers/passwords';
-import { generateUuid } from '@/helpers/uuid';
+import createUsersService from '@/services/UsersService';
 
 import { performLogin } from './performLogin';
 import test from './setupE2ETest';
@@ -8,11 +7,10 @@ import test from './setupE2ETest';
 test('revoke session flow', async t => {
   const { server, db } = t.context;
 
-  await db('users').insert({
-    id: generateUuid(),
+  createUsersService({ db }).create({
     username: 'admin',
     displayName: 'Admin',
-    password: createPasswordHash('supersecret'),
+    password: 'supersecret',
   });
 
   const sessionToken1 = await performLogin(server, 'admin', 'supersecret');

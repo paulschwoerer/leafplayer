@@ -47,7 +47,7 @@ export function login({
           request.headers['user-agent'],
         );
 
-        const result = await authService.login(credentials, browserInfo);
+        const result = authService.login(credentials, browserInfo);
 
         const { user, sessionToken } = result;
 

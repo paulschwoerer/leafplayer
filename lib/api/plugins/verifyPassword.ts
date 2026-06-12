@@ -25,7 +25,7 @@ export function createVerifyPasswordPlugin({
         currentUser,
         body: { currentPassword },
       }: FastifyRequest<{ Body: { currentPassword: string } }>) => {
-        const isCorrect = await usersService.isCorrectPassword({
+        const isCorrect = usersService.isCorrectPassword({
           userId: currentUser.id,
           password: currentPassword,
         });

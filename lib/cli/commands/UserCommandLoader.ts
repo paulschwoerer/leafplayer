@@ -17,7 +17,7 @@ export function createUsersCommandLoader({
       .requiredOption('-p, --password <password>')
       .option('--display-name <display name>')
       .action(
-        async ({
+        ({
           username,
           password,
           displayName,
@@ -26,13 +26,13 @@ export function createUsersCommandLoader({
           password: string;
           displayName?: string;
         }) => {
-          const userExists = await usersService.exists(username);
+          const userExists = usersService.exists(username);
 
           if (userExists) {
             return printError('user already exists');
           }
 
-          await usersService.create({
+          usersService.create({
             username,
             displayName: displayName || username,
             password,
@@ -42,8 +42,8 @@ export function createUsersCommandLoader({
         },
       );
 
-    cli.command('users:list').action(async () => {
-      const users = await usersService.findAll();
+    cli.command('users:list').action(() => {
+      const users = usersService.findAll();
 
       console.table(
         users.map(({ username, displayName }) => ({ username, displayName })),

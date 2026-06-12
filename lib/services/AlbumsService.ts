@@ -1,32 +1,30 @@
-import { Knex } from 'knex';
-
 import { FullAlbum, FullSong } from '@/common';
 import { toFullAlbum } from '@/mappers/albums';
-import { createAlbumsQuery, orderBy } from '@/query/albums';
+import { prepareAlbumsQuery } from '@/query/albums';
 import { SortParam } from '@/typings/SortParam';
 import { generateUuid } from '@/helpers/uuid';
 import { NotFoundError } from '@/errors/NotFoundError';
-
-import { SongsService } from './SongsService';
+import { DB } from '@/database';
+import { toFullSong } from '@/mappers/songs';
+import { prepareSongsQuery } from '@/query/songs';
 
 export interface AlbumsService {
   createAlbum(params: {
     name: string;
     artistId: string;
     year?: number;
-  }): Promise<string>;
-  findById(id: string): Promise<FullAlbum>;
-  find(sort?: SortParam): Promise<FullAlbum[]>;
-  findSongsOfAlbum(albumId: string): Promise<FullSong[]>;
+  }): string;
+  findById(id: string): FullAlbum;
+  find(sort?: SortParam): FullAlbum[];
+  findSongsOfAlbum(albumId: string): FullSong[];
   findIdByNameAndArtistId(params: {
     name: string;
     artistId: string;
-  }): Promise<string | undefined>;
+  }): string | undefined;
 }
 
 type Injects = {
-  db: Knex;
-  songsService: SongsService;
+  db: DB;
 };
 
 const DEFAULT_SORT: SortParam = {
@@ -34,15 +32,14 @@ const DEFAULT_SORT: SortParam = {
   direction: 'asc',
 };
 
-export default function createAlbumsService({
-  db,
-  songsService,
-}: Injects): AlbumsService {
+export default function createAlbumsService({ db }: Injects): AlbumsService {
   return {
-    async createAlbum(params) {
+    createAlbum(params) {
       const id = generateUuid();
 
-      await db('albums').insert({
+      db.prepare(
+        'INSERT INTO albums (id, name, artistId, year) VALUES (:id, :name, :artistId, :year)',
+      ).run({
         ...params,
         year: params.year || null,
         id,
@@ -51,8 +48,8 @@ export default function createAlbumsService({
       return id;
     },
 
-    async findById(id) {
-      const row = await createAlbumsQuery(db).where('albums.id', id).first();
+    findById(id) {
+      const row = prepareAlbumsQuery(db, 'WHERE albums.id = ?').first(id);
 
       if (!row) {
         throw new NotFoundError(`album with id '${id}' does not exist`);
@@ -61,19 +58,31 @@ export default function createAlbumsService({
       return toFullAlbum(row);
     },
 
-    async find(sort) {
-      const ordered = orderBy(sort || DEFAULT_SORT);
-      const rows = await ordered(createAlbumsQuery(db).where(true));
+    find(sort) {
+      const { field, direction } = sort || DEFAULT_SORT;
+      const rows = prepareAlbumsQuery(
+        db,
+        `ORDER BY albums.${field} ${direction}`,
+      ).all();
 
       return rows.map(toFullAlbum);
     },
 
-    async findSongsOfAlbum(albumId) {
-      return songsService.findAllWhere({ albumId });
+    findSongsOfAlbum(albumId) {
+      const rows = prepareSongsQuery<string>(
+        db,
+        `WHERE albumId = ? ORDER BY songs.disk ASC, songs.track ASC`,
+      ).all(albumId);
+
+      return rows.map(toFullSong);
     },
 
-    async findIdByNameAndArtistId(params): Promise<string | undefined> {
-      const row = await db('albums').select('id').where(params).first();
+    findIdByNameAndArtistId(params): string | undefined {
+      const row = db
+        .prepare<{ name: string; artistId: string }, { id: string }>(
+          'SELECT id FROM albums WHERE name = :name AND artistId = :artistId',
+        )
+        .first(params);
 
       if (!row) {
         return undefined;

@@ -17,7 +17,7 @@ export function getRandomAlbum({
       '/discover/album',
       { preHandler: server.auth([server.verifySession]) },
       async (): Promise<AlbumResponseDto> => {
-        const [album] = await discoverService.findRandomAlbums(1);
+        const [album] = discoverService.findRandomAlbums(1);
 
         if (!album) {
           throw new NotFoundError('The library seems to be empty');

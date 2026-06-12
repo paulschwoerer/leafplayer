@@ -37,7 +37,7 @@ export function changePassword({ authService }: Injects): FastifyPluginAsync {
         { currentUser, currentSessionId, body: { newPassword } },
         reply,
       ) => {
-        await authService.changePassword({
+        authService.changePassword({
           userId: currentUser.id,
           activeSessionId: currentSessionId,
           newPassword,

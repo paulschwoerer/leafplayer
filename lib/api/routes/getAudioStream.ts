@@ -28,7 +28,7 @@ export function getAudioStream({
       async (request, reply) => {
         const { songId } = request.params;
 
-        const audioFile = await audioFilesService.findBySongId(songId);
+        const audioFile = audioFilesService.findBySongId(songId);
 
         if (!audioFile) {
           throw new NotFoundError();

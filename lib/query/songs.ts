@@ -1,32 +1,20 @@
-import { Knex } from 'knex';
+import { DB, Statement } from '@/database';
+import { SongRow } from '@/database/rows';
 
-type SongsQueryBuilder = ReturnType<typeof query>;
+type SongRowWithNames = SongRow & { artistName: string; albumName: string };
 
-export function createSongsQuery(db: Knex): SongsQueryBuilder {
-  return query(db);
-}
-
-export function orderByDiscAndTrack() {
-  return (query: SongsQueryBuilder): SongsQueryBuilder =>
-    query.orderBy('songs.disk', 'asc').orderBy('songs.track', 'asc');
-}
-
-function query(db: Knex) {
-  return db('songs')
-    .select(
-      db.ref('id').withSchema('songs'),
-      db.ref('track').withSchema('songs'),
-      db.ref('disk').withSchema('songs'),
-      db.ref('title').withSchema('songs'),
-      db.ref('duration').withSchema('songs'),
-      db.ref('artistId').withSchema('songs'),
-      db.ref('albumId').withSchema('songs'),
-      db.ref('name').withSchema('albums').as('albumName'),
-      db.ref('name').withSchema('artists').as('artistName'),
-      db.ref('createdAt').withSchema('songs'),
-      db.ref('updatedAt').withSchema('songs'),
-    )
-    .from('songs')
-    .innerJoin('albums', 'songs.albumId', 'albums.id')
-    .innerJoin('artists', 'songs.artistId', 'artists.id');
+export function prepareSongsQuery<
+  TBind extends unknown[] | unknown = unknown[],
+>(db: DB, q: string): Statement<TBind, SongRowWithNames> {
+  return db.prepare<TBind, SongRowWithNames>(`
+    SELECT
+      songs.*,
+      albums.name as albumName,
+      artists.name as artistName
+    FROM songs
+    INNER JOIN albums
+      ON songs.albumId = albums.id
+    INNER JOIN artists
+      ON songs.artistId = artists.id
+    ${q}`);
 }

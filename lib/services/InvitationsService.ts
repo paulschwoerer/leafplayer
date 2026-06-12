@@ -1,6 +1,6 @@
-import { Knex } from 'knex';
 import { LeafplayerConfig } from 'lib/config';
 
+import { DB } from '@/database';
 import { InvitationRow } from '@/database/rows';
 import { getCurrentUnixTimestamp } from '@/helpers/time';
 
@@ -10,7 +10,7 @@ export enum CreateInvitationResult {
 }
 
 type Injects = {
-  db: Knex;
+  db: DB;
   config: LeafplayerConfig;
 };
 
@@ -18,11 +18,11 @@ export interface InvitationsService {
   createInvitation(details: {
     code: string;
     comment?: string;
-  }): Promise<Error | undefined>;
-  getAllInvitations(): Promise<InvitationRow[]>;
-  deleteInvitation(code: string): Promise<Error | undefined>;
-  isValidInviteCode(inviteCode: string): Promise<boolean>;
-  invalidateInvitation(inviteCode: string): Promise<void>;
+  }): Error | undefined;
+  getAllInvitations(): InvitationRow[];
+  deleteInvitation(code: string): Error | undefined;
+  isValidInviteCode(inviteCode: string): boolean;
+  invalidateInvitation(inviteCode: string): void;
 }
 
 export default function createInvitationsService({
@@ -30,7 +30,7 @@ export default function createInvitationsService({
   config: { security: securityConfig },
 }: Injects): InvitationsService {
   return {
-    async createInvitation({ code, comment }) {
+    createInvitation({ code, comment }) {
       const minLength = securityConfig.minimumInviteCodeLength;
 
       if (code.length < minLength) {
@@ -39,48 +39,58 @@ export default function createInvitationsService({
         );
       }
 
-      const existing = await db('invitations')
-        .select('id')
-        .where({ code })
-        .first();
+      const existing = db
+        .prepare<string, InvitationRow>(
+          'SELECT id FROM invitations WHERE code = ?',
+        )
+        .first(code);
 
       if (existing) {
         return new Error('An invitation already exists with this invite code');
       }
 
-      await db('invitations').insert({
+      db.prepare<{ code: string; comment: string | null; expiresAt: number }>(
+        'INSERT INTO invitations (code, comment, expiresAt) VALUES (:code, :comment, :expiresAt)',
+      ).run({
         code,
         comment: comment || null,
         expiresAt: getCurrentUnixTimestamp() + securityConfig.invitationMaxAge,
       });
     },
 
-    getAllInvitations(): Promise<InvitationRow[]> {
-      return db('invitations').where(true);
+    getAllInvitations(): InvitationRow[] {
+      return db
+        .prepare<unknown[], InvitationRow>('SELECT * FROM invitations;')
+        .all();
     },
 
-    async deleteInvitation(code: string): Promise<Error | undefined> {
-      const rowsChanged = await db('invitations').delete().where({ code });
+    deleteInvitation(code: string): Error | undefined {
+      const rowsChanged = db
+        .prepare<string>('DELETE FROM invitations WHERE code = ?')
+        .run(code);
 
       if (rowsChanged === 0) {
         return new Error('No invitation with the given code found');
       }
     },
 
-    async isValidInviteCode(code: string): Promise<boolean> {
-      const invitation = await db('invitations')
-        .where({ code, used: false })
-        .andWhere('expiresAt', '>', getCurrentUnixTimestamp())
-        .select('id')
-        .first();
+    isValidInviteCode(code: string): boolean {
+      const invitation = db
+        .prepare<{ code: string; expiresAt: number }>(
+          'SELECT id FROM invitations WHERE code = :code AND used = FALSE AND expiresAt > :expiresAt',
+        )
+        .first({
+          code,
+          expiresAt: getCurrentUnixTimestamp(),
+        });
 
       return !!invitation;
     },
 
-    async invalidateInvitation(code: string): Promise<void> {
-      await db('invitations')
-        .update({ used: true })
-        .where({ code, used: false });
+    invalidateInvitation(code: string): void {
+      db.prepare(
+        'UPDATE invitations SET used = TRUE WHERE code = ? AND used = FALSE',
+      ).run(code);
     },
   };
 }

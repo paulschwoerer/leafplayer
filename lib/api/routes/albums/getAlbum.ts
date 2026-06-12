@@ -16,9 +16,9 @@ export function getAlbum({ albumsService }: Injects): FastifyPluginAsync {
       async (request): Promise<AlbumWithSongsResponseDto> => {
         const { albumId } = request.params;
 
-        const album = await albumsService.findById(albumId);
+        const album = albumsService.findById(albumId);
 
-        const songs = await albumsService.findSongsOfAlbum(albumId);
+        const songs = albumsService.findSongsOfAlbum(albumId);
 
         return {
           album,

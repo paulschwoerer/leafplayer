@@ -17,7 +17,7 @@ export function getRandomArtist({
       '/discover/artist',
       { preHandler: server.auth([server.verifySession]) },
       async (): Promise<ArtistResponseDto> => {
-        const [artist] = await discoverService.findRandomArtists(1);
+        const [artist] = discoverService.findRandomArtists(1);
 
         if (!artist) {
           throw new NotFoundError('The library seems to be empty');

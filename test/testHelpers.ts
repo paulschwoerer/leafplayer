@@ -1,17 +1,11 @@
-import { Knex } from 'knex';
 import uid from 'uid-safe';
 
 import { LeafplayerConfig } from '@/config';
-import { initializeDatabase, runMigrations } from '@/database';
+import { DB, initializeDatabase } from '@/database';
 import { generateUuid } from '@/helpers/uuid';
 
-export async function setupInMemorySQLiteDB(): Promise<Knex> {
-  const db = initializeDatabase({
-    type: 'sqlite3',
-    file: ':memory:',
-  });
-
-  await runMigrations(db);
+export async function setupInMemorySQLiteDB(): Promise<DB> {
+  const db = initializeDatabase(':memory:');
 
   return db;
 }

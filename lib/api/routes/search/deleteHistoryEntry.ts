@@ -15,7 +15,7 @@ export function deleteSearchHistoryEntry({
       '/search/history/:entryId',
       { preHandler: server.auth([server.verifySession]) },
       async ({ params, currentUser }, reply): Promise<void> => {
-        await searchHistoryService.deleteEntry({
+        searchHistoryService.deleteEntry({
           userId: currentUser.id,
           id: params.entryId,
         });

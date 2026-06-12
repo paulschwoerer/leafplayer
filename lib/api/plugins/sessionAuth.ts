@@ -34,7 +34,7 @@ export function createSessionAuthPlugin({
           throw new NotAuthorizedError('No session token given');
         }
 
-        const sessionWithUser = await authService.authenticate(sessionToken);
+        const sessionWithUser = authService.authenticate(sessionToken);
 
         request.currentSessionId = sessionWithUser.id;
         request.currentUser = sessionWithUser.user;

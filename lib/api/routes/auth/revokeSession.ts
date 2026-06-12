@@ -33,7 +33,7 @@ export function revokeSession({
         }),
       },
       async ({ params: { id } }, reply) => {
-        await sessionsService.deleteById(id);
+        sessionsService.deleteById(id);
 
         return reply.status(204).send();
       },

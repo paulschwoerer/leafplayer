@@ -1,7 +1,6 @@
-import { Knex } from 'knex';
-
 import { createPasswordHash } from '@/helpers/passwords';
 import { ValidationError } from '@/errors/ValidationError';
+import { DB } from '@/database';
 
 import { LeafplayerConfig } from '../config/index';
 
@@ -10,14 +9,12 @@ export interface PasswordService {
   setUserPasswordAndRevokeSessions(
     userId: string,
     newPassword: string,
-    options?: {
-      excludedSessionId?: string;
-    },
-  ): Promise<void>;
+    activeSessionId: string
+  ): void;
 }
 
 type Injects = {
-  db: Knex;
+  db: DB;
   config: LeafplayerConfig;
 };
 
@@ -34,33 +31,32 @@ export default function createPasswordService({
       }
     },
 
-    async setUserPasswordAndRevokeSessions(userId, newPassword, options) {
+    setUserPasswordAndRevokeSessions(userId, newPassword, activeSessionId) {
       const pwResult = this.validatePasswordSecurity(newPassword);
       if (pwResult instanceof Error) {
         throw pwResult;
       }
 
-      await db.transaction(async trx => {
-        await trx('users')
-          .update({
-            password: createPasswordHash(newPassword),
-          })
-          .where({
-            id: userId,
-          });
+      const driver = db.driver();
 
-        let sessionsQuery = trx('sessions').delete().where({
+      const userUpdate = driver.prepare(
+        'UPDATE users SET password = :password WHERE id = :userId',
+      );
+      const sessionDelete = driver.prepare(
+        'DELETE FROM sessions WHERE userId = :userId AND id != :activeSessionId',
+      );
+
+      driver.transaction(() => {
+        userUpdate.run({
           userId,
+          password: createPasswordHash(newPassword),
         });
 
-        if (options?.excludedSessionId) {
-          sessionsQuery = sessionsQuery.whereNot({
-            id: options.excludedSessionId,
-          });
-        }
-
-        await sessionsQuery;
-      });
+        sessionDelete.run({
+          userId,
+          activeSessionId,
+        });
+      })();
     },
   };
 }

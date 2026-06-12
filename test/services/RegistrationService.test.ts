@@ -1,6 +1,3 @@
-import { Knex } from 'knex';
-
-import { generateUuid } from '@/helpers/uuid';
 import createInvitationsService from '@/services/InvitationsService';
 import createPasswordService from '@/services/PasswordService';
 import createRegistrationService, {
@@ -11,11 +8,13 @@ import { getCurrentUnixTimestamp } from '@/helpers/time';
 import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { ValidationError } from '@/errors/ValidationError';
 import { createPasswordHash } from '@/helpers/passwords';
+import { DB } from '@/database';
+import { InvitationRow, UserRow } from '@/database/rows';
 
 import { createLeafplayerConfig } from '../testHelpers';
 import test from '../setupTestDB';
 
-function setupService(db: Knex): RegistrationService {
+function setupService(db: DB): RegistrationService {
   const config = createLeafplayerConfig();
   return createRegistrationService({
     usersService: createUsersService({ db }),
@@ -24,10 +23,10 @@ function setupService(db: Knex): RegistrationService {
   });
 }
 
-test('registerUser() should throw when given an invalid invite code', async t => {
+test('registerUser() should throw when given an invalid invite code', t => {
   const registrationService = setupService(t.context.db);
 
-  await t.throwsAsync(
+  t.throws(
     () =>
       registrationService.registerUser('invalid_invite_code', {
         username: 'newuser',
@@ -37,16 +36,19 @@ test('registerUser() should throw when given an invalid invite code', async t =>
   );
 });
 
-test('registerUser() should throw when given an expired invite code', async t => {
+test('registerUser() should throw when given an expired invite code', t => {
   const { db } = t.context;
-  await db('invitations').insert({
+
+  db.prepare(
+    'INSERT INTO invitations (code, expiresAt) VALUES (:code, :expiresAt)',
+  ).run({
     code: 'expired_invite_code',
     expiresAt: getCurrentUnixTimestamp() - 10000,
   });
 
   const registrationService = setupService(db);
 
-  await t.throwsAsync(
+  t.throws(
     () =>
       registrationService.registerUser('expired_invite_code', {
         username: 'newuser',
@@ -56,16 +58,19 @@ test('registerUser() should throw when given an expired invite code', async t =>
   );
 });
 
-test('registerUser() should throw when given an unsafe password', async t => {
+test('registerUser() should throw when given an unsafe password', t => {
   const { db } = t.context;
-  await db('invitations').insert({
+
+  createInvitationsService({
+    config: createLeafplayerConfig(),
+    db,
+  }).createInvitation({
     code: 'supersecret_invite_code',
-    expiresAt: getCurrentUnixTimestamp() + 10000,
   });
 
   const registrationService = setupService(db);
 
-  await t.throwsAsync(
+  t.throws(
     () =>
       registrationService.registerUser('supersecret_invite_code', {
         username: 'newuser',
@@ -75,58 +80,61 @@ test('registerUser() should throw when given an unsafe password', async t => {
   );
 });
 
-test('registerUser() should throw when given a username that already exists', async t => {
+test('registerUser() should throw when given a username that already exists', t => {
   const { db } = t.context;
-  await db('users').insert({
-    id: generateUuid(),
+
+  createUsersService({ db }).create({
     username: 'testuser',
     displayName: 'Test User',
     password: createPasswordHash('supersecret'),
   });
-  await db('invitations').insert({
+  createInvitationsService({
+    config: createLeafplayerConfig(),
+    db,
+  }).createInvitation({
     code: 'supersecret_invite_code',
-    expiresAt: getCurrentUnixTimestamp() + 10000,
   });
 
   const registrationService = setupService(db);
 
-  await Promise.all(
-    ['testuser', 'testUser', 'Testuser', 'TESTUSER'].map(username =>
-      t.throwsAsync(
-        () =>
-          registrationService.registerUser('supersecret_invite_code', {
-            username,
-            password: 'supersecret',
-          }),
-        { instanceOf: ValidationError },
-      ),
+  ['testuser', 'testUser', 'Testuser', 'TESTUSER'].map(username =>
+    t.throws(
+      () =>
+        registrationService.registerUser('supersecret_invite_code', {
+          username,
+          password: 'supersecret',
+        }),
+      { instanceOf: ValidationError },
     ),
   );
 });
 
-test('registerUser() should invalidate invite code and create user', async t => {
+test('registerUser() should invalidate invite code and create user', t => {
   const { db } = t.context;
-  await db('invitations').insert({
+
+  createInvitationsService({
+    config: createLeafplayerConfig(),
+    db,
+  }).createInvitation({
     code: 'supersecret_invite_code',
-    expiresAt: getCurrentUnixTimestamp() + 10000,
   });
 
   const registrationService = setupService(db);
 
-  await registrationService.registerUser('supersecret_invite_code', {
+  registrationService.registerUser('supersecret_invite_code', {
     username: 'newuser',
     password: 'supersecret',
   });
 
-  const invitation = await db('invitations')
-    .where({
-      code: 'supersecret_invite_code',
-    })
+  const invitation = db
+    .prepare<unknown[], InvitationRow>(
+      `SELECT * FROM invitations WHERE code = 'supersecret_invite_code'`,
+    )
     .first();
-  const user = await db('users')
-    .where({
-      username: 'newuser',
-    })
+  const user = db
+    .prepare<unknown[], UserRow>(
+      `SELECT * FROM users WHERE username = 'newuser'`,
+    )
     .first();
 
   t.truthy(user);

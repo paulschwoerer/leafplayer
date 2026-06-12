@@ -13,7 +13,7 @@ export function logout({ authService }: Injects): FastifyPluginAsync {
       '/auth/logout',
       { preHandler: server.auth([server.verifySession]) },
       async ({ currentSessionId }, reply) => {
-        await authService.logout(currentSessionId);
+        authService.logout(currentSessionId);
 
         return reply
           .status(204)

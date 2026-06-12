@@ -7,16 +7,18 @@ import test from './setupE2ETest';
 test('Login and logout flow', async t => {
   const { server, db } = t.context;
 
-  await db('invitations').insert([
-    {
-      code: 'supersecret_invitation',
-      expiresAt: getCurrentUnixTimestamp() + 10000,
-    },
-    {
-      code: 'expired_invitation',
-      expiresAt: getCurrentUnixTimestamp() - 10000,
-    },
-  ]);
+  const invitationInsert = db.prepare<{ code: string; expiresAt: number }>(
+    `INSERT INTO invitations (code, expiresAt) VALUES (:code, :expiresAt)`,
+  );
+
+  invitationInsert.run({
+    code: 'supersecret_invitation',
+    expiresAt: getCurrentUnixTimestamp() + 10000,
+  });
+  invitationInsert.run({
+    code: 'expired_invitation',
+    expiresAt: getCurrentUnixTimestamp() - 10000,
+  });
 
   let response = await server.inject({
     method: 'POST',

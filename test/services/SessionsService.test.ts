@@ -1,106 +1,104 @@
 import { getCurrentUnixTimestamp } from '@/helpers/time';
 import createSessionsService from '@/services/SessionsService';
-import { createPasswordHash } from '@/helpers/passwords';
+import createUsersService from '@/services/UsersService';
+import { generateUuid } from '@/helpers/uuid';
 
-import { MOCK_USER, MOCK_SESSION_ID } from '../testdata/mocks';
 import test from '../setupTestDB';
 
 const USER = {
-  ...MOCK_USER,
-  password: createPasswordHash('supersecret'),
+  username: 'admin',
+  displayName: '',
+  password: 'supersecret',
 };
 
-test('get -> it should not return expired session', async ({
+test('getByToken -> it should not return expired session', ({
   context: { db },
   ...t
 }) => {
-  await db('users').insert(USER);
-  await db('sessions').insert({
-    id: MOCK_SESSION_ID,
+  const userId = createUsersService({ db }).create(USER);
+
+  db.prepare(
+    `INSERT INTO sessions (id, userId, token, lastUsedAt, expiresAt) VALUES (:id, :userId, :token, :lastUsedAt, :expiresAt)`,
+  ).run({
+    id: generateUuid(),
+    userId,
     token: 'supersecret',
-    userId: MOCK_USER.id,
-    lastUsedAt: 0,
+    lastUsedAt: getCurrentUnixTimestamp(),
     expiresAt: getCurrentUnixTimestamp() - 1000,
   });
 
   const sessionsService = createSessionsService({ db });
 
-  const session = await sessionsService.getByToken('supersecret');
+  const session = sessionsService.getByToken('supersecret');
 
   t.is(session, undefined);
 });
 
-test('get -> it should not return session token', async ({
+test('getByToken -> it should not return session token', ({
   context: { db },
   ...t
 }) => {
-  await db('users').insert(USER);
-  await db('sessions').insert({
-    id: MOCK_SESSION_ID,
+  const userId = createUsersService({ db }).create(USER);
+
+  db.prepare(
+    `INSERT INTO sessions (id, userId, token, lastUsedAt, expiresAt) VALUES (:id, :userId, :token, :lastUsedAt, :expiresAt)`,
+  ).run({
+    id: generateUuid(),
+    userId,
     token: 'supersecret',
-    userId: MOCK_USER.id,
-    lastUsedAt: 0,
+    lastUsedAt: getCurrentUnixTimestamp(),
     expiresAt: getCurrentUnixTimestamp() + 1000,
   });
 
   const sessionsService = createSessionsService({ db });
 
-  const session = await sessionsService.getByToken('supersecret');
+  const session = sessionsService.getByToken('supersecret');
 
   t.false(JSON.stringify(session).includes('supersecret'));
 });
 
-test('findByUserId -> it should not return expired sessions', async ({
+test('findByUserId -> it should not return expired sessions', ({
   context: { db },
   ...t
 }) => {
-  await db('users').insert(USER);
-  await db('sessions').insert([
-    {
-      id: '9ce18269-e92b-499c-93e3-0962ce2c6257',
-      token: 'supersecret1',
-      userId: MOCK_USER.id,
-      lastUsedAt: 0,
-      expiresAt: getCurrentUnixTimestamp() - 1000,
-    },
-    {
-      id: '58e9bded-05fe-4d67-8f53-e71d48741bc4',
-      token: 'supersecret2',
-      userId: MOCK_USER.id,
-      lastUsedAt: 0,
-      expiresAt: getCurrentUnixTimestamp() - 1000,
-    },
-  ]);
+  const userId = createUsersService({ db }).create(USER);
 
-  const sessionsService = createSessionsService({ db });
-
-  const session = await sessionsService.findByUserId(MOCK_USER.id);
-
-  t.false(JSON.stringify(session).includes('supersecret'));
-});
-
-test('deleteById -> it should delete a given session', async ({
-  context: { db },
-  ...t
-}) => {
-  await db('users').insert(USER);
-  await db('sessions').insert({
-    id: '58e9bded-05fe-4d67-8f53-e71d48741bc4',
-    token: 'supersecret2',
-    userId: MOCK_USER.id,
-    lastUsedAt: 0,
+  const sessionId = generateUuid();
+  db.prepare(
+    `INSERT INTO sessions (id, userId, token, lastUsedAt, expiresAt) VALUES (:id, :userId, :token, :lastUsedAt, :expiresAt)`,
+  ).run({
+    id: sessionId,
+    userId,
+    token: 'supersecret',
+    lastUsedAt: getCurrentUnixTimestamp(),
     expiresAt: getCurrentUnixTimestamp() - 1000,
   });
 
   const sessionsService = createSessionsService({ db });
 
-  await sessionsService.deleteById('58e9bded-05fe-4d67-8f53-e71d48741bc4');
+  t.is(sessionsService.findByUserId(userId).length, 0);
+});
 
-  const deletedSession = await db('sessions')
-    .where({
-      id: '58e9bded-05fe-4d67-8f53-e71d48741bc4',
-    })
-    .first();
+test('deleteById -> it should delete a given session', ({
+  context: { db },
+  ...t
+}) => {
+  const userId = createUsersService({ db }).create(USER);
 
-  t.is(deletedSession, undefined);
+  const sessionId = generateUuid();
+  db.prepare(
+    `INSERT INTO sessions (id, userId, token, lastUsedAt, expiresAt) VALUES (:id, :userId, :token, :lastUsedAt, :expiresAt)`,
+  ).run({
+    id: sessionId,
+    userId,
+    token: 'supersecret',
+    lastUsedAt: getCurrentUnixTimestamp(),
+    expiresAt: getCurrentUnixTimestamp() - 1000,
+  });
+
+  const sessionsService = createSessionsService({ db });
+
+  sessionsService.deleteById(sessionId);
+
+  t.is(sessionsService.findByUserId(userId).length, 0);
 });

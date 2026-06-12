@@ -40,10 +40,10 @@ export interface AuthService {
   login(
     credentials: Credentials,
     browser: Browser,
-  ): Promise<{ user: User; sessionToken: string }>;
-  authenticate(sessionToken: string): Promise<SessionWithUser>;
-  changePassword(params: ChangePasswordParams): Promise<void>;
-  logout(sessionId: string): Promise<void>;
+  ): { user: User; sessionToken: string };
+  authenticate(sessionToken: string): SessionWithUser;
+  changePassword(params: ChangePasswordParams): void;
+  logout(sessionId: string): void;
 }
 
 export default function createAuthService({
@@ -53,14 +53,14 @@ export default function createAuthService({
   passwordService,
 }: Injects): AuthService {
   return {
-    async login({ username, password }, browser) {
-      const user = await usersService.findWithPasswordByUsername(username);
+    login({ username, password }, browser) {
+      const user = usersService.findWithPasswordByUsername(username);
 
       if (!user || !comparePasswords(password, user.password)) {
         throw new NotAuthorizedError('Invalid credentials');
       }
 
-      const sessionToken = await sessionsService.create({
+      const sessionToken = sessionsService.create({
         userId: user.id,
         browser,
         maxAge: config.security.sessionMaxAge,
@@ -76,21 +76,21 @@ export default function createAuthService({
       };
     },
 
-    async authenticate(token) {
-      const session = await sessionsService.getByToken(token);
+    authenticate(token) {
+      const session = sessionsService.getByToken(token);
 
       if (!session) {
         throw new NotAuthorizedError('Invalid or expired session');
       }
 
-      const user = await usersService.getById(session.userId);
+      const user = usersService.getById(session.userId);
 
       if (!user) {
         console.log('found session without user when authenticating');
         throw new NotAuthorizedError('Invalid or expired session');
       }
 
-      await sessionsService.update(session.id, {
+      sessionsService.update(session.id, {
         lastUsedAt: getCurrentUnixTimestamp(),
       });
 
@@ -100,18 +100,16 @@ export default function createAuthService({
       };
     },
 
-    async changePassword({ userId, activeSessionId, newPassword }) {
-      await passwordService.setUserPasswordAndRevokeSessions(
+    changePassword({ userId, activeSessionId, newPassword }) {
+      passwordService.setUserPasswordAndRevokeSessions(
         userId,
         newPassword,
-        {
-          excludedSessionId: activeSessionId,
-        },
+        activeSessionId,
       );
     },
 
-    async logout(sessionId) {
-      await sessionsService.deleteById(sessionId);
+    logout(sessionId) {
+      sessionsService.deleteById(sessionId);
     },
   };
 }

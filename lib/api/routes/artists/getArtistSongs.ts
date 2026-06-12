@@ -18,7 +18,7 @@ export function getArtistSongs({
       async (request): Promise<SongsResponseDto> => {
         const { artistId } = request.params;
 
-        const songs = await artistsService.findAllSongsByArtist(artistId);
+        const songs = artistsService.findAllSongsByArtist(artistId);
 
         return { songs };
       },

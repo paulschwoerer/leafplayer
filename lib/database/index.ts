@@ -1,85 +1,163 @@
-import { chmodSync, existsSync } from 'fs';
+import { chmodSync, existsSync, readdirSync, readFileSync } from 'fs';
 import path from 'path';
 
-import { knex, Knex } from 'knex';
+import DatabaseConstructor, {
+  Database,
+  Statement as DriverStatement,
+} from 'better-sqlite3';
 
 import { unixCheckIfWorldReadable } from '@/helpers/filesystem';
-import { createPasswordHash } from '@/helpers/passwords';
-import { generateUuid } from '@/helpers/uuid';
 
-type Config = {
-  file: string;
-  type: string;
-};
+const migrationsDir = path.join(__dirname, './migrations');
 
-const clients = new Map<string, string>([['sqlite3', 'better-sqlite3']]);
+export interface DB {
+  prepare<TBind extends unknown[] | unknown = unknown[], TResult = unknown>(
+    sql: string,
+  ): Statement<TBind, TResult>;
+  driver(): Database;
+  close(): void;
+}
 
-export function initializeDatabase({ file, type }: Config): Knex {
-  const client = clients.get(type);
+export interface Statement<
+  TBind extends unknown | unknown[],
+  TResult = unknown,
+> {
+  run(...bind: TBind extends unknown[] ? TBind : [TBind]): number;
+  first(
+    ...bind: TBind extends unknown[] ? TBind : [TBind]
+  ): TResult | undefined;
+  all(...bind: TBind extends unknown[] ? TBind : [TBind]): TResult[];
+}
 
-  if (!client) {
-    throw Error(`cannot find client for database type ${type}`);
-  }
+export function initializeDatabase(filename: string): DB {
+  const driver: Database = new DatabaseConstructor(filename);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const db = knex<any, Record<string, any>[]>({
-    client,
-    useNullAsDefault: true,
-    connection: {
-      filename: file,
-    },
-    migrations: {
-      directory: path.join(__dirname, './migrations'),
-    },
-    pool: {
-      afterCreate: (
-        connection: { pragma(q: string): void },
-        cb: () => void,
-      ) => {
-        connection.pragma('foreign_keys = ON');
-        cb();
-      },
-    },
-  });
-
-  const dbFileExists = existsSync(file);
-  if (dbFileExists && unixCheckIfWorldReadable(file)) {
+  const dbFileExists = existsSync(filename);
+  if (dbFileExists && unixCheckIfWorldReadable(filename)) {
     console.warn(
-      `Warning: Database file ${file} is world readable, changing mode to 600`,
+      `Warning: Database file ${filename} is world readable, changing mode to 600`,
     );
-    chmodSync(file, 0o600);
+    chmodSync(filename, 0o600);
   }
 
-  return db;
+  driver.pragma('foreign_keys = ON');
+
+  migrateLatest(driver);
+
+  return {
+    prepare<TBind = unknown, TResult = unknown>(sql: string) {
+      let stmt: DriverStatement<TBind[], TResult>;
+      try {
+        stmt = driver.prepare<TBind[], TResult>(sql);
+      } catch (e) {
+        console.error('cannot prepare query', e);
+        throw e;
+      }
+
+      return {
+        run(...params: TBind[]): number {
+          return stmt.run(...params).changes;
+        },
+        first(...params: TBind[]): TResult | undefined {
+          return stmt.get(...params);
+        },
+        all(...params: TBind[]): TResult[] {
+          return stmt.all(...params);
+        },
+      };
+    },
+    driver() {
+      return driver;
+    },
+    close() {
+      driver.close();
+    },
+  };
 }
 
-export function runMigrations(db: Knex): Promise<unknown> {
-  return db.migrate.latest();
+function migrateLatest(driver: Database) {
+  let currentVersion = getVersion(driver);
+
+  if (currentVersion === 0) {
+    currentVersion = getLegacyVersion(driver);
+  }
+
+  const migrationFiles = getAllMigrationFiles();
+
+  const targetVersion = getMaximumVersion(migrationFiles);
+
+  if (targetVersion < currentVersion) {
+    throw new Error('migrating back is unsupported');
+  }
+
+  if (targetVersion === currentVersion) {
+    return;
+  }
+
+  console.log('Migrating database to latest version ...');
+
+  for (let i = currentVersion + 1; i <= targetVersion; i++) {
+    const migrationFile = migrationFiles.get(i);
+    if (!migrationFile) {
+      throw new Error(`could not find migration file '${migrationFile}'`);
+    }
+
+    console.debug(`  Running migration '${migrationFile}'`);
+
+    const migrationSQL = readFileSync(
+      path.join(migrationsDir, migrationFile),
+    ).toString('utf-8');
+
+    driver.exec(`BEGIN IMMEDIATE TRANSACTION; ${migrationSQL} COMMIT;`);
+    setVersion(driver, i);
+  }
+
+  console.log('Finished migrating database');
 }
 
-export async function seedDevDatabase(db: Knex): Promise<void> {
-  await db('users').insert({
-    id: generateUuid(),
-    username: 'admin',
-    displayName: 'Admin',
-    password: createPasswordHash('admin'),
-  });
+function getVersion(driver: Database): number {
+  return driver.pragma('user_version', { simple: true }) as number;
+}
 
-  await db('users').insert({
-    id: generateUuid(),
-    username: 'dummy',
-    displayName: 'Dummy McDummyface',
-    password: createPasswordHash('dummy'),
-  });
+/*
+ * Retrieve version from knex_migrations table, if present, for backwards-compatibility
+ */
+function getLegacyVersion(driver: Database): number {
+  const tableExists = !!driver
+    .prepare(
+      `SELECT name FROM sqlite_schema WHERE type = 'table' AND name='knex_migrations'`,
+    )
+    .get();
 
-  await db('invitations').insert({
-    code: 'supersecret',
-    comment: 'Auto-inserted code',
-    expiresAt: Number.MAX_SAFE_INTEGER,
-  });
+  if (!tableExists) {
+    return 0;
+  }
 
-  await db('media_folders').insert({
-    id: generateUuid(),
-    path: `${process.env.HOME}/leafplayer-testmusic`,
-  });
+  const row = driver
+    .prepare<unknown[], { count: number }>(
+      'SELECT COUNT(*) AS count FROM knex_migrations',
+    )
+    .get();
+
+  return row?.count || 0;
+}
+
+function setVersion(driver: Database, version: number): void {
+  driver.pragma(`user_version = ${version}`);
+}
+
+function getMaximumVersion(migrationFiles: Map<number, string>): number {
+  return Math.max(0, ...migrationFiles.keys());
+}
+
+function getAllMigrationFiles(): Map<number, string> {
+  const files = readdirSync(migrationsDir).filter(f => f.endsWith('.sql'));
+
+  const map = new Map<number, string>();
+  for (const f of files) {
+    const serial = parseInt(f.split('_')[0]);
+    map.set(serial, f);
+  }
+
+  return map;
 }

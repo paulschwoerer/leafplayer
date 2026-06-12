@@ -1,60 +1,69 @@
-import { Knex } from 'knex';
-
 import { FullAlbum, FullArtist } from '@/common';
 import { toFullAlbum } from '@/mappers/albums';
 import { toFullArtist } from '@/mappers/artists';
-import { createAlbumsQuery } from '@/query/albums';
-import { createArtistQuery } from '@/query/artists';
+import { prepareAlbumsQuery } from '@/query/albums';
+import { prepareArtistsQuery } from '@/query/artists';
 import { getRandomArrayElements } from '@/helpers/random';
+import { DB } from '@/database';
 
 export interface DiscoverService {
-  findRandomArtists(count: number): Promise<FullArtist[]>;
-  findRandomAlbums(count: number): Promise<FullAlbum[]>;
-  findRecentlyAddedAlbums(limit: number): Promise<FullAlbum[]>;
+  findRandomArtists(count: number): FullArtist[];
+  findRandomAlbums(count: number): FullAlbum[];
+  findRecentlyAddedAlbums(limit: number): FullAlbum[];
 }
 
 type Injects = {
-  db: Knex;
+  db: DB;
 };
 
+// TODO: this could probably done more concise by using random offsets and limits
 export default function createDiscoverService({
   db,
 }: Injects): DiscoverService {
   return {
-    async findRandomArtists(count) {
-      const randomIds = await findRandomIdsOfTable(db, 'artists', count);
+    findRandomArtists(count) {
+      const randomIds = findRandomIdsOfTable(db, 'artists', count);
 
-      const rows = await createArtistQuery(db)
-        .whereIn('artists.id', randomIds)
-        .groupBy('artists.id');
+      const rows = prepareArtistsQuery<string[]>(
+        db,
+        `WHERE artists.id IN (${randomIds
+          .map(() => '?')
+          .join(',')}) GROUP BY artists.id`,
+      ).all(...randomIds);
 
       return rows.map(toFullArtist);
     },
-    async findRandomAlbums(count) {
-      const randomIds = await findRandomIdsOfTable(db, 'albums', count);
+    findRandomAlbums(count) {
+      const randomIds = findRandomIdsOfTable(db, 'albums', count);
 
-      const rows = await createAlbumsQuery(db).whereIn('albums.id', randomIds);
+      const rows = prepareAlbumsQuery<string[]>(
+        db,
+        `WHERE albums.id IN (${randomIds.map(() => '?').join(',')})`,
+      ).all(...randomIds);
 
       return rows.map(toFullAlbum);
     },
-    async findRecentlyAddedAlbums(limit) {
-      const rows = await createAlbumsQuery(db)
-        .orderBy('albums.createdAt', 'desc')
-        .limit(limit);
+    findRecentlyAddedAlbums(limit) {
+      const rows = prepareAlbumsQuery(
+        db,
+        `ORDER BY albums.createdAt DESC LIMIT ${limit}`,
+      ).all();
 
       return rows.map(toFullAlbum);
     },
   };
 }
 
-async function findRandomIdsOfTable(
-  query: Knex,
+function findRandomIdsOfTable(
+  db: DB,
   tableName: string,
   count: number,
-): Promise<string[]> {
+): string[] {
   type Row = { id: string };
 
-  const rows: Row[] = await query(tableName).select('id').where(true);
+  const rows: Row[] = db
+    .prepare<unknown[], { id: string }>(`SELECT id FROM ${tableName}`)
+    .all();
 
   if (rows.length === 0) {
     return [];

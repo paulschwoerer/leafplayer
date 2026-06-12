@@ -32,7 +32,7 @@ export function findArtists({ artistsService }: Injects): FastifyPluginAsync {
         ],
       },
       async (request): Promise<ArtistsResponseDto> => {
-        const artists = await artistsService.find(request.sort);
+        const artists = artistsService.find(request.sort);
 
         return { artists };
       },

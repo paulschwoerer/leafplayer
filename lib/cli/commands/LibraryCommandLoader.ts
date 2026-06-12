@@ -1,5 +1,3 @@
-import { Knex } from 'knex';
-
 import { printError, printInfo, printSuccess } from '@/helpers/cli';
 import { MusicCleaner } from '@/scanner/MusicCleaner';
 import MusicScanner from '@/scanner/MusicScanner';
@@ -7,6 +5,7 @@ import { AlbumsService } from '@/services/AlbumsService';
 import { ArtistsService } from '@/services/ArtistsService';
 import { AudioFilesService } from '@/services/AudioFilesService';
 import { LibraryService } from '@/services/LibraryService';
+import { DB } from '@/database';
 
 import { CommandLoader } from '../CommandLoader';
 
@@ -16,7 +15,7 @@ type Config = {
 
 type Injects = {
   config: Config;
-  db: Knex;
+  db: DB;
   audioFilesService: AudioFilesService;
   albumsService: AlbumsService;
   artistsService: ArtistsService;
@@ -80,21 +79,21 @@ export function createLibraryCommandLoader({
       .description('manage music directories')
       .option('--add <path>')
       .option('--remove <path>')
-      .action(async ({ add, remove }: { add?: string; remove?: string }) => {
+      .action(({ add, remove }: { add?: string; remove?: string }) => {
         if (typeof add === 'string') {
-          const result = await libraryService.addMediaDirectory(add);
+          const result = libraryService.addMediaDirectory(add);
 
           if (result instanceof Error) {
             printError(result.message);
           }
         } else if (typeof remove === 'string') {
-          const result = await libraryService.removeMediaDirectory(remove);
+          const result = libraryService.removeMediaDirectory(remove);
 
           if (result instanceof Error) {
             printError(result.message);
           }
         } else {
-          const directories = await libraryService.getAllMediaDirectories();
+          const directories = libraryService.getAllMediaDirectories();
 
           console.table(directories);
         }

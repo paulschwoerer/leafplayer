@@ -1,16 +1,15 @@
-import { Knex } from 'knex';
-
+import { DB } from '@/database';
 import { AudioFileRow } from '@/database/rows';
 
 export interface AudioFilesService {
-  findById(id: string): Promise<AudioFileRow | undefined>;
-  findAll(): Promise<AudioFileRow[]>;
-  findBySongId(songId: string): Promise<AudioFileRow | undefined>;
-  deleteById(id: string): Promise<void>;
+  findById(id: string): AudioFileRow | undefined;
+  findAll(): AudioFileRow[];
+  findBySongId(songId: string): AudioFileRow | undefined;
+  deleteById(id: string): void;
 }
 
 type Injects = {
-  db: Knex;
+  db: DB;
 };
 
 export default function createAudioFilesService({
@@ -18,31 +17,34 @@ export default function createAudioFilesService({
 }: Injects): AudioFilesService {
   return {
     findById(id) {
-      return db('audio_files').where({ id }).first();
+      return db
+        .prepare<string, AudioFileRow>('SELECT * FROM audio_files WHERE id = ?')
+        .first(id);
     },
 
-    async findBySongId(songId) {
-      const row = await db('audio_files')
-        .select(
-          db.ref('id').withSchema('audio_files'),
-          db.ref('path').withSchema('audio_files'),
-          db.ref('format').withSchema('audio_files'),
-          db.ref('filesize').withSchema('audio_files'),
-          db.ref('lastModified').withSchema('audio_files'),
+    findBySongId(songId) {
+      const row = db
+        .prepare<string, AudioFileRow>(
+          `SELECT
+            audio_files.*
+          FROM audio_files
+          INNER JOIN songs
+            ON audio_files.id = songs.fileId
+          WHERE songs.id = ?`,
         )
-        .innerJoin('songs', 'audio_files.id', 'songs.fileId')
-        .where('songs.id', songId)
-        .first();
+        .first(songId);
 
       return row;
     },
 
     findAll() {
-      return db('audio_files').where(true);
+      return db
+        .prepare<unknown[], AudioFileRow>('SELECT * FROM audio_files')
+        .all();
     },
 
     deleteById(id) {
-      return db('audio_files').where({ id }).delete();
+      return db.prepare<string>('DELETE FROM audio_files WHERE id = ?').run(id);
     },
   };
 }

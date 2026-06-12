@@ -1,28 +1,21 @@
-import { Knex } from 'knex';
+import { DB, Statement } from '@/database';
+import { ArtistRow } from '@/database/rows';
 
-import { SortParam } from '@/typings/SortParam';
-
-type ArtistsQueryBuilder = ReturnType<typeof query>;
-
-export function createArtistQuery(db: Knex): ArtistsQueryBuilder {
-  return query(db);
-}
-
-export function orderBy({ field, direction }: SortParam) {
-  return (query: ArtistsQueryBuilder): ArtistsQueryBuilder => {
-    return query.orderBy(`artists.${field}`, direction);
-  };
-}
-
-function query(db: Knex) {
-  return db('artists')
-    .select(
-      db.ref('id').withSchema('artists'),
-      db.ref('name').withSchema('artists'),
-      db.ref('createdAt').withSchema('artists'),
-      db.ref('updatedAt').withSchema('artists'),
-    )
-    .leftJoin('albums', 'albums.artistId', 'artists.id')
-    .leftJoin('songs', 'songs.artistId', 'artists.id')
-    .countDistinct({ songCount: 'songs.id', albumCount: 'albums.id' });
+export function prepareArtistsQuery<
+  TBind extends unknown[] | unknown = unknown[],
+>(db: DB, q: string): Statement<TBind, ArtistRow & { artistName: string }> {
+  return db.prepare<TBind, ArtistRow & { artistName: string }>(`
+    SELECT
+      artists.id,
+      artists.name,
+      artists.createdAt,
+      artists.updatedAt,
+      COUNT(DISTINCT albums.id) AS albumCount,
+      COUNT(DISTINCT songs.id) AS songCount
+    FROM artists
+    LEFT JOIN albums
+      ON albums.artistId = artists.id
+    LEFT JOIN songs
+      ON songs.artistId = artists.id
+    ${q}`);
 }

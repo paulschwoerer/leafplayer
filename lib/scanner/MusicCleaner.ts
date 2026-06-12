@@ -1,5 +1,4 @@
-import { Knex } from 'knex';
-
+import { DB } from '@/database';
 import { AudioFileRow } from '@/database/rows';
 import { printError, printInfo } from '@/helpers/cli';
 import { isReadable } from '@/helpers/filesystem';
@@ -16,10 +15,7 @@ const defaultOptions = {
 export class MusicCleaner {
   private options: MusicCleanerOptions = defaultOptions;
 
-  constructor(
-    private query: Knex,
-    private audioFilesService: AudioFilesService,
-  ) {}
+  constructor(private db: DB, private audioFilesService: AudioFilesService) {}
 
   async run(options?: MusicCleanerOptions): Promise<void> {
     this.options = {
@@ -27,7 +23,7 @@ export class MusicCleaner {
       ...options,
     };
 
-    const audioFiles = await this.audioFilesService.findAll();
+    const audioFiles = this.audioFilesService.findAll();
 
     await this.processAudioFiles(audioFiles);
   }
@@ -42,31 +38,26 @@ export class MusicCleaner {
       }
     }
 
-    await this.cleanUpAlbums();
-    await this.cleanUpArtists();
+    this.cleanUpAlbums();
+    this.cleanUpArtists();
   }
 
-  private async cleanUpAlbums() {
-    return this.query('albums')
-      .whereNotExists(
-        this.query('songs').select('id').whereRaw('songs.albumId = albums.id'),
+  private cleanUpAlbums() {
+    this.db
+      .prepare(
+        'DELETE FROM albums WHERE NOT EXISTS (SELECT id FROM songs WHERE songs.albumId = albums.id)',
       )
-      .delete();
+      .run();
   }
 
-  private async cleanUpArtists() {
-    return this.query('artists')
-      .whereNotExists(
-        this.query('albums')
-          .select('id')
-          .whereRaw('albums.artistId = artists.id'),
+  private cleanUpArtists() {
+    this.db
+      .prepare(
+        `DELETE FROM artists
+         WHERE NOT EXISTS (SELECT id FROM albums WHERE albums.artistId = artists.id)
+         AND NOT EXISTS (SELECT id FROM songs WHERE songs.artistId = artists.id)`,
       )
-      .whereNotExists(
-        this.query('songs')
-          .select('id')
-          .whereRaw('songs.artistId = artists.id'),
-      )
-      .delete();
+      .run();
   }
 
   private async processMissingFile(file: AudioFileRow) {
@@ -76,7 +67,7 @@ export class MusicCleaner {
       printInfo(`[MusicCleaner] removing file: ${file.path}`);
 
       try {
-        await this.audioFilesService.deleteById(file.id);
+        this.audioFilesService.deleteById(file.id);
       } catch (err) {
         printError(
           `could not remove song for file ${file.id}: ${

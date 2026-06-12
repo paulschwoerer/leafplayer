@@ -1,11 +1,10 @@
 import path from 'path';
 
-import { Knex } from 'knex';
-
 import { FullSong } from '@/common';
-import { AudioFileRow } from '@/database/rows';
+import { AudioFileRow, SongRow, WithoutTimestamps } from '@/database/rows';
 import { isReadable, removeDir } from '@/helpers/filesystem';
 import { generateUuid } from '@/helpers/uuid';
+import { DB } from '@/database';
 
 export type SavedSong = FullSong & { fileLastModified: number };
 
@@ -14,7 +13,7 @@ type Config = {
 };
 
 type Injects = {
-  db: Knex;
+  db: DB;
   config: Config;
 };
 
@@ -29,24 +28,21 @@ type SongParams = {
 };
 
 export interface LibraryService {
-  updateSongByFileId(
-    fileId: string,
-    params: Partial<SongParams>,
-  ): Promise<void>;
-  createSong(params: SongParams): Promise<void>;
-  createAudioFile(params: Omit<AudioFileRow, 'id'>): Promise<string>;
+  updateSongByFileId(fileId: string, params: Omit<SongParams, 'fileId'>): void;
+  createSong(params: SongParams): void;
+  createAudioFile(params: Omit<AudioFileRow, 'id'>): string;
   updateAudioFile(
     id: string,
     params: {
       lastModified?: number;
       filesize?: number;
     },
-  ): Promise<void>;
-  getAudioFileByPath(path: string): Promise<AudioFileRow | undefined>;
-  getEnabledMediaDirectories(): Promise<string[]>;
-  getAllMediaDirectories(): Promise<string[]>;
-  addMediaDirectory(path: string): Promise<Error | undefined>;
-  removeMediaDirectory(path: string): Promise<Error | undefined>;
+  ): void;
+  getAudioFileByPath(path: string): AudioFileRow | undefined;
+  getEnabledMediaDirectories(): string[];
+  getAllMediaDirectories(): string[];
+  addMediaDirectory(path: string): Error | undefined;
+  removeMediaDirectory(path: string): Error | undefined;
   wipeLibrary(): Promise<void>;
 }
 
@@ -55,26 +51,44 @@ export default function createLibraryService({
   config,
 }: Injects): LibraryService {
   return {
-    async updateSongByFileId(fileId, params) {
-      await db('songs')
-        .update(params)
-        .update('updatedAt', db.fn.now())
-        .where({ fileId });
+    updateSongByFileId(fileId, params) {
+      db.prepare<SongParams>(
+        `UPDATE songs
+        SET
+          albumId = :albumId,
+          artistId = :artistId,
+          title = :title,
+          duration = :duration,
+          track = :track,
+          disk = :disk,
+          updatedAt = NOW()
+        WHERE fileId = :fileId`,
+      ).run({ ...params, fileId });
     },
 
-    async createSong(params) {
+    createSong(params) {
       const id = generateUuid();
 
-      await db('songs').insert({
+      db.prepare<WithoutTimestamps<SongRow>>(
+        `INSERT INTO songs
+            (id, fileId, albumId, artistId, title, duration, track, disk)
+          VALUES
+            (:id, :fileId, :albumId, :artistId, :title, :duration, :track, :disk)`,
+      ).run({
         ...params,
         id,
       });
     },
 
-    async createAudioFile(params) {
+    createAudioFile(params) {
       const id = generateUuid();
 
-      await db('audio_files').insert({
+      db.prepare<AudioFileRow>(
+        `INSERT INTO audio_files
+            (id, path, format, filesize, lastModified)
+          VALUES
+            (:id, :path, :format, :filesize, :lastModified)`,
+      ).run({
         ...params,
         id,
       });
@@ -82,45 +96,64 @@ export default function createLibraryService({
       return id;
     },
 
-    async updateAudioFile(id, params) {
-      await db('audio_files').update(params).where({ id });
+    updateAudioFile(id, params) {
+      db.prepare(
+        `UPDATE audio_files
+        SET
+          filesize = :filesize,
+          lastModified = :lastModified
+        WHERE id = :id`,
+      ).run({
+        ...params,
+        id,
+      });
     },
 
-    async getAudioFileByPath(path) {
-      return db('audio_files').where({ path }).first();
+    getAudioFileByPath(path) {
+      return db
+        .prepare<string, AudioFileRow>(
+          'SELECT * FROM audio_files WHERE path = ?',
+        )
+        .first(path);
     },
 
-    async getEnabledMediaDirectories() {
-      const rows = await db('media_folders')
-        .select('path')
-        .where({ enabled: true });
+    getEnabledMediaDirectories() {
+      const rows = db
+        .prepare<unknown[], { path: string }>(
+          'SELECT path FROM media_folders WHERE enabled = TRUE',
+        )
+        .all();
 
       return rows.map(dir => dir.path);
     },
 
-    async getAllMediaDirectories() {
-      const rows = await db('media_folders').select('path');
+    getAllMediaDirectories() {
+      const rows = db
+        .prepare<unknown[], { path: string }>('SELECT path FROM media_folders')
+        .all();
 
       return rows.map(dir => dir.path);
     },
 
-    async addMediaDirectory(path) {
-      const directoryOk = await isReadable(path);
+    addMediaDirectory(path) {
+      const directoryOk = isReadable(path);
 
       if (!directoryOk) {
         return Error('directory does not exist or is not readable');
       }
 
-      await db('media_folders').insert({
+      db.prepare(
+        'INSERT INTO media_folders (id, path) VALUES (:id, :path)',
+      ).run({
         id: generateUuid(),
         path,
       });
     },
 
-    async removeMediaDirectory(path) {
-      const count = await db('media_folders').delete().where({
-        path,
-      });
+    removeMediaDirectory(path) {
+      const count = db
+        .prepare<string>('DELETE FROM media_folders WHERE path = ?')
+        .run(path);
 
       if (count === 0) {
         return Error('not a media directory');
@@ -128,10 +161,11 @@ export default function createLibraryService({
     },
 
     async wipeLibrary() {
-      await db('songs').delete().where(true);
-      await db('audio_files').delete().where(true);
-      await db('albums').delete().where(true);
-      await db('artists').delete().where(true);
+      // TODO: use transaction?
+      db.prepare('DELETE FROM songs').run();
+      db.prepare('DELETE FROM audio_files').run();
+      db.prepare('DELETE FROM albums').run();
+      db.prepare('DELETE FROM artists').run();
 
       await removeDir(path.join(config.storageDir, 'thumbnails'));
     },

@@ -1,85 +1,80 @@
 import createUsersService from '@/services/UsersService';
-import { createPasswordHash } from '@/helpers/passwords';
 
-import { MOCK_USER } from '../testdata/mocks';
 import test from '../setupTestDB';
 
 const USER = {
-  ...MOCK_USER,
-  password: createPasswordHash('supersecret'),
+  username: 'admin',
+  displayName: '',
+  password: 'supersecret',
 };
 
-test('it returns false when given an incorrect password', async t => {
+test('it returns false when given an incorrect password', t => {
   const { db } = t.context;
 
-  await db('users').insert(USER);
-
   const service = createUsersService({ db });
+  const userId = service.create(USER);
 
   t.is(
-    await service.isCorrectPassword({
-      userId: USER.id,
+    service.isCorrectPassword({
+      userId,
       password: 'notthepassword',
     }),
     false,
   );
 });
 
-test('it returns true when given the correct password', async t => {
+test('it returns true when given the correct password', t => {
   const { db } = t.context;
 
-  await db('users').insert(USER);
-
   const service = createUsersService({ db });
+  const userId = service.create(USER);
 
   t.is(
-    await service.isCorrectPassword({
-      userId: USER.id,
+    service.isCorrectPassword({
+      userId,
       password: 'supersecret',
     }),
     true,
   );
 });
 
-test('it returns false when a given user does not exist', async t => {
+test('it returns false when a given user does not exist', t => {
   const { db } = t.context;
 
   const service = createUsersService({ db });
 
-  t.is(await service.exists('notauser'), false);
+  t.is(service.exists('notauser'), false);
 });
 
-test('it returns true when a given user does exist', async t => {
+test('it returns true when a given user does exist', t => {
   const { db } = t.context;
 
-  await db('users').insert(USER);
-
   const service = createUsersService({ db });
+  service.create(USER);
 
-  t.is(await service.exists(USER.username), true);
+  t.is(service.exists(USER.username), true);
 });
 
-test('it does not return a non-existing user', async t => {
+test('it does not return a non-existing user', t => {
   const { db } = t.context;
 
   const service = createUsersService({ db });
 
-  t.is(await service.findWithPasswordByUsername('notauser'), undefined);
+  t.is(service.findWithPasswordByUsername('notauser'), undefined);
 });
 
-test('it returns an existing user with their password', async t => {
+test('it returns an existing user with their password', t => {
   const { db } = t.context;
 
-  await db('users').insert(USER);
-
   const service = createUsersService({ db });
+  service.create(USER);
 
-  const user = await service.findWithPasswordByUsername(USER.username);
+  const user = service.findWithPasswordByUsername(USER.username);
 
   t.plan(2);
 
   if (user) {
     t.is(user.username, USER.username);
-    t.is(user.password, USER.password);
+    t.is(typeof user.password, 'string');
   }
 });

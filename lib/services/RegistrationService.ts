@@ -18,7 +18,7 @@ type Injects = {
 };
 
 export interface RegistrationService {
-  registerUser(inviteCode: string, userDetails: UserDetails): Promise<void>;
+  registerUser(inviteCode: string, userDetails: UserDetails): void;
 }
 
 export default function createRegistrationService({
@@ -27,14 +27,14 @@ export default function createRegistrationService({
   invitationsService,
 }: Injects): RegistrationService {
   return {
-    async registerUser(inviteCode, userDetails) {
-      const isValid = await invitationsService.isValidInviteCode(inviteCode);
+    registerUser(inviteCode, userDetails) {
+      const isValid = invitationsService.isValidInviteCode(inviteCode);
 
       if (!isValid) {
         throw new NotAuthorizedError('Invalid invite code');
       }
 
-      const userExists = await usersService.exists(userDetails.username);
+      const userExists = usersService.exists(userDetails.username);
 
       if (userExists) {
         throw new ValidationError('Username taken');
@@ -49,11 +49,11 @@ export default function createRegistrationService({
       }
 
       // TODO: a transaction would be nice
-      await usersService.create({
+      usersService.create({
         ...userDetails,
         displayName: userDetails.displayName || userDetails.username,
       });
-      await invitationsService.invalidateInvitation(inviteCode);
+      invitationsService.invalidateInvitation(inviteCode);
     },
   };
 }

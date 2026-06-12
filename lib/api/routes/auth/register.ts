@@ -37,7 +37,7 @@ export function register({ registrationService }: Injects): FastifyPluginAsync {
       async (request, reply) => {
         const { username, password, displayName, inviteCode } = request.body;
 
-        await registrationService.registerUser(inviteCode, {
+        registrationService.registerUser(inviteCode, {
           username,
           displayName,
           password,

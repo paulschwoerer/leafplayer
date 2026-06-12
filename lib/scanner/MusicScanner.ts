@@ -117,7 +117,7 @@ export default class MusicScanner {
     let savedFile: AudioFileRow | undefined;
 
     try {
-      savedFile = await this.libraryService.getAudioFileByPath(file.path);
+      savedFile = this.libraryService.getAudioFileByPath(file.path);
     } catch (e) {
       console.error(e);
       return;
@@ -201,24 +201,24 @@ export default class MusicScanner {
     };
 
     if (!savedFile) {
-      const fileId = await this.libraryService.createAudioFile({
+      const fileId = this.libraryService.createAudioFile({
         path: file.path,
         format: file.format,
         lastModified: file.lastModified,
         filesize: file.size,
       });
 
-      await this.libraryService.createSong({
+      this.libraryService.createSong({
         ...songParams,
         fileId,
       });
     } else {
-      await this.libraryService.updateAudioFile(savedFile.id, {
+      this.libraryService.updateAudioFile(savedFile.id, {
         lastModified: file.lastModified,
         filesize: file.size,
       });
 
-      await this.libraryService.updateSongByFileId(savedFile.id, songParams);
+      this.libraryService.updateSongByFileId(savedFile.id, songParams);
     }
   }
 

@@ -39,7 +39,7 @@ test('it should reject request with incorrect password', async t => {
       userId: MOCK_USER.id,
       password: 'notthepassword',
     }),
-  ).thenResolve(false);
+  ).thenReturn(false);
 
   const response = await t.context.server.inject({
     method: 'POST',
@@ -60,7 +60,7 @@ test('it should accept request with correct password', async t => {
       userId: MOCK_USER.id,
       password: 'thepassword',
     }),
-  ).thenResolve(true);
+  ).thenReturn(true);
 
   const response = await t.context.server.inject({
     method: 'POST',

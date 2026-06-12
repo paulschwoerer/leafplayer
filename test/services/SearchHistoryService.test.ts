@@ -1,22 +1,23 @@
-import { Knex } from 'knex';
-
 import { generateUuid } from '@/helpers/uuid';
 import createAlbumsService from '@/services/AlbumsService';
-import createArtistsService from '@/services/ArtistsService';
+import createArtistsService, {
+  ArtistsService,
+} from '@/services/ArtistsService';
 import createSongsService from '@/services/SongsService';
 import createSearchHistoryService from '@/services/SearchHistoryService';
 import { NotFoundError } from '@/errors/NotFoundError';
+import { DB } from '@/database';
+import createUsersService from '@/services/UsersService';
+import { SearchHistoryRow } from '@/database/rows';
 
-import { MOCK_USER } from '../testdata/mocks';
 import test from '../setupTestDB';
 
-function setupService(db: Knex) {
+function setupService(db: DB) {
   const songsService = createSongsService({ db });
-  const albumsService = createAlbumsService({ db, songsService });
+  const albumsService = createAlbumsService({ db });
   const artistsService = createArtistsService({
     db,
     albumsService,
-    songsService,
   });
   return createSearchHistoryService({
     db,
@@ -26,54 +27,53 @@ function setupService(db: Knex) {
   });
 }
 
-test('findEntries -> it should return valid history entries', async t => {
+test('findEntries -> it should return valid history entries', t => {
   const { db } = t.context;
 
-  await db('users').insert({
-    ...MOCK_USER,
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: '',
     password: '-',
   });
 
-  await db('artists').insert([
-    {
-      id: 'ea771b59-b7c7-4054-8b91-ace4a4fd0324',
-      name: 'Green Artist',
-    },
-    {
-      id: '97d4df78-6542-4ba8-9cde-0e3263fc6b9e',
-      name: 'Yellow Artist',
-    },
-  ]);
+  const songsService = createSongsService({ db });
+  const albumsService = createAlbumsService({ db });
+  const artistsService = createArtistsService({
+    albumsService,
+    db,
+  });
 
-  await db('albums').insert([
-    {
-      id: 'e7d6b934-a164-4661-a888-53f3e63aefe8',
-      artistId: '97d4df78-6542-4ba8-9cde-0e3263fc6b9e',
-      name: 'Red Album',
-    },
-    {
-      id: '3ea21f72-c95a-4bcc-8d17-2b07bcf281ed',
-      artistId: '97d4df78-6542-4ba8-9cde-0e3263fc6b9e',
-      name: 'Green Album',
-    },
-  ]);
+  const yellowArtistId = artistsService.create({ name: 'Yellow Artist' });
+  const greenArtistId = artistsService.create({ name: 'Green Artist' });
 
-  await db('search_history').insert([
-    {
-      id: 'accd128e-bec8-496c-8097-388f723f63b2',
-      userId: MOCK_USER.id,
-      albumId: '3ea21f72-c95a-4bcc-8d17-2b07bcf281ed',
-    },
-    {
-      id: '435d15f6-0d81-4f5e-8228-9a73d6557f44',
-      userId: MOCK_USER.id,
-      artistId: 'ea771b59-b7c7-4054-8b91-ace4a4fd0324',
-    },
-  ]);
+  albumsService.createAlbum({
+    artistId: yellowArtistId,
+    name: 'Red Album',
+  });
+  const greenAlbumId = albumsService.createAlbum({
+    artistId: greenArtistId,
+    name: 'Green Album',
+  });
 
-  const service = setupService(db);
+  const searchHistoryService = createSearchHistoryService({
+    db,
+    albumsService,
+    artistsService,
+    songsService,
+  });
 
-  const entries = await service.findEntries(MOCK_USER.id);
+  searchHistoryService.createEntry({
+    forType: 'album',
+    forId: greenAlbumId,
+    userId,
+  });
+  searchHistoryService.createEntry({
+    forType: 'artist',
+    forId: greenArtistId,
+    userId,
+  });
+
+  const entries = searchHistoryService.findEntries(userId);
 
   t.plan(3);
   t.is(entries.length, 2);
@@ -87,20 +87,21 @@ test('findEntries -> it should return valid history entries', async t => {
   }
 });
 
-test('createEntry -> it should not create an entry for a non-existing entity', async t => {
+test('createEntry -> it should not create an entry for a non-existing entity', t => {
   const { db } = t.context;
 
-  await db('users').insert({
-    ...MOCK_USER,
-    password: '',
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: '',
+    password: '-',
   });
 
   const service = setupService(db);
 
-  await t.throwsAsync(
+  t.throws(
     () =>
       service.createEntry({
-        userId: MOCK_USER.id,
+        userId,
         forType: 'album',
         forId: generateUuid(),
       }),
@@ -108,24 +109,30 @@ test('createEntry -> it should not create an entry for a non-existing entity', a
   );
 });
 
-test('createEntry -> it should create a new entry', async t => {
+function makeArtistService(db: DB): ArtistsService {
+  return createArtistsService({
+    db,
+    albumsService: createAlbumsService({ db }),
+  });
+}
+
+test('createEntry -> it should create a new entry', t => {
   const { db } = t.context;
 
-  const artistId = generateUuid();
-
-  await db('users').insert({
-    ...MOCK_USER,
-    password: '',
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: '',
+    password: '-',
   });
-  await db('artists').insert({
-    id: artistId,
+
+  const artistId = makeArtistService(db).create({
     name: 'Yellow Artist',
   });
 
   const service = setupService(db);
 
-  const entry = await service.createEntry({
-    userId: MOCK_USER.id,
+  const entry = service.createEntry({
+    userId,
     forType: 'artist',
     forId: artistId,
   });
@@ -136,40 +143,42 @@ test('createEntry -> it should create a new entry', async t => {
     t.is(entry.artist.name, 'Yellow Artist');
   }
 
-  const dbEntry = await db('search_history').first();
+  const dbEntry = db
+    .prepare<unknown[], SearchHistoryRow>('SELECT * FROM search_history')
+    .first();
   if (dbEntry) {
-    t.is(dbEntry.userId, MOCK_USER.id);
+    t.is(dbEntry.userId, userId);
     t.is(dbEntry.artistId, artistId);
     t.is(dbEntry.albumId, null);
     t.is(dbEntry.songId, null);
   }
 });
 
-test('deleteEntry -> it should delete a given entry', async t => {
+test('deleteEntry -> it should delete a given entry', t => {
   const { db } = t.context;
 
-  await db('users').insert({
-    ...MOCK_USER,
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: '',
     password: '-',
   });
 
-  await db('artists').insert({
-    id: 'ea771b59-b7c7-4054-8b91-ace4a4fd0324',
+  const artistId = makeArtistService(db).create({
     name: 'Green Artist',
-  });
-
-  await db('search_history').insert({
-    id: 'accd128e-bec8-496c-8097-388f723f63b2',
-    userId: MOCK_USER.id,
-    artistId: 'ea771b59-b7c7-4054-8b91-ace4a4fd0324',
   });
 
   const service = setupService(db);
 
-  await service.deleteEntry({
-    userId: MOCK_USER.id,
-    id: 'accd128e-bec8-496c-8097-388f723f63b2',
+  const { id } = service.createEntry({
+    forType: 'artist',
+    forId: artistId,
+    userId,
   });
 
-  t.is((await db('search_history').where(true)).length, 0);
+  service.deleteEntry({
+    userId,
+    id,
+  });
+
+  t.is(db.prepare('SELECT * FROM search_history').all().length, 0);
 });

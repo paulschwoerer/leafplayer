@@ -1,40 +1,20 @@
-import { Knex } from 'knex';
+import { UserSession } from 'common/entities';
 
 import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { ValidationError } from '@/errors/ValidationError';
-import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
+import { comparePasswords } from '@/helpers/passwords';
 import createAuthService, { AuthService } from '@/services/AuthService';
 import createPasswordService from '@/services/PasswordService';
 import createSessionsService from '@/services/SessionsService';
 import createUsersService from '@/services/UsersService';
+import { DB } from '@/database';
+import { generateUuid } from '@/helpers/uuid';
+import { getCurrentUnixTimestamp } from '@/helpers/time';
 
-import { MOCK_USER } from '../testdata/mocks';
-import { createLeafplayerConfig } from '../testHelpers';
 import test from '../setupTestDB';
+import { createLeafplayerConfig } from '../testHelpers';
 
-const MOCK_SESSIONS = [
-  {
-    id: 'd67f709d-b932-4ca9-a85c-9969d4599197',
-    token: 'supersecret1',
-    userId: MOCK_USER.id,
-    lastUsedAt: 0,
-    expiresAt: getCurrentUnixTimestamp() + 10000,
-    browser: 'Firefox',
-    os: 'Linux',
-  },
-  {
-    id: '91651965-e140-486a-9158-aa8fa17df111',
-    token: 'supersecret2',
-    userId: MOCK_USER.id,
-    lastUsedAt: 0,
-    expiresAt: getCurrentUnixTimestamp() + 10000,
-    browser: 'Chromium',
-    os: 'Linux',
-  },
-];
-
-function setupService(db: Knex): AuthService {
+function setupService(db: DB): AuthService {
   const config = createLeafplayerConfig();
   return createAuthService({
     config,
@@ -44,54 +24,58 @@ function setupService(db: Knex): AuthService {
   });
 }
 
-test('login() should throw when given invalid credentials', async t => {
+test('login() should throw when given invalid credentials', t => {
   const { db } = t.context;
-  await db('users').insert({
-    ...MOCK_USER,
-    password: createPasswordHash('supersecret'),
+
+  createUsersService({ db }).create({
+    username: 'admin',
+    displayName: 'Admin',
+    password: 'supersecret',
   });
 
   const authService = setupService(db);
 
-  await Promise.all(
-    [
-      {
-        username: MOCK_USER.username,
-        password: 'notthepassword',
-      },
-      {
-        username: 'nottheuser',
-        password: 'supersecret',
-      },
-      {
-        username: 'admin',
-        password: 'admin',
-      },
-    ].map(c =>
-      t.throwsAsync(
-        () =>
-          authService.login(c, {
-            name: 'unknown',
-            os: 'unknown',
-          }),
-        { instanceOf: NotAuthorizedError },
-      ),
-    ),
-  );
+  const cases = [
+    {
+      username: 'admin',
+      password: 'notthepassword',
+    },
+    {
+      username: 'nottheuser',
+      password: 'supersecret',
+    },
+    {
+      username: 'admin',
+      password: 'admin',
+    },
+  ];
+
+  for (const c of cases) {
+    t.throws(
+      () =>
+        authService.login(c, {
+          name: 'unknown',
+          os: 'unknown',
+        }),
+      { instanceOf: NotAuthorizedError },
+    );
+  }
 });
 
-test('login() should return user and session token when given valid credentials', async t => {
+test('login() should return user and session token when given valid credentials', t => {
   const { db } = t.context;
-  await db('users').insert({
-    ...MOCK_USER,
-    password: createPasswordHash('supersecret'),
+
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: 'Admin',
+    password: 'supersecret',
   });
 
   const authService = setupService(db);
 
-  const result = await authService.login(
+  const result = authService.login(
     {
-      username: MOCK_USER.username,
+      username: 'admin',
       password: 'supersecret',
     },
     {
@@ -100,49 +84,68 @@ test('login() should return user and session token when given valid credentials'
     },
   );
 
-  const sessions = await db('sessions').where({
-    userId: MOCK_USER.id,
-  });
+  const sessions = db
+    .prepare<string, UserSession & { token: string }>(
+      'SELECT * FROM sessions WHERE userId = ?',
+    )
+    .all(userId);
 
-  t.deepEqual(result.user, MOCK_USER);
+  t.deepEqual(result.user, {
+    id: userId,
+    username: 'admin',
+    displayName: 'Admin',
+  });
   t.true(typeof result.sessionToken === 'string');
   t.is(sessions.length, 1);
   t.is(result.sessionToken, sessions[0].token);
 });
 
-test('logout() should delete active session', async t => {
+test('logout() should delete active session', t => {
   const { db } = t.context;
-  await db('users').insert({
-    ...MOCK_USER,
-    password: createPasswordHash('supersecret'),
-  });
-  await db('sessions').insert(MOCK_SESSIONS);
 
-  const authService = setupService(db);
-
-  await authService.logout(MOCK_SESSIONS[1].id);
-
-  const sessions = await db('sessions').where({
-    userId: MOCK_USER.id,
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: 'Admin',
+    password: 'supersecret',
   });
 
-  t.is(sessions.length, 1);
-  t.is(sessions[0].id, MOCK_SESSIONS[0].id);
+  const sessionsService = createSessionsService({ db });
+  sessionsService.create({
+    userId,
+    browser: { name: 'Firefox', os: 'Linux' },
+    maxAge: 10000,
+  });
+  sessionsService.create({
+    userId,
+    browser: { name: 'Chromium', os: 'Linux' },
+    maxAge: 10000,
+  });
+
+  const sessionsBefore = sessionsService.findByUserId(userId);
+
+  setupService(db).logout(sessionsBefore[1].id);
+
+  const sessionsAfter = sessionsService.findByUserId(userId);
+
+  t.is(sessionsAfter.length, 1);
+  t.is(sessionsAfter[0].id, sessionsBefore[0].id);
 });
 
-test('changePassword() should reject an insecure new password', async t => {
+test('changePassword() should reject an insecure new password', t => {
   const { db } = t.context;
-  await db('users').insert({
-    ...MOCK_USER,
-    password: createPasswordHash('supersecret'),
+
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: 'Admin',
+    password: 'supersecret',
   });
 
   const authService = setupService(db);
 
-  await t.throwsAsync(
+  t.throws(
     () =>
       authService.changePassword({
-        userId: MOCK_USER.id,
+        userId,
         activeSessionId: 'notRelevant',
         newPassword: 'pw',
       }),
@@ -150,65 +153,97 @@ test('changePassword() should reject an insecure new password', async t => {
   );
 });
 
-test('changePassword() should change the users password and invalidate non-active sessions', async t => {
+test('changePassword() should change the users password and invalidate non-active sessions', t => {
   const { db } = t.context;
-  await db('users').insert({
-    ...MOCK_USER,
-    password: createPasswordHash('supersecret'),
+
+  const usersService = createUsersService({ db });
+  const userId = usersService.create({
+    username: 'admin',
+    displayName: 'Admin',
+    password: 'supersecret',
   });
-  await db('sessions').insert(MOCK_SESSIONS);
 
-  const authService = setupService(db);
+  const sessionsService = createSessionsService({ db });
+  sessionsService.create({
+    userId,
+    browser: { name: 'Firefox', os: 'Linux' },
+    maxAge: 10000,
+  });
+  sessionsService.create({
+    userId,
+    browser: { name: 'Chromium', os: 'Linux' },
+    maxAge: 10000,
+  });
 
-  await authService.changePassword({
-    userId: MOCK_USER.id,
-    activeSessionId: MOCK_SESSIONS[1].id,
+  const sessionsBefore = sessionsService.findByUserId(userId);
+
+  setupService(db).changePassword({
+    userId,
+    activeSessionId: sessionsBefore[1].id,
     newPassword: 'timeforachange',
   });
 
-  const updatedUser = await db('users').where({ id: MOCK_USER.id }).first();
-  const sessions = await db('sessions').where({
-    userId: MOCK_USER.id,
-  });
+  const updatedUser = usersService.findWithPasswordByUsername('admin');
+  const sessionsAfter = sessionsService.findByUserId(userId);
+
   t.plan(3);
-  t.is(sessions.length, 1);
-  t.is(sessions[0].id, MOCK_SESSIONS[1].id);
+  t.is(sessionsAfter.length, 1);
+  t.is(sessionsAfter[0].id, sessionsBefore[1].id);
   if (updatedUser) {
     t.true(comparePasswords('timeforachange', updatedUser.password));
   }
 });
 
-test('authenticate() should throw when given invalid session token', async t => {
+test('authenticate() should throw when given invalid session token', t => {
   const { db } = t.context;
-  await db('users').insert({
-    ...MOCK_USER,
-    password: createPasswordHash('supersecret'),
+
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: 'Admin',
+    password: 'supersecret',
   });
-  await db('sessions').insert(MOCK_SESSIONS);
+
+  createSessionsService({ db }).create({
+    userId,
+    browser: { name: 'Firefox', os: 'Linux' },
+    maxAge: 10000,
+  });
 
   const authService = setupService(db);
 
-  await t.throwsAsync(() => authService.authenticate('notatoken'), {
+  t.throws(() => authService.authenticate('notatoken'), {
     instanceOf: NotAuthorizedError,
   });
 });
 
-test('authenticate() should return session with user when given a valid token', async t => {
+test('authenticate() should return session with user when given a valid token', t => {
   const { db } = t.context;
-  await db('users').insert({
-    ...MOCK_USER,
-    password: createPasswordHash('supersecret'),
+
+  const userId = createUsersService({ db }).create({
+    username: 'admin',
+    displayName: 'Admin',
+    password: 'supersecret',
   });
-  await db('sessions').insert(MOCK_SESSIONS);
 
-  const authService = setupService(db);
+  const sessionId = generateUuid();
+  db.prepare(
+    `INSERT INTO sessions (id, userId, token, lastUsedAt, expiresAt) VALUES (:id, :userId, :token, :lastUsedAt, :expiresAt)`,
+  ).run({
+    id: sessionId,
+    userId,
+    token: 'thetoken',
+    lastUsedAt: getCurrentUnixTimestamp(),
+    expiresAt: getCurrentUnixTimestamp() + 10000,
+  });
 
-  const sessionWithUser = await authService.authenticate(
-    MOCK_SESSIONS[0].token,
-  );
+  const sessionWithUser = setupService(db).authenticate('thetoken');
 
   t.deepEqual(sessionWithUser, {
-    id: MOCK_SESSIONS[0].id,
-    user: MOCK_USER,
+    id: sessionId,
+    user: {
+      id: userId,
+      username: 'admin',
+      displayName: 'Admin',
+    },
   });
 });

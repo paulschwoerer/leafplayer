@@ -27,9 +27,7 @@ const MOCK_SESSIONS: UserSession[] = [
 
 test('endpoint should return user sessions', async t => {
   const sessionsService = td.object<SessionsService>();
-  td.when(sessionsService.findByUserId(MOCK_USER.id)).thenResolve(
-    MOCK_SESSIONS,
-  );
+  td.when(sessionsService.findByUserId(MOCK_USER.id)).thenReturn(MOCK_SESSIONS);
 
   const { server } = t.context;
   await server.register(mockSession(MOCK_SESSION_ID, MOCK_USER));

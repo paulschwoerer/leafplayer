@@ -17,7 +17,7 @@ export function getSessions({ sessionsService }: Injects): FastifyPluginAsync {
         currentUser,
         currentSessionId,
       }): Promise<UserSessionsResponseDto> => {
-        const sessions = await sessionsService.findByUserId(currentUser.id);
+        const sessions = sessionsService.findByUserId(currentUser.id);
 
         return {
           sessions,

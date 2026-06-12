@@ -16,7 +16,7 @@ export function getRandomArtists({
       '/discover/artists',
       { preHandler: server.auth([server.verifySession]) },
       async (): Promise<ArtistsResponseDto> => {
-        const artists = await discoverService.findRandomArtists(7);
+        const artists = discoverService.findRandomArtists(7);
 
         return {
           artists,

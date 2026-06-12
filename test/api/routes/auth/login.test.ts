@@ -24,7 +24,7 @@ test('login endpoint should send an unauthorized error when providing invalid cr
       },
       td.matchers.anything(),
     ),
-  ).thenReject(new NotAuthorizedError('invalid credentials'));
+  ).thenThrow(new NotAuthorizedError('invalid credentials'));
 
   const { server } = t.context;
   await server.register(login({ config, authService, jwtService }));
@@ -58,7 +58,7 @@ test('login endpoint should send the user and tokens when providing valid creden
       },
       td.matchers.anything(),
     ),
-  ).thenResolve({
+  ).thenReturn({
     user: MOCK_USER,
     sessionToken: MOCK_SESSION_TOKEN,
   });
@@ -99,7 +99,7 @@ test('login endpoint should set the session cookie correctly when asking to stay
       },
       td.matchers.anything(),
     ),
-  ).thenResolve({
+  ).thenReturn({
     user: MOCK_USER,
     sessionToken: MOCK_SESSION_TOKEN,
   });

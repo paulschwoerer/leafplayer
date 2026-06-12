@@ -1,25 +1,25 @@
-import { Knex } from 'knex';
 import { AlbumRow } from 'lib/database/rows';
 
 import { FullArtist, FullAlbum, FullSong } from '@/common';
 import { toFullAlbum } from '@/mappers/albums';
 import { toFullArtist } from '@/mappers/artists';
 import { toFullSong } from '@/mappers/songs';
-import { createAlbumsQuery } from '@/query/albums';
-import { createArtistQuery } from '@/query/artists';
-import { createSongsQuery } from '@/query/songs';
+import { prepareAlbumsQuery } from '@/query/albums';
+import { prepareArtistsQuery } from '@/query/artists';
+import { prepareSongsQuery } from '@/query/songs';
 import { weighStringsUsingSearchTerm } from '@/helpers/search';
+import { DB } from '@/database';
 
 type Injects = {
-  db: Knex;
+  db: DB;
 };
 
 export interface SearchService {
-  search(q: string): Promise<{
+  search(q: string): {
     artists: FullArtist[];
     albums: FullAlbum[];
     songs: FullSong[];
-  }>;
+  };
 }
 
 export default function createSearchService({ db }: Injects): SearchService {
@@ -27,10 +27,11 @@ export default function createSearchService({ db }: Injects): SearchService {
   const albumCount = 5;
   const songCount = 10;
 
-  async function searchArtists(q: string) {
-    const rows = await createArtistQuery(db)
-      .groupBy('artists.id')
-      .orWhereRaw('artists.name LIKE ?', [`%${q}%`]);
+  function searchArtists(q: string) {
+    const rows = prepareArtistsQuery<{ q: string }>(
+      db,
+      'WHERE artists.name LIKE :q GROUP BY artists.id',
+    ).all({ q: `%${q}%` });
 
     const weightedRows = rows.sort((a, b): number => {
       return weighStringsUsingSearchTerm(q, a.name, b.name);
@@ -39,12 +40,13 @@ export default function createSearchService({ db }: Injects): SearchService {
     return weightedRows.slice(0, artistCount).map(toFullArtist);
   }
 
-  async function searchAlbums(q: string) {
+  function searchAlbums(q: string) {
     type Row = AlbumRow & { artistName: string };
 
-    const rows = await createAlbumsQuery(db)
-      .whereRaw('albums.name LIKE ?', [`%${q}%`])
-      .orWhereRaw('artists.name LIKE ?', [`%${q}%`]);
+    const rows = prepareAlbumsQuery<{ q: string }>(
+      db,
+      'WHERE albums.name LIKE :q OR artists.name LIKE :q',
+    ).all({ q: `%${q}%` });
 
     const weightedRows = rows.sort((a: Row, b: Row): number => {
       return weighStringsUsingSearchTerm(q, a.name, b.name);
@@ -53,11 +55,11 @@ export default function createSearchService({ db }: Injects): SearchService {
     return weightedRows.slice(0, albumCount).map(toFullAlbum);
   }
 
-  async function searchSongs(q: string) {
-    const rows = await createSongsQuery(db)
-      .where('songs.title', 'like', `%${q}%`)
-      .orWhere('artists.name', 'like', `%${q}%`)
-      .orWhere('albums.name', 'like', `%${q}%`);
+  function searchSongs(q: string) {
+    const rows = prepareSongsQuery(
+      db,
+      'WHERE songs.title LIKE :q OR albums.name LIKE :q OR artists.name LIKE :q ',
+    ).all({ q: `%${q}%` });
 
     const weightedRows = rows.sort((a, b): number => {
       return weighStringsUsingSearchTerm(q, a.title, b.title);
@@ -67,10 +69,10 @@ export default function createSearchService({ db }: Injects): SearchService {
   }
 
   return {
-    async search(q: string) {
-      const artists = await searchArtists(q);
-      const albums = await searchAlbums(q);
-      const songs = await searchSongs(q);
+    search(q: string) {
+      const artists = searchArtists(q);
+      const albums = searchAlbums(q);
+      const songs = searchSongs(q);
 
       return {
         artists,

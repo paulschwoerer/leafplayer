@@ -14,7 +14,7 @@ import { createInvitationsCommandLoader } from './cli/commands/InvitationsComman
 import { createLibraryCommandLoader } from './cli/commands/LibraryCommandLoader';
 import { createUsersCommandLoader } from './cli/commands/UserCommandLoader';
 import { initConfig } from './config';
-import { initializeDatabase, runMigrations } from './database';
+import { initializeDatabase } from './database';
 import { initServer } from './api/server';
 
 const container = createContainer({
@@ -25,7 +25,7 @@ const container = createContainer({
 const config = initConfig();
 
 // ----------------- DB initialization ----------------- //
-const db = initializeDatabase(config.database);
+const db = initializeDatabase(config.database.file);
 
 // ----------------- DI initialization ----------------- //
 container.register({
@@ -60,8 +60,6 @@ cli
       .action(async () => {
         const { host, port } = config;
 
-        await runMigrations(db);
-
         server = await initServer(container);
 
         await server.listen(port, host);
@@ -94,7 +92,7 @@ async function shutdown(err?: Error) {
     await server.close();
   }
 
-  await db.destroy();
+  db.close();
   await container.dispose();
 
   process.exit(1);

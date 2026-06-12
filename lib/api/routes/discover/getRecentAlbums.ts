@@ -16,7 +16,7 @@ export function getRecentAlbums({
       '/discover/recent',
       { preHandler: server.auth([server.verifySession]) },
       async (): Promise<AlbumsResponseDto> => {
-        const albums = await discoverService.findRecentlyAddedAlbums(8);
+        const albums = discoverService.findRecentlyAddedAlbums(8);
 
         return {
           albums,
