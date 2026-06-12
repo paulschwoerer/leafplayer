@@ -50,7 +50,7 @@
     "fastify-static": "^4.5.0",
     "jsonwebtoken": "^8.5.1",
     "music-metadata": "^7.14.0",
-    "sharp": "^0.32.6",
+    "sharp": "^0.34.5",
     "ua-parser-js": "^1.0.2",
     "uid-safe": "^2.1.5"
   },
@@ -63,7 +63,6 @@
     "@types/better-sqlite3": "^7.6.13",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^16.11.7",
-    "@types/sharp": "^0.29.5",
     "@types/ua-parser-js": "^0.7.36",
     "@types/uid-safe": "^2.1.2",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
