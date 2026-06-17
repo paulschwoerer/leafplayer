@@ -48,7 +48,7 @@
     "fastify": "^5.8.5",
     "fastify-plugin": "^5.1.0",
     "jsonwebtoken": "^9.0.3",
-    "music-metadata": "^7.14.0",
+    "music-metadata": "^11.12.3",
     "sharp": "^0.34.5",
     "ua-parser-js": "^1.0.41",
     "uid-safe": "^2.1.5"

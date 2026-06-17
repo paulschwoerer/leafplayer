@@ -13,7 +13,7 @@ type ArtworkFileSource = {
 
 type ArtworkMemorySource = {
   type: 'memory';
-  buffer: Buffer;
+  data: Uint8Array<ArrayBufferLike>;
 };
 
 type ArtworkSource = ArtworkFileSource | ArtworkMemorySource;
@@ -101,7 +101,7 @@ export default class ArtworkProcessor {
     id: string,
     source: ArtworkSource,
   ): Promise<void> {
-    const sourceData = source.type === 'file' ? source.path : source.buffer;
+    const sourceData = source.type === 'file' ? source.path : source.data;
 
     await Promise.all(
       this.thumbnailSizes.map(async size =>

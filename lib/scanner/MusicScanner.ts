@@ -154,7 +154,7 @@ export default class MusicScanner {
     if (embeddedArtworks.artist) {
       this.artworkProcessor.addArtistArtwork(artistId, {
         type: 'memory',
-        buffer: embeddedArtworks.artist.data,
+        data: embeddedArtworks.artist.data,
       });
     }
 
@@ -167,7 +167,7 @@ export default class MusicScanner {
     if (embeddedArtworks.albumCover) {
       this.artworkProcessor.addAlbumArtwork(albumId, {
         type: 'memory',
-        buffer: embeddedArtworks.albumCover.data,
+        data: embeddedArtworks.albumCover.data,
       });
     }
 

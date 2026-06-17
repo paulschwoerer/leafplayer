@@ -2,7 +2,7 @@ import { IPicture } from 'music-metadata';
 
 export type ExtractedArtwork = {
   format: string;
-  data: Buffer;
+  data: Uint8Array<ArrayBufferLike>;
 };
 
 type ExtractedArtworks = {
