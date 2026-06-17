@@ -13,6 +13,7 @@
     "build:web": "npm --prefix web run build",
     "build:compile": "tsc --project tsconfig.prod.json",
     "build:lib": "babel lib --extensions '.ts' --out-dir dist/lib",
+    "build:migrations": "babel lib/database/migrations --out-dir dist/lib/database/migrations --copy-files",
     "build:entrypoint": "babel main.ts --out-file dist/main.js",
     "build:package-json": "node build/generateReleasePackageJson.js",
     "clean": "rimraf dist/*",
