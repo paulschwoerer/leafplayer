@@ -2,8 +2,9 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { ArtistResponseDto } from '@/common';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { DiscoverService } from '@/services/DiscoverService';
+
+import { NotFoundError } from '../../../errors/NotFoundError.ts';
+import { DiscoverService } from '../../../services/DiscoverService.ts';
 
 type Injects = {
   discoverService: DiscoverService;

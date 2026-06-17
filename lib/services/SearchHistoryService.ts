@@ -4,13 +4,14 @@ import {
   ArtistSearchHistoryEntry,
   SongSearchHistoryEntry,
 } from '@/common';
-import { generateUuid } from '@/helpers/uuid';
-import { SearchHistoryRow } from '@/database/rows';
-import { DB } from '@/database';
 
-import { AlbumsService } from './AlbumsService';
-import { ArtistsService } from './ArtistsService';
-import { SongsService } from './SongsService';
+import { generateUuid } from '../helpers/uuid.ts';
+import { SearchHistoryRow } from '../database/rows.ts';
+import { DB } from '../database/index.ts';
+
+import { AlbumsService } from './AlbumsService.ts';
+import { ArtistsService } from './ArtistsService.ts';
+import { SongsService } from './SongsService.ts';
 
 type Injects = {
   db: DB;

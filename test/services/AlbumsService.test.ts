@@ -1,7 +1,6 @@
-import createAlbumsService from '@/services/AlbumsService';
-import createArtistsService from '@/services/ArtistsService';
-
-import test from '../setupTestDB';
+import createAlbumsService from '../../lib/services/AlbumsService.ts';
+import createArtistsService from '../../lib/services/ArtistsService.ts';
+import test from '../setupTestDB.ts';
 
 test('find -> it should find and sort albums', t => {
   const { db } = t.context;

@@ -1,3 +1,3 @@
-import { DomainError } from './DomainError';
+import { DomainError } from './DomainError.ts';
 
 export class NotAuthorizedError extends DomainError {}

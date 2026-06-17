@@ -3,9 +3,9 @@ import { createReadStream, statSync } from 'fs';
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { NotFoundError } from '@/errors/NotFoundError';
-import { FileFormat } from '@/scanner/types';
-import { AudioFilesService } from '@/services/AudioFilesService';
+import { NotFoundError } from '../../errors/NotFoundError.ts';
+import { FileFormat } from '../../scanner/types.ts';
+import { AudioFilesService } from '../../services/AudioFilesService.ts';
 
 type Injects = {
   audioFilesService: AudioFilesService;

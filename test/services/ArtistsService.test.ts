@@ -1,11 +1,9 @@
-import { createLeafplayerConfig } from 'test/testHelpers';
-
-import createAlbumsService from '@/services/AlbumsService';
-import createArtistsService from '@/services/ArtistsService';
-import { FileFormat } from '@/scanner/types';
-import createLibraryService from '@/services/LibraryService';
-
-import test from '../setupTestDB';
+import createAlbumsService from '../../lib/services/AlbumsService.ts';
+import createArtistsService from '../../lib/services/ArtistsService.ts';
+import { FileFormat } from '../../lib/scanner/types.ts';
+import createLibraryService from '../../lib/services/LibraryService.ts';
+import test from '../setupTestDB.ts';
+import { createLeafplayerConfig } from '../testHelpers.ts';
 
 test('find -> it should find and sort artists', t => {
   const { db } = t.context;

@@ -1,5 +1,5 @@
-import { AlbumRow } from '@/database/rows';
-import { DB, Statement } from '@/database';
+import { AlbumRow } from '../database/rows.ts';
+import { DB, Statement } from '../database/index.ts';
 
 export function prepareAlbumsQuery<
   TBind extends unknown[] | unknown = unknown[],

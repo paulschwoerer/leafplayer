@@ -1,5 +1,6 @@
 import { FullArtist } from '@/common';
-import { ArtistRow } from '@/database/rows';
+
+import { ArtistRow } from '../database/rows.ts';
 
 export function toFullArtist(
   row: ArtistRow & {

@@ -2,7 +2,8 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { ArtistsResponseDto } from '@/common';
-import { DiscoverService } from '@/services/DiscoverService';
+
+import { DiscoverService } from '../../../services/DiscoverService.ts';
 
 type Injects = {
   discoverService: DiscoverService;

@@ -1,5 +1,5 @@
-import { ValidationError } from '@/errors/ValidationError';
-import { SortParam } from '@/typings/SortParam';
+import { ValidationError } from '../errors/ValidationError.ts';
+import { SortParam } from '../typings/SortParam.ts';
 
 type QueryWithOptionalSortParam = {
   sort?: string;

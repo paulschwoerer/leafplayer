@@ -1,9 +1,10 @@
 import { User } from '@/common';
-import { UserRow, WithoutTimestamps } from '@/database/rows';
-import { comparePasswords, createPasswordHash } from '@/helpers/passwords';
-import { generateUuid } from '@/helpers/uuid';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { DB } from '@/database';
+
+import { UserRow, WithoutTimestamps } from '../database/rows.ts';
+import { comparePasswords, createPasswordHash } from '../helpers/passwords.ts';
+import { generateUuid } from '../helpers/uuid.ts';
+import { NotFoundError } from '../errors/NotFoundError.ts';
+import { DB } from '../database/index.ts';
 
 type CreationParams = {
   username: string;

@@ -2,7 +2,8 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { AlbumWithSongsResponseDto } from '@/common';
-import { AlbumsService } from '@/services/AlbumsService';
+
+import { AlbumsService } from '../../../services/AlbumsService.ts';
 
 type Injects = {
   albumsService: AlbumsService;

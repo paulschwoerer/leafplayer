@@ -1,7 +1,7 @@
 import { readdir, stat, Stats } from 'fs';
 import { extname } from 'path';
 
-import { FileType, FileFormatFilter, FileFormat } from './types';
+import { FileType, FileFormatFilter, FileFormat } from './types.ts';
 
 type TreeNode = {
   path: string;

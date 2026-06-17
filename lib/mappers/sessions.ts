@@ -1,5 +1,6 @@
 import { UserSession } from '@/common';
-import { SessionRow } from '@/database/rows';
+
+import { SessionRow } from '../database/rows.ts';
 
 export function toUserSession({
   id,

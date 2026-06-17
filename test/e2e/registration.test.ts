@@ -1,8 +1,9 @@
 import { UserResponseDto } from '@/common';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
 
-import { performLogin } from './performLogin';
-import test from './setupE2ETest';
+import { getCurrentUnixTimestamp } from '../../lib/helpers/time.ts';
+
+import { performLogin } from './performLogin.ts';
+import test from './setupE2ETest.ts';
 
 test('registration flow', async t => {
   const { server, db } = t.context;

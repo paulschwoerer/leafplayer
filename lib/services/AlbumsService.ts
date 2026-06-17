@@ -1,12 +1,13 @@
 import { FullAlbum, FullSong } from '@/common';
-import { toFullAlbum } from '@/mappers/albums';
-import { prepareAlbumsQuery } from '@/query/albums';
-import { SortParam } from '@/typings/SortParam';
-import { generateUuid } from '@/helpers/uuid';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { DB } from '@/database';
-import { toFullSong } from '@/mappers/songs';
-import { prepareSongsQuery } from '@/query/songs';
+
+import { toFullAlbum } from '../mappers/albums.ts';
+import { prepareAlbumsQuery } from '../query/albums.ts';
+import { SortParam } from '../typings/SortParam.ts';
+import { generateUuid } from '../helpers/uuid.ts';
+import { NotFoundError } from '../errors/NotFoundError.ts';
+import { DB } from '../database/index.ts';
+import { toFullSong } from '../mappers/songs.ts';
+import { prepareSongsQuery } from '../query/songs.ts';
 
 export interface AlbumsService {
   createAlbum(params: {

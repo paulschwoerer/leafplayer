@@ -1,8 +1,9 @@
 import { preHandlerAsyncHookHandler, FastifyRequest } from 'fastify';
 
-import { AuthService } from '@/services/AuthService';
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
 import { User } from '@/common';
+
+import { AuthService } from '../services/AuthService.ts';
+import { NotAuthorizedError } from '../errors/NotAuthorizedError.ts';
 
 declare module 'fastify' {
   interface FastifyRequest {

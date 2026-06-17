@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify';
 
-import { getSortParam } from '@/api/sort';
-import { SortParam } from '@/typings/SortParam';
+import { getSortParam } from '../../lib/api/sort.ts';
+import { SortParam } from '../../lib/typings/SortParam.ts';
 
-import test from './setupTestServer';
+import test from './setupTestServer.ts';
 
 async function setup(server: FastifyInstance): Promise<void> {
   server.get<{ Querystring: { sort?: string } }>(

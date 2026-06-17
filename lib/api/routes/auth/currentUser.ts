@@ -1,8 +1,9 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { JwtService } from '@/services/JwtService';
 import { UserResponseDto } from '@/common';
+
+import { JwtService } from '../../../services/JwtService.ts';
 
 type Injects = {
   jwtService: JwtService;

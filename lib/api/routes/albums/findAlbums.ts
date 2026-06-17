@@ -1,9 +1,9 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { withTimestamps } from '@/helpers/sort';
-import { AlbumsService } from '@/services/AlbumsService';
-import { getSortParam } from '@/api/sort';
+import { withTimestamps } from '../../../helpers/sort.ts';
+import { AlbumsService } from '../../../services/AlbumsService.ts';
+import { getSortParam } from '../../sort.ts';
 
 type Injects = {
   albumsService: AlbumsService;

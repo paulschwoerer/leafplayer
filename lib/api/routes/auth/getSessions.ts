@@ -2,7 +2,8 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { UserSessionsResponseDto } from '@/common';
-import { SessionsService } from '@/services/SessionsService';
+
+import { SessionsService } from '../../../services/SessionsService.ts';
 
 type Injects = {
   sessionsService: SessionsService;

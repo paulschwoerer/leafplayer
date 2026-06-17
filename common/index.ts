@@ -1,3 +1,3 @@
-export * from './entities';
-export * from './dtos';
-export * from './errors';
+export * from './entities.ts';
+export * from './dtos.ts';
+export * from './errors.ts';

@@ -1,6 +1,5 @@
-import createUsersService from '@/services/UsersService';
-
-import test from '../setupTestDB';
+import createUsersService from '../../lib/services/UsersService.ts';
+import test from '../setupTestDB.ts';
 
 const USER = {
   username: 'admin',

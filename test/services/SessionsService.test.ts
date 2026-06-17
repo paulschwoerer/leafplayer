@@ -1,9 +1,8 @@
-import { getCurrentUnixTimestamp } from '@/helpers/time';
-import createSessionsService from '@/services/SessionsService';
-import createUsersService from '@/services/UsersService';
-import { generateUuid } from '@/helpers/uuid';
-
-import test from '../setupTestDB';
+import { getCurrentUnixTimestamp } from '../../lib/helpers/time.ts';
+import createSessionsService from '../../lib/services/SessionsService.ts';
+import createUsersService from '../../lib/services/UsersService.ts';
+import { generateUuid } from '../../lib/helpers/uuid.ts';
+import test from '../setupTestDB.ts';
 
 const USER = {
   username: 'admin',

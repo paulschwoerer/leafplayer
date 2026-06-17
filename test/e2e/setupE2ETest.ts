@@ -10,11 +10,13 @@ import {
 } from 'awilix';
 import { FastifyInstance } from 'fastify';
 
-import { initServer } from '@/api/server';
-import { DB } from '@/database';
-import { LeafplayerConfig } from '@/config';
-
-import { createLeafplayerConfig, setupInMemorySQLiteDB } from '../testHelpers';
+import { initServer } from '../../lib/api/server.ts';
+import { DB } from '../../lib/database/index.ts';
+import { LeafplayerConfig } from '../../lib/config/index.ts';
+import {
+  createLeafplayerConfig,
+  setupInMemorySQLiteDB,
+} from '../testHelpers.ts';
 
 const test = anyTest as TestFn<{
   db: DB;

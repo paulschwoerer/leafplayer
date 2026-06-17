@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
 
 import { UserResponseDto, UserSessionsResponseDto } from '@/common';
-import createUsersService from '@/services/UsersService';
 
-import { performLogin } from './performLogin';
-import test from './setupE2ETest';
+import createUsersService from '../../lib/services/UsersService.ts';
 
+import { performLogin } from './performLogin.ts';
+import test from './setupE2ETest.ts';
 
 test('Login and logout flow', async t => {
   const { config, server, db } = t.context;

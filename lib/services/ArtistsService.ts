@@ -1,16 +1,17 @@
 import { FullAlbum, FullArtist, FullSong } from '@/common';
-import { toFullAlbum } from '@/mappers/albums';
-import { toFullArtist } from '@/mappers/artists';
-import { prepareAlbumsQuery } from '@/query/albums';
-import { prepareArtistsQuery } from '@/query/artists';
-import { SortParam } from '@/typings/SortParam';
-import { generateUuid } from '@/helpers/uuid';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { DB } from '@/database';
-import { prepareSongsQuery } from '@/query/songs';
-import { toFullSong } from '@/mappers/songs';
 
-import { AlbumsService } from './AlbumsService';
+import { toFullAlbum } from '../mappers/albums.ts';
+import { toFullArtist } from '../mappers/artists.ts';
+import { prepareAlbumsQuery } from '../query/albums.ts';
+import { prepareArtistsQuery } from '../query/artists.ts';
+import { SortParam } from '../typings/SortParam.ts';
+import { generateUuid } from '../helpers/uuid.ts';
+import { NotFoundError } from '../errors/NotFoundError.ts';
+import { DB } from '../database/index.ts';
+import { prepareSongsQuery } from '../query/songs.ts';
+import { toFullSong } from '../mappers/songs.ts';
+
+import { AlbumsService } from './AlbumsService.ts';
 
 type ArtistWithAlbums = {
   artist: FullArtist;

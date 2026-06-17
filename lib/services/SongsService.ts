@@ -1,8 +1,9 @@
-import { NotFoundError } from '@/errors/NotFoundError';
 import { FullSong } from '@/common';
-import { toFullSong } from '@/mappers/songs';
-import { prepareSongsQuery } from '@/query/songs';
-import { DB } from '@/database';
+
+import { NotFoundError } from '../errors/NotFoundError.ts';
+import { toFullSong } from '../mappers/songs.ts';
+import { prepareSongsQuery } from '../query/songs.ts';
+import { DB } from '../database/index.ts';
 
 type Injects = {
   db: DB;

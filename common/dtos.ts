@@ -6,7 +6,7 @@ import {
   UserSession,
   SearchHistoryEntry,
   SearchResults,
-} from './entities';
+} from './entities.ts';
 
 export type AlbumResponseDto = {
   album: FullAlbum;

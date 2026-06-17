@@ -1,4 +1,4 @@
-import { FileFormat } from '@/scanner/types';
+import { FileFormat } from '../scanner/types.ts';
 
 type Timestamps = {
   createdAt: string;

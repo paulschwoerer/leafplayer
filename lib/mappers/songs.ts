@@ -1,5 +1,6 @@
 import { FullSong } from '@/common';
-import { SongRow } from '@/database/rows';
+
+import { SongRow } from '../database/rows.ts';
 
 type Row = Omit<SongRow, 'fileId'> & {
   artistName: string;

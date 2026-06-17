@@ -2,7 +2,8 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { RegisterRequestDto } from '@/common';
-import { RegistrationService } from '@/services/RegistrationService';
+
+import { RegistrationService } from '../../../services/RegistrationService.ts';
 
 type Injects = {
   registrationService: RegistrationService;

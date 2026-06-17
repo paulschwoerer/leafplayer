@@ -3,9 +3,9 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { AuthRequestDto } from '@/common';
-import { AuthService } from '@/services/AuthService';
-import { LeafplayerConfig } from '@/config';
-import { JwtService } from '@/services/JwtService';
+import { AuthService } from '../../../services/AuthService.ts';
+import { LeafplayerConfig } from '../../../config/index.ts';
+import { JwtService } from '../../../services/JwtService.ts';
 
 type Injects = {
   config: LeafplayerConfig;

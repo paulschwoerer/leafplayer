@@ -1,12 +1,13 @@
 import { User } from '@/common';
-import { LeafplayerConfig } from '@/config';
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-import { comparePasswords } from '@/helpers/passwords';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
 
-import { PasswordService } from './PasswordService';
-import { SessionsService } from './SessionsService';
-import { UsersService } from './UsersService';
+import { LeafplayerConfig } from '../config/index.ts';
+import { NotAuthorizedError } from '../errors/NotAuthorizedError.ts';
+import { comparePasswords } from '../helpers/passwords.ts';
+import { getCurrentUnixTimestamp } from '../helpers/time.ts';
+
+import { PasswordService } from './PasswordService.ts';
+import { SessionsService } from './SessionsService.ts';
+import { UsersService } from './UsersService.ts';
 
 type Credentials = {
   username: string;

@@ -1,8 +1,8 @@
 import anyTest, { TestFn } from 'ava';
 
-import { DB } from '@/database';
+import { DB } from '../lib/database/index.ts';
 
-import { setupInMemorySQLiteDB } from './testHelpers';
+import { setupInMemorySQLiteDB } from './testHelpers.ts';
 
 const test = anyTest as TestFn<{
   db: DB;

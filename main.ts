@@ -2,4 +2,4 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import './lib/core';
+import './lib/core.ts';

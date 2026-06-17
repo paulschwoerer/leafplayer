@@ -1,5 +1,5 @@
-import { DB } from '@/database';
-import { AudioFileRow } from '@/database/rows';
+import { DB } from '../database/index.ts';
+import { AudioFileRow } from '../database/rows.ts';
 
 export interface AudioFilesService {
   findById(id: string): AudioFileRow | undefined;

@@ -1,7 +1,7 @@
-import createUsersService from '@/services/UsersService';
+import createUsersService from '../../lib/services/UsersService.ts';
 
-import { performLogin } from './performLogin';
-import test from './setupE2ETest';
+import { performLogin } from './performLogin.ts';
+import test from './setupE2ETest.ts';
 
 test('password changing flow', async t => {
   const { server, db } = t.context;

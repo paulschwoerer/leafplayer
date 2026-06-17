@@ -1,5 +1,5 @@
-import { DB, Statement } from '@/database';
-import { SongRow } from '@/database/rows';
+import { DB, Statement } from '../database/index.ts';
+import { SongRow } from '../database/rows.ts';
 
 type SongRowWithNames = SongRow & { artistName: string; albumName: string };
 

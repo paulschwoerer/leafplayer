@@ -4,11 +4,11 @@ import { TextDecoder } from 'util';
 
 import jwt from 'jsonwebtoken';
 
-import createJwtService from '@/services/JwtService';
-import createAlbumsService from '@/services/AlbumsService';
-import createArtistsService from '@/services/ArtistsService';
+import createJwtService from '../../lib/services/JwtService.ts';
+import createAlbumsService from '../../lib/services/AlbumsService.ts';
+import createArtistsService from '../../lib/services/ArtistsService.ts';
 
-import test from './setupE2ETest';
+import test from './setupE2ETest.ts';
 
 test('when omiting token, expect an error', async t => {
   const { server } = t.context;

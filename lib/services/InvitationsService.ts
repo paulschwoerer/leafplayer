@@ -1,8 +1,7 @@
-import { LeafplayerConfig } from 'lib/config';
-
-import { DB } from '@/database';
-import { InvitationRow } from '@/database/rows';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
+import { LeafplayerConfig } from '../config/index.ts';
+import { DB } from '../database/index.ts';
+import { InvitationRow } from '../database/rows.ts';
+import { getCurrentUnixTimestamp } from '../helpers/time.ts';
 
 export enum CreateInvitationResult {
   SUCCESS,

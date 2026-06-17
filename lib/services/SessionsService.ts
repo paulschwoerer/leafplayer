@@ -1,12 +1,13 @@
 import uid from 'uid-safe';
 
 import { UserSession } from '@/common';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
-import { generateUuid } from '@/helpers/uuid';
-import { toUserSession } from '@/mappers/sessions';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { DB } from '@/database';
-import { SessionRow } from '@/database/rows';
+
+import { getCurrentUnixTimestamp } from '../helpers/time.ts';
+import { generateUuid } from '../helpers/uuid.ts';
+import { toUserSession } from '../mappers/sessions.ts';
+import { NotFoundError } from '../errors/NotFoundError.ts';
+import { DB } from '../database/index.ts';
+import { SessionRow } from '../database/rows.ts';
 
 type Browser = {
   os: string;

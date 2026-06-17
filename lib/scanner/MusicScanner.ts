@@ -3,16 +3,16 @@ import { basename, extname } from 'path';
 
 import { IAudioMetadata, parseFile } from 'music-metadata';
 
-import { printInfo } from '@/helpers/cli';
-import { AlbumsService } from '@/services/AlbumsService';
-import { ArtistsService } from '@/services/ArtistsService';
-import { LibraryService } from '@/services/LibraryService';
-import { AudioFileRow } from '@/database/rows';
+import { printInfo } from '../helpers/cli.ts';
+import { AlbumsService } from '../services/AlbumsService.ts';
+import { ArtistsService } from '../services/ArtistsService.ts';
+import { LibraryService } from '../services/LibraryService.ts';
+import { AudioFileRow } from '../database/rows.ts';
 
-import ArtworkExtractor from './ArtworkExtractor';
-import ArtworkProcessor from './ArtworkProcessor';
-import { DirNode, FileNode, FileTreeBuilder } from './FileTreeBuilder';
-import { FileFormat, FileType } from './types';
+import ArtworkExtractor from './ArtworkExtractor.ts';
+import ArtworkProcessor from './ArtworkProcessor.ts';
+import { DirNode, FileNode, FileTreeBuilder } from './FileTreeBuilder.ts';
+import { FileFormat, FileType } from './types.ts';
 
 const UNKNOWN_ARTIST_NAME = '[Unknown Artist]';
 const UNKNOWN_ALBUM_NAME = '[Unknown Album]';

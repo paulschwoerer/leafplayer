@@ -1,10 +1,11 @@
 import path from 'path';
 
 import { FullSong } from '@/common';
-import { AudioFileRow, SongRow, WithoutTimestamps } from '@/database/rows';
-import { isReadable, removeDir } from '@/helpers/filesystem';
-import { generateUuid } from '@/helpers/uuid';
-import { DB } from '@/database';
+
+import { AudioFileRow, SongRow, WithoutTimestamps } from '../database/rows.ts';
+import { isReadable, removeDir } from '../helpers/filesystem.ts';
+import { generateUuid } from '../helpers/uuid.ts';
+import { DB } from '../database/index.ts';
 
 export type SavedSong = FullSong & { fileLastModified: number };
 

@@ -3,8 +3,8 @@ import path, { join as joinPath } from 'path';
 
 import sharp from 'sharp';
 
-import { printError, printInfo } from '@/helpers/cli';
-import { getErrorMessage } from '@/helpers/errors';
+import { printError, printInfo } from '../helpers/cli.ts';
+import { getErrorMessage } from '../helpers/errors.ts';
 
 type ArtworkFileSource = {
   type: 'file';

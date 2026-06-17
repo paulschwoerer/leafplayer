@@ -1,8 +1,8 @@
-import { DB } from '@/database';
-import { AudioFileRow } from '@/database/rows';
-import { printError, printInfo } from '@/helpers/cli';
-import { isReadable } from '@/helpers/filesystem';
-import { AudioFilesService } from '@/services/AudioFilesService';
+import { DB } from '../database/index.ts';
+import { AudioFileRow } from '../database/rows.ts';
+import { printError, printInfo } from '../helpers/cli.ts';
+import { isReadable } from '../helpers/filesystem.ts';
+import { AudioFilesService } from '../services/AudioFilesService.ts';
 
 type MusicCleanerOptions = {
   removeMissing: boolean;

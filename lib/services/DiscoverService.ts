@@ -1,10 +1,11 @@
 import { FullAlbum, FullArtist } from '@/common';
-import { toFullAlbum } from '@/mappers/albums';
-import { toFullArtist } from '@/mappers/artists';
-import { prepareAlbumsQuery } from '@/query/albums';
-import { prepareArtistsQuery } from '@/query/artists';
-import { getRandomArrayElements } from '@/helpers/random';
-import { DB } from '@/database';
+
+import { toFullAlbum } from '../mappers/albums.ts';
+import { toFullArtist } from '../mappers/artists.ts';
+import { prepareAlbumsQuery } from '../query/albums.ts';
+import { prepareArtistsQuery } from '../query/artists.ts';
+import { getRandomArrayElements } from '../helpers/random.ts';
+import { DB } from '../database/index.ts';
 
 export interface DiscoverService {
   findRandomArtists(count: number): FullArtist[];

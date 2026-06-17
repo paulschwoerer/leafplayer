@@ -1,18 +1,19 @@
 import { UserSession } from 'common/entities';
 
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-import { ValidationError } from '@/errors/ValidationError';
-import { comparePasswords } from '@/helpers/passwords';
-import createAuthService, { AuthService } from '@/services/AuthService';
-import createPasswordService from '@/services/PasswordService';
-import createSessionsService from '@/services/SessionsService';
-import createUsersService from '@/services/UsersService';
-import { DB } from '@/database';
-import { generateUuid } from '@/helpers/uuid';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
-
-import test from '../setupTestDB';
-import { createLeafplayerConfig } from '../testHelpers';
+import { NotAuthorizedError } from '../../lib/errors/NotAuthorizedError.ts';
+import { ValidationError } from '../../lib/errors/ValidationError.ts';
+import { comparePasswords } from '../../lib/helpers/passwords.ts';
+import createAuthService, {
+  AuthService,
+} from '../../lib/services/AuthService.ts';
+import createPasswordService from '../../lib/services/PasswordService.ts';
+import createSessionsService from '../../lib/services/SessionsService.ts';
+import createUsersService from '../../lib/services/UsersService.ts';
+import { DB } from '../../lib/database/index.ts';
+import { generateUuid } from '../../lib/helpers/uuid.ts';
+import { getCurrentUnixTimestamp } from '../../lib/helpers/time.ts';
+import test from '../setupTestDB.ts';
+import { createLeafplayerConfig } from '../testHelpers.ts';
 
 function setupService(db: DB): AuthService {
   const config = createLeafplayerConfig();

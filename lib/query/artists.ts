@@ -1,5 +1,5 @@
-import { DB, Statement } from '@/database';
-import { ArtistRow } from '@/database/rows';
+import { DB, Statement } from '../database/index.ts';
+import { ArtistRow } from '../database/rows.ts';
 
 export function prepareArtistsQuery<
   TBind extends unknown[] | unknown = unknown[],

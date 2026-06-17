@@ -1,7 +1,7 @@
 import fastify, { FastifyInstance } from 'fastify';
 import anyTest, { TestFn } from 'ava';
 
-import { errorHandler } from '@/api/errorHandler';
+import { errorHandler } from '../../lib/api/errorHandler.ts';
 
 const test = anyTest as TestFn<{
   server: FastifyInstance;

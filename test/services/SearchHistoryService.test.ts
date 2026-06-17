@@ -1,16 +1,15 @@
-import { generateUuid } from '@/helpers/uuid';
-import createAlbumsService from '@/services/AlbumsService';
+import { generateUuid } from '../../lib/helpers/uuid.ts';
+import createAlbumsService from '../../lib/services/AlbumsService.ts';
 import createArtistsService, {
   ArtistsService,
-} from '@/services/ArtistsService';
-import createSongsService from '@/services/SongsService';
-import createSearchHistoryService from '@/services/SearchHistoryService';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { DB } from '@/database';
-import createUsersService from '@/services/UsersService';
-import { SearchHistoryRow } from '@/database/rows';
-
-import test from '../setupTestDB';
+} from '../../lib/services/ArtistsService.ts';
+import createSongsService from '../../lib/services/SongsService.ts';
+import createSearchHistoryService from '../../lib/services/SearchHistoryService.ts';
+import { NotFoundError } from '../../lib/errors/NotFoundError.ts';
+import { DB } from '../../lib/database/index.ts';
+import createUsersService from '../../lib/services/UsersService.ts';
+import { SearchHistoryRow } from '../../lib/database/rows.ts';
+import test from '../setupTestDB.ts';
 
 function setupService(db: DB) {
   const songsService = createSongsService({ db });

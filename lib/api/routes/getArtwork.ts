@@ -1,12 +1,12 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { ArtworksService } from '@/services/ArtworksService';
-import { NotFoundError } from '@/errors/NotFoundError';
-import { ValidationError } from '@/errors/ValidationError';
-import { isUuidV4 } from '@/helpers/uuid';
-import { JwtService } from '@/services/JwtService';
-import { verifyArtworkToken } from '@/api/artworkTokenAuth';
+import { ArtworksService } from '../../services/ArtworksService.ts';
+import { NotFoundError } from '../../errors/NotFoundError.ts';
+import { ValidationError } from '../../errors/ValidationError.ts';
+import { isUuidV4 } from '../../helpers/uuid.ts';
+import { JwtService } from '../../services/JwtService.ts';
+import { verifyArtworkToken } from '../artworkTokenAuth.ts';
 
 type Injects = {
   artworksService: ArtworksService;

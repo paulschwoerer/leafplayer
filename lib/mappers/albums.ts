@@ -1,5 +1,6 @@
 import { FullAlbum } from '@/common';
-import { AlbumRow } from '@/database/rows';
+
+import { AlbumRow } from '../database/rows.ts';
 
 export function toFullAlbum({
   artistId,

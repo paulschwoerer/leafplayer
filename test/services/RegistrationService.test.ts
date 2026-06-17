@@ -1,18 +1,17 @@
-import createInvitationsService from '@/services/InvitationsService';
-import createPasswordService from '@/services/PasswordService';
+import createInvitationsService from '../../lib/services/InvitationsService.ts';
+import createPasswordService from '../../lib/services/PasswordService.ts';
 import createRegistrationService, {
   RegistrationService,
-} from '@/services/RegistrationService';
-import createUsersService from '@/services/UsersService';
-import { getCurrentUnixTimestamp } from '@/helpers/time';
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-import { ValidationError } from '@/errors/ValidationError';
-import { createPasswordHash } from '@/helpers/passwords';
-import { DB } from '@/database';
-import { InvitationRow, UserRow } from '@/database/rows';
-
-import { createLeafplayerConfig } from '../testHelpers';
-import test from '../setupTestDB';
+} from '../../lib/services/RegistrationService.ts';
+import createUsersService from '../../lib/services/UsersService.ts';
+import { getCurrentUnixTimestamp } from '../../lib/helpers/time.ts';
+import { NotAuthorizedError } from '../../lib/errors/NotAuthorizedError.ts';
+import { ValidationError } from '../../lib/errors/ValidationError.ts';
+import { createPasswordHash } from '../../lib/helpers/passwords.ts';
+import { DB } from '../../lib/database/index.ts';
+import { InvitationRow, UserRow } from '../../lib/database/rows.ts';
+import { createLeafplayerConfig } from '../testHelpers.ts';
+import test from '../setupTestDB.ts';
 
 function setupService(db: DB): RegistrationService {
   const config = createLeafplayerConfig();

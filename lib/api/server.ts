@@ -4,7 +4,7 @@ import { AwilixContainer } from 'awilix';
 import fastify, { FastifyInstance } from 'fastify';
 import fastifyStatic from '@fastify/static';
 
-import { initApi } from './api';
+import { initApi } from './api.ts';
 
 export async function initServer(
   container: AwilixContainer,

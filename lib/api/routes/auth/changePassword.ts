@@ -2,9 +2,10 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
 import { ChangePasswordRequestDto } from '@/common';
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-import { AuthService } from '@/services/AuthService';
-import { UsersService } from '@/services/UsersService';
+
+import { NotAuthorizedError } from '../../../errors/NotAuthorizedError.ts';
+import { AuthService } from '../../../services/AuthService.ts';
+import { UsersService } from '../../../services/UsersService.ts';
 
 type Injects = {
   authService: AuthService;

@@ -6,7 +6,7 @@ import DatabaseConstructor, {
   Statement as DriverStatement,
 } from 'better-sqlite3';
 
-import { unixCheckIfWorldReadable } from '@/helpers/filesystem';
+import { unixCheckIfWorldReadable } from '../helpers/filesystem.ts';
 
 const migrationsDir = path.join(__dirname, './migrations');
 

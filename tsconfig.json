@@ -12,6 +12,7 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "esModuleInterop": true,
     "strict": true,
@@ -20,9 +21,6 @@
     "paths": {
       "@/common": [
         "./common"
-      ],
-      "@/*": [
-        "./lib/*"
       ]
     }
   },

@@ -1,6 +1,6 @@
 import { createCommand } from 'commander';
 
-import { CommandLoader } from './CommandLoader';
+import { CommandLoader } from './CommandLoader.ts';
 
 export interface CLI {
   add(loader: CommandLoader): CLI;

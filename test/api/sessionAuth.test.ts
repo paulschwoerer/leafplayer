@@ -1,16 +1,15 @@
 import td from 'testdouble';
 
-import { verifySession } from '@/api/sessionAuth';
-import { AuthService } from '@/services/AuthService';
-import { NotAuthorizedError } from '@/errors/NotAuthorizedError';
-
+import { verifySession } from '../../lib/api/sessionAuth.ts';
+import { AuthService } from '../../lib/services/AuthService.ts';
+import { NotAuthorizedError } from '../../lib/errors/NotAuthorizedError.ts';
 import {
   MOCK_USER,
   MOCK_SESSION_ID,
   MOCK_SESSION_TOKEN,
-} from '../testdata/mocks';
+} from '../testdata/mocks.ts';
 
-import test from './setupTestServer';
+import test from './setupTestServer.ts';
 
 test('auth endpoint should reject a request without session token', async t => {
   const { server } = t.context;

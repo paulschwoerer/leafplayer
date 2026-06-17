@@ -9,13 +9,13 @@ import { FastifyInstance } from 'fastify';
 
 import { version } from '../package.json';
 
-import { createCLI } from './cli/CLI';
-import { createInvitationsCommandLoader } from './cli/commands/InvitationsCommandLoader';
-import { createLibraryCommandLoader } from './cli/commands/LibraryCommandLoader';
-import { createUsersCommandLoader } from './cli/commands/UserCommandLoader';
-import { initConfig } from './config';
-import { initializeDatabase } from './database';
-import { initServer } from './api/server';
+import { createCLI } from './cli/CLI.ts';
+import { createInvitationsCommandLoader } from './cli/commands/InvitationsCommandLoader.ts';
+import { createLibraryCommandLoader } from './cli/commands/LibraryCommandLoader.ts';
+import { createUsersCommandLoader } from './cli/commands/UserCommandLoader.ts';
+import { initConfig } from './config/index.ts';
+import { initializeDatabase } from './database/index.ts';
+import { initServer } from './api/server.ts';
 
 const container = createContainer({
   injectionMode: InjectionMode.PROXY,
