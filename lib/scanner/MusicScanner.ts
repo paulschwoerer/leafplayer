@@ -29,16 +29,26 @@ export default class MusicScanner {
 
   private options: Options | undefined;
 
+  private config: Config;
+  private artistsService: ArtistsService;
+  private albumsService: AlbumsService;
+  private libraryService: LibraryService;
+
   private fileTreeBuilder: FileTreeBuilder;
   private artworkExtractor: ArtworkExtractor;
   private artworkProcessor: ArtworkProcessor;
 
   constructor(
-    private config: Config,
-    private artistsService: ArtistsService,
-    private albumsService: AlbumsService,
-    private libraryService: LibraryService,
+    config: Config,
+    artistsService: ArtistsService,
+    albumsService: AlbumsService,
+    libraryService: LibraryService,
   ) {
+    this.config = config;
+    this.artistsService = artistsService;
+    this.albumsService = albumsService;
+    this.libraryService = libraryService;
+
     this.fileTreeBuilder = new FileTreeBuilder([
       {
         regex: /^\.mp3$/,

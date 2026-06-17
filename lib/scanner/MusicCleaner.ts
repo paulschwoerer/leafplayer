@@ -15,7 +15,13 @@ const defaultOptions = {
 export class MusicCleaner {
   private options: MusicCleanerOptions = defaultOptions;
 
-  constructor(private db: DB, private audioFilesService: AudioFilesService) {}
+  private db: DB;
+  private audioFilesService: AudioFilesService;
+
+  constructor(db: DB, audioFilesService: AudioFilesService) {
+    this.db = db;
+    this.audioFilesService = audioFilesService;
+  }
 
   async run(options?: MusicCleanerOptions): Promise<void> {
     this.options = {
