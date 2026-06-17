@@ -1,6 +1,5 @@
 import createAlbumsService from '../../lib/services/AlbumsService.ts';
 import createArtistsService from '../../lib/services/ArtistsService.ts';
-import { FileFormat } from '../../lib/scanner/types.ts';
 import createLibraryService from '../../lib/services/LibraryService.ts';
 import test from '../setupTestDB.ts';
 import { createLeafplayerConfig } from '../testHelpers.ts';
@@ -128,7 +127,7 @@ test('findById -> it should return an artist with song count of two', t => {
   const fileId = libraryService.createAudioFile({
     path: '',
     filesize: 10,
-    format: FileFormat.MP3,
+    format: 'mp3',
     lastModified: 0,
   });
 

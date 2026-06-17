@@ -1,14 +1,6 @@
-export enum FileType {
-  AUDIO,
-  IMAGE,
-}
+export type FileType = 'audio' | 'image';
 
-export enum FileFormat {
-  JPG = 'jpg',
-  MP3 = 'mp3',
-  OPUS = 'opus',
-  FLAC = 'flac',
-}
+export type FileFormat = 'jpg' | 'mp3' | 'opus' | 'flac';
 
 export type FileFormatFilter = {
   regex: RegExp;

@@ -73,9 +73,9 @@ export class FileTreeBuilder {
       } else if (stats && stats.isFile()) {
         const node = this.buildFileNode(itemPath, stats);
 
-        if (node && node.type === FileType.AUDIO) {
+        if (node && node.type === 'audio') {
           audioFiles.push(node);
-        } else if (node && node.type === FileType.IMAGE) {
+        } else if (node && node.type === 'image') {
           imageFiles.push(node);
         }
       }

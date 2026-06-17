@@ -12,7 +12,6 @@ import { AudioFileRow } from '../database/rows.ts';
 import ArtworkExtractor from './ArtworkExtractor.ts';
 import ArtworkProcessor from './ArtworkProcessor.ts';
 import { DirNode, FileNode, FileTreeBuilder } from './FileTreeBuilder.ts';
-import { FileFormat, FileType } from './types.ts';
 
 const UNKNOWN_ARTIST_NAME = '[Unknown Artist]';
 const UNKNOWN_ALBUM_NAME = '[Unknown Album]';
@@ -43,23 +42,23 @@ export default class MusicScanner {
     this.fileTreeBuilder = new FileTreeBuilder([
       {
         regex: /^\.mp3$/,
-        format: FileFormat.MP3,
-        type: FileType.AUDIO,
+        format: 'mp3',
+        type: 'audio',
       },
       {
         regex: /^\.opus$/,
-        format: FileFormat.OPUS,
-        type: FileType.AUDIO,
+        format: 'opus',
+        type: 'audio',
       },
       {
         regex: /^\.flac$/,
-        format: FileFormat.FLAC,
-        type: FileType.AUDIO,
+        format: 'flac',
+        type: 'audio',
       },
       {
         regex: /^\.jpe?g$/,
-        format: FileFormat.JPG,
-        type: FileType.IMAGE,
+        format: 'jpg',
+        type: 'image',
       },
     ]);
     this.artworkExtractor = new ArtworkExtractor();

@@ -78,11 +78,11 @@ function computeRange(fileSize: number, rangeHeader?: string): Range {
 
 function mapFileFormatToMimeType(format: FileFormat) {
   switch (format) {
-    case FileFormat.MP3:
+    case 'mp3':
       return 'audio/mpeg';
-    case FileFormat.OPUS:
+    case 'opus':
       return 'audio/opus';
-    case FileFormat.FLAC:
+    case 'flac':
       return 'audio/flac';
     default:
       return '';

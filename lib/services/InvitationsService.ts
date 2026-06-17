@@ -3,11 +3,6 @@ import { DB } from '../database/index.ts';
 import { InvitationRow } from '../database/rows.ts';
 import { getCurrentUnixTimestamp } from '../helpers/time.ts';
 
-export enum CreateInvitationResult {
-  SUCCESS,
-  INVITE_CODE_TOO_SHORT,
-}
-
 type Injects = {
   db: DB;
   config: LeafplayerConfig;
