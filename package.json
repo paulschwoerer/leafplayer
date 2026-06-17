@@ -8,7 +8,7 @@
     "./build/**/*"
   ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon",
+    "dev": "NODE_ENV=development nodemon",
     "build": "npm-run-all clean build:*",
     "build:web": "npm --prefix web run build",
     "build:compile": "tsc --project tsconfig.prod.json",
@@ -69,7 +69,6 @@
     "@typescript-eslint/parser": "^5.13.0",
     "ava": "^4.0.1",
     "babel-plugin-module-resolver": "^4.1.0",
-    "cross-env": "^10.1.0",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
