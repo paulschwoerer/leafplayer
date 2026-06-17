@@ -1,11 +1,11 @@
-import { FullAlbum, FullArtist } from 'leafplayer-common';
+import type { FullAlbum, FullArtist } from 'leafplayer-common';
 
 import { toFullAlbum } from '../mappers/albums.ts';
 import { toFullArtist } from '../mappers/artists.ts';
 import { prepareAlbumsQuery } from '../query/albums.ts';
 import { prepareArtistsQuery } from '../query/artists.ts';
 import { getRandomArrayElements } from '../helpers/random.ts';
-import { DB } from '../database/index.ts';
+import { type DB } from '../database/index.ts';
 
 export interface DiscoverService {
   findRandomArtists(count: number): FullArtist[];

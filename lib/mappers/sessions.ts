@@ -1,6 +1,6 @@
-import { UserSession } from 'leafplayer-common';
+import { type UserSession } from 'leafplayer-common';
 
-import { SessionRow } from '../database/rows.ts';
+import { type SessionRow } from '../database/rows.ts';
 
 export function toUserSession({
   id,

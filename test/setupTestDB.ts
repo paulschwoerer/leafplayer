@@ -1,6 +1,6 @@
-import anyTest, { TestFn } from 'ava';
+import anyTest, { type TestFn } from 'ava';
 
-import { DB } from '../lib/database/index.ts';
+import { type DB } from '../lib/database/index.ts';
 
 import { setupInMemorySQLiteDB } from './testHelpers.ts';
 

@@ -1,9 +1,9 @@
-import { FullSong } from 'leafplayer-common';
+import { type FullSong } from 'leafplayer-common';
 
 import { NotFoundError } from '../errors/NotFoundError.ts';
 import { toFullSong } from '../mappers/songs.ts';
 import { prepareSongsQuery } from '../query/songs.ts';
-import { DB } from '../database/index.ts';
+import { type DB } from '../database/index.ts';
 
 type Injects = {
   db: DB;

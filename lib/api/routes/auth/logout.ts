@@ -1,7 +1,7 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { AuthService } from '../../../services/AuthService.ts';
+import { type AuthService } from '../../../services/AuthService.ts';
 
 type Injects = {
   authService: AuthService;

@@ -1,14 +1,14 @@
 import { generateUuid } from '../../lib/helpers/uuid.ts';
 import createAlbumsService from '../../lib/services/AlbumsService.ts';
 import createArtistsService, {
-  ArtistsService,
+  type ArtistsService,
 } from '../../lib/services/ArtistsService.ts';
 import createSongsService from '../../lib/services/SongsService.ts';
 import createSearchHistoryService from '../../lib/services/SearchHistoryService.ts';
 import { NotFoundError } from '../../lib/errors/NotFoundError.ts';
-import { DB } from '../../lib/database/index.ts';
+import { type DB } from '../../lib/database/index.ts';
 import createUsersService from '../../lib/services/UsersService.ts';
-import { SearchHistoryRow } from '../../lib/database/rows.ts';
+import { type SearchHistoryRow } from '../../lib/database/rows.ts';
 import test from '../setupTestDB.ts';
 
 function setupService(db: DB) {

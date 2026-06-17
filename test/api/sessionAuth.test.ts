@@ -1,7 +1,7 @@
 import td from 'testdouble';
 
 import { verifySession } from '../../lib/api/sessionAuth.ts';
-import { AuthService } from '../../lib/services/AuthService.ts';
+import { type AuthService } from '../../lib/services/AuthService.ts';
 import { NotAuthorizedError } from '../../lib/errors/NotAuthorizedError.ts';
 import {
   MOCK_USER,

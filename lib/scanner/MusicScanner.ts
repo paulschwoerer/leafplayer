@@ -1,17 +1,21 @@
 import { statSync } from 'fs';
 import { basename, extname } from 'path';
 
-import { IAudioMetadata, parseFile } from 'music-metadata';
+import { type IAudioMetadata, parseFile } from 'music-metadata';
 
 import { printInfo } from '../helpers/cli.ts';
-import { AlbumsService } from '../services/AlbumsService.ts';
-import { ArtistsService } from '../services/ArtistsService.ts';
-import { LibraryService } from '../services/LibraryService.ts';
-import { AudioFileRow } from '../database/rows.ts';
+import { type AlbumsService } from '../services/AlbumsService.ts';
+import { type ArtistsService } from '../services/ArtistsService.ts';
+import { type LibraryService } from '../services/LibraryService.ts';
+import { type AudioFileRow } from '../database/rows.ts';
 
 import ArtworkExtractor from './ArtworkExtractor.ts';
 import ArtworkProcessor from './ArtworkProcessor.ts';
-import { DirNode, FileNode, FileTreeBuilder } from './FileTreeBuilder.ts';
+import {
+  type DirNode,
+  type FileNode,
+  FileTreeBuilder,
+} from './FileTreeBuilder.ts';
 
 const UNKNOWN_ARTIST_NAME = '[Unknown Artist]';
 const UNKNOWN_ALBUM_NAME = '[Unknown Album]';

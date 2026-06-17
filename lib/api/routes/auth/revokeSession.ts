@@ -1,7 +1,7 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { SessionsService } from '../../../services/SessionsService.ts';
+import { type SessionsService } from '../../../services/SessionsService.ts';
 
 type Injects = {
   sessionsService: SessionsService;

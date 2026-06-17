@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { FileNode } from './FileTreeBuilder.ts';
+import { type FileNode } from './FileTreeBuilder.ts';
 
 export default class DuplicateDetector {
   private fileSizeCache: Record<string, string[]> = {};

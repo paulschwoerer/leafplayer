@@ -1,9 +1,8 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
+import { type UserSessionsResponseDto } from 'leafplayer-common';
 
-import { UserSessionsResponseDto } from 'leafplayer-common';
-
-import { SessionsService } from '../../../services/SessionsService.ts';
+import { type SessionsService } from '../../../services/SessionsService.ts';
 
 type Injects = {
   sessionsService: SessionsService;

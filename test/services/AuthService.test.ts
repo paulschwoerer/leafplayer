@@ -1,15 +1,15 @@
-import { UserSession } from 'leafplayer-common';
+import { type UserSession } from 'leafplayer-common';
 
 import { NotAuthorizedError } from '../../lib/errors/NotAuthorizedError.ts';
 import { ValidationError } from '../../lib/errors/ValidationError.ts';
 import { comparePasswords } from '../../lib/helpers/passwords.ts';
 import createAuthService, {
-  AuthService,
+  type AuthService,
 } from '../../lib/services/AuthService.ts';
 import createPasswordService from '../../lib/services/PasswordService.ts';
 import createSessionsService from '../../lib/services/SessionsService.ts';
 import createUsersService from '../../lib/services/UsersService.ts';
-import { DB } from '../../lib/database/index.ts';
+import { type DB } from '../../lib/database/index.ts';
 import { generateUuid } from '../../lib/helpers/uuid.ts';
 import { getCurrentUnixTimestamp } from '../../lib/helpers/time.ts';
 import test from '../setupTestDB.ts';

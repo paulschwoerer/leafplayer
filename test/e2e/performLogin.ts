@@ -1,5 +1,4 @@
-import { FastifyInstance } from 'fastify';
-
+import { type FastifyInstance } from 'fastify';
 
 export async function performLogin(
   server: FastifyInstance,

@@ -1,11 +1,15 @@
 import path from 'path';
 
-import { FullSong } from 'leafplayer-common';
+import { type FullSong } from 'leafplayer-common';
 
-import { AudioFileRow, SongRow, WithoutTimestamps } from '../database/rows.ts';
+import type {
+  AudioFileRow,
+  SongRow,
+  WithoutTimestamps,
+} from '../database/rows.ts';
 import { isReadable, removeDir } from '../helpers/filesystem.ts';
 import { generateUuid } from '../helpers/uuid.ts';
-import { DB } from '../database/index.ts';
+import { type DB } from '../database/index.ts';
 
 export type SavedSong = FullSong & { fileLastModified: number };
 

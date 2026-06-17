@@ -1,13 +1,12 @@
 import uid from 'uid-safe';
-
-import { UserSession } from 'leafplayer-common';
+import { type UserSession } from 'leafplayer-common';
 
 import { getCurrentUnixTimestamp } from '../helpers/time.ts';
 import { generateUuid } from '../helpers/uuid.ts';
 import { toUserSession } from '../mappers/sessions.ts';
 import { NotFoundError } from '../errors/NotFoundError.ts';
-import { DB } from '../database/index.ts';
-import { SessionRow } from '../database/rows.ts';
+import { type DB } from '../database/index.ts';
+import { type SessionRow } from '../database/rows.ts';
 
 type Browser = {
   os: string;

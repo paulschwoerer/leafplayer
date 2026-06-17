@@ -1,10 +1,10 @@
-import { User } from 'leafplayer-common';
+import { type User } from 'leafplayer-common';
 
-import { UserRow, WithoutTimestamps } from '../database/rows.ts';
+import type { UserRow, WithoutTimestamps } from '../database/rows.ts';
 import { comparePasswords, createPasswordHash } from '../helpers/passwords.ts';
 import { generateUuid } from '../helpers/uuid.ts';
 import { NotFoundError } from '../errors/NotFoundError.ts';
-import { DB } from '../database/index.ts';
+import { type DB } from '../database/index.ts';
 
 type CreationParams = {
   username: string;

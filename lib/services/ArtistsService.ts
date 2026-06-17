@@ -1,17 +1,17 @@
-import { FullAlbum, FullArtist, FullSong } from 'leafplayer-common';
+import type { FullAlbum, FullArtist, FullSong } from 'leafplayer-common';
 
 import { toFullAlbum } from '../mappers/albums.ts';
 import { toFullArtist } from '../mappers/artists.ts';
 import { prepareAlbumsQuery } from '../query/albums.ts';
 import { prepareArtistsQuery } from '../query/artists.ts';
-import { SortParam } from '../typings/SortParam.ts';
+import { type SortParam } from '../typings/SortParam.ts';
 import { generateUuid } from '../helpers/uuid.ts';
 import { NotFoundError } from '../errors/NotFoundError.ts';
-import { DB } from '../database/index.ts';
+import { type DB } from '../database/index.ts';
 import { prepareSongsQuery } from '../query/songs.ts';
 import { toFullSong } from '../mappers/songs.ts';
 
-import { AlbumsService } from './AlbumsService.ts';
+import { type AlbumsService } from './AlbumsService.ts';
 
 type ArtistWithAlbums = {
   artist: FullArtist;

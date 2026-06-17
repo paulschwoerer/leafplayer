@@ -1,8 +1,8 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
-import { AlbumWithSongsResponseDto } from 'leafplayer-common';
+import { type AlbumWithSongsResponseDto } from 'leafplayer-common';
 
-import { AlbumsService } from '../../../services/AlbumsService.ts';
+import { type AlbumsService } from '../../../services/AlbumsService.ts';
 
 type Injects = {
   albumsService: AlbumsService;

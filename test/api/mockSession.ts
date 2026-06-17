@@ -1,11 +1,10 @@
-import {
+import type {
   preHandlerAsyncHookHandler,
   FastifyPluginAsync,
   FastifyRequest,
 } from 'fastify';
 import fp from 'fastify-plugin';
-
-import { User } from 'leafplayer-common';
+import { type User } from 'leafplayer-common';
 
 declare module 'fastify' {
   interface FastifyInstance {

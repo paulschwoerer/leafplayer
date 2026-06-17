@@ -1,11 +1,11 @@
-import { FullAlbum, FullSong } from 'leafplayer-common';
+import type { FullAlbum, FullSong } from 'leafplayer-common';
 
 import { toFullAlbum } from '../mappers/albums.ts';
 import { prepareAlbumsQuery } from '../query/albums.ts';
-import { SortParam } from '../typings/SortParam.ts';
+import { type SortParam } from '../typings/SortParam.ts';
 import { generateUuid } from '../helpers/uuid.ts';
 import { NotFoundError } from '../errors/NotFoundError.ts';
-import { DB } from '../database/index.ts';
+import { type DB } from '../database/index.ts';
 import { toFullSong } from '../mappers/songs.ts';
 import { prepareSongsQuery } from '../query/songs.ts';
 

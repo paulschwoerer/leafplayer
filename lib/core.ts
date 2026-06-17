@@ -5,7 +5,7 @@ import {
   InjectionMode,
   Lifetime,
 } from 'awilix';
-import { FastifyInstance } from 'fastify';
+import { type FastifyInstance } from 'fastify';
 
 import { version } from '../package.json';
 

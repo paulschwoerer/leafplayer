@@ -1,6 +1,6 @@
-import { FullSong } from 'leafplayer-common';
+import { type FullSong } from 'leafplayer-common';
 
-import { SongRow } from '../database/rows.ts';
+import { type SongRow } from '../database/rows.ts';
 
 type Row = Omit<SongRow, 'fileId'> & {
   artistName: string;

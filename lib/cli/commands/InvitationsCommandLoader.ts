@@ -1,6 +1,6 @@
 import { printError, printInfo, printSuccess } from '../../helpers/cli.ts';
-import { InvitationsService } from '../../services/InvitationsService.ts';
-import { CommandLoader } from '../CommandLoader.ts';
+import { type InvitationsService } from '../../services/InvitationsService.ts';
+import { type CommandLoader } from '../CommandLoader.ts';
 
 type Injects = {
   invitationsService: InvitationsService;

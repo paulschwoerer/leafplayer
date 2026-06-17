@@ -1,6 +1,6 @@
-import { LeafplayerConfig } from '../config/index.ts';
-import { DB } from '../database/index.ts';
-import { InvitationRow } from '../database/rows.ts';
+import { type LeafplayerConfig } from '../config/index.ts';
+import { type DB } from '../database/index.ts';
+import { type InvitationRow } from '../database/rows.ts';
 import { getCurrentUnixTimestamp } from '../helpers/time.ts';
 
 type Injects = {

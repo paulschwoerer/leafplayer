@@ -1,13 +1,13 @@
-import { User } from 'leafplayer-common';
+import { type User } from 'leafplayer-common';
 
-import { LeafplayerConfig } from '../config/index.ts';
+import { type LeafplayerConfig } from '../config/index.ts';
 import { NotAuthorizedError } from '../errors/NotAuthorizedError.ts';
 import { comparePasswords } from '../helpers/passwords.ts';
 import { getCurrentUnixTimestamp } from '../helpers/time.ts';
 
-import { PasswordService } from './PasswordService.ts';
-import { SessionsService } from './SessionsService.ts';
-import { UsersService } from './UsersService.ts';
+import { type PasswordService } from './PasswordService.ts';
+import { type SessionsService } from './SessionsService.ts';
+import { type UsersService } from './UsersService.ts';
 
 type Credentials = {
   username: string;

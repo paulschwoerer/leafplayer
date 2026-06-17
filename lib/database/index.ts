@@ -1,10 +1,7 @@
 import { chmodSync, existsSync, readdirSync, readFileSync } from 'fs';
 import path from 'path';
 
-import DatabaseConstructor, {
-  Database,
-  Statement as DriverStatement,
-} from 'better-sqlite3';
+import BetterSqlite3 from 'better-sqlite3';
 
 import { unixCheckIfWorldReadable } from '../helpers/filesystem.ts';
 
@@ -14,7 +11,7 @@ export interface DB {
   prepare<TBind extends unknown[] | unknown = unknown[], TResult = unknown>(
     sql: string,
   ): Statement<TBind, TResult>;
-  driver(): Database;
+  driver(): BetterSqlite3.Database;
   close(): void;
 }
 
@@ -30,7 +27,7 @@ export interface Statement<
 }
 
 export function initializeDatabase(filename: string): DB {
-  const driver: Database = new DatabaseConstructor(filename);
+  const driver: BetterSqlite3.Database = new BetterSqlite3(filename);
 
   const dbFileExists = existsSync(filename);
   if (dbFileExists && unixCheckIfWorldReadable(filename)) {
@@ -46,7 +43,7 @@ export function initializeDatabase(filename: string): DB {
 
   return {
     prepare<TBind = unknown, TResult = unknown>(sql: string) {
-      let stmt: DriverStatement<TBind[], TResult>;
+      let stmt: BetterSqlite3.Statement<TBind[], TResult>;
       try {
         stmt = driver.prepare<TBind[], TResult>(sql);
       } catch (e) {
@@ -75,7 +72,7 @@ export function initializeDatabase(filename: string): DB {
   };
 }
 
-function migrateLatest(driver: Database) {
+function migrateLatest(driver: BetterSqlite3.Database) {
   let currentVersion = getVersion(driver);
 
   if (currentVersion === 0) {
@@ -115,14 +112,14 @@ function migrateLatest(driver: Database) {
   console.log('Finished migrating database');
 }
 
-function getVersion(driver: Database): number {
+function getVersion(driver: BetterSqlite3.Database): number {
   return driver.pragma('user_version', { simple: true }) as number;
 }
 
 /*
  * Retrieve version from knex_migrations table, if present, for backwards-compatibility
  */
-function getLegacyVersion(driver: Database): number {
+function getLegacyVersion(driver: BetterSqlite3.Database): number {
   const tableExists = !!driver
     .prepare(
       `SELECT name FROM sqlite_schema WHERE type = 'table' AND name='knex_migrations'`,
@@ -142,7 +139,7 @@ function getLegacyVersion(driver: Database): number {
   return row?.count || 0;
 }
 
-function setVersion(driver: Database, version: number): void {
+function setVersion(driver: BetterSqlite3.Database, version: number): void {
   driver.pragma(`user_version = ${version}`);
 }
 

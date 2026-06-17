@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
-
-import { UserResponseDto, UserSessionsResponseDto } from 'leafplayer-common';
+import type {
+  UserResponseDto,
+  UserSessionsResponseDto,
+} from 'leafplayer-common';
 
 import createUsersService from '../../lib/services/UsersService.ts';
 

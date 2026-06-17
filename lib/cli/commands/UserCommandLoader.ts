@@ -1,6 +1,6 @@
 import { printError, printSuccess } from '../../helpers/cli.ts';
-import { UsersService } from '../../services/UsersService.ts';
-import { CommandLoader } from '../CommandLoader.ts';
+import { type UsersService } from '../../services/UsersService.ts';
+import { type CommandLoader } from '../CommandLoader.ts';
 
 type Injects = {
   usersService: UsersService;

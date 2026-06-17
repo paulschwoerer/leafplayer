@@ -1,18 +1,18 @@
 import fs from 'fs';
 
-import anyTest, { TestFn } from 'ava';
+import anyTest, { type TestFn } from 'ava';
 import {
   asFunction,
   asValue,
-  AwilixContainer,
+  type AwilixContainer,
   createContainer,
   Lifetime,
 } from 'awilix';
-import { FastifyInstance } from 'fastify';
+import { type FastifyInstance } from 'fastify';
 
 import { initServer } from '../../lib/api/server.ts';
-import { DB } from '../../lib/database/index.ts';
-import { LeafplayerConfig } from '../../lib/config/index.ts';
+import { type DB } from '../../lib/database/index.ts';
+import { type LeafplayerConfig } from '../../lib/config/index.ts';
 import {
   createLeafplayerConfig,
   setupInMemorySQLiteDB,

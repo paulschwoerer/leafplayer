@@ -1,9 +1,8 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
+import { type SearchResponseDto } from 'leafplayer-common';
 
-import { SearchResponseDto } from 'leafplayer-common';
-
-import { SearchService } from '../../../services/SearchService.ts';
+import { type SearchService } from '../../../services/SearchService.ts';
 
 type Injects = {
   searchService: SearchService;

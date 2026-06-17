@@ -1,4 +1,4 @@
-import { FastifyError, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyError, FastifyRequest, FastifyReply } from 'fastify';
 
 import { NotAuthorizedError } from '../errors/NotAuthorizedError.ts';
 import { NotFoundError } from '../errors/NotFoundError.ts';

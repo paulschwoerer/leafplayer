@@ -1,8 +1,8 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
-import { ArtistsResponseDto } from 'leafplayer-common';
+import { type ArtistsResponseDto } from 'leafplayer-common';
 
-import { ArtistsService } from '../../../services/ArtistsService.ts';
+import { type ArtistsService } from '../../../services/ArtistsService.ts';
 import { getSortParam } from '../../sort.ts';
 import { withTimestamps } from '../../../helpers/sort.ts';
 

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { LeafplayerConfig } from '../config/index.ts';
+import { type LeafplayerConfig } from '../config/index.ts';
 import { getCurrentUnixTimestamp } from '../helpers/time.ts';
 
 type Injects = {

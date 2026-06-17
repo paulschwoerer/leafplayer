@@ -1,6 +1,6 @@
 import { createReadStream } from 'fs';
 import path from 'path';
-import { Stream } from 'stream';
+import { type Stream } from 'stream';
 
 import { isReadable, statFile } from '../helpers/filesystem.ts';
 

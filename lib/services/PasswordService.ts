@@ -1,7 +1,7 @@
 import { createPasswordHash } from '../helpers/passwords.ts';
 import { ValidationError } from '../errors/ValidationError.ts';
-import { DB } from '../database/index.ts';
-import { LeafplayerConfig } from '../config/index.ts';
+import { type DB } from '../database/index.ts';
+import { type LeafplayerConfig } from '../config/index.ts';
 
 export interface PasswordService {
   validatePasswordSecurity(password: string): Error | void;

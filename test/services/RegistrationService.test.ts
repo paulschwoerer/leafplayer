@@ -1,15 +1,15 @@
 import createInvitationsService from '../../lib/services/InvitationsService.ts';
 import createPasswordService from '../../lib/services/PasswordService.ts';
 import createRegistrationService, {
-  RegistrationService,
+  type RegistrationService,
 } from '../../lib/services/RegistrationService.ts';
 import createUsersService from '../../lib/services/UsersService.ts';
 import { getCurrentUnixTimestamp } from '../../lib/helpers/time.ts';
 import { NotAuthorizedError } from '../../lib/errors/NotAuthorizedError.ts';
 import { ValidationError } from '../../lib/errors/ValidationError.ts';
 import { createPasswordHash } from '../../lib/helpers/passwords.ts';
-import { DB } from '../../lib/database/index.ts';
-import { InvitationRow, UserRow } from '../../lib/database/rows.ts';
+import { type DB } from '../../lib/database/index.ts';
+import type { InvitationRow, UserRow } from '../../lib/database/rows.ts';
 import { createLeafplayerConfig } from '../testHelpers.ts';
 import test from '../setupTestDB.ts';
 

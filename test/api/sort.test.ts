@@ -1,7 +1,7 @@
-import { FastifyInstance } from 'fastify';
+import { type FastifyInstance } from 'fastify';
 
 import { getSortParam } from '../../lib/api/sort.ts';
-import { SortParam } from '../../lib/typings/SortParam.ts';
+import { type SortParam } from '../../lib/typings/SortParam.ts';
 
 import test from './setupTestServer.ts';
 

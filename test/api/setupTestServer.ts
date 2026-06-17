@@ -1,5 +1,5 @@
-import fastify, { FastifyInstance } from 'fastify';
-import anyTest, { TestFn } from 'ava';
+import fastify, { type FastifyInstance } from 'fastify';
+import anyTest, { type TestFn } from 'ava';
 
 import { errorHandler } from '../../lib/api/errorHandler.ts';
 

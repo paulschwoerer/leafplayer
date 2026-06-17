@@ -1,11 +1,10 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
-
-import { ChangePasswordRequestDto } from 'leafplayer-common';
+import { type ChangePasswordRequestDto } from 'leafplayer-common';
 
 import { NotAuthorizedError } from '../../../errors/NotAuthorizedError.ts';
-import { AuthService } from '../../../services/AuthService.ts';
-import { UsersService } from '../../../services/UsersService.ts';
+import { type AuthService } from '../../../services/AuthService.ts';
+import { type UsersService } from '../../../services/UsersService.ts';
 
 type Injects = {
   authService: AuthService;

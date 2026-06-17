@@ -1,6 +1,6 @@
-import { FullAlbum } from 'leafplayer-common';
+import { type FullAlbum } from 'leafplayer-common';
 
-import { AlbumRow } from '../database/rows.ts';
+import { type AlbumRow } from '../database/rows.ts';
 
 export function toFullAlbum({
   artistId,

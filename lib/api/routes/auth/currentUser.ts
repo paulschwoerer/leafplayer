@@ -1,9 +1,8 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
+import { type UserResponseDto } from 'leafplayer-common';
 
-import { UserResponseDto } from 'leafplayer-common';
-
-import { JwtService } from '../../../services/JwtService.ts';
+import { type JwtService } from '../../../services/JwtService.ts';
 
 type Injects = {
   jwtService: JwtService;

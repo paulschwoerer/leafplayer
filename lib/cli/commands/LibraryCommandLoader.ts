@@ -1,12 +1,12 @@
 import { printError, printInfo, printSuccess } from '../../helpers/cli.ts';
 import { MusicCleaner } from '../../scanner/MusicCleaner.ts';
 import MusicScanner from '../../scanner/MusicScanner.ts';
-import { AlbumsService } from '../../services/AlbumsService.ts';
-import { ArtistsService } from '../../services/ArtistsService.ts';
-import { AudioFilesService } from '../../services/AudioFilesService.ts';
-import { LibraryService } from '../../services/LibraryService.ts';
-import { DB } from '../../database/index.ts';
-import { CommandLoader } from '../CommandLoader.ts';
+import { type AlbumsService } from '../../services/AlbumsService.ts';
+import { type ArtistsService } from '../../services/ArtistsService.ts';
+import { type AudioFilesService } from '../../services/AudioFilesService.ts';
+import { type LibraryService } from '../../services/LibraryService.ts';
+import { type DB } from '../../database/index.ts';
+import { type CommandLoader } from '../CommandLoader.ts';
 
 type Config = {
   storageDir: string;

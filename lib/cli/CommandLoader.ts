@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import { type Command } from 'commander';
 
 export interface CommandLoader {
   (parent: Command): void;

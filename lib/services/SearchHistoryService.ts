@@ -1,4 +1,4 @@
-import {
+import type {
   SearchHistoryEntry,
   AlbumSearchHistoryEntry,
   ArtistSearchHistoryEntry,
@@ -6,12 +6,12 @@ import {
 } from 'leafplayer-common';
 
 import { generateUuid } from '../helpers/uuid.ts';
-import { SearchHistoryRow } from '../database/rows.ts';
-import { DB } from '../database/index.ts';
+import { type SearchHistoryRow } from '../database/rows.ts';
+import { type DB } from '../database/index.ts';
 
-import { AlbumsService } from './AlbumsService.ts';
-import { ArtistsService } from './ArtistsService.ts';
-import { SongsService } from './SongsService.ts';
+import { type AlbumsService } from './AlbumsService.ts';
+import { type ArtistsService } from './ArtistsService.ts';
+import { type SongsService } from './SongsService.ts';
 
 type Injects = {
   db: DB;

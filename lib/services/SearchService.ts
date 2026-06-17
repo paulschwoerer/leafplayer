@@ -1,6 +1,6 @@
-import { FullArtist, FullAlbum, FullSong } from 'leafplayer-common';
+import type { FullArtist, FullAlbum, FullSong } from 'leafplayer-common';
 
-import { AlbumRow } from '../database/rows.ts';
+import { type AlbumRow } from '../database/rows.ts';
 import { toFullAlbum } from '../mappers/albums.ts';
 import { toFullArtist } from '../mappers/artists.ts';
 import { toFullSong } from '../mappers/songs.ts';
@@ -8,7 +8,7 @@ import { prepareAlbumsQuery } from '../query/albums.ts';
 import { prepareArtistsQuery } from '../query/artists.ts';
 import { prepareSongsQuery } from '../query/songs.ts';
 import { weighStringsUsingSearchTerm } from '../helpers/search.ts';
-import { DB } from '../database/index.ts';
+import { type DB } from '../database/index.ts';
 
 type Injects = {
   db: DB;

@@ -1,7 +1,7 @@
 import uid from 'uid-safe';
 
-import { LeafplayerConfig } from '../lib/config/index.ts';
-import { DB, initializeDatabase } from '../lib/database/index.ts';
+import { type LeafplayerConfig } from '../lib/config/index.ts';
+import { type DB, initializeDatabase } from '../lib/database/index.ts';
 import { generateUuid } from '../lib/helpers/uuid.ts';
 
 export async function setupInMemorySQLiteDB(): Promise<DB> {

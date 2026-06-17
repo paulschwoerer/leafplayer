@@ -1,6 +1,6 @@
-import { FullArtist } from 'leafplayer-common';
+import { type FullArtist } from 'leafplayer-common';
 
-import { ArtistRow } from '../database/rows.ts';
+import { type ArtistRow } from '../database/rows.ts';
 
 export function toFullArtist(
   row: ArtistRow & {

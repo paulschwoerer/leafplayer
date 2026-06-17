@@ -1,13 +1,13 @@
 import {
-  preHandlerHookHandler,
-  RawServerDefault,
-  RawRequestDefaultExpression,
-  RawReplyDefaultExpression,
+  type preHandlerHookHandler,
+  type RawServerDefault,
+  type RawRequestDefaultExpression,
+  type RawReplyDefaultExpression,
 } from 'fastify';
 
 import { NotAuthorizedError } from '../errors/NotAuthorizedError.ts';
 import { ValidationError } from '../errors/ValidationError.ts';
-import { JwtService } from '../services/JwtService.ts';
+import { type JwtService } from '../services/JwtService.ts';
 
 export type VerifyArtworkTokenPreHandler = preHandlerHookHandler<
   RawServerDefault,

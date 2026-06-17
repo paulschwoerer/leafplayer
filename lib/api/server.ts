@@ -1,7 +1,7 @@
 import path from 'path';
 
-import { AwilixContainer } from 'awilix';
-import fastify, { FastifyInstance } from 'fastify';
+import { type AwilixContainer } from 'awilix';
+import fastify, { type FastifyInstance } from 'fastify';
 import fastifyStatic from '@fastify/static';
 
 import { initApi } from './api.ts';

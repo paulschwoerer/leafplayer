@@ -1,7 +1,7 @@
-import { AwilixContainer } from 'awilix';
-import { FastifyPluginAsync } from 'fastify';
+import { type AwilixContainer } from 'awilix';
+import { type FastifyPluginAsync } from 'fastify';
 
-import { AuthService } from '../services/AuthService.ts';
+import { type AuthService } from '../services/AuthService.ts';
 
 import { errorHandler } from './errorHandler.ts';
 import { verifySession } from './sessionAuth.ts';

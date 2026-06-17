@@ -1,4 +1,4 @@
-import { IPicture } from 'music-metadata';
+import { type IPicture } from 'music-metadata';
 
 export type ExtractedArtwork = {
   format: string;

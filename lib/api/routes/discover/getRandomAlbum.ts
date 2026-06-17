@@ -1,9 +1,9 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
+import { type AlbumResponseDto } from 'leafplayer-common';
 
-import { AlbumResponseDto } from 'leafplayer-common';
 import { NotFoundError } from '../../../errors/NotFoundError.ts';
-import { DiscoverService } from '../../../services/DiscoverService.ts';
+import { type DiscoverService } from '../../../services/DiscoverService.ts';
 
 type Injects = {
   discoverService: DiscoverService;

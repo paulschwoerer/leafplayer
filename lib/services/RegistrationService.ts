@@ -1,9 +1,9 @@
 import { NotAuthorizedError } from '../errors/NotAuthorizedError.ts';
 import { ValidationError } from '../errors/ValidationError.ts';
-import { InvitationsService } from '../services/InvitationsService.ts';
+import { type InvitationsService } from '../services/InvitationsService.ts';
 
-import { PasswordService } from './PasswordService.ts';
-import { UsersService } from './UsersService.ts';
+import { type PasswordService } from './PasswordService.ts';
+import { type UsersService } from './UsersService.ts';
 
 type UserDetails = {
   username: string;

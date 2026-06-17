@@ -1,9 +1,8 @@
-import { FastifyPluginAsync } from 'fastify';
+import { type FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
+import { type RegisterRequestDto } from 'leafplayer-common';
 
-import { RegisterRequestDto } from 'leafplayer-common';
-
-import { RegistrationService } from '../../../services/RegistrationService.ts';
+import { type RegistrationService } from '../../../services/RegistrationService.ts';
 
 type Injects = {
   registrationService: RegistrationService;
