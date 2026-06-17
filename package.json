@@ -23,7 +23,7 @@
     "release": "npx standard-version"
   },
   "engines": {
-    "node": ">14.0.0 <22"
+    "node": "^22.18.0"
   },
   "ava": {
     "files": [
@@ -61,7 +61,7 @@
     "@types/bcrypt": "^6.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^20.14.8",
+    "@types/node": "^22.18.0",
     "@types/ua-parser-js": "^0.7.36",
     "@types/uid-safe": "^2.1.5",
     "@typescript-eslint/eslint-plugin": "^5.13.0",

@@ -1,14 +1,10 @@
-# 20.20.2-alpine3.23
-ARG IMAGE=node@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+# 22.22.3-alpine3.24
+ARG IMAGE=node@sha256:e58326d0d441090181ac150dc2078d3e2cf6a0d42e809aebba3ef5880935ffdd
 
 # --------------------------
 # BUILD
 # --------------------------
 FROM ${IMAGE} as builder
-
-# TODO: can be remove, once prebuilt binaries are available
-# for used combination of Node and better-sqlite3 versions
-RUN apk --no-cache add python3 make build-base
 
 ENV SASS_PATH=node_modules:src
 
