@@ -3,7 +3,7 @@ import {
   AlbumSearchHistoryEntry,
   ArtistSearchHistoryEntry,
   SongSearchHistoryEntry,
-} from '@/common';
+} from 'leafplayer-common';
 
 import { generateUuid } from '../helpers/uuid.ts';
 import { SearchHistoryRow } from '../database/rows.ts';

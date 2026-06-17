@@ -1,4 +1,4 @@
-import { UserResponseDto } from '@/common';
+import { UserResponseDto } from 'leafplayer-common';
 
 import { getCurrentUnixTimestamp } from '../../lib/helpers/time.ts';
 

@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { RegisterRequestDto } from '@/common';
+import { RegisterRequestDto } from 'leafplayer-common';
 
 import { RegistrationService } from '../../../services/RegistrationService.ts';
 

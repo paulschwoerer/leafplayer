@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { ChangePasswordRequestDto } from '@/common';
+import { ChangePasswordRequestDto } from 'leafplayer-common';
 
 import { NotAuthorizedError } from '../../../errors/NotAuthorizedError.ts';
 import { AuthService } from '../../../services/AuthService.ts';

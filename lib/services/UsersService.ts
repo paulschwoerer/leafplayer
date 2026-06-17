@@ -1,4 +1,4 @@
-import { User } from '@/common';
+import { User } from 'leafplayer-common';
 
 import { UserRow, WithoutTimestamps } from '../database/rows.ts';
 import { comparePasswords, createPasswordHash } from '../helpers/passwords.ts';

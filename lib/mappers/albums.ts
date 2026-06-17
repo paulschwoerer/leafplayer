@@ -1,4 +1,4 @@
-import { FullAlbum } from '@/common';
+import { FullAlbum } from 'leafplayer-common';
 
 import { AlbumRow } from '../database/rows.ts';
 

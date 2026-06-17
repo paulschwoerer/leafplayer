@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { UserResponseDto } from '@/common';
+import { UserResponseDto } from 'leafplayer-common';
 
 import { JwtService } from '../../../services/JwtService.ts';
 

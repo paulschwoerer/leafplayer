@@ -1,4 +1,4 @@
-import { UserSession } from 'common/entities';
+import { UserSession } from 'leafplayer-common';
 
 import { NotAuthorizedError } from '../../lib/errors/NotAuthorizedError.ts';
 import { ValidationError } from '../../lib/errors/ValidationError.ts';

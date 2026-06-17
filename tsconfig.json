@@ -17,12 +17,7 @@
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/common": [
-        "./common"
-      ]
-    }
+    "baseUrl": "."
   },
   "include": [
     "./lib/**/*",

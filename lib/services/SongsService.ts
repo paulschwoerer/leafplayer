@@ -1,4 +1,4 @@
-import { FullSong } from '@/common';
+import { FullSong } from 'leafplayer-common';
 
 import { NotFoundError } from '../errors/NotFoundError.ts';
 import { toFullSong } from '../mappers/songs.ts';

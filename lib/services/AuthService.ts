@@ -1,4 +1,4 @@
-import { User } from '@/common';
+import { User } from 'leafplayer-common';
 
 import { LeafplayerConfig } from '../config/index.ts';
 import { NotAuthorizedError } from '../errors/NotAuthorizedError.ts';

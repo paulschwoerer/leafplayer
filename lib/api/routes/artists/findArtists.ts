@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
-import { ArtistsResponseDto } from 'common/dtos';
+import { ArtistsResponseDto } from 'leafplayer-common';
 
 import { ArtistsService } from '../../../services/ArtistsService.ts';
 import { getSortParam } from '../../sort.ts';

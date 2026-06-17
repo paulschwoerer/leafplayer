@@ -1,4 +1,4 @@
-import { FullArtist } from '@/common';
+import { FullArtist } from 'leafplayer-common';
 
 import { ArtistRow } from '../database/rows.ts';
 

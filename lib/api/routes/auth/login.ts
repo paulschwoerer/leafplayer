@@ -2,7 +2,7 @@ import UAParser from 'ua-parser-js';
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { AuthRequestDto } from '@/common';
+import { AuthRequestDto } from 'leafplayer-common';
 import { AuthService } from '../../../services/AuthService.ts';
 import { LeafplayerConfig } from '../../../config/index.ts';
 import { JwtService } from '../../../services/JwtService.ts';

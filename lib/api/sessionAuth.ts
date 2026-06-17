@@ -1,6 +1,6 @@
 import { preHandlerAsyncHookHandler, FastifyRequest } from 'fastify';
 
-import { User } from '@/common';
+import { User } from 'leafplayer-common';
 
 import { AuthService } from '../services/AuthService.ts';
 import { NotAuthorizedError } from '../errors/NotAuthorizedError.ts';

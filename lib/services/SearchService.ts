@@ -1,4 +1,4 @@
-import { FullArtist, FullAlbum, FullSong } from '@/common';
+import { FullArtist, FullAlbum, FullSong } from 'leafplayer-common';
 
 import { AlbumRow } from '../database/rows.ts';
 import { toFullAlbum } from '../mappers/albums.ts';

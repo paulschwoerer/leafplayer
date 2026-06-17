@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { ArtistsResponseDto } from '@/common';
+import { ArtistsResponseDto } from 'leafplayer-common';
 
 import { DiscoverService } from '../../../services/DiscoverService.ts';
 

@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { UserSessionsResponseDto } from '@/common';
+import { UserSessionsResponseDto } from 'leafplayer-common';
 
 import { SessionsService } from '../../../services/SessionsService.ts';
 

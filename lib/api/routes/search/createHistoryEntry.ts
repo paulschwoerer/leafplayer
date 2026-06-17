@@ -4,7 +4,7 @@ import fp from 'fastify-plugin';
 import {
   CreateSearchHistoryEntryRequestDto,
   CreateSearchHistoryEntryResponseDto,
-} from '@/common';
+} from 'leafplayer-common';
 
 import { SearchHistoryService } from '../../../services/SearchHistoryService.ts';
 

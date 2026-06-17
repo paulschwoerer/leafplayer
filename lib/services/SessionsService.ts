@@ -1,6 +1,6 @@
 import uid from 'uid-safe';
 
-import { UserSession } from '@/common';
+import { UserSession } from 'leafplayer-common';
 
 import { getCurrentUnixTimestamp } from '../helpers/time.ts';
 import { generateUuid } from '../helpers/uuid.ts';

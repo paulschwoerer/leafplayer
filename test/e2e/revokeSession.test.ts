@@ -1,4 +1,4 @@
-import { UserSessionsResponseDto } from '@/common';
+import { UserSessionsResponseDto } from 'leafplayer-common';
 
 import createUsersService from '../../lib/services/UsersService.ts';
 

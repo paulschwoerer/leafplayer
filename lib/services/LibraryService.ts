@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { FullSong } from '@/common';
+import { FullSong } from 'leafplayer-common';
 
 import { AudioFileRow, SongRow, WithoutTimestamps } from '../database/rows.ts';
 import { isReadable, removeDir } from '../helpers/filesystem.ts';

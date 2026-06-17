@@ -1,7 +1,6 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
-
-import { AlbumWithSongsResponseDto } from '@/common';
+import { AlbumWithSongsResponseDto } from 'leafplayer-common';
 
 import { AlbumsService } from '../../../services/AlbumsService.ts';
 

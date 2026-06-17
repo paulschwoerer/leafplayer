@@ -1,4 +1,4 @@
-import { UserSession } from '@/common';
+import { UserSession } from 'leafplayer-common';
 
 import { SessionRow } from '../database/rows.ts';
 

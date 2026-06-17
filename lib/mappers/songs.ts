@@ -1,4 +1,4 @@
-import { FullSong } from '@/common';
+import { FullSong } from 'leafplayer-common';
 
 import { SongRow } from '../database/rows.ts';
 

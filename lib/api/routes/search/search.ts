@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { SearchResponseDto } from '@/common';
+import { SearchResponseDto } from 'leafplayer-common';
 
 import { SearchService } from '../../../services/SearchService.ts';
 

@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-import { FindSearchHistoryEntriesResponseDto } from '@/common';
+import { FindSearchHistoryEntriesResponseDto } from 'leafplayer-common';
 
 import { SearchHistoryService } from '../../../services/SearchHistoryService.ts';
 
