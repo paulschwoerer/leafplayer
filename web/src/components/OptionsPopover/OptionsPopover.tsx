@@ -10,7 +10,15 @@ import React, {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { usePopper } from 'react-popper';
+import {
+  useFloating,
+  autoUpdate,
+  offset,
+  shift,
+  flip,
+  hide,
+  arrow,
+} from '@floating-ui/react-dom';
 import { Link } from 'react-router-dom';
 import styles from './OptionsPopover.module.scss';
 
@@ -20,7 +28,7 @@ type PopoverProps = {
 
 type DesktopPopoverProps = {
   isVisible: boolean;
-  referenceRef: React.MutableRefObject<HTMLElement | null>;
+  referenceRef: HTMLElement | null;
   align?: 'left' | 'right';
 };
 
@@ -30,49 +38,52 @@ function DesktopPopover({
   referenceRef,
   children,
 }: PropsWithChildren<DesktopPopoverProps>): ReactElement | null {
-  const popperRef = useRef<HTMLDivElement>(null);
-  const arrowRef = useRef<HTMLDivElement>(null);
+  // intentional useState(), as  the ref is used during render()
+  const [floatingRef, setFloatingRef] = useState<HTMLDivElement | null>(null);
+  const [arrowRef, setArrowRef] = useState<HTMLDivElement | null>(null);
 
-  const {
-    styles: popperStyles,
-    attributes,
-    update,
-  } = usePopper(referenceRef.current, popperRef.current, {
-    modifiers: [
-      { name: 'offset', options: { offset: [0, 10] } },
-      { name: 'arrow', options: { element: arrowRef.current } },
+  const { floatingStyles, middlewareData, placement } = useFloating({
+    elements: {
+      reference: referenceRef,
+      floating: floatingRef,
+    },
+    middleware: [
+      offset({ mainAxis: 10 }),
+      shift(),
+      flip(),
+      arrow({
+        element: arrowRef,
+        padding: 20, // keep arrow inside bounds defined by rounded corners
+      }),
+      hide({ strategy: 'referenceHidden' }),
     ],
+    open: isVisible,
+    whileElementsMounted: autoUpdate,
     placement: align,
-    strategy: 'absolute',
   });
 
-  useEffect(() => {
-    if (!popperRef.current) {
-      return;
-    }
-
-    if (isVisible) {
-      popperRef.current.setAttribute('data-show', '');
-
-      if (update) {
-        update().catch(e => console.error('could not update popper: ', e));
-      }
-    } else {
-      popperRef.current.removeAttribute('data-show');
-    }
-  }, [isVisible, update]);
-
-  return (
+  return isVisible ? (
     <div
       className={styles.desktopWrapper}
-      ref={popperRef}
-      style={popperStyles.popper}
-      {...attributes.popper}
+      ref={setFloatingRef}
+      style={{
+        visibility: middlewareData.hide?.referenceHidden ? 'hidden' : 'visible',
+        ...floatingStyles,
+      }}
     >
-      <div className={styles.arrow} ref={arrowRef} style={popperStyles.arrow} />
-      {children}
+      <div
+        className={styles.arrow}
+        ref={setArrowRef}
+        style={{
+          position: 'absolute',
+          top: middlewareData.arrow?.y,
+          right: placement === 'left' ? 0 : undefined,
+          left: placement === 'right' ? 0 : undefined,
+        }}
+      />
+      <div className={styles.desktopWrapperInner}>{children}</div>
     </div>
-  );
+  ) : null;
 }
 
 type MobilePopoverProps = {
@@ -91,7 +102,7 @@ function MobilePopover({
         {children}
       </div>
     </AppearFromBottom>,
-    document.getElementById('popper-container') || document.body,
+    document.getElementById('popover-container') || document.body,
   );
 }
 
@@ -101,7 +112,8 @@ function OptionsPopover({
 }: PropsWithChildren<PopoverProps>): ReactElement {
   const [isVisible, setIsVisible] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  // intentional useState(), as  the ref is used during render()
+  const [buttonRef, setButtonRef] = useState<HTMLButtonElement | null>(null);
 
   const isMobile = useMediaQuery('(max-width: 700px)');
 
@@ -132,7 +144,7 @@ function OptionsPopover({
       <IconButton
         icon={<OptionsIcon />}
         onClick={() => setIsVisible(!isVisible)}
-        ref={buttonRef}
+        ref={setButtonRef}
       />
       {isMobile ? (
         <MobilePopover isVisible={isVisible}>

@@ -5,42 +5,37 @@
 }
 
 .desktopWrapper {
+  /* base floating-ui styles */
+  width: max-content;
   position: absolute;
-  display: none;
+  top: 0;
+  left: 0;
+
   z-index: 50;
-  border-radius: 0.5rem;
+  border-radius: 0.5rem; // needed for proper shadow rendering
 
   @include shadow(high);
 
-  &[data-show] {
-    display: block;
-  }
-
   .arrow {
+    position: relative;
     z-index: -1;
-
-    @include shadow(high);
   }
 
-  .arrow,
   .arrow::before {
+    content: '';
+    background: var(--color-elevation-high);
+    transform: rotate(45deg);
     position: absolute;
+    left: -6px;
+    top: -6px;
     width: 12px;
     height: 12px;
   }
 
-  .arrow::before {
-    content: "";
-    background: var(--color-elevation-high);
-    transform: rotate(45deg);
-  }
-
-  &[data-popper-placement^="left"] .arrow {
-    right: -6px;
-  }
-
-  &[data-popper-placement^="right"] .arrow {
-    left: -6px;
+  .desktopWrapperInner {
+    background-color: var(--color-elevation-high);
+    border-radius: 0.5rem;
+    overflow: hidden;
   }
 }
 
@@ -60,18 +55,18 @@
 }
 
 .options {
-  background-color: var(--color-elevation-high);
-  border-radius: 0.5rem;
-
   .option {
+    width: 100%;
     padding: 1rem 1.5rem;
     transition: background-color 0.1s;
     white-space: nowrap;
     display: block;
     text-decoration: none;
+    text-align: center;
     color: inherit;
     border: 0;
     background: transparent;
+    font-size: inherit;
 
     @include hover {
       cursor: pointer;
