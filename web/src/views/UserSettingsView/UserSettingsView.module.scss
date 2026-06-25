@@ -1,5 +1,5 @@
 .container {
-  @media screen and (min-width: 1200px) {
+  @media screen and (width >= 1200px) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;

@@ -1,4 +1,4 @@
-@import "../../../scss/mixins";
+@import '../../../scss/mixins.scss';
 
 .root {
   --height: var(--tap-target);
@@ -17,7 +17,9 @@
   border-radius: 0.5rem;
   white-space: nowrap;
   cursor: pointer;
-  transition: color 0.3s, background-color 0.3s;
+  transition:
+    color 0.3s,
+    background-color 0.3s;
   text-decoration: none;
   font: inherit;
 
@@ -63,7 +65,7 @@
 
     @include hover {
       &::after {
-        content: "";
+        content: '';
         opacity: 0.15;
         background-color: currentcolor;
 

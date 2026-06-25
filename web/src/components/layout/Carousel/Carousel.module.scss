@@ -26,12 +26,20 @@
 
     .shadowLeft {
       left: 0;
-      background: linear-gradient(-90deg, rgba(#000, 0) 0%, rgba(#000, 0.25) 100%);
+      background: linear-gradient(
+        -90deg,
+        rgba(#000, 0) 0%,
+        rgba(#000, 0.25) 100%
+      );
     }
 
     .shadowRight {
       right: 0;
-      background: linear-gradient(90deg, rgba(#000, 0) 0%, rgba(#000, 0.25) 100%);
+      background: linear-gradient(
+        90deg,
+        rgba(#000, 0) 0%,
+        rgba(#000, 0.25) 100%
+      );
     }
   }
 
@@ -61,7 +69,7 @@
       margin-left: auto;
     }
 
-    @media screen and (max-width: 500px) {
+    @media screen and (width <= 500px) {
       > nav {
         display: none;
       }

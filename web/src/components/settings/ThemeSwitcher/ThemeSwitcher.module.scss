@@ -69,7 +69,7 @@ $transition: 0.75s cubic-bezier(0.79, 0.14, 0.15, 0.86);
     }
   }
 
-  @media screen and (min-width: 450px) {
+  @media screen and (width >= 450px) {
     .solarSystem {
       width: 6rem;
 

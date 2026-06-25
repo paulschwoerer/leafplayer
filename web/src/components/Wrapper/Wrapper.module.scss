@@ -1,12 +1,12 @@
-@import "../../scss/vars.scss";
-@import "../../scss/mixins.scss";
+@import '../../scss/vars.scss';
+@import '../../scss/mixins.scss';
 
 .root {
   .layout {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
-    grid-template-areas: "main";
+    grid-template-areas: 'main';
     min-height: 100vh;
 
     .desktopSidebar {
@@ -43,8 +43,8 @@
       grid-template-columns: $desktop-sidebar-width 1fr;
       grid-template-rows: 1fr 80px;
       grid-template-areas:
-        "sidebar main"
-        "player player";
+        'sidebar main'
+        'player player';
       height: 100vh;
 
       .desktopSidebar {

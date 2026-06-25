@@ -6,7 +6,7 @@
   --search-history-entry-artwork-size: 64px;
   --search-history-entry-align-items: center;
 
-  @media screen and (min-width: 550px) {
+  @media screen and (width >= 550px) {
     --search-history-entry-artwork-size: 96px;
     --search-history-entry-padding: 1rem;
     --search-history-entry-width: minmax(340px, 1fr);

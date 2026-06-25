@@ -24,7 +24,7 @@ body {
   --color-elevation-high: #fff;
   --body-background: var(--color-primary);
 
-  &[data-theme="night"] {
+  &[data-theme='night'] {
     --font-weight: 300;
 
     // general colors
@@ -50,9 +50,7 @@ body {
 
   margin: 0;
   font-size: 15px;
-  font-family:
-    FiraSans,
-    sans-serif;
+  font-family: FiraSans, sans-serif;
   font-weight: var(--font-weight);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -66,15 +64,13 @@ body {
 
 * {
   box-sizing: border-box;
-  scrollbar-color:
-    var(--color-primary)
-    transparent;
+  scrollbar-color: var(--color-primary) transparent;
 
   &:focus {
     outline: 1px solid currentcolor;
   }
 
-  @supports #{"\selector(*:focus-visible)"} {
+  @supports #{'\selector(*:focus-visible)'} {
     &:focus {
       outline: 0;
     }
@@ -87,12 +83,16 @@ body {
 
 @font-face {
   font-family: FiraSans;
-  src: local("FiraSans"), url("./assets/fonts/FiraSans-Regular.ttf") format("truetype");
+  src:
+    local('FiraSans'),
+    url('./assets/fonts/FiraSans-Regular.ttf') format('truetype');
   font-weight: 400;
 }
 
 @font-face {
   font-family: FiraSans;
-  src: local("FiraSans"), url("./assets/fonts/FiraSans-Light.ttf") format("truetype");
+  src:
+    local('FiraSans'),
+    url('./assets/fonts/FiraSans-Light.ttf') format('truetype');
   font-weight: 300;
 }

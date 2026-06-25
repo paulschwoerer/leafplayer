@@ -47,7 +47,7 @@
     }
   }
 
-  @media screen and (min-width: 1000px) {
+  @media screen and (width >= 1000px) {
     padding: 2rem;
     gap: 2rem;
     grid-template-columns: 200px 1fr;

@@ -1,30 +1,81 @@
 @import '../../../scss/vars.scss';
 
 @keyframes bar1 {
-  0% { height: 92%; }
-  20% { height: 15%; }
-  40% { height: 72%; }
-  60% { height: 30%; }
-  80% { height: 84%; }
-  100% { height: 57%; }
+  0% {
+    height: 92%;
+  }
+
+  20% {
+    height: 15%;
+  }
+
+  40% {
+    height: 72%;
+  }
+
+  60% {
+    height: 30%;
+  }
+
+  80% {
+    height: 84%;
+  }
+
+  100% {
+    height: 57%;
+  }
 }
 
 @keyframes bar2 {
-  0% { height: 38%; }
-  20% { height: 10%; }
-  40% { height: 62%; }
-  60% { height: 48%; }
-  80% { height: 51%; }
-  100% { height: 96%; }
+  0% {
+    height: 38%;
+  }
+
+  20% {
+    height: 10%;
+  }
+
+  40% {
+    height: 62%;
+  }
+
+  60% {
+    height: 48%;
+  }
+
+  80% {
+    height: 51%;
+  }
+
+  100% {
+    height: 96%;
+  }
 }
 
 @keyframes bar3 {
-  0% { height: 70%; }
-  20% { height: 59%; }
-  40% { height: 66%; }
-  60% { height: 27%; }
-  80% { height: 39%; }
-  100% { height: 87%; }
+  0% {
+    height: 70%;
+  }
+
+  20% {
+    height: 59%;
+  }
+
+  40% {
+    height: 66%;
+  }
+
+  60% {
+    height: 27%;
+  }
+
+  80% {
+    height: 39%;
+  }
+
+  100% {
+    height: 87%;
+  }
 }
 
 .root {

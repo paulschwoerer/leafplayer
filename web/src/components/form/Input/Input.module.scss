@@ -11,7 +11,10 @@
     left: calc(var(--padding) - 0.25rem);
     top: 0.35rem;
     color: var(--color-emphasis-medium);
-    transition: color var(--duration), opacity var(--duration), transform var(--duration);
+    transition:
+      color var(--duration),
+      opacity var(--duration),
+      transform var(--duration);
     padding: 0 0.25rem;
     font-size: 0.75em;
     transform: translateY(0.5rem);
@@ -32,7 +35,9 @@
     width: 100%;
     transform: translateY(0);
     color: var(--color-emphasis-high);
-    transition: border-color 0.15s, padding-top 0.15s;
+    transition:
+      border-color 0.15s,
+      padding-top 0.15s;
     font: inherit;
 
     &:focus {

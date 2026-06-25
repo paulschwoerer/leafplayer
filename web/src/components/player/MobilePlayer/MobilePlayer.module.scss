@@ -1,7 +1,7 @@
 .root {
   display: grid;
   grid-template-rows: min-content 30vh 1fr 1fr 1fr;
-  grid-template-areas: "header" "artwork" "info" "progress" "controls";
+  grid-template-areas: 'header' 'artwork' 'info' 'progress' 'controls';
   gap: 1rem;
   position: fixed;
   top: 0;
@@ -72,7 +72,7 @@
   @media screen and (orientation: landscape) {
     grid-template-rows: min-content min(80vh, 20vw) 1fr;
     grid-template-columns: min(80vh, 20vw) 1fr;
-    grid-template-areas: "header header" "artwork info" "progress progress";
+    grid-template-areas: 'header header' 'artwork info' 'progress progress';
 
     .artworkWrapper {
       flex-direction: column;

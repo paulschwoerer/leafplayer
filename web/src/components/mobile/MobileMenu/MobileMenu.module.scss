@@ -1,4 +1,4 @@
-@import "../../../scss/vars.scss";
+@import '../../../scss/vars.scss';
 
 .root {
   .menu {
@@ -12,16 +12,19 @@
     z-index: 98;
     color: #fff;
     text-align: right;
-    padding: 1rem 1rem calc(1rem + 48px + 1rem) 1rem;
+    padding: 1rem 1rem calc(1rem + 48px + 1rem);
     opacity: 0;
-    transition: opacity 0.15s, visibility 0.15s 0s;
+    transition:
+      opacity 0.15s,
+      visibility 0.15s 0s;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-end;
 
     &.shifted {
-      padding: 1rem 1rem calc(#{$mobile-player-bar-height} + 1rem + 48px + 1rem) 1rem;
+      padding: 1rem 1rem calc(#{$mobile-player-bar-height} + 1rem + 48px + 1rem)
+        1rem;
     }
 
     .navItem {
@@ -32,7 +35,9 @@
       padding: 0.5rem 0;
       opacity: 0;
       transform: translateY(1rem);
-      transition: opacity 0.05s, transform 0.05s;
+      transition:
+        opacity 0.05s,
+        transform 0.05s;
 
       .iconWrapper {
         width: 48px;
