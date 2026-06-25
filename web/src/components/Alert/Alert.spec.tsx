@@ -12,7 +12,7 @@ describe('Alert', () => {
   });
 
   it('calls close handler when close button is clicked', async () => {
-    const handleClose = jest.fn();
+    const handleClose = rstest.fn();
 
     render(<Alert message="this is a message" onClose={handleClose} />);
     fireEvent.click(screen.getByRole('button'));

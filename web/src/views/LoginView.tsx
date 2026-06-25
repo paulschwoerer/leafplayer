@@ -3,11 +3,11 @@ import Checkbox from 'components/form/Checkbox/Checkbox';
 import FormCard from 'components/form/FormCard/FormCard';
 import Input from 'components/form/Input/Input';
 import { useFormik } from 'formik';
-import { AuthRequestDto, AuthResponseDto } from 'leafplayer-common';
+import { type AuthRequestDto, type AuthResponseDto } from 'leafplayer-common';
 import { isApiError, makeApiPostRequest } from 'modules/api';
 import { AuthContext } from 'modules/auth';
-import React, { ReactElement, useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { type ReactElement, useContext, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 function LoginView(): ReactElement {
   const navigate = useNavigate();

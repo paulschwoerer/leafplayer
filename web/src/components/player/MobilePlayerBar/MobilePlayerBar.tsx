@@ -3,7 +3,7 @@ import RoundButton from 'components/form/RoundButton/RoundButton';
 import { PauseIcon, PlayIcon } from 'components/icons';
 import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 import styles from './MobilePlayerBar.module.scss';
 
 type Props = {

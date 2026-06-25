@@ -1,8 +1,12 @@
 import classNames from 'classnames';
 import { CloseIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
-import React, { PropsWithChildren, ReactElement, useState } from 'react';
-import { NotificationContext, Notification } from './NotificationContext';
+import React, {
+  type PropsWithChildren,
+  type ReactElement,
+  useState,
+} from 'react';
+import { NotificationContext, type Notification } from './NotificationContext';
 import styles from './NotificationProvider.module.scss';
 
 const DEFAULT_NOTIFICATION_DURATION = 4000;

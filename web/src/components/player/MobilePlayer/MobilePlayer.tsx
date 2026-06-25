@@ -5,7 +5,7 @@ import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
 import Duration from 'components/media/Duration/Duration';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { type ReactElement, useContext, useState } from 'react';
 import PlayerControls from '../PlayerControls/PlayerControls';
 import PlayerProgressBar from '../PlayerProgressBar/PlayerProgressBar';
 import PlayerRepeatButton from '../PlayerRepeatButton';

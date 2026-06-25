@@ -1,4 +1,4 @@
-import { PlayerRepeatMode, QueueItem } from 'modules/player/types';
+import { PlayerRepeatMode, type QueueItem } from 'modules/player/types';
 import { initialState, playerReducer, PlaybackState } from './reducer';
 
 function qi(id: string): QueueItem {

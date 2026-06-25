@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactElement } from 'react';
+import React, { type PropsWithChildren, type ReactElement } from 'react';
 import styles from './SectionHeader.module.scss';
 
 type Props = {

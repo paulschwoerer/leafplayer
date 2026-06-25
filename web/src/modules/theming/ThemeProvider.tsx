@@ -1,7 +1,7 @@
 import { useMediaQuery } from 'helpers/mediaQuery';
 import React, {
-  PropsWithChildren,
-  ReactElement,
+  type PropsWithChildren,
+  type ReactElement,
   useEffect,
   useState,
 } from 'react';

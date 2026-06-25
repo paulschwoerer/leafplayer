@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styles from './AppearFromBottom.module.scss';
 

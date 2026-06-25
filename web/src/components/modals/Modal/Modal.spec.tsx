@@ -1,11 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React, { ReactElement, useState } from 'react';
+import React, { type ReactElement, useState } from 'react';
 import Modal from './Modal';
 
 describe('Modal', () => {
   it('renders title & content when visible', () => {
     render(
-      <Modal title="Test Modal" hideModal={jest.fn()} isVisible={true}>
+      <Modal title="Test Modal" hideModal={rstest.fn()} isVisible={true}>
         <p>Sweet content</p>
       </Modal>,
     );
@@ -16,7 +16,7 @@ describe('Modal', () => {
 
   it('does not render title & content when not visible', () => {
     render(
-      <Modal title="Test Modal" hideModal={jest.fn()} isVisible={false}>
+      <Modal title="Test Modal" hideModal={rstest.fn()} isVisible={false}>
         <p>Sweet content</p>
       </Modal>,
     );
@@ -26,7 +26,7 @@ describe('Modal', () => {
   });
 
   it('calls hide callback when clicking the close button', async () => {
-    const handleClose = jest.fn();
+    const handleClose = rstest.fn();
 
     render(
       <Modal title="Test Modal" hideModal={handleClose} isVisible={true} />,
@@ -39,7 +39,7 @@ describe('Modal', () => {
   });
 
   it('calls hide callback when clicking the wrapper background', async () => {
-    const handleClose = jest.fn();
+    const handleClose = rstest.fn();
 
     render(
       <Modal title="Test Modal" hideModal={handleClose} isVisible={true} />,
@@ -57,7 +57,7 @@ describe('Modal', () => {
   });
 
   it('calls hide callback when hitting the esc key', async () => {
-    const handleClose = jest.fn();
+    const handleClose = rstest.fn();
 
     render(
       <Modal title="Test Modal" hideModal={handleClose} isVisible={true} />,

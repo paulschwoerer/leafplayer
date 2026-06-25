@@ -3,7 +3,7 @@ import { ButtonText } from 'components/form/Button/Button';
 import { EarthIcon, MoonIcon, SunIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
 import { ThemeContext } from 'modules/theming/ThemeContext';
-import React, { ReactElement, useContext } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 import styles from './ThemeSwitcher.module.scss';
 
 function ThemeSwitcher(): ReactElement {

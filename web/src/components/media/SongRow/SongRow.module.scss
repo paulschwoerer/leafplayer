@@ -1,4 +1,4 @@
-@import "src/scss/mixins";
+@import '../../../scss/mixins.scss';
 
 .root {
   display: flex;
@@ -62,7 +62,9 @@
   }
 
   .overlay {
-    transition: opacity 0.15s, visibility 0 0.15s;
+    transition:
+      opacity 0.15s,
+      visibility 0 0.15s;
     opacity: 0;
     visibility: hidden;
     background-color: rgba(#000, 0.3);

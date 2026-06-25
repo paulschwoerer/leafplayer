@@ -1,6 +1,11 @@
 import classNames from 'classnames';
 import Icon from 'components/icons/Icon/Icon';
-import React, { ChangeEvent, ReactElement, useEffect, useRef } from 'react';
+import React, {
+  type ChangeEvent,
+  type ReactElement,
+  useEffect,
+  useRef,
+} from 'react';
 import styles from './Input.module.scss';
 
 type Props = {

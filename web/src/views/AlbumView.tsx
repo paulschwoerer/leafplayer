@@ -1,8 +1,8 @@
 import ApiLoader from 'components/layout/ApiLoader';
 import AlbumWithSongs from 'components/media/AlbumWithSongs/AlbumWithSongs';
-import { AlbumWithSongsResponseDto } from 'leafplayer-common';
-import React, { ReactElement } from 'react';
-import { useParams } from 'react-router-dom';
+import { type AlbumWithSongsResponseDto } from 'leafplayer-common';
+import React, { type ReactElement } from 'react';
+import { useParams } from 'react-router';
 
 function AlbumView(): ReactElement {
   const { id } = useParams<{ id: string }>();

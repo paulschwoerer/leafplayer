@@ -5,7 +5,7 @@ import {
   SkipPreviousIcon,
 } from 'components/icons';
 import MediaControlButton from 'components/player/MediaControlButton/MediaControlButton';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import styles from './PlayerControls.module.scss';
 
 type Props = {

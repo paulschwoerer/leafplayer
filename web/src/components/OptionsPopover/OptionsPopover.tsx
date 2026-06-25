@@ -3,8 +3,8 @@ import IconButton from 'components/icons/IconButton/IconButton';
 import AppearFromBottom from 'components/transitions/AppearFromBottom/AppearFromBottom';
 import { useMediaQuery } from 'helpers/mediaQuery';
 import React, {
-  PropsWithChildren,
-  ReactElement,
+  type PropsWithChildren,
+  type ReactElement,
   useEffect,
   useRef,
   useState,
@@ -19,7 +19,8 @@ import {
   hide,
   arrow,
 } from '@floating-ui/react-dom';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
+
 import styles from './OptionsPopover.module.scss';
 
 type PopoverProps = {

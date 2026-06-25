@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { clamp } from 'helpers/math';
-import React, { PropsWithChildren, ReactElement } from 'react';
+import React, { type PropsWithChildren, type ReactElement } from 'react';
 import styles from './Slider.module.scss';
 
 type Props = {

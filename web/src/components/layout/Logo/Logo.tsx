@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import logo from 'assets/leafplayer-logo.svg';
 import styles from './Logo.module.scss';
 

@@ -1,4 +1,4 @@
-import { FullSong } from 'leafplayer-common';
+import { type FullSong } from 'leafplayer-common';
 
 export enum PlayerRepeatMode {
   DISABLED = 'disabled',

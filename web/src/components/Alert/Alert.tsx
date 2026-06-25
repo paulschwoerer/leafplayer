@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { CloseIcon } from 'components/icons';
 import IconButton from 'components/icons/IconButton/IconButton';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import styles from './Alert.module.scss';
 
 type Props = {

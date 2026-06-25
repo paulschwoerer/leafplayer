@@ -1,4 +1,4 @@
-import { PlayerPersistor, PlayerPersistState } from './PlayerPersistor';
+import type { PlayerPersistor, PlayerPersistState } from './PlayerPersistor';
 
 const LOCAL_STORAGE_KEY = 'lp_player_state';
 

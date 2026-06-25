@@ -2,7 +2,7 @@ import Slider from 'components/form/Slider/Slider';
 import { VolumeDownIcon, VolumeOffIcon, VolumeUpIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
 import { clamp } from 'helpers/math';
-import React, { ReactElement, useState } from 'react';
+import React, { type ReactElement, useState } from 'react';
 import styles from './PlayerVolume.module.scss';
 
 type Props = {

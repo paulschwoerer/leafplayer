@@ -3,7 +3,7 @@ import ViewHeader from 'components/layout/ViewHeader/ViewHeader';
 import PasswordChanging from 'components/settings/PasswordChanging/PasswordChanging';
 import ThemeSwitcher from 'components/settings/ThemeSwitcher/ThemeSwitcher';
 import UserSessions from 'components/settings/UserSessions/UserSessions';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import styles from './UserSettingsView.module.scss';
 
 function UserSettingsView(): ReactElement {

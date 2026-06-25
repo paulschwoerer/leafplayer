@@ -1,5 +1,5 @@
 import { ExclamationMarkIcon } from 'components/icons';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import Icon from '../../icons/Icon/Icon';
 import styles from './FullPageErrorIndicator.module.scss';
 

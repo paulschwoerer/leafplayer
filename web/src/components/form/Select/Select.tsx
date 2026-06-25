@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { ChevronLeftIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { type ReactElement, useRef, useState } from 'react';
 import styles from './Select.module.scss';
 
 type Option = {

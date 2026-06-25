@@ -1,4 +1,4 @@
-@import "src/scss/mixins";
+@import '../../../scss/mixins.scss';
 
 .root {
   > p,
@@ -21,7 +21,7 @@
       align-items: center;
 
       &:not(:last-of-type)::after {
-        content: "•";
+        content: '•';
         display: inline-block;
         margin: 0 0.5rem;
       }

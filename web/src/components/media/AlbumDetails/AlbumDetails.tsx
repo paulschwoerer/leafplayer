@@ -1,6 +1,6 @@
 import AppLink from 'components/layout/AppLink/AppLink';
 import { durationToString } from 'helpers/time';
-import { FullAlbum, FullSong } from 'leafplayer-common';
+import type { FullAlbum, FullSong } from 'leafplayer-common';
 import React from 'react';
 import { SongCount } from '../Counts';
 import styles from './AlbumDetails.module.scss';

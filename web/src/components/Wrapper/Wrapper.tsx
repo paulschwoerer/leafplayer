@@ -10,7 +10,7 @@ import MobileMenu from 'components/mobile/MobileMenu/MobileMenu';
 import MobilePlayer from 'components/player/MobilePlayer/MobilePlayer';
 import MobilePlayerBar from 'components/player/MobilePlayerBar/MobilePlayerBar';
 import { PlayerProvider } from 'modules/player/PlayerProvider';
-import React, { ReactElement, useState } from 'react';
+import React, { type ReactElement, useState } from 'react';
 import { Outlet } from 'react-router';
 import DesktopPlayerBar from '../player/DesktopPlayerBar/DesktopPlayerBar';
 import DesktopSidebar from '../sidebar/DesktopSidebar/DesktopSidebar';

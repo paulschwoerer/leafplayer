@@ -5,14 +5,14 @@ import Card from 'components/layout/Card/Card';
 import SectionHeader from 'components/layout/SectionHeader/SectionHeader';
 import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
 import ThemedArtistArtwork from 'components/media/artworks/ThemedArtistArtwork';
-import {
+import type {
   FindSearchHistoryEntriesResponseDto,
   FullAlbum,
   FullArtist,
   FullSong,
 } from 'leafplayer-common';
 import { makeApiDeleteRequest } from 'modules/api';
-import React, { PropsWithChildren, ReactElement } from 'react';
+import React, { type PropsWithChildren, type ReactElement } from 'react';
 import styles from './SearchHistory.module.scss';
 
 function SearchHistory(): ReactElement {

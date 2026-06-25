@@ -2,9 +2,9 @@ import { ErrorAlert, SuccessAlert } from 'components/Alert/Alert';
 import { ButtonPrimary } from 'components/form/Button/Button';
 import Input from 'components/form/Input/Input';
 import { useFormik } from 'formik';
-import { ChangePasswordRequestDto } from 'leafplayer-common';
+import { type ChangePasswordRequestDto } from 'leafplayer-common';
 import { isApiError, makeApiPostRequest } from 'modules/api';
-import React, { ReactElement, useState } from 'react';
+import React, { type ReactElement, useState } from 'react';
 
 function PasswordChanging(): ReactElement {
   const [error, setError] = useState('');

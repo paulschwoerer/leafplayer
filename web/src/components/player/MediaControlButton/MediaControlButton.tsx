@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import Icon from 'components/icons/Icon/Icon';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import styles from './MediaControlButton.module.scss';
 
 type Props = {

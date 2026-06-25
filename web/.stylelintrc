@@ -1,13 +1,8 @@
 {
-  "extends": ["stylelint-config-standard-scss"],
+  "extends": "stylelint-config-standard-scss",
   "rules": {
     "selector-class-pattern": null,
-    "declaration-block-no-redundant-longhand-properties": null
-  },
-  "overrides": [
-    {
-      "files": ["**/*.scss"],
-      "customSyntax": "postcss-scss"
-    }
-  ]
+    "declaration-block-no-redundant-longhand-properties": null,
+    "scss/load-partial-extension": "always"
+  }
 }

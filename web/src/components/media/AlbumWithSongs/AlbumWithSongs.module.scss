@@ -1,13 +1,13 @@
-@import "src/scss/mixins";
+@import '../../../scss/mixins.scss';
 
 .root {
   display: grid;
   grid-template-columns: 1fr 200px 1fr;
   grid-template-rows: auto auto 1fr;
   grid-template-areas:
-    ". artwork ."
-    "content content content"
-    "list list list";
+    '. artwork .'
+    'content content content'
+    'list list list';
   gap: 2rem;
 
   .artwork {
@@ -63,14 +63,14 @@
 
     &.aside {
       grid-template-areas:
-        "artwork list"
-        "content list";
+        'artwork list'
+        'content list';
     }
 
     &.above {
       grid-template-areas:
-        "artwork content"
-        "list list";
+        'artwork content'
+        'list list';
     }
   }
 

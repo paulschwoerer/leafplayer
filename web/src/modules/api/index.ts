@@ -1,4 +1,4 @@
-import { ApiError } from 'leafplayer-common';
+import { type ApiError } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
 import { useCallback, useContext, useEffect, useState } from 'react';
 

@@ -1,6 +1,10 @@
 import classNames from 'classnames';
 import { CheckBoxCheckedIcon, CheckBoxUncheckedIcon } from 'components/icons';
-import React, { PropsWithChildren, ReactElement, useState } from 'react';
+import React, {
+  type PropsWithChildren,
+  type ReactElement,
+  useState,
+} from 'react';
 import Icon from '../../icons/Icon/Icon';
 import styles from './Checkbox.module.scss';
 

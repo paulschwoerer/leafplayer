@@ -1,10 +1,10 @@
-@import "src/scss/mixins";
+@import '../../../scss/mixins.scss';
 
 .root {
   display: grid;
   grid-template-columns: 1fr 200px 1fr;
   grid-template-rows: auto 1fr;
-  grid-template-areas: ". artwork ." "content content content";
+  grid-template-areas: '. artwork .' 'content content content';
   position: relative;
   overflow: hidden;
   padding: 1rem;
@@ -23,7 +23,7 @@
     &::after {
       @include cover-parent;
 
-      content: "";
+      content: '';
       background-color: rgba(#000, 0.25);
     }
   }
@@ -52,7 +52,7 @@
     gap: 2rem;
     grid-template-columns: 200px 1fr;
     grid-template-rows: 1fr;
-    grid-template-areas: "artwork content";
+    grid-template-areas: 'artwork content';
 
     .content {
       text-align: left;

@@ -5,8 +5,8 @@ import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import TextPlaceholder from 'components/layout/TextPlaceholder/TextPlaceholder';
 import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
 import { useThemedUrl } from 'modules/artworks';
-import { QueueItem } from 'modules/player/types';
-import React, { ReactElement } from 'react';
+import { type QueueItem } from 'modules/player/types';
+import React, { type ReactElement } from 'react';
 import styles from './PlayerCurrent.module.scss';
 
 type Props = {

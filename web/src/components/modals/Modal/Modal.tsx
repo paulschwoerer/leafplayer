@@ -1,8 +1,8 @@
 import { CloseIcon } from 'components/icons';
 import IconButton from 'components/icons/IconButton/IconButton';
 import React, {
-  PropsWithChildren,
-  ReactElement,
+  type PropsWithChildren,
+  type ReactElement,
   useEffect,
   useRef,
   useState,

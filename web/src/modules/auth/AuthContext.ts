@@ -1,4 +1,4 @@
-import { User } from 'leafplayer-common';
+import { type User } from 'leafplayer-common';
 import { createContext } from 'react';
 import {
   throwNotImplemented,

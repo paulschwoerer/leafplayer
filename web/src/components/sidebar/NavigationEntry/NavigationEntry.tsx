@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Icon from 'components/icons/Icon/Icon';
-import React, { ReactElement } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { type ReactElement } from 'react';
+import { NavLink } from 'react-router';
 import styles from './NavigationEntry.module.scss';
 
 type Props = {

@@ -1,8 +1,8 @@
 import If from 'components/If';
 import { SongRowWithArtwork } from 'components/media/SongRow/SongRow';
 import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
-import { QueueItem } from 'modules/player/types';
-import React, { ReactElement } from 'react';
+import { type QueueItem } from 'modules/player/types';
+import React, { type ReactElement } from 'react';
 
 type Props = {
   queue: QueueItem[];

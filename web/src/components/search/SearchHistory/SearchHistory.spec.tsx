@@ -3,8 +3,8 @@ import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import SearchHistory from './SearchHistory';
-import { FindSearchHistoryEntriesResponseDto } from 'leafplayer-common';
-import { MemoryRouter } from 'react-router-dom';
+import { type FindSearchHistoryEntriesResponseDto } from 'leafplayer-common';
+import { MemoryRouter } from 'react-router';
 import { setupIntersectionObserverMock } from 'helpers/testing/mockIntersectionObserver';
 import { setupMatchMediaMock } from 'helpers/testing/mockMatchMedia';
 import { mockAlbum, mockArtist } from 'helpers/testing/mockMedia';
@@ -27,7 +27,7 @@ const server = setupServer(
     });
   }),
   http.delete('/api/search/history/id2', () => {
-    new HttpResponse(null, { status: 204 });
+    return new HttpResponse(null, { status: 204 });
   }),
 );
 

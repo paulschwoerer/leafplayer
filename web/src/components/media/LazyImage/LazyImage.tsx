@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 import styles from './LazyImage.module.scss';
 
 type Props = {

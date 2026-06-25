@@ -11,8 +11,8 @@ function empty() {
 }
 
 describe('media session', () => {
-  const mockSetActionHandler = jest.fn();
-  const mockSetPositionState = jest.fn();
+  const mockSetActionHandler = rstest.fn();
+  const mockSetPositionState = rstest.fn();
 
   beforeAll(() => {
     Object.defineProperty(navigator, 'mediaSession', {

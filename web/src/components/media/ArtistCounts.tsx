@@ -1,5 +1,5 @@
-import { FullArtist } from 'leafplayer-common';
-import React, { ReactElement } from 'react';
+import { type FullArtist } from 'leafplayer-common';
+import React, { type ReactElement } from 'react';
 import { AlbumCount, SongCount } from './Counts';
 
 type Props = {

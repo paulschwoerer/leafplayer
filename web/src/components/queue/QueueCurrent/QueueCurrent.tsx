@@ -1,7 +1,7 @@
 import ThemedAlbumArtwork from 'components/media/artworks/ThemedAlbumArtwork';
 import { useArtworkUrl } from 'modules/artworks';
-import { QueueItem } from 'modules/player/types';
-import React, { ReactElement } from 'react';
+import { type QueueItem } from 'modules/player/types';
+import React, { type ReactElement } from 'react';
 import styles from './QueueCurrent.module.scss';
 
 type Props = {

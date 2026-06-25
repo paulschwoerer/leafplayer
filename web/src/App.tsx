@@ -1,8 +1,13 @@
 import { NotificationProvider } from 'modules/notifications/NotificationProvider';
 import { ThemeProvider } from 'modules/theming/ThemeProvider';
-import React, { ReactElement, useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { type ReactElement, useContext } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+} from 'react-router';
 import AlbumView from 'views/AlbumView';
 import AllAlbumsView from 'views/AllAlbumsView';
 import AllArtistsView from 'views/AllArtistsView';

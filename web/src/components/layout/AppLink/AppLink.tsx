@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import React, { PropsWithChildren, ReactElement } from 'react';
-import { Link } from 'react-router-dom';
+import React, { type PropsWithChildren, type ReactElement } from 'react';
+import { Link } from 'react-router';
 import styles from './AppLink.module.scss';
 
 type Props = {

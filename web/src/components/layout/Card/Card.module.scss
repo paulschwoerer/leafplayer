@@ -1,4 +1,4 @@
-@import "src/scss/mixins";
+@import '../../../scss/mixins.scss';
 
 .root {
   position: relative;
@@ -10,7 +10,7 @@
   @include shadow(low);
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;

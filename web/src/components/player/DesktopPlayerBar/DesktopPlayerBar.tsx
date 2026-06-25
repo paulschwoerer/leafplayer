@@ -7,7 +7,7 @@ import InvisibleLink from 'components/layout/InvisibleLink/InvisibleLink';
 import Duration from 'components/media/Duration/Duration';
 import { useMediaQuery } from 'helpers/mediaQuery';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { type ReactElement, useContext, useState } from 'react';
 import PlayerControls from '../PlayerControls/PlayerControls';
 import PlayerCurrent from '../PlayerCurrent/PlayerCurrent';
 import PlayerProgressBar from '../PlayerProgressBar/PlayerProgressBar';

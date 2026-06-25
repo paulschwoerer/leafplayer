@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import LazyImage from '../../LazyImage/LazyImage';
 import styles from './Artwork.module.scss';
 

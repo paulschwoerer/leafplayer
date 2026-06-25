@@ -1,9 +1,9 @@
 import { ButtonOutlined } from 'components/form/Button/Button';
 import { PlayIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
-import { FullArtist } from 'leafplayer-common';
+import { type FullArtist } from 'leafplayer-common';
 import { useArtworkUrl } from 'modules/artworks';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import ArtistCounts from '../ArtistCounts';
 import ThemedArtistArtwork from '../artworks/ThemedArtistArtwork';
 import styles from './ArtistHeader.module.scss';

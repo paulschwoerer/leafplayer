@@ -1,5 +1,5 @@
-import { FullAlbum } from 'leafplayer-common';
-import React, { ReactElement } from 'react';
+import { type FullAlbum } from 'leafplayer-common';
+import React, { type ReactElement } from 'react';
 import { AlbumCard } from '../AlbumCard/AlbumCard';
 import SectionHeader from '../../layout/SectionHeader/SectionHeader';
 import WaterfallLayout from '../../layout/WaterfallLayout/WaterfallLayout';

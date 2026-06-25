@@ -1,7 +1,11 @@
 import AppLink from 'components/layout/AppLink/AppLink';
-import { FullArtist } from 'leafplayer-common';
+import { type FullArtist } from 'leafplayer-common';
 import { PlayerContext } from 'modules/player/context';
-import React, { PropsWithChildren, ReactElement, useContext } from 'react';
+import React, {
+  type PropsWithChildren,
+  type ReactElement,
+  useContext,
+} from 'react';
 import InvisibleLink from '../../layout/InvisibleLink/InvisibleLink';
 import ArtistCounts from '../ArtistCounts';
 import ArtworkOverlay from '../artworks/ArtworkOverlay/ArtworkOverlay';

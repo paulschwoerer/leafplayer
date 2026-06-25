@@ -1,6 +1,6 @@
 import { AlbumIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import styles from './DiskNumber.module.scss';
 
 type Props = {

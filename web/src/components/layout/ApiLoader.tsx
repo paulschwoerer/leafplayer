@@ -1,5 +1,5 @@
 import { useApiData } from 'modules/api';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import FullPageErrorIndicator from './FullPageErrorIndicator/FullPageErrorIndicator';
 import FullPageLoadingIndicator from './FullPageLoadingIndicator/FullPageLoadingIndicator';
 

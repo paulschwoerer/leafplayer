@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, fireEvent, render, waitFor } from '@testing-library/react';
 import SearchResultList from './SearchResultList';
-import { SearchResults } from 'leafplayer-common';
-import { MemoryRouter } from 'react-router-dom';
+import { type SearchResults } from 'leafplayer-common';
+import { MemoryRouter } from 'react-router';
 import { setupIntersectionObserverMock } from 'helpers/testing/mockIntersectionObserver';
 import { setupMatchMediaMock } from 'helpers/testing/mockMatchMedia';
 import { mockAlbum, mockArtist, mockSong } from 'helpers/testing/mockMedia';
@@ -23,15 +23,15 @@ describe('SearchResultList', () => {
   };
 
   it('should call artist handler when clicking on artist', async () => {
-    const handler = jest.fn();
+    const handler = rstest.fn();
 
     render(
       <MemoryRouter>
         <SearchResultList
           results={results}
           onArtistClicked={handler}
-          onAlbumClicked={jest.fn()}
-          onSongPlayed={jest.fn()}
+          onAlbumClicked={rstest.fn()}
+          onSongPlayed={rstest.fn()}
         />
       </MemoryRouter>,
     );
@@ -44,15 +44,15 @@ describe('SearchResultList', () => {
   });
 
   it('should call album handler when clicking on album', async () => {
-    const handler = jest.fn();
+    const handler = rstest.fn();
 
     render(
       <MemoryRouter>
         <SearchResultList
           results={results}
-          onArtistClicked={jest.fn()}
+          onArtistClicked={rstest.fn()}
           onAlbumClicked={handler}
-          onSongPlayed={jest.fn()}
+          onSongPlayed={rstest.fn()}
         />
       </MemoryRouter>,
     );
@@ -65,15 +65,15 @@ describe('SearchResultList', () => {
   });
 
   it('should call song handler when clicking on song', async () => {
-    const handler = jest.fn();
+    const handler = rstest.fn();
 
     render(
       <MemoryRouter>
         <PlayerProvider>
           <SearchResultList
             results={results}
-            onArtistClicked={jest.fn()}
-            onAlbumClicked={jest.fn()}
+            onArtistClicked={rstest.fn()}
+            onAlbumClicked={rstest.fn()}
             onSongPlayed={handler}
           />
         </PlayerProvider>

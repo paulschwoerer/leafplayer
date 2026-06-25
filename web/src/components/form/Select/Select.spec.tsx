@@ -14,7 +14,7 @@ const options = [
 
 describe('Select', () => {
   it('should allow selection of an option', async () => {
-    const changeHandler = jest.fn();
+    const changeHandler = rstest.fn();
 
     render(
       <Select value={options[0]} options={options} onChange={changeHandler} />,

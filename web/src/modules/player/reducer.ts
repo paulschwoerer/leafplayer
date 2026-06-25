@@ -1,6 +1,6 @@
 import { clamp } from 'helpers/math';
 import { randomArrayIndex } from 'helpers/random';
-import { PlayerRepeatMode, QueueItem } from './types';
+import { PlayerRepeatMode, type QueueItem } from './types';
 
 const PREVIOUS_SKIP_THRESHOLD = 5;
 

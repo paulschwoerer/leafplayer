@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PasswordChanging from './PasswordChanging';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { ApiError, ChangePasswordRequestDto } from 'leafplayer-common';
+import type { ApiError, ChangePasswordRequestDto } from 'leafplayer-common';
 
 const server = setupServer();
 

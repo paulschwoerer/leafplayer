@@ -5,14 +5,14 @@ import { AlbumCard } from 'components/media/AlbumCard/AlbumCard';
 import { ArtistCard } from 'components/media/ArtistCard/ArtistCard';
 import { SongRowWithArtwork } from 'components/media/SongRow/SongRow';
 import OptionsPopover from 'components/OptionsPopover/OptionsPopover';
-import {
+import type {
   FullAlbum,
   FullArtist,
   FullSong,
   SearchResults,
 } from 'leafplayer-common';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 
 type Props = {
   results: SearchResults;

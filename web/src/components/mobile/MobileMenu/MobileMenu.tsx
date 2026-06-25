@@ -2,8 +2,13 @@ import classNames from 'classnames';
 import Icon from 'components/icons/Icon/Icon';
 import FloatingMenuButton from 'components/mobile/FloatingMenuButton/FloatingMenuButton';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, {
+  type ReactElement,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { Link } from 'react-router';
 import styles from './MobileMenu.module.scss';
 
 type NavEntry = {

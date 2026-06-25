@@ -1,6 +1,6 @@
 import SectionHeader from 'components/layout/SectionHeader/SectionHeader';
-import { FullAlbum, FullSong } from 'leafplayer-common';
-import React, { ReactElement } from 'react';
+import type { FullAlbum, FullSong } from 'leafplayer-common';
+import React, { type ReactElement } from 'react';
 import AlbumWithSongs from '../AlbumWithSongs/AlbumWithSongs';
 import styles from './ArtistDiscography.module.scss';
 

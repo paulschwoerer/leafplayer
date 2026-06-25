@@ -2,7 +2,7 @@ import QueueCurrent from 'components/queue/QueueCurrent/QueueCurrent';
 import QueueEmpty from 'components/queue/QueueEmpty/QueueEmpty';
 import QueueNextUp from 'components/queue/QueueNextUp';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 
 function QueueView(): ReactElement {
   const [{ queue, current }, { goToQueueIndex, removeQueueItem }] =

@@ -4,11 +4,11 @@ import Icon from 'components/icons/Icon/Icon';
 import ApiLoader from 'components/layout/ApiLoader';
 import Card from 'components/layout/Card/Card';
 import { dateFromUnixTimestamp } from 'helpers/time';
-import { UserSession, UserSessionsResponseDto } from 'leafplayer-common';
+import type { UserSession, UserSessionsResponseDto } from 'leafplayer-common';
 import { isApiError, makeApiDeleteRequest } from 'modules/api';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
-import React, { ReactElement, ReactNode, useContext } from 'react';
+import React, { type ReactElement, type ReactNode, useContext } from 'react';
 import styles from './UserSessions.module.scss';
 
 type BaseSessionProps = {

@@ -1,9 +1,9 @@
 import FullPageErrorIndicator from 'components/layout/FullPageErrorIndicator/FullPageErrorIndicator';
 import FullPageLoadingIndicator from 'components/layout/FullPageLoadingIndicator/FullPageLoadingIndicator';
-import { User, UserResponseDto } from 'leafplayer-common';
+import type { User, UserResponseDto } from 'leafplayer-common';
 import React, {
-  PropsWithChildren,
-  ReactElement,
+  type PropsWithChildren,
+  type ReactElement,
   useEffect,
   useState,
 } from 'react';

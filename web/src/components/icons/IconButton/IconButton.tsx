@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, ReactElement } from 'react';
+import React, { type MouseEventHandler, type ReactElement } from 'react';
 import Icon from '../Icon/Icon';
 import styles from './IconButton.module.scss';
 

@@ -1,5 +1,5 @@
 import { ShuffleIcon } from 'components/icons';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import MediaControlButton from './MediaControlButton/MediaControlButton';
 
 type Props = {

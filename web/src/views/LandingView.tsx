@@ -10,7 +10,7 @@ import {
   FakeArtistCard,
 } from 'components/media/ArtistCard/ArtistCard';
 import EmptyLibrary from 'components/media/EmptyLibrary/EmptyLibrary';
-import {
+import type {
   AlbumResponseDto,
   AlbumsResponseDto,
   ArtistResponseDto,
@@ -18,7 +18,7 @@ import {
 } from 'leafplayer-common';
 import { isApiError, makeApiGetRequest } from 'modules/api';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 
 function LandingView(): ReactElement {
   const [, { addAlbumToQueue, addArtistToQueue }] = useContext(PlayerContext);
@@ -93,9 +93,8 @@ function LandingView(): ReactElement {
   );
 
   async function playRandomAlbum() {
-    const response = await makeApiGetRequest<AlbumResponseDto>(
-      'discover/album',
-    );
+    const response =
+      await makeApiGetRequest<AlbumResponseDto>('discover/album');
 
     if (!isApiError(response)) {
       const { album } = response;
@@ -108,9 +107,8 @@ function LandingView(): ReactElement {
   }
 
   async function playRandomArtist() {
-    const response = await makeApiGetRequest<ArtistResponseDto>(
-      'discover/artist',
-    );
+    const response =
+      await makeApiGetRequest<ArtistResponseDto>('discover/artist');
 
     if (!isApiError(response)) {
       const { artist } = response;

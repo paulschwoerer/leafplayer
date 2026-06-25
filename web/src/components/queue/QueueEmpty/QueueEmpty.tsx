@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import styles from './QueueEmpty.module.scss';
 
 function QueueEmpty(): ReactElement {

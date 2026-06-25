@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import RoundButton from 'components/form/RoundButton/RoundButton';
 import { CloseIcon, MenuIcon } from 'components/icons';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import styles from './FloatingMenuButton.module.scss';
 
 type Props = {

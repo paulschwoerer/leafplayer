@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { throwNotImplemented } from 'helpers/context';
-import { UserSessionsResponseDto } from 'leafplayer-common';
+import { type UserSessionsResponseDto } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
 import { http, HttpResponse } from 'msw';
@@ -64,7 +64,7 @@ test('displays the last time a session was accessed', async () => {
 });
 
 test('can revoke a session', async () => {
-  const mockNotification = jest.fn();
+  const mockNotification = rstest.fn();
 
   render(
     <NotificationContext.Provider
@@ -91,7 +91,7 @@ test('can revoke a session', async () => {
 });
 
 test('can logout of the current session', async () => {
-  const mockLogout = jest.fn();
+  const mockLogout = rstest.fn();
 
   render(
     <AuthContext.Provider

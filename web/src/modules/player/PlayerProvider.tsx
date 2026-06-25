@@ -1,10 +1,10 @@
 import { getErrorMessage } from 'helpers/errors';
-import { FullSong } from 'leafplayer-common';
+import { type FullSong } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
 import React, {
-  PropsWithChildren,
-  ReactElement,
+  type PropsWithChildren,
+  type ReactElement,
   useCallback,
   useContext,
   useEffect,
@@ -32,7 +32,7 @@ import {
   registerKeyboardShortcuts,
   unregisterKeyboardShortcuts,
 } from './shortcuts';
-import { AddToQueueOptions, PlayerRepeatMode } from './types';
+import { type AddToQueueOptions, PlayerRepeatMode } from './types';
 
 export function PlayerProvider({
   children,

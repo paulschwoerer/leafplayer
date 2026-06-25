@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import Icon from '../../icons/Icon/Icon';
 import styles from './RoundButton.module.scss';
 

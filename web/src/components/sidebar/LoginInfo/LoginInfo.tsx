@@ -1,7 +1,7 @@
 import AppLink from 'components/layout/AppLink/AppLink';
 import { AuthContext } from 'modules/auth/AuthContext';
-import React, { ReactElement, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { type ReactElement, useContext } from 'react';
+import { useNavigate } from 'react-router';
 import styles from './LoginInfo.module.scss';
 
 function LoginInfo(): ReactElement | null {

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { ArrowForwardIcon } from 'components/icons';
 import Icon from 'components/icons/Icon/Icon';
-import React, { PropsWithChildren, ReactElement } from 'react';
-import { Link } from 'react-router-dom';
+import React, { type PropsWithChildren, type ReactElement } from 'react';
+import { Link } from 'react-router';
 import styles from './Button.module.scss';
 
 type Props = {

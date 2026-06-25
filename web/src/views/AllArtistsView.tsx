@@ -7,8 +7,8 @@ import ViewHeader from 'components/layout/ViewHeader/ViewHeader';
 import WaterfallLayout from 'components/layout/WaterfallLayout/WaterfallLayout';
 import { ArtistCard } from 'components/media/ArtistCard/ArtistCard';
 import EmptyLibrary from 'components/media/EmptyLibrary/EmptyLibrary';
-import { ArtistsResponseDto } from 'leafplayer-common';
-import React, { ReactElement, useState } from 'react';
+import { type ArtistsResponseDto } from 'leafplayer-common';
+import React, { type ReactElement, useState } from 'react';
 
 const sortByOptions = [
   { label: 'Alphabetical', value: 'asc(name)' },

@@ -1,6 +1,6 @@
 import { useAlbumPlayState } from 'helpers/albumPlayState';
-import { FullAlbum } from 'leafplayer-common';
-import React, { PropsWithChildren, ReactElement } from 'react';
+import { type FullAlbum } from 'leafplayer-common';
+import React, { type PropsWithChildren, type ReactElement } from 'react';
 import AppLink from '../../layout/AppLink/AppLink';
 import InvisibleLink from '../../layout/InvisibleLink/InvisibleLink';
 import ArtworkOverlay from '../artworks/ArtworkOverlay/ArtworkOverlay';

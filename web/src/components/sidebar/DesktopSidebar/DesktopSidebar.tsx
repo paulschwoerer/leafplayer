@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import NavigationEntry from 'components/sidebar/NavigationEntry/NavigationEntry';
-import React, { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
+import React, { type ReactElement } from 'react';
+import { Link } from 'react-router';
 import Logo from '../../layout/Logo/Logo';
 import LoginInfo from '../LoginInfo/LoginInfo';
 import styles from './DesktopSidebar.module.scss';

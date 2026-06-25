@@ -1,4 +1,4 @@
-import { FullArtist, FullAlbum, FullSong } from 'leafplayer-common';
+import type { FullArtist, FullAlbum, FullSong } from 'leafplayer-common';
 
 export function mockArtist(name: string): FullArtist {
   return {

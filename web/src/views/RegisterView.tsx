@@ -2,10 +2,10 @@ import { ButtonPrimary, ButtonText } from 'components/form/Button/Button';
 import FormCard from 'components/form/FormCard/FormCard';
 import Input from 'components/form/Input/Input';
 import { useFormik } from 'formik';
-import { RegisterRequestDto } from 'leafplayer-common';
+import { type RegisterRequestDto } from 'leafplayer-common';
 import { isApiError, makeApiPostRequest } from 'modules/api';
-import React, { ReactElement, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { type ReactElement, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 function RegisterView(): ReactElement {
   const navigate = useNavigate();

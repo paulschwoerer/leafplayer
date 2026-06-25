@@ -1,5 +1,5 @@
-import { durationToString } from 'helpers/time';
-import React, { ReactElement } from 'react';
+import { durationToString } from '../../../helpers/time.ts';
+import React, { type ReactElement } from 'react';
 import styles from './Duration.module.scss';
 
 type Props = {

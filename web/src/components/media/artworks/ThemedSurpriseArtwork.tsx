@@ -1,7 +1,7 @@
 import SurpriseDay from 'assets/artworks/surprise-day.jpg';
 import SurpriseNight from 'assets/artworks/surprise-night.jpg';
 import { useThemedUrl } from 'modules/artworks';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import Artwork from './Artwork/Artwork';
 
 type Props = {

@@ -5,7 +5,7 @@ import ThemeSwitcher from './ThemeSwitcher';
 
 describe('ThemeSwitcher', () => {
   it('calls funtion in ThemeContext', async () => {
-    const setIsNightMode = jest.fn();
+    const setIsNightMode = rstest.fn();
 
     render(
       <ThemeContext.Provider

@@ -1,6 +1,6 @@
 import { buildArtworkUrl } from 'modules/artworks';
 import { PlaybackState } from './reducer';
-import { QueueItem } from './types';
+import { type QueueItem } from './types';
 
 type MediaSessionListenerCallbacks = {
   play: () => void;

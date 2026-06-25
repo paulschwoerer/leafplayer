@@ -2,7 +2,7 @@ import ArtistDefaultDay from 'assets/artworks/artist-default-day.jpg';
 import ArtistDefaultNight from 'assets/artworks/artist-default-night.jpg';
 import Artwork from 'components/media/artworks/Artwork/Artwork';
 import { useArtworkUrl, useThemedUrl } from 'modules/artworks';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 
 type Props = {
   id: string;

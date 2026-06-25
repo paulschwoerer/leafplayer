@@ -1,4 +1,4 @@
-import { PlayerRepeatMode, QueueItem } from '../types';
+import { PlayerRepeatMode, type QueueItem } from '../types';
 
 export type PlayerPersistState = {
   queue: QueueItem[];

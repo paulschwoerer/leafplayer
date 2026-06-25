@@ -2,9 +2,13 @@ import {
   throwNotImplemented,
   throwNotImplementedPromise,
 } from 'helpers/context';
-import { FullSong } from 'leafplayer-common';
+import { type FullSong } from 'leafplayer-common';
 import { createContext } from 'react';
-import { AddToQueueOptions, PlayerRepeatMode, QueueItem } from './types';
+import {
+  type AddToQueueOptions,
+  PlayerRepeatMode,
+  type QueueItem,
+} from './types.ts';
 
 export type PlayerContextState = {
   isPlaying: boolean;

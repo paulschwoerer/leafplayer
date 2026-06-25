@@ -1,7 +1,7 @@
 import { RepeatIcon, RepeatOneIcon } from 'components/icons';
 import MediaControlButton from 'components/player/MediaControlButton/MediaControlButton';
 import { PlayerRepeatMode } from 'modules/player/types';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 
 type Props = {
   repeatMode: PlayerRepeatMode;

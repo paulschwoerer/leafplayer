@@ -2,14 +2,14 @@ import Input from 'components/form/Input/Input';
 import { SearchIcon } from 'components/icons';
 import SearchHistory from 'components/search/SearchHistory/SearchHistory';
 import SearchResultList from 'components/search/SearchResultList/SearchResultList';
-import {
+import type {
   CreateSearchHistoryEntryRequestDto,
   CreateSearchHistoryEntryResponseDto,
   SearchResponseDto,
   SearchResults,
 } from 'leafplayer-common';
 import { isApiError, makeApiGetRequest, makeApiPostRequest } from 'modules/api';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { type ReactElement, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 
 const emptyResults = {

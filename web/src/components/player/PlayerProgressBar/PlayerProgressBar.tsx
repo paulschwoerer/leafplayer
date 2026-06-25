@@ -1,6 +1,6 @@
 import Slider from 'components/form/Slider/Slider';
 import { clamp } from 'helpers/math';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import styles from './PlayerProgressBar.module.scss';
 
 type Props = {

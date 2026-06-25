@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import Spinner from '../../form/Spinner/Spinner';
 import styles from './FullPageLoadingIndicator.module.scss';
 

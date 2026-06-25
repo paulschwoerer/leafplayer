@@ -1,6 +1,6 @@
-import { FullSong, SongsResponseDto } from 'leafplayer-common';
+import type { FullSong, SongsResponseDto } from 'leafplayer-common';
 import { isApiError, makeApiGetRequest } from 'modules/api';
-import { QueueItem } from './types';
+import { type QueueItem } from './types';
 
 export function songsToQueueItems(songs: FullSong[]): QueueItem[] {
   return songs.map(song => ({

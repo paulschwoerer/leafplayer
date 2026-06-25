@@ -2,10 +2,10 @@ import ApiLoader from 'components/layout/ApiLoader';
 import ArtistAppearsOn from 'components/media/ArtistAppearsOn/ArtistAppearsOn';
 import ArtistDiscography from 'components/media/ArtistDiscography/ArtistDiscography';
 import ArtistHeader from 'components/media/ArtistHeader/ArtistHeader';
-import { ArtistWithAlbumsResponseDto } from 'leafplayer-common';
+import { type ArtistWithAlbumsResponseDto } from 'leafplayer-common';
 import { PlayerContext } from 'modules/player/context';
-import React, { ReactElement, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { type ReactElement, useContext } from 'react';
+import { useParams } from 'react-router';
 
 function ArtistView(): ReactElement {
   const { id } = useParams<{ id: string }>();

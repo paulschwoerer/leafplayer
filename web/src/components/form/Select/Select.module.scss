@@ -1,4 +1,4 @@
-@import "src/scss/mixins";
+@import '../../../scss/mixins.scss';
 
 .root {
   --height: var(--tap-target);
@@ -61,7 +61,9 @@
       display: block;
       padding: 0.75rem 1rem;
       text-align: left;
-      transition: color 0.15s, background-color 0.15s;
+      transition:
+        color 0.15s,
+        background-color 0.15s;
 
       @include text-ellipsis;
 
