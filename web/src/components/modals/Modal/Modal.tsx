@@ -5,28 +5,9 @@ import React, {
   type ReactElement,
   useEffect,
   useRef,
-  useState,
 } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.scss';
-
-type UseModalState = {
-  isVisible: boolean;
-  toggleModal: () => void;
-};
-
-export function useModal(): UseModalState {
-  const [isVisible, setIsVisible] = useState(false);
-
-  function toggleModal() {
-    setIsVisible(!isVisible);
-  }
-
-  return {
-    isVisible,
-    toggleModal,
-  };
-}
 
 type Props = {
   isVisible: boolean;
