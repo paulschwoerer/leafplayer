@@ -11,6 +11,8 @@ import styles from './NotificationProvider.module.scss';
 
 const DEFAULT_NOTIFICATION_DURATION = 4000;
 
+let nextId = 0;
+
 export function NotificationProvider({
   children,
 }: PropsWithChildren<unknown>): ReactElement {
@@ -19,7 +21,7 @@ export function NotificationProvider({
   >([]);
 
   function showNotification(notification: Notification): number {
-    const id = Date.now();
+    const id = nextId++;
 
     setNotifications(notifications => [
       ...notifications,
