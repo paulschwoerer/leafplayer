@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import SearchHistory from './SearchHistory';
 import { FindSearchHistoryEntriesResponseDto } from 'leafplayer-common';
@@ -10,26 +10,24 @@ import { setupMatchMediaMock } from 'helpers/testing/mockMatchMedia';
 import { mockAlbum, mockArtist } from 'helpers/testing/mockMedia';
 
 const server = setupServer(
-  rest.get('/api/search/history', (req, res, ctx) => {
-    return res(
-      ctx.json<FindSearchHistoryEntriesResponseDto>({
-        entries: [
-          {
-            id: 'id1',
-            type: 'album',
-            album: mockAlbum('Yellow Album'),
-          },
-          {
-            id: 'id2',
-            type: 'artist',
-            artist: mockArtist('Yellow Artist'),
-          },
-        ],
-      }),
-    );
+  http.get('/api/search/history', () => {
+    return HttpResponse.json<FindSearchHistoryEntriesResponseDto>({
+      entries: [
+        {
+          id: 'id1',
+          type: 'album',
+          album: mockAlbum('Yellow Album'),
+        },
+        {
+          id: 'id2',
+          type: 'artist',
+          artist: mockArtist('Yellow Artist'),
+        },
+      ],
+    });
   }),
-  rest.delete('/api/search/history/id2', (req, res, ctx) => {
-    return res(ctx.status(204));
+  http.delete('/api/search/history/id2', () => {
+    new HttpResponse(null, { status: 204 });
   }),
 );
 

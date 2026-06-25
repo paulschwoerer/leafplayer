@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { makeApiGetRequest } from '.';
 
@@ -11,8 +11,8 @@ afterAll(() => server.close());
 describe('makeApiGetRequest', () => {
   it('parses a successfull request without a response body', async () => {
     server.use(
-      rest.get('/api/endpoint', (req, res, ctx) => {
-        return res(ctx.status(201));
+      http.get('/api/endpoint', () => {
+        return new HttpResponse(null, { status: 201 });
       }),
     );
 
@@ -23,8 +23,8 @@ describe('makeApiGetRequest', () => {
 
   it('parses a successfull request with a response body', async () => {
     server.use(
-      rest.get('/api/endpoint', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: 'test' }));
+      http.get('/api/endpoint', () => {
+        return HttpResponse.json({ data: 'test' });
       }),
     );
 
@@ -35,8 +35,8 @@ describe('makeApiGetRequest', () => {
 
   it('parses an erroneous request without a response body', async () => {
     server.use(
-      rest.get('/api/endpoint', (req, res, ctx) => {
-        return res(ctx.status(401));
+      http.get('/api/endpoint', () => {
+        return new HttpResponse(null, { status: 401 });
       }),
     );
 
@@ -51,14 +51,14 @@ describe('makeApiGetRequest', () => {
 
   it('parses an erroneous request with a response body', async () => {
     server.use(
-      rest.get('/api/endpoint', (req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({
+      http.get('/api/endpoint', () => {
+        return HttpResponse.json(
+          {
             statusCode: 400,
             error: 'BadRequest',
             message: "don't do that",
-          }),
+          },
+          { status: 400 },
         );
       }),
     );

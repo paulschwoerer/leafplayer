@@ -3,37 +3,35 @@ import { throwNotImplemented } from 'helpers/context';
 import { UserSessionsResponseDto } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
 import { NotificationContext } from 'modules/notifications/NotificationContext';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import UserSessions from './UserSessions';
 
 const server = setupServer(
-  rest.get('/api/auth/sessions', (req, res, ctx) => {
-    return res(
-      ctx.json<UserSessionsResponseDto>({
-        sessions: [
-          {
-            id: '1',
-            userId: 'user1',
-            browser: 'Firefox',
-            os: 'Windows',
-            lastUsedAt: Date.now(),
-          },
-          {
-            id: '2',
-            userId: 'user1',
-            browser: 'Firefox',
-            os: 'Linux',
-            lastUsedAt: 1621442580,
-          },
-        ],
-        currentSessionId: '1',
-      }),
-    );
+  http.get('/api/auth/sessions', () => {
+    return HttpResponse.json<UserSessionsResponseDto>({
+      sessions: [
+        {
+          id: '1',
+          userId: 'user1',
+          browser: 'Firefox',
+          os: 'Windows',
+          lastUsedAt: Date.now(),
+        },
+        {
+          id: '2',
+          userId: 'user1',
+          browser: 'Firefox',
+          os: 'Linux',
+          lastUsedAt: 1621442580,
+        },
+      ],
+      currentSessionId: '1',
+    });
   }),
-  rest.delete('/api/auth/sessions/2', (req, res, ctx) => {
-    return res(ctx.status(204));
+  http.delete('/api/auth/sessions/2', () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 );
 

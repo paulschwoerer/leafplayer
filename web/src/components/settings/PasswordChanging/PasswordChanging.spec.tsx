@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PasswordChanging from './PasswordChanging';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { ApiError, ChangePasswordRequestDto } from 'leafplayer-common';
 
@@ -14,12 +14,9 @@ afterAll(() => server.close());
 describe('PasswordChanging', () => {
   it('successfully changes password', async () => {
     server.use(
-      rest.post<ChangePasswordRequestDto>(
-        '/api/auth/password',
-        (req, res, ctx) => {
-          return res(ctx.status(204));
-        },
-      ),
+      http.post<ChangePasswordRequestDto>('/api/auth/password', () => {
+        return HttpResponse.text('', { status: 204 });
+      }),
     );
 
     render(<PasswordChanging />);
@@ -35,16 +32,20 @@ describe('PasswordChanging', () => {
 
   it('displays potential errors', async () => {
     server.use(
-      rest.post('/api/auth/password', (req, res, ctx) => {
-        return res.once(
-          ctx.status(401),
-          ctx.json<ApiError>({
-            error: 'Unauthorized',
-            message: 'invalid password',
-            statusCode: 401,
-          }),
-        );
-      }),
+      http.post(
+        '/api/auth/password',
+        () => {
+          return HttpResponse.json<ApiError>(
+            {
+              error: 'Unauthorized',
+              message: 'invalid password',
+              statusCode: 401,
+            },
+            { status: 401 },
+          );
+        },
+        { once: true },
+      ),
     );
 
     render(<PasswordChanging />);
