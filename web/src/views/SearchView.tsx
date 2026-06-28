@@ -18,7 +18,7 @@ const emptyResults = {
   songs: [],
 };
 
-export function useSearchQuery(): [string, (query: string) => void] {
+function useSearchQuery(): [string, (query: string) => void] {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const pathParts = pathname.split('/');
