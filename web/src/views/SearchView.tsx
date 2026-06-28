@@ -55,12 +55,11 @@ function SearchView(): ReactElement {
     });
   }
 
-  useEffect(() => {
-    if (searchQuery.length === 0) {
-      setResults(emptyResults);
-      return;
-    }
+  if (searchQuery.length === 0 && results !== emptyResults) {
+    setResults(emptyResults);
+  }
 
+  useEffect(() => {
     makeApiGetRequest<SearchResponseDto>(`search?q=${searchQuery}`)
       .then(response => {
         if (isApiError(response)) {
