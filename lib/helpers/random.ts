@@ -15,8 +15,8 @@ export function getRandomArrayElements<T = unknown>(
   }
 
   let length = pool.length;
-  const result: T[] = new Array(count);
-  const taken: number[] = new Array(length);
+  const result = new Array<T>(count);
+  const taken = new Array<number>(length);
 
   while (count--) {
     const i = Math.floor(Math.random() * length);
