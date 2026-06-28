@@ -3,13 +3,11 @@ import { screen, fireEvent, render, waitFor } from '@testing-library/react';
 import SearchResultList from './SearchResultList';
 import { type SearchResults } from 'leafplayer-common';
 import { MemoryRouter } from 'react-router';
-import { setupIntersectionObserverMock } from 'helpers/testing/mockIntersectionObserver';
 import { setupMatchMediaMock } from 'helpers/testing/mockMatchMedia';
 import { mockAlbum, mockArtist, mockSong } from 'helpers/testing/mockMedia';
 import { PlayerProvider } from 'modules/player/PlayerProvider';
 
 describe('SearchResultList', () => {
-  setupIntersectionObserverMock();
   setupMatchMediaMock();
 
   const blueArtist = mockArtist('Blue Artist');

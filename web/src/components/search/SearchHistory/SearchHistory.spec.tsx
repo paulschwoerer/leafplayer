@@ -5,7 +5,6 @@ import { setupServer } from 'msw/node';
 import SearchHistory from './SearchHistory';
 import { type FindSearchHistoryEntriesResponseDto } from 'leafplayer-common';
 import { MemoryRouter } from 'react-router';
-import { setupIntersectionObserverMock } from 'helpers/testing/mockIntersectionObserver';
 import { setupMatchMediaMock } from 'helpers/testing/mockMatchMedia';
 import { mockAlbum, mockArtist } from 'helpers/testing/mockMedia';
 
@@ -36,7 +35,6 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('SearchHistory', () => {
-  setupIntersectionObserverMock();
   setupMatchMediaMock();
 
   it('renders history entries', async () => {

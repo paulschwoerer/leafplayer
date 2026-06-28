@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { type ReactElement, useEffect, useRef, useState } from 'react';
+import React, { type ReactElement, useRef, useState } from 'react';
 import styles from './LazyImage.module.scss';
 
 type Props = {
@@ -13,43 +13,19 @@ function LazyImage({ url, fallbackUrl, className }: Props): ReactElement {
 
   const elementRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!elementRef.current) {
-      return;
-    }
-
-    const preloader = new Image();
-    preloader.onload = () => setIsLoaded(true);
-
-    const intersectionObserver = new IntersectionObserver(
-      ([entry], observer) => {
-        if (entry && entry.isIntersecting) {
-          preloader.src = url;
-
-          observer.disconnect();
-        }
-      },
-    );
-    intersectionObserver.observe(elementRef.current);
-
-    return () => {
-      preloader.onload = null;
-      intersectionObserver.disconnect();
-    };
-  }, [url]);
-
   return (
-    <div className={classNames(styles.root, className)} ref={elementRef}>
-      <div
+    <div
+      className={classNames(styles.root, className)}
+      ref={elementRef}
+      style={fallbackUrl ? { backgroundImage: `url(${fallbackUrl})` } : {}}
+    >
+      <img
         className={classNames(styles.image, { [styles.visible]: isLoaded })}
-        style={isLoaded ? { backgroundImage: `url(${url})` } : {}}
+        alt=""
+        src={url}
+        loading="lazy"
+        onLoad={() => setIsLoaded(true)}
       />
-      {fallbackUrl && (
-        <div
-          className={classNames(styles.image, { [styles.visible]: !isLoaded })}
-          style={{ backgroundImage: `url(${fallbackUrl})` }}
-        />
-      )}
     </div>
   );
 }
