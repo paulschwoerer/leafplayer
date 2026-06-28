@@ -64,7 +64,7 @@ function RegisterView(): ReactElement {
       if (isApiError(result)) {
         setError(result.message);
       } else {
-        navigate('/login');
+        void navigate('/login');
       }
     },
   });

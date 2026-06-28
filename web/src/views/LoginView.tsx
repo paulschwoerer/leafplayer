@@ -39,7 +39,7 @@ function LoginView(): ReactElement {
       } else {
         authContext.storeUser(result.user);
         authContext.storeArtworkToken(result.artworkToken);
-        navigate('/', { replace: true });
+        void navigate('/', { replace: true });
       }
     },
   });

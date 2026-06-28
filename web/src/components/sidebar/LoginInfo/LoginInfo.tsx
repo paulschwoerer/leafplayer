@@ -23,7 +23,7 @@ function LoginInfo(): ReactElement | null {
         underlined
         onClick={async () => {
           await logout();
-          navigate('/login');
+          void navigate('/login');
         }}
       >
         Logout

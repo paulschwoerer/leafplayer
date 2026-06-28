@@ -25,9 +25,9 @@ export function useSearchQuery(): [string, (query: string) => void] {
 
   function setSearchQuery(query: string) {
     if (pathname.split('/')[1] === 'search') {
-      navigate(`/search/${query}`, { replace: true });
+      void navigate(`/search/${query}`, { replace: true });
     } else {
-      navigate(`/search/${query}`);
+      void navigate(`/search/${query}`);
     }
   }
 
