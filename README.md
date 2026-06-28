@@ -13,8 +13,6 @@
   <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/paulschwoerer/leafplayer">
 </p>
 
-
-
 <p align="center"><b>Looking for contributors!</b> <a href="mailto:hello@paulschwoerer.de">Hit me up</a> if you're interested.</p>
 
 Leafplayer is a minimalistic music streaming server with a focus on performance and a slick UI. It enables you to listen to your private music collection from anywhere in the world.
@@ -25,13 +23,13 @@ Leafplayer is a minimalistic music streaming server with a focus on performance 
 
 These are some notable features, in no particular order.
 
-* Modern, mobile-friendly interface
-* Native media controls
-* Artworks from media tags for artists and albums  
-* Multiple user accounts
-* Registration of accounts using invite codes
-* Fast search
-* Night mode
+- Modern, mobile-friendly interface
+- Native media controls
+- Artworks from media tags for artists and albums
+- Multiple user accounts
+- Registration of accounts using invite codes
+- Fast search
+- Night mode
 
 ## Installation
 

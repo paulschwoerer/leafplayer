@@ -4,75 +4,65 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.4.0](https://github.com/paulschwoerer/leafplayer/compare/v1.3.0...v1.4.0) (2026-06-03)
 
-
 ### Features
 
-* make options in song dropdown focusable ([3ac9b7b](https://github.com/paulschwoerer/leafplayer/commit/3ac9b7bd259bf5adfc34ac81d46d4baba398dc23))
-
+- make options in song dropdown focusable ([3ac9b7b](https://github.com/paulschwoerer/leafplayer/commit/3ac9b7bd259bf5adfc34ac81d46d4baba398dc23))
 
 ### Bug Fixes
 
-* display aria label as title for icon buttons ([c1b20db](https://github.com/paulschwoerer/leafplayer/commit/c1b20db3b1c3574853167d0bb79d30b91afa4385))
-* expiration of session cookie on logout ([5729bcf](https://github.com/paulschwoerer/leafplayer/commit/5729bcf136c9eb4b33287391fb64c2670c33b431))
-* prevent hiding of notifications by popovers ([403b978](https://github.com/paulschwoerer/leafplayer/commit/403b978470d82f06becddcd2fec25e57da83071b))
-* remove illegal sort param 'year' in find artists route ([dfa8974](https://github.com/paulschwoerer/leafplayer/commit/dfa8974764141dfb847235495031f32162c91089))
-* send 204 return code in delete endpoint ([00077e9](https://github.com/paulschwoerer/leafplayer/commit/00077e9acecf0e7d3595162ef392f91ba0a6343f))
-* use correct NaN comparison ([b9f838a](https://github.com/paulschwoerer/leafplayer/commit/b9f838a97a1962af5c613097807d84d3d7330324))
-* wait for execution and handle error when removing song ([d1fc020](https://github.com/paulschwoerer/leafplayer/commit/d1fc0208b33de35dbf85bbe19627155ac3a405bf))
+- display aria label as title for icon buttons ([c1b20db](https://github.com/paulschwoerer/leafplayer/commit/c1b20db3b1c3574853167d0bb79d30b91afa4385))
+- expiration of session cookie on logout ([5729bcf](https://github.com/paulschwoerer/leafplayer/commit/5729bcf136c9eb4b33287391fb64c2670c33b431))
+- prevent hiding of notifications by popovers ([403b978](https://github.com/paulschwoerer/leafplayer/commit/403b978470d82f06becddcd2fec25e57da83071b))
+- remove illegal sort param 'year' in find artists route ([dfa8974](https://github.com/paulschwoerer/leafplayer/commit/dfa8974764141dfb847235495031f32162c91089))
+- send 204 return code in delete endpoint ([00077e9](https://github.com/paulschwoerer/leafplayer/commit/00077e9acecf0e7d3595162ef392f91ba0a6343f))
+- use correct NaN comparison ([b9f838a](https://github.com/paulschwoerer/leafplayer/commit/b9f838a97a1962af5c613097807d84d3d7330324))
+- wait for execution and handle error when removing song ([d1fc020](https://github.com/paulschwoerer/leafplayer/commit/d1fc0208b33de35dbf85bbe19627155ac3a405bf))
 
 ## [1.3.0](https://github.com/paulschwoerer/leafplayer/compare/v1.2.1...v1.3.0) (2022-02-27)
 
-
 ### Features
 
-* search history ([85fa12b](https://github.com/paulschwoerer/leafplayer/commit/85fa12b9606a5804969a208689c444c3fc9f6bd7))
-* carousel track shadows/ themed scrollbars ([e184054](https://github.com/paulschwoerer/leafplayer/commit/e184054a384c3e8f2d3c83959c2ce83f1cbc4aca))
-* focus styles for all elements ([85c3566](https://github.com/paulschwoerer/leafplayer/commit/85c3566f7a276924a1df29025a39fb6147c5cd37))
-
+- search history ([85fa12b](https://github.com/paulschwoerer/leafplayer/commit/85fa12b9606a5804969a208689c444c3fc9f6bd7))
+- carousel track shadows/ themed scrollbars ([e184054](https://github.com/paulschwoerer/leafplayer/commit/e184054a384c3e8f2d3c83959c2ce83f1cbc4aca))
+- focus styles for all elements ([85c3566](https://github.com/paulschwoerer/leafplayer/commit/85c3566f7a276924a1df29025a39fb6147c5cd37))
 
 ### Bug Fixes
 
-* fix services not loading in compiled code ([0ddcc8f](https://github.com/paulschwoerer/leafplayer/commit/0ddcc8f40f122c173de60625c634c9bf77b72afd))
+- fix services not loading in compiled code ([0ddcc8f](https://github.com/paulschwoerer/leafplayer/commit/0ddcc8f40f122c173de60625c634c9bf77b72afd))
 
 ### [1.2.1](https://github.com/paulschwoerer/leafplayer/compare/v1.2.0...v1.2.1) (2021-10-25)
 
-
 ### Bug Fixes
 
-* correct background color in notification ([fc67e1e](https://github.com/paulschwoerer/leafplayer/commit/fc67e1eed8e3eee98b3b71018e01e03c160426c4))
+- correct background color in notification ([fc67e1e](https://github.com/paulschwoerer/leafplayer/commit/fc67e1eed8e3eee98b3b71018e01e03c160426c4))
 
 ## [1.2.0](https://github.com/paulschwoerer/leafplayer/compare/v1.1.1...v1.2.0) (2021-10-25)
 
-
 ### Features
 
-* add night mode ([039e0ca](https://github.com/paulschwoerer/leafplayer/commit/039e0ca1fc129512ad4700e080542966aaf9c891))
-* improve options dropdown ([4ed6ba9](https://github.com/paulschwoerer/leafplayer/commit/4ed6ba920d0f12b8b00fb0c352baa4ca4f67f1ea))
-
+- add night mode ([039e0ca](https://github.com/paulschwoerer/leafplayer/commit/039e0ca1fc129512ad4700e080542966aaf9c891))
+- improve options dropdown ([4ed6ba9](https://github.com/paulschwoerer/leafplayer/commit/4ed6ba920d0f12b8b00fb0c352baa4ca4f67f1ea))
 
 ### Bug Fixes
 
-* bump vulnerable fastify-static package ([c0ef71d](https://github.com/paulschwoerer/leafplayer/commit/c0ef71d6e4790d262aed91d7793b53f85ab2270a))
+- bump vulnerable fastify-static package ([c0ef71d](https://github.com/paulschwoerer/leafplayer/commit/c0ef71d6e4790d262aed91d7793b53f85ab2270a))
 
 ### [1.1.1](https://github.com/paulschwoerer/leafplayer/compare/v1.1.0...v1.1.1) (2021-10-21)
 
-
 ### Bug Fixes
 
-* **player:** vol not being set when loading state ([a08cccb](https://github.com/paulschwoerer/leafplayer/commit/a08cccb932d089a7357c10c6139f9d69ae75204b))
+- **player:** vol not being set when loading state ([a08cccb](https://github.com/paulschwoerer/leafplayer/commit/a08cccb932d089a7357c10c6139f9d69ae75204b))
 
 ## [1.1.0](https://github.com/paulschwoerer/leafplayer/compare/v1.0.0...v1.1.0) (2021-10-20)
 
-
 ### Features
 
-* add ability to change ones password ([273136e](https://github.com/paulschwoerer/leafplayer/commit/273136e122a2a514a61f21677ca3f413f4f1cb9b), [d49f985](https://github.com/paulschwoerer/leafplayer/commit/d49f98590ff6afebc1d275d82e0a2acecbb71551))
-* improve modal looks and accessibility ([00dea69](https://github.com/paulschwoerer/leafplayer/commit/00dea69502fd08b14058d61ff18d244676998d60))
-* persist player state across browser reloads ([c6c7859](https://github.com/paulschwoerer/leafplayer/commit/c6c785975fd4895a995e2e73be2600a1e12bc4be))
-
+- add ability to change ones password ([273136e](https://github.com/paulschwoerer/leafplayer/commit/273136e122a2a514a61f21677ca3f413f4f1cb9b), [d49f985](https://github.com/paulschwoerer/leafplayer/commit/d49f98590ff6afebc1d275d82e0a2acecbb71551))
+- improve modal looks and accessibility ([00dea69](https://github.com/paulschwoerer/leafplayer/commit/00dea69502fd08b14058d61ff18d244676998d60))
+- persist player state across browser reloads ([c6c7859](https://github.com/paulschwoerer/leafplayer/commit/c6c785975fd4895a995e2e73be2600a1e12bc4be))
 
 ### Bug Fixes
 
-* add focus style to IconButton ([fe22ef5](https://github.com/paulschwoerer/leafplayer/commit/fe22ef59de65757fc984e69440904b6ec5e370fc))
-* error handling in api module ([970631b](https://github.com/paulschwoerer/leafplayer/commit/970631b9de995c95dbdffe5e0a64d57086ce5cd7))
-* remove z-index from Input ([3948c98](https://github.com/paulschwoerer/leafplayer/commit/3948c98fe9a20299150e5efc4fc86295dffdb937))
+- add focus style to IconButton ([fe22ef5](https://github.com/paulschwoerer/leafplayer/commit/fe22ef59de65757fc984e69440904b6ec5e370fc))
+- error handling in api module ([970631b](https://github.com/paulschwoerer/leafplayer/commit/970631b9de995c95dbdffe5e0a64d57086ce5cd7))
+- remove z-index from Input ([3948c98](https://github.com/paulschwoerer/leafplayer/commit/3948c98fe9a20299150e5efc4fc86295dffdb937))

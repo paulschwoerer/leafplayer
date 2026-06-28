@@ -57,9 +57,7 @@ export type SearchResults = {
 };
 
 export type SearchHistoryEntry =
-  | ArtistSearchHistoryEntry
-  | AlbumSearchHistoryEntry
-  | SongSearchHistoryEntry;
+  ArtistSearchHistoryEntry | AlbumSearchHistoryEntry | SongSearchHistoryEntry;
 
 export type ArtistSearchHistoryEntry = {
   id: string;
