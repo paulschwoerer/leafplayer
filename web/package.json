@@ -7,7 +7,7 @@
     "build": "rsbuild build",
     "dev": "rsbuild --open",
     "format": "prettier --write .",
-    "lint": "eslint . && stylelint '**/*.(s)?css'",
+    "lint": "eslint . && stylelint 'src/**/*.(s)?css'",
     "preview": "rsbuild preview",
     "test": "rstest",
     "test:watch": "rstest --watch"
