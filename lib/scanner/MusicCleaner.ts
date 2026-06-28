@@ -39,8 +39,7 @@ export class MusicCleaner {
       // eslint-disable-next-line no-await-in-loop
       const exists = await isReadable(file.path);
       if (!exists) {
-        // eslint-disable-next-line no-await-in-loop
-        await this.processMissingFile(file);
+        this.processMissingFile(file);
       }
     }
 
@@ -66,7 +65,7 @@ export class MusicCleaner {
       .run();
   }
 
-  private async processMissingFile(file: AudioFileRow) {
+  private processMissingFile(file: AudioFileRow) {
     printInfo(`[MusicCleaner] cannot find file on disk: ${file.path}`);
 
     if (this.options.removeMissing) {

@@ -85,7 +85,7 @@ export default class MusicScanner {
     }
 
     const start = Date.now();
-    const paths = await this.libraryService.getEnabledMediaDirectories();
+    const paths = this.libraryService.getEnabledMediaDirectories();
 
     const trees: DirNode[] = [];
 
@@ -151,7 +151,7 @@ export default class MusicScanner {
       tags.common.picture,
     );
 
-    const artistId = await this.createOrGetArtist(
+    const artistId = this.createOrGetArtist(
       tags.common.artist || UNKNOWN_ARTIST_NAME,
     );
 
@@ -161,7 +161,7 @@ export default class MusicScanner {
       tags.common.albumartist &&
       tags.common.albumartist !== tags.common.artist
     ) {
-      albumArtistId = await this.createOrGetArtist(tags.common.albumartist);
+      albumArtistId = this.createOrGetArtist(tags.common.albumartist);
     }
 
     if (embeddedArtworks.artist) {
@@ -171,7 +171,7 @@ export default class MusicScanner {
       });
     }
 
-    const albumId = await this.createOrGetAlbum(
+    const albumId = this.createOrGetAlbum(
       albumArtistId,
       tags.common.album || UNKNOWN_ALBUM_NAME,
       tags.common.year,
@@ -235,8 +235,8 @@ export default class MusicScanner {
     }
   }
 
-  private async createOrGetArtist(name: string): Promise<string> {
-    const existingId = await this.artistsService.findIdByName(name);
+  private createOrGetArtist(name: string): string {
+    const existingId = this.artistsService.findIdByName(name);
 
     if (existingId) {
       return existingId;
@@ -245,12 +245,12 @@ export default class MusicScanner {
     return this.artistsService.create({ name });
   }
 
-  private async createOrGetAlbum(
+  private createOrGetAlbum(
     artistId: string,
     name: string,
     year?: number,
-  ): Promise<string> {
-    const existingId = await this.albumsService.findIdByNameAndArtistId({
+  ): string {
+    const existingId = this.albumsService.findIdByNameAndArtistId({
       name,
       artistId,
     });

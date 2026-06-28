@@ -111,7 +111,7 @@ async function shutdown(err?: Error) {
   'SIGSEGV',
   'SIGUSR2',
   'SIGTERM',
-].forEach(signal => process.on(signal, () => shutdown()));
+].forEach(signal => process.on(signal, () => void shutdown()));
 
 process.on('unhandledRejection', (reason: Error) => {
   throw reason;

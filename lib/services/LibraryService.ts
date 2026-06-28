@@ -46,7 +46,7 @@ export interface LibraryService {
   getAudioFileByPath(path: string): AudioFileRow | undefined;
   getEnabledMediaDirectories(): string[];
   getAllMediaDirectories(): string[];
-  addMediaDirectory(path: string): Error | undefined;
+  addMediaDirectory(path: string): Promise<Error | undefined>;
   removeMediaDirectory(path: string): Error | undefined;
   wipeLibrary(): Promise<void>;
 }
@@ -140,8 +140,8 @@ export default function createLibraryService({
       return rows.map(dir => dir.path);
     },
 
-    addMediaDirectory(path) {
-      const directoryOk = isReadable(path);
+    async addMediaDirectory(path) {
+      const directoryOk = await isReadable(path);
 
       if (!directoryOk) {
         return Error('directory does not exist or is not readable');

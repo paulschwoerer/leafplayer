@@ -98,7 +98,7 @@ export default function createSessionsService({
       ).run({ id, lastUsedAt });
     },
 
-    async deleteById(id) {
+    deleteById(id) {
       const rowsAffected = db
         .prepare<string>('DELETE FROM sessions WHERE id = ?')
         .run(id);

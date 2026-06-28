@@ -78,9 +78,9 @@ export function createLibraryCommandLoader({
       .description('manage music directories')
       .option('--add <path>')
       .option('--remove <path>')
-      .action(({ add, remove }: { add?: string; remove?: string }) => {
+      .action(async ({ add, remove }: { add?: string; remove?: string }) => {
         if (typeof add === 'string') {
-          const result = libraryService.addMediaDirectory(add);
+          const result = await libraryService.addMediaDirectory(add);
 
           if (result instanceof Error) {
             printError(result.message);
