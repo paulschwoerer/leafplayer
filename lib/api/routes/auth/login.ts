@@ -73,7 +73,7 @@ type Browser = {
   os: string;
 };
 
-function extractBrowserFromUserAgent(userAgent?: string | undefined): Browser {
+function extractBrowserFromUserAgent(userAgent?: string): Browser {
   const parser = new UAParser(userAgent);
 
   return {
