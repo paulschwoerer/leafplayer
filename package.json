@@ -14,7 +14,7 @@
     "check": "tsc",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "format": "prettier --fix",
+    "format": "prettier --write --list-different .",
     "test": "ava",
     "test:watch": "ava --watch",
     "release": "npx standard-version"
@@ -55,7 +55,7 @@
     "ava": "^4.0.1",
     "eslint": "^9.39.4",
     "eslint-plugin-import": "^2.32.0",
-    "prettier": "^2.5.1",
+    "prettier": "^3.9.4",
     "testdouble": "^3.16.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.62.0"

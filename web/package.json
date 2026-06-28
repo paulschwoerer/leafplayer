@@ -6,7 +6,6 @@
   "scripts": {
     "build": "rsbuild build",
     "dev": "rsbuild --open",
-    "format": "prettier --write .",
     "lint": "eslint . && stylelint 'src/**/*.(s)?css'",
     "preview": "rsbuild preview",
     "test": "rstest",
@@ -46,7 +45,6 @@
     "globals": "^17.6.0",
     "happy-dom": "^20.10.3",
     "msw": "^2.14.6",
-    "prettier": "^3.8.3",
     "stylelint": "^17.14.0",
     "stylelint-config-standard-scss": "^17.0.0",
     "typescript": "^6.0.3",
