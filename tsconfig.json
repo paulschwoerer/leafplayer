@@ -1,36 +1,23 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": [
-      "es2017",
-      "esnext.asynciterable"
-    ],
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "esModuleInterop": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "incremental": true,
+    "noEmit": true
   },
   "include": [
-    "./lib/**/*",
-    "./common/**/*",
-    "./main.ts",
-    "./test/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
-  "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ]
-  }
+    "./common/**/*.ts",
+    "./lib/**/*.ts",
+    "./test/**/*.ts",
+    "./main.ts"
+  ]
 }

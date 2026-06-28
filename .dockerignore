@@ -1,5 +1,5 @@
 **/node_modules
-dist/
+web/dist/
 .local/
 .github/
 **/.vscode/

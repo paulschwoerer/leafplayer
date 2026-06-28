@@ -4,7 +4,7 @@ ARG IMAGE=node@sha256:e58326d0d441090181ac150dc2078d3e2cf6a0d42e809aebba3ef58809
 # --------------------------
 # BUILD
 # --------------------------
-FROM ${IMAGE} as builder
+FROM node:22.22.3-trixie as web-builder
 
 ENV SASS_PATH=node_modules:src
 
@@ -13,10 +13,6 @@ COPY --chown=node:node . /app
 USER node
 
 WORKDIR /app/web
-
-RUN npm ci --quiet
-
-WORKDIR /app
 
 RUN npm ci --quiet
 
@@ -37,20 +33,25 @@ RUN mkdir -p /var/lib/leafplayer && \
   chown -R node:node /var/lib/leafplayer
 
 WORKDIR /app
-RUN chown node:node /app
+
+COPY package*.json ./
+
+RUN chown -R node:node /app
 
 USER node
 
-COPY --from=builder /app/dist .
-COPY --chown=node:node package-lock.json .
-
-RUN npm ci --quiet --only=production
+RUN npm ci --quiet --omit=dev
 
 RUN rm package-lock.json
+
+COPY --from=web-builder --chown=node:node /app/web/dist ./public
+COPY --chown=node:node main.ts ./
+COPY --chown=node:node lib ./lib/
+COPY --chown=node:node common ./common/
 
 VOLUME /var/lib/leafplayer
 
 EXPOSE 3000/tcp
 
-ENTRYPOINT ["node", "main.js"]
+ENTRYPOINT ["node", "main.ts"]
 CMD ["serve"]

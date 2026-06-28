@@ -1,11 +1,13 @@
 .DS_Store
 node_modules/
 
-dist/
+web/dist/
 coverage/
 
 npm-debug.log*
 .eslintcache
+
+*.tsbuildinfo
 
 .idea
 .vscode

@@ -35,12 +35,12 @@ These are some notable features, in no particular order.
 
 ## Installation
 
-### With Docker
+### With Docker/Podman
 
 Use the following command to get up and running quickly. Don't forget to replace `supersecret` with a secure, random string and adjust the `/path/to/your/music` directory.
 
 ```sh
-docker run -d \
+<docker|podman> run -d \
   -e "APP_SECRET=supersecret" \
   -v "/path/to/your/music:/music:ro" \
   -v "leafplayer-storage:/var/lib/leafplayer" \
@@ -53,7 +53,8 @@ You should now see the Leafplayer web interface by navigating to [localhost:3000
 
 ### Without Docker (Linux only)
 
-You need to have a working install of [NodeJS](https://nodejs.org/en/download/). Development is done with Node 16, however Node 14 should work as well.
+You need to have a working install of [NodeJS](https://nodejs.org/en/download/).
+See `engines` field in [package.json](./package.json) for supported Node versions.
 
 ```sh
 # check your node version
@@ -107,7 +108,7 @@ Finally, start the server. Don't forget to replace `supersecret` with a secure, 
 ```sh
 cd "$LP_DIRECTORY"
 
-NODE_ENV=production APP_SECRET=supersecret node main.js serve
+NODE_ENV=production APP_SECRET=supersecret node main.ts serve
 ```
 
 You should now see the Leafplayer web interface by navigating to [localhost:3000](http://localhost:3000) in your browser.
@@ -125,13 +126,13 @@ caddy reverse-proxy --from music.yourdomain.home --to localhost:3000
 If you followed the docker instructions, prefix the following commands as follows.
 
 ```sh
-sudo docker exec leafplayer node main.js ...
+sudo docker exec leafplayer ...
 ```
 
 To create an initial admin account, run the following command.
 
 ```sh
-node main.js users:add \
+./main.ts users:add \
   --username admin \
   --password supersecret
 ```
@@ -139,9 +140,9 @@ node main.js users:add \
 You can now add your music directory and start a music scan.
 
 ```sh
-node main.js library:dir --add /music
+./main.ts library:dir --add /music
 
-node main.js library:scan
+./main.ts library:scan
 ```
 
 ## Screenshots

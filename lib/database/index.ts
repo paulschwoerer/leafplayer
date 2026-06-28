@@ -5,7 +5,7 @@ import BetterSqlite3 from 'better-sqlite3';
 
 import { unixCheckIfWorldReadable } from '../helpers/filesystem.ts';
 
-const migrationsDir = path.join(__dirname, './migrations');
+const migrationsDir = path.join(import.meta.dirname, './migrations');
 
 // TODO: redesign DB interface in a more type-safe way
 export interface DB {

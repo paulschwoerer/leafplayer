@@ -1,4 +1,4 @@
-import td from 'testdouble';
+import * as td from 'testdouble';
 
 import { verifySession } from '../../lib/api/sessionAuth.ts';
 import { type AuthService } from '../../lib/services/AuthService.ts';

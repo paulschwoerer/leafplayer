@@ -7,7 +7,7 @@ import {
 } from 'awilix';
 import { type FastifyInstance } from 'fastify';
 
-import { version } from '../package.json';
+import PackageJSON from '../package.json' with { type: 'json' };
 
 import { createCLI } from './cli/CLI.ts';
 import { createInvitationsCommandLoader } from './cli/commands/InvitationsCommandLoader.ts';
@@ -46,7 +46,7 @@ let server: FastifyInstance;
 
 // ----------------- CLI initialization ----------------- //
 const cli = createCLI({
-  version,
+  version: PackageJSON.version,
 });
 
 cli

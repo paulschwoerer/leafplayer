@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+#!/usr/bin/env node
 
 import './lib/core.ts';
