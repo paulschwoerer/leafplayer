@@ -4,7 +4,6 @@ import { toFullAlbum } from '../mappers/albums.ts';
 import { toFullArtist } from '../mappers/artists.ts';
 import { prepareAlbumsQuery } from '../query/albums.ts';
 import { prepareArtistsQuery } from '../query/artists.ts';
-import { getRandomArrayElements } from '../helpers/random.ts';
 import { type DB } from '../database/index.ts';
 
 export interface DiscoverService {
@@ -17,30 +16,23 @@ type Injects = {
   db: DB;
 };
 
-// TODO: this could probably done more concise by using random offsets and limits
 export default function createDiscoverService({
   db,
 }: Injects): DiscoverService {
   return {
     findRandomArtists(count) {
-      const randomIds = findRandomIdsOfTable(db, 'artists', count);
-
-      const rows = prepareArtistsQuery<string[]>(
+      const rows = prepareArtistsQuery<number>(
         db,
-        `WHERE artists.id IN (${randomIds
-          .map(() => '?')
-          .join(',')}) GROUP BY artists.id`,
-      ).all(...randomIds);
+        'GROUP BY artists.id ORDER BY RANDOM() LIMIT ?',
+      ).all(count);
 
       return rows.map(toFullArtist);
     },
     findRandomAlbums(count) {
-      const randomIds = findRandomIdsOfTable(db, 'albums', count);
-
-      const rows = prepareAlbumsQuery<string[]>(
+      const rows = prepareAlbumsQuery<number>(
         db,
-        `WHERE albums.id IN (${randomIds.map(() => '?').join(',')})`,
-      ).all(...randomIds);
+        'ORDER BY RANDOM() LIMIT ?',
+      ).all(count);
 
       return rows.map(toFullAlbum);
     },
@@ -53,24 +45,4 @@ export default function createDiscoverService({
       return rows.map(toFullAlbum);
     },
   };
-}
-
-function findRandomIdsOfTable(
-  db: DB,
-  tableName: string,
-  count: number,
-): string[] {
-  type Row = { id: string };
-
-  const rows: Row[] = db
-    .prepare<unknown[], { id: string }>(`SELECT id FROM ${tableName}`)
-    .all();
-
-  if (rows.length === 0) {
-    return [];
-  }
-
-  const ids = rows.map(row => row.id);
-
-  return getRandomArrayElements<string>(ids, count);
 }
