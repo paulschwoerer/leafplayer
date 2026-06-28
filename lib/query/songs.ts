@@ -3,9 +3,10 @@ import { type SongRow } from '../database/rows.ts';
 
 type SongRowWithNames = SongRow & { artistName: string; albumName: string };
 
-export function prepareSongsQuery<
-  TBind extends unknown[] | unknown = unknown[],
->(db: DB, q: string): Statement<TBind, SongRowWithNames> {
+export function prepareSongsQuery<TBind = unknown[]>(
+  db: DB,
+  q: string,
+): Statement<TBind, SongRowWithNames> {
   return db.prepare<TBind, SongRowWithNames>(`
     SELECT
       songs.*,

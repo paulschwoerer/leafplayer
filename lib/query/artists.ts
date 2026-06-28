@@ -1,9 +1,10 @@
 import type { DB, Statement } from '../database/index.ts';
 import { type ArtistRow } from '../database/rows.ts';
 
-export function prepareArtistsQuery<
-  TBind extends unknown[] | unknown = unknown[],
->(db: DB, q: string): Statement<TBind, ArtistRow & { artistName: string }> {
+export function prepareArtistsQuery<TBind = unknown[]>(
+  db: DB,
+  q: string,
+): Statement<TBind, ArtistRow & { artistName: string }> {
   return db.prepare<TBind, ArtistRow & { artistName: string }>(`
     SELECT
       artists.id,

@@ -7,18 +7,16 @@ import { unixCheckIfWorldReadable } from '../helpers/filesystem.ts';
 
 const migrationsDir = path.join(__dirname, './migrations');
 
+// TODO: redesign DB interface in a more type-safe way
 export interface DB {
-  prepare<TBind extends unknown[] | unknown = unknown[], TResult = unknown>(
+  prepare<TBind = unknown[], TResult = unknown>(
     sql: string,
   ): Statement<TBind, TResult>;
   driver(): BetterSqlite3.Database;
   close(): void;
 }
 
-export interface Statement<
-  TBind extends unknown | unknown[],
-  TResult = unknown,
-> {
+export interface Statement<TBind, TResult = unknown> {
   run(...bind: TBind extends unknown[] ? TBind : [TBind]): number;
   first(
     ...bind: TBind extends unknown[] ? TBind : [TBind]
