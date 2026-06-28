@@ -22,7 +22,9 @@ function ArtworkOverlay({ isPlaying, onTogglePlayPause }: Props): ReactElement {
         onClick={ev => {
           ev.preventDefault();
           ev.stopPropagation();
-          onTogglePlayPause && onTogglePlayPause();
+          if (onTogglePlayPause) {
+            onTogglePlayPause();
+          }
         }}
       >
         <Icon icon={isPlaying ? <PauseIcon /> : <PlayIcon />} size="lg" />

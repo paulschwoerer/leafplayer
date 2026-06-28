@@ -30,7 +30,9 @@ function Slider({
 
     const value = calculateValue(ev.clientX, ev.currentTarget);
 
-    onDragStart && onDragStart(value);
+    if (onDragStart) {
+      onDragStart(value);
+    }
   }
 
   function onPointerMove(ev: React.PointerEvent<HTMLDivElement>): void {
@@ -40,7 +42,9 @@ function Slider({
 
     const value = calculateValue(ev.clientX, ev.currentTarget);
 
-    onDragUpdate && onDragUpdate(value);
+    if (onDragUpdate) {
+      onDragUpdate(value);
+    }
   }
 
   function onPointerUp(ev: React.PointerEvent<HTMLDivElement>): void {
@@ -50,7 +54,9 @@ function Slider({
 
     const value = calculateValue(ev.clientX, ev.currentTarget);
 
-    onDragRelease && onDragRelease(value);
+    if (onDragRelease) {
+      onDragRelease(value);
+    }
   }
 
   const valuePercent = clamp(value * 100, 0, 100);

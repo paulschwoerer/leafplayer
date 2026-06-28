@@ -40,7 +40,11 @@ function AlbumWithSongs({
 
   function onSongClicked(songId: string) {
     if (current && current.song.id === songId) {
-      playerIsPlaying ? pause() : play();
+      if (playerIsPlaying) {
+        pause();
+      } else {
+        play();
+      }
     } else {
       const songsSelection = songs.slice(
         songs.findIndex(song => song.id === songId),

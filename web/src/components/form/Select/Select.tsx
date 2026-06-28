@@ -21,7 +21,9 @@ function Select({ value, options, onChange }: Props): ReactElement {
   const ref = useRef<HTMLButtonElement>(null);
 
   function selectOption(option: Option) {
-    onChange && onChange(option);
+    if (onChange) {
+      onChange(option);
+    }
     setSelectedIndex(options.indexOf(option));
     setCollapsed(true);
   }
