@@ -1,6 +1,6 @@
 import { type ApiError } from 'leafplayer-common';
 import { AuthContext } from 'modules/auth';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 export enum HttpMethod {
   GET = 'GET',
@@ -109,28 +109,30 @@ export function useApiData<TResponse = unknown>(
   const [isLoading, setIsLoading] = useState(true);
   const { storeUser } = useContext(AuthContext);
 
-  const execute = useCallback(async () => {
-    setError(undefined);
-    setIsLoading(true);
-
-    const result = await makeApiGetRequest<TResponse>(slug);
-
-    setIsLoading(false);
-
-    if (isApiError(result)) {
-      if (result.statusCode === 401) {
-        storeUser(null);
-      } else {
-        setError(result);
-      }
-    } else {
-      setData(result);
-    }
-  }, [slug, storeUser]);
-
   useEffect(() => {
-    execute().catch(console.error);
-  }, [execute]);
+    if (!isLoading) {
+      return;
+    }
+
+    console.log('now fetching: ', slug);
+
+    makeApiGetRequest<TResponse>(slug)
+      .then(result => {
+        setIsLoading(false);
+
+        if (isApiError(result)) {
+          if (result.statusCode === 401) {
+            storeUser(null);
+          } else {
+            setError(result);
+          }
+        } else {
+          setData(result);
+        }
+      })
+      // TODO: give feedback to user
+      .catch(console.error);
+  }, [slug, storeUser, isLoading]);
 
   return [
     {
@@ -139,7 +141,10 @@ export function useApiData<TResponse = unknown>(
       error,
     },
     {
-      reload: execute,
+      reload: () => {
+        setError(undefined);
+        setIsLoading(true);
+      },
       setData,
     },
   ];
