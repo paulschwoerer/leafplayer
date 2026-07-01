@@ -1,0 +1,35 @@
+# Defines git hooks using `lefthook`
+#   Documentation: https://lefthook.dev/configuration/
+pre-push:
+  parallel: true
+  jobs:
+    - name: Test backend
+      run: npm run test
+
+    - name: Test frontend
+      run: npm run test
+      root: web/
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: Format
+      run: npm run format
+
+    - name: Lint backend
+      run: npm run lint
+      glob: '*.ts'
+
+    - name: Lint frontend
+      run: npm run lint
+      glob: '*.{ts,tsx,css,scss}'
+      root: web/
+
+    - name: Typecheck backend
+      run: npm run lint
+      glob: '*.ts'
+
+    - name: Typecheck frontend
+      run: npm run lint
+      glob: '*.{ts,tsx}'
+      root: web/
